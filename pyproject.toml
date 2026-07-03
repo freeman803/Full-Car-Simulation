@@ -1,12 +1,14 @@
 [project]
-name = "full-car-simulation"
+name = "fsae-car-model"
 version = "0.1.0"
-description = "CFR27 full car model simulation"
-readme = "README.md"
-requires-python = ">=3.12"
+description = "FSAE vehicle dynamics — kinematics and parameter sweep"
+requires-python = ">=3.11"
 dependencies = [
-    "matplotlib>=3.11.0",
-    "numpy>=2.5.0",
-    "pandas>=3.0.3",
-    "scipy>=1.18.0",
+    "numpy>=2.0",
+    "scipy>=1.13",
+    "matplotlib>=3.9",
+    "pandas>=2.2",
 ]
+
+[tool.uv]
+dev-dependencies = []
