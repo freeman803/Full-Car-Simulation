@@ -1,0 +1,199 @@
+if ~exist('signals', 'var') || isempty(signals)
+    signals = parse_influx('');
+end
+wheelRPM = signals.VCREAR_axleSpeedRear.value;
+motorRPM = signals.PM100DX_motorSpeed.value;
+wheelOmega = wheelRPM *2*pi/60;
+motorTorque = signals.PM100DX_feedbackTorque.value;
+axleTorque = motorTorque*4.6;
+packVoltage = signals.BMSB_packVoltage.value;
+packCurrent = signals.BMSB_packCurrent.value;
+packPower = packVoltage .* packCurrent; %watts
+mechanicalPower = wheelOmega .* axleTorque; %watts
+insteff = mechanicalPower ./ packPower;
+eff = sum(mechanicalPower) ./ sum(packPower);
+disp('mean eff');
+disp((eff));
+%% group 1
+mask1 = (motorRPM >100) & (motorRPM<600) & (motorTorque >5) & (motorTorque< 15);
+effGroup1 = mean(insteff(mask1));
+%% ===== RPM 600–1200 =====
+mask2  = (motorRPM>=600)  & (motorRPM<1200) & (motorTorque>=15)  & (motorTorque<30);
+mask3  = (motorRPM>=600)  & (motorRPM<1200) & (motorTorque>=30)  & (motorTorque<45);
+mask4  = (motorRPM>=600)  & (motorRPM<1200) & (motorTorque>=45)  & (motorTorque<60);
+mask5  = (motorRPM>=600)  & (motorRPM<1200) & (motorTorque>=60)  & (motorTorque<75);
+mask6  = (motorRPM>=600)  & (motorRPM<1200) & (motorTorque>=75)  & (motorTorque<90);
+mask7  = (motorRPM>=600)  & (motorRPM<1200) & (motorTorque>=90)  & (motorTorque<105);
+mask8  = (motorRPM>=600)  & (motorRPM<1200) & (motorTorque>=105) & (motorTorque<120);
+mask9  = (motorRPM>=600)  & (motorRPM<1200) & (motorTorque>=120) & (motorTorque<135);
+mask10 = (motorRPM>=600)  & (motorRPM<1200) & (motorTorque>=135) & (motorTorque<150);
+effGroup2  = mean(insteff(mask2));
+effGroup3  = mean(insteff(mask3));
+effGroup4  = mean(insteff(mask4));
+effGroup5  = mean(insteff(mask5));
+effGroup6  = mean(insteff(mask6));
+effGroup7  = mean(insteff(mask7));
+effGroup8  = mean(insteff(mask8));
+effGroup9  = mean(insteff(mask9));
+effGroup10 = mean(insteff(mask10));
+
+%% ===== RPM 1200–1800 =====
+mask11 = (motorRPM>=1200) & (motorRPM<1800) & (motorTorque>=15)  & (motorTorque<30);
+mask12 = (motorRPM>=1200) & (motorRPM<1800) & (motorTorque>=30)  & (motorTorque<45);
+mask13 = (motorRPM>=1200) & (motorRPM<1800) & (motorTorque>=45)  & (motorTorque<60);
+mask14 = (motorRPM>=1200) & (motorRPM<1800) & (motorTorque>=60)  & (motorTorque<75);
+mask15 = (motorRPM>=1200) & (motorRPM<1800) & (motorTorque>=75)  & (motorTorque<90);
+mask16 = (motorRPM>=1200) & (motorRPM<1800) & (motorTorque>=90)  & (motorTorque<105);
+mask17 = (motorRPM>=1200) & (motorRPM<1800) & (motorTorque>=105) & (motorTorque<120);
+mask18 = (motorRPM>=1200) & (motorRPM<1800) & (motorTorque>=120) & (motorTorque<135);
+mask19 = (motorRPM>=1200) & (motorRPM<1800) & (motorTorque>=135) & (motorTorque<150);
+effGroup11 = mean(insteff(mask11));
+effGroup12 = mean(insteff(mask12));
+effGroup13 = mean(insteff(mask13));
+effGroup14 = mean(insteff(mask14));
+effGroup15 = mean(insteff(mask15));
+effGroup16 = mean(insteff(mask16));
+effGroup17 = mean(insteff(mask17));
+effGroup18 = mean(insteff(mask18));
+effGroup19 = mean(insteff(mask19));
+
+%% ===== RPM 1800–2400 =====
+mask20 = (motorRPM>=1800) & (motorRPM<2400) & (motorTorque>=15)  & (motorTorque<30);
+mask21 = (motorRPM>=1800) & (motorRPM<2400) & (motorTorque>=30)  & (motorTorque<45);
+mask22 = (motorRPM>=1800) & (motorRPM<2400) & (motorTorque>=45)  & (motorTorque<60);
+mask23 = (motorRPM>=1800) & (motorRPM<2400) & (motorTorque>=60)  & (motorTorque<75);
+mask24 = (motorRPM>=1800) & (motorRPM<2400) & (motorTorque>=75)  & (motorTorque<90);
+mask25 = (motorRPM>=1800) & (motorRPM<2400) & (motorTorque>=90)  & (motorTorque<105);
+mask26 = (motorRPM>=1800) & (motorRPM<2400) & (motorTorque>=105) & (motorTorque<120);
+mask27 = (motorRPM>=1800) & (motorRPM<2400) & (motorTorque>=120) & (motorTorque<135);
+mask28 = (motorRPM>=1800) & (motorRPM<2400) & (motorTorque>=135) & (motorTorque<150);
+effGroup20 = mean(insteff(mask20));
+effGroup21 = mean(insteff(mask21));
+effGroup22 = mean(insteff(mask22));
+effGroup23 = mean(insteff(mask23));
+effGroup24 = mean(insteff(mask24));
+effGroup25 = mean(insteff(mask25));
+effGroup26 = mean(insteff(mask26));
+effGroup27 = mean(insteff(mask27));
+effGroup28 = mean(insteff(mask28));
+
+%% ===== RPM 2400–3000 =====
+mask29 = (motorRPM>=2400) & (motorRPM<3000) & (motorTorque>=15)  & (motorTorque<30);
+mask30 = (motorRPM>=2400) & (motorRPM<3000) & (motorTorque>=30)  & (motorTorque<45);
+mask31 = (motorRPM>=2400) & (motorRPM<3000) & (motorTorque>=45)  & (motorTorque<60);
+mask32 = (motorRPM>=2400) & (motorRPM<3000) & (motorTorque>=60)  & (motorTorque<75);
+mask33 = (motorRPM>=2400) & (motorRPM<3000) & (motorTorque>=75)  & (motorTorque<90);
+mask34 = (motorRPM>=2400) & (motorRPM<3000) & (motorTorque>=90)  & (motorTorque<105);
+mask35 = (motorRPM>=2400) & (motorRPM<3000) & (motorTorque>=105) & (motorTorque<120);
+mask36 = (motorRPM>=2400) & (motorRPM<3000) & (motorTorque>=120) & (motorTorque<135);
+mask37 = (motorRPM>=2400) & (motorRPM<3000) & (motorTorque>=135) & (motorTorque<150);
+effGroup29 = mean(insteff(mask29));
+effGroup30 = mean(insteff(mask30));
+effGroup31 = mean(insteff(mask31));
+effGroup32 = mean(insteff(mask32));
+effGroup33 = mean(insteff(mask33));
+effGroup34 = mean(insteff(mask34));
+effGroup35 = mean(insteff(mask35));
+effGroup36 = mean(insteff(mask36));
+effGroup37 = mean(insteff(mask37));
+
+%% ===== RPM 3000–3600 =====
+mask38 = (motorRPM>=3000) & (motorRPM<3600) & (motorTorque>=15)  & (motorTorque<30);
+mask39 = (motorRPM>=3000) & (motorRPM<3600) & (motorTorque>=30)  & (motorTorque<45);
+mask40 = (motorRPM>=3000) & (motorRPM<3600) & (motorTorque>=45)  & (motorTorque<60);
+mask41 = (motorRPM>=3000) & (motorRPM<3600) & (motorTorque>=60)  & (motorTorque<75);
+mask42 = (motorRPM>=3000) & (motorRPM<3600) & (motorTorque>=75)  & (motorTorque<90);
+mask43 = (motorRPM>=3000) & (motorRPM<3600) & (motorTorque>=90)  & (motorTorque<105);
+mask44 = (motorRPM>=3000) & (motorRPM<3600) & (motorTorque>=105) & (motorTorque<120);
+mask45 = (motorRPM>=3000) & (motorRPM<3600) & (motorTorque>=120) & (motorTorque<135);
+mask46 = (motorRPM>=3000) & (motorRPM<3600) & (motorTorque>=135) & (motorTorque<150);
+effGroup38 = mean(insteff(mask38));
+effGroup39 = mean(insteff(mask39));
+effGroup40 = mean(insteff(mask40));
+effGroup41 = mean(insteff(mask41));
+effGroup42 = mean(insteff(mask42));
+effGroup43 = mean(insteff(mask43));
+effGroup44 = mean(insteff(mask44));
+effGroup45 = mean(insteff(mask45));
+effGroup46 = mean(insteff(mask46));
+
+%% ===== RPM 3600–4200 =====
+mask47 = (motorRPM>=3600) & (motorRPM<4200) & (motorTorque>=15)  & (motorTorque<30);
+mask48 = (motorRPM>=3600) & (motorRPM<4200) & (motorTorque>=30)  & (motorTorque<45);
+mask49 = (motorRPM>=3600) & (motorRPM<4200) & (motorTorque>=45)  & (motorTorque<60);
+mask50 = (motorRPM>=3600) & (motorRPM<4200) & (motorTorque>=60)  & (motorTorque<75);
+mask51 = (motorRPM>=3600) & (motorRPM<4200) & (motorTorque>=75)  & (motorTorque<90);
+mask52 = (motorRPM>=3600) & (motorRPM<4200) & (motorTorque>=90)  & (motorTorque<105);
+mask53 = (motorRPM>=3600) & (motorRPM<4200) & (motorTorque>=105) & (motorTorque<120);
+mask54 = (motorRPM>=3600) & (motorRPM<4200) & (motorTorque>=120) & (motorTorque<135);
+mask55 = (motorRPM>=3600) & (motorRPM<4200) & (motorTorque>=135) & (motorTorque<150);
+effGroup47 = mean(insteff(mask47));
+effGroup48 = mean(insteff(mask48));
+effGroup49 = mean(insteff(mask49));
+effGroup50 = mean(insteff(mask50));
+effGroup51 = mean(insteff(mask51));
+effGroup52 = mean(insteff(mask52));
+effGroup53 = mean(insteff(mask53));
+effGroup54 = mean(insteff(mask54));
+effGroup55 = mean(insteff(mask55));
+
+%% ===== RPM 4200–4800 =====
+mask56 = (motorRPM>=4200) & (motorRPM<4800) & (motorTorque>=15)  & (motorTorque<30);
+mask57 = (motorRPM>=4200) & (motorRPM<4800) & (motorTorque>=30)  & (motorTorque<45);
+mask58 = (motorRPM>=4200) & (motorRPM<4800) & (motorTorque>=45)  & (motorTorque<60);
+mask59 = (motorRPM>=4200) & (motorRPM<4800) & (motorTorque>=60)  & (motorTorque<75);
+mask60 = (motorRPM>=4200) & (motorRPM<4800) & (motorTorque>=75)  & (motorTorque<90);
+mask61 = (motorRPM>=4200) & (motorRPM<4800) & (motorTorque>=90)  & (motorTorque<105);
+mask62 = (motorRPM>=4200) & (motorRPM<4800) & (motorTorque>=105) & (motorTorque<120);
+mask63 = (motorRPM>=4200) & (motorRPM<4800) & (motorTorque>=120) & (motorTorque<135);
+mask64 = (motorRPM>=4200) & (motorRPM<4800) & (motorTorque>=135) & (motorTorque<150);
+effGroup56 = mean(insteff(mask56));
+effGroup57 = mean(insteff(mask57));
+effGroup58 = mean(insteff(mask58));
+effGroup59 = mean(insteff(mask59));
+effGroup60 = mean(insteff(mask60));
+effGroup61 = mean(insteff(mask61));
+effGroup62 = mean(insteff(mask62));
+effGroup63 = mean(insteff(mask63));
+effGroup64 = mean(insteff(mask64));
+
+%% ===== RPM 4800–5400 =====
+mask65 = (motorRPM>=4800) & (motorRPM<5400) & (motorTorque>=15)  & (motorTorque<30);
+mask66 = (motorRPM>=4800) & (motorRPM<5400) & (motorTorque>=30)  & (motorTorque<45);
+mask67 = (motorRPM>=4800) & (motorRPM<5400) & (motorTorque>=45)  & (motorTorque<60);
+mask68 = (motorRPM>=4800) & (motorRPM<5400) & (motorTorque>=60)  & (motorTorque<75);
+mask69 = (motorRPM>=4800) & (motorRPM<5400) & (motorTorque>=75)  & (motorTorque<90);
+mask70 = (motorRPM>=4800) & (motorRPM<5400) & (motorTorque>=90)  & (motorTorque<105);
+mask71 = (motorRPM>=4800) & (motorRPM<5400) & (motorTorque>=105) & (motorTorque<120);
+mask72 = (motorRPM>=4800) & (motorRPM<5400) & (motorTorque>=120) & (motorTorque<135);
+mask73 = (motorRPM>=4800) & (motorRPM<5400) & (motorTorque>=135) & (motorTorque<150);
+effGroup65 = mean(insteff(mask65));
+effGroup66 = mean(insteff(mask66));
+effGroup67 = mean(insteff(mask67));
+effGroup68 = mean(insteff(mask68));
+effGroup69 = mean(insteff(mask69));
+effGroup70 = mean(insteff(mask70));
+effGroup71 = mean(insteff(mask71));
+effGroup72 = mean(insteff(mask72));
+effGroup73 = mean(insteff(mask73));
+
+%% ===== RPM 5400–6000 =====
+mask74 = (motorRPM>=5400) & (motorRPM<6000) & (motorTorque>=15)  & (motorTorque<30);
+mask75 = (motorRPM>=5400) & (motorRPM<6000) & (motorTorque>=30)  & (motorTorque<45);
+mask76 = (motorRPM>=5400) & (motorRPM<6000) & (motorTorque>=45)  & (motorTorque<60);
+mask77 = (motorRPM>=5400) & (motorRPM<6000) & (motorTorque>=60)  & (motorTorque<75);
+mask78 = (motorRPM>=5400) & (motorRPM<6000) & (motorTorque>=75)  & (motorTorque<90);
+mask79 = (motorRPM>=5400) & (motorRPM<6000) & (motorTorque>=90)  & (motorTorque<105);
+mask80 = (motorRPM>=5400) & (motorRPM<6000) & (motorTorque>=105) & (motorTorque<120);
+mask81 = (motorRPM>=5400) & (motorRPM<6000) & (motorTorque>=120) & (motorTorque<135);
+mask82 = (motorRPM>=5400) & (motorRPM<6000) & (motorTorque>=135) & (motorTorque<150);
+effGroup74 = mean(insteff(mask74));
+effGroup75 = mean(insteff(mask75));
+effGroup76 = mean(insteff(mask76));
+effGroup77 = mean(insteff(mask77));
+effGroup78 = mean(insteff(mask78));
+effGroup79 = mean(insteff(mask79));
+effGroup80 = mean(insteff(mask80));
+effGroup81 = mean(insteff(mask81));
+effGroup82 = mean(insteff(mask82));
+
