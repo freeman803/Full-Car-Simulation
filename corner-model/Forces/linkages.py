@@ -1,10 +1,42 @@
-import numpy as np
+import sys
+from pathlib import Path
 from typing import Literal
 
-try:
-    from ..kinematics.hardpoints import HP
-except ImportError:  # pragma: no cover - fallback for direct execution
-    from kinematics.hardpoints import HP
+import numpy as np
+
+_ROOT = Path(__file__).resolve().parents[1]
+if str(_ROOT) not in sys.path:
+    sys.path.insert(0, str(_ROOT))
+
+from kinematics.hardpoints import HP
+
+# Each linkage as (point_a, point_b) base hardpoint names. Order matches the
+# direction used to build its unit vector (p2 - p1).
+LINKAGE_POINTS: dict[str, tuple[str, str]] = {
+    "lower_aarm_fore": ("LAA_front_inboard", "LAA_outboard"),
+    "lower_aarm_aft":  ("LAA_rear_inboard",  "LAA_outboard"),
+    "upper_aarm_fore": ("UAA_front_inboard", "UAA_outboard"),
+    "upper_aarm_aft":  ("UAA_rear_inboard",  "UAA_outboard"),
+    "pushrod":         ("pushrod_outboard",  "pushrod_inboard"),
+    "tierod":          ("tie_rod_inboard",   "tie_rod_outboard"),
+}
+
+
+def resolve_hardpoint(point_name: str, axle: Literal["front", "rear"] = "front") -> np.ndarray:
+    """Look up a hardpoint by its base (front-axle) name for the given axle."""
+    if axle not in {"front", "rear"}:
+        raise ValueError("axle must be either 'front' or 'rear'")
+
+    if axle == "front":
+        return HP[point_name]
+
+    key = f"rear_{point_name}"
+    if key not in HP:
+        raise KeyError(
+            f"Missing rear hardpoint '{key}' in HP (kinematics/hardpoints.py) — "
+            f"add it rather than silently reusing the front-axle point."
+        )
+    return HP[key]
 
 
 def calculate_linkage_unit_vectors(axle: Literal["front", "rear"] = "front") -> dict[str, np.ndarray]:
@@ -18,46 +50,11 @@ def calculate_linkage_unit_vectors(axle: Literal["front", "rear"] = "front") -> 
         A dictionary where keys are the linkage names and values are their
         corresponding unit vectors.
     """
-    if axle not in {"front", "rear"}:
-        raise ValueError("axle must be either 'front' or 'rear'")
-
-    prefix = "rear" if axle == "rear" else ""
     unit_vectors = {}
-
-    def get_point(point_name: str) -> np.ndarray:
-        key = f"{prefix}_{point_name}" if prefix and f"{prefix}_{point_name}" in HP else point_name
-        return HP[key]
-
-    # Lower A-arm fore
-    p1 = get_point("LAA_front_inboard")
-    p2 = get_point("LAA_outboard")
-    unit_vectors["lower_aarm_fore"] = (p2 - p1) / np.linalg.norm(p2 - p1)
-
-    # Lower A-arm aft
-    p1 = get_point("LAA_rear_inboard")
-    p2 = get_point("LAA_outboard")
-    unit_vectors["lower_aarm_aft"] = (p2 - p1) / np.linalg.norm(p2 - p1)
-
-    # Upper A-arm fore
-    p1 = get_point("UAA_front_inboard")
-    p2 = get_point("UAA_outboard")
-    unit_vectors["upper_aarm_fore"] = (p2 - p1) / np.linalg.norm(p2 - p1)
-
-    # Upper A-arm aft
-    p1 = get_point("UAA_rear_inboard")
-    p2 = get_point("UAA_outboard")
-    unit_vectors["upper_aarm_aft"] = (p2 - p1) / np.linalg.norm(p2 - p1)
-
-    # Pushrod
-    p1 = get_point("pushrod_outboard")
-    p2 = get_point("pushrod_inboard")
-    unit_vectors["pushrod"] = (p2 - p1) / np.linalg.norm(p2 - p1)
-
-    # Tie rod
-    p1 = get_point("tie_rod_inboard")
-    p2 = get_point("tie_rod_outboard")
-    unit_vectors["tierod"] = (p2 - p1) / np.linalg.norm(p2 - p1)
-
+    for name, (p1_name, p2_name) in LINKAGE_POINTS.items():
+        p1 = resolve_hardpoint(p1_name, axle)
+        p2 = resolve_hardpoint(p2_name, axle)
+        unit_vectors[name] = (p2 - p1) / np.linalg.norm(p2 - p1)
     return unit_vectors
 
 

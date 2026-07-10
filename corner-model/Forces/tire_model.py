@@ -1,14 +1,22 @@
 from __future__ import annotations
 
 import math
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal
 
-try:
-    from .wheel_loads import calculate_total_wheel_load
-except ImportError:  # pragma: no cover - fallback for direct execution
-    from Forces.wheel_loads import calculate_total_wheel_load
+_ROOT = Path(__file__).resolve().parents[1]
+if str(_ROOT) not in sys.path:
+    sys.path.insert(0, str(_ROOT))
+
+from Forces.wheel_loads import calculate_total_wheel_load
+
+DEFAULT_TIR_PATH = Path(__file__).with_name("16inx18in_R20 1.tir")
+
+
+def _sign(value: float) -> float:
+    return 1.0 if value >= 0.0 else -1.0
 
 
 @dataclass
@@ -56,9 +64,6 @@ class PacejkaTireModel:
     def _pressure_factor(self, pressure_pa: float) -> float:
         return max(0.5, pressure_pa / max(self.nominal_pressure_pa, 1.0))
 
-    def _load_ratio(self, vertical_force_n: float) -> float:
-        return vertical_force_n / max(self.nominal_vertical_load_n, 1.0)
-
     def calculate_tire_response(
         self,
         vertical_force_n: float,
@@ -80,46 +85,64 @@ class PacejkaTireModel:
         rolling_coeffs = self.coefficients["ROLLING_COEFFICIENTS"]
 
         pressure_factor = self._pressure_factor(pressure_pa)
-        load_ratio = self._load_ratio(vertical_force_n)
         dfz = (vertical_force_n - self.nominal_vertical_load_n) / self.nominal_vertical_load_n
+        gamma = inclination_angle_rad
 
-        # Lateral force (pure slip-angle form)
+        # Lateral force (pure slip-angle form, MF2002-style).
+        # Dy is a peak *force* (mu_y * Fz), so it must scale with the actual
+        # vertical load in Newtons, not the dimensionless load ratio.
         cy = float(lat_coeffs["PCY1"])
         dy = (
             (float(lat_coeffs["PDY1"]) + float(lat_coeffs["PDY2"]) * dfz)
-            * (1.0 - float(lat_coeffs["PDY3"]) * inclination_angle_rad**2)
-            * load_ratio
+            * (1.0 - float(lat_coeffs["PDY3"]) * gamma**2)
+            * vertical_force_n
         )
-        by = (
-            (float(lat_coeffs["PKY1"]) * math.sin(2.0 * math.atan(vertical_force_n / (float(lat_coeffs["PKY2"]) * self.nominal_vertical_load_n))))
-            / max(cy * max(dy, 1e-6), 1e-6)
-        ) * (1.0 + float(lat_coeffs["PKY3"]) * dfz)
-        ey = float(lat_coeffs["PEY1"]) + float(lat_coeffs["PEY2"]) * dfz
-        shy = float(lat_coeffs["PVY1"]) + float(lat_coeffs["PVY2"]) * dfz
+        kya = (
+            float(lat_coeffs["PKY1"])
+            * self.nominal_vertical_load_n
+            * math.sin(2.0 * math.atan(vertical_force_n / (float(lat_coeffs["PKY2"]) * self.nominal_vertical_load_n)))
+            * (1.0 - float(lat_coeffs["PKY3"]) * abs(gamma))
+        )
+        by = kya / max(cy * max(dy, 1e-6), 1e-6)
+        ey = (float(lat_coeffs["PEY1"]) + float(lat_coeffs["PEY2"]) * dfz) * (
+            1.0 - (float(lat_coeffs["PEY3"]) + float(lat_coeffs["PEY4"]) * gamma) * _sign(slip_angle_rad)
+        )
+        shy = float(lat_coeffs["PHY1"]) + float(lat_coeffs["PHY2"]) * dfz
+        svy = vertical_force_n * (
+            (float(lat_coeffs["PVY1"]) + float(lat_coeffs["PVY2"]) * dfz)
+            + (float(lat_coeffs["PVY3"]) + float(lat_coeffs["PVY4"]) * dfz) * gamma
+        )
         alpha = slip_angle_rad + shy
         lateral_force_n = dy * math.sin(
             cy * math.atan(by * alpha - ey * (by * alpha - math.atan(by * alpha)))
         )
-        lateral_force_n += float(lat_coeffs["PVY3"]) * load_ratio
+        lateral_force_n += svy
         lateral_force_n *= pressure_factor
 
-        # Longitudinal force from an equivalent slip derived from the supplied slip angle
+        # Longitudinal force (pure slip-ratio form, MF2002-style).
         cx = float(long_coeffs["PCX1"])
         dx = (
             (float(long_coeffs["PDX1"]) + float(long_coeffs["PDX2"]) * dfz)
-            * (1.0 - float(long_coeffs["PDX3"]) * inclination_angle_rad**2)
-            * load_ratio
+            * (1.0 - float(long_coeffs["PDX3"]) * gamma**2)
+            * vertical_force_n
         )
-        bx = (
-            (float(long_coeffs["PKX1"]) * math.sin(2.0 * math.atan(vertical_force_n / (float(long_coeffs["PKX2"]) * self.nominal_vertical_load_n))))
-            / max(cx * max(dx, 1e-6), 1e-6)
-        ) * (1.0 - float(long_coeffs["PKX3"]) * dfz)
-        ex = float(long_coeffs["PEX1"]) + float(long_coeffs["PEX2"]) * dfz
+        kxk = (
+            vertical_force_n
+            * (float(long_coeffs["PKX1"]) + float(long_coeffs["PKX2"]) * dfz)
+            * math.exp(float(long_coeffs["PKX3"]) * dfz)
+        )
+        bx = kxk / max(cx * max(dx, 1e-6), 1e-6)
         kappa = min(0.25, max(-0.25, slip_ratio))
-        longitudinal_force_n = dx * math.sin(
-            cx * math.atan(bx * kappa - ex * (bx * kappa - math.atan(bx * kappa)))
+        ex = (float(long_coeffs["PEX1"]) + float(long_coeffs["PEX2"]) * dfz + float(long_coeffs["PEX3"]) * dfz**2) * (
+            1.0 - float(long_coeffs["PEX4"]) * _sign(kappa)
         )
-        longitudinal_force_n += float(long_coeffs["PHX1"]) + float(long_coeffs["PHX2"]) * dfz
+        shx = float(long_coeffs["PHX1"]) + float(long_coeffs["PHX2"]) * dfz
+        svx = vertical_force_n * (float(long_coeffs["PVX1"]) + float(long_coeffs["PVX2"]) * dfz)
+        kappa_shifted = kappa + shx
+        longitudinal_force_n = dx * math.sin(
+            cx * math.atan(bx * kappa_shifted - ex * (bx * kappa_shifted - math.atan(bx * kappa_shifted)))
+        )
+        longitudinal_force_n += svx
         longitudinal_force_n *= pressure_factor
 
         # Aligning moment
@@ -127,7 +150,7 @@ class PacejkaTireModel:
         cz = float(align_coeffs["QCZ1"])
         dz = (
             (float(align_coeffs["QDZ1"]) + float(align_coeffs["QDZ2"]) * dfz)
-            * load_ratio
+            * vertical_force_n
         )
         ez = float(align_coeffs["QEZ1"]) + float(align_coeffs["QEZ2"]) * dfz + float(align_coeffs["QEZ3"]) * pressure_factor
         aligning_moment_nm = dz * math.sin(
@@ -172,7 +195,7 @@ def calculate_tire_response_from_wheel_loads(
         long_g=long_g,
         axle=axle,
     )
-    model = PacejkaTireModel.from_tir(tir_path or Path(__file__).with_name("16inx18in_R20 1.tir"))
+    model = PacejkaTireModel.from_tir(tir_path or DEFAULT_TIR_PATH)
     return model.calculate_tire_response(
         vertical_force_n=wheel_load_n,
         slip_angle_rad=slip_angle_rad,

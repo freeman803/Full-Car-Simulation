@@ -1,20 +1,13 @@
 from __future__ import annotations
 
+import sys
 from pathlib import Path
-import importlib.util
-from typing import Literal
 
-try:
-    from .linkage_forces import calculate_linkage_forces
-except ImportError:
-    # Support running this script directly from the Forces folder.
-    module_path = Path(__file__).with_name("linkage_forces.py")
-    spec = importlib.util.spec_from_file_location("linkage_forces", module_path)
-    if spec is None or spec.loader is None:
-        raise ImportError("Could not import linkage_forces module")
-    linkage_forces = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(linkage_forces)
-    calculate_linkage_forces = linkage_forces.calculate_linkage_forces
+_ROOT = Path(__file__).resolve().parents[1]
+if str(_ROOT) not in sys.path:
+    sys.path.insert(0, str(_ROOT))
+
+from Forces.linkage_forces import calculate_linkage_forces
 
 
 def prompt_float(prompt: str) -> float:
@@ -47,6 +40,9 @@ def main() -> None:
         lateral_g=lat_g,
         long_g=long_g,
         axle=axle,
+        slip_angle_rad=slip_angle,
+        slip_ratio=slip_ratio,
+        pressure_pa=tire_pressure,
     )
 
     print("\nLinkage forces:")
@@ -54,11 +50,6 @@ def main() -> None:
         force_n = payload["force_N"]
         sense = payload["sense"]
         print(f"- {name}: {force_n:.3f} N ({sense})")
-
-    print(
-        "\nNote: slip angle, slip ratio, and tire pressure are accepted by the "
-        "current interface but are not yet used in linkage force balance."
-    )
 
 
 if __name__ == "__main__":

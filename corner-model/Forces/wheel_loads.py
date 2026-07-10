@@ -1,11 +1,14 @@
 from __future__ import annotations
 
+import sys
+from pathlib import Path
 from typing import Literal
 
-try:
-    from .car_data import CarData
-except ImportError:  # pragma: no cover - fallback for direct execution
-    from Forces.car_data import CarData
+_ROOT = Path(__file__).resolve().parents[1]
+if str(_ROOT) not in sys.path:
+    sys.path.insert(0, str(_ROOT))
+
+from Forces.car_data import CarData
 
 
 def calculate_total_wheel_load(
