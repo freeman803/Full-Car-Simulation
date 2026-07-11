@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 import sys
 from pathlib import Path
 
@@ -8,6 +9,8 @@ if str(_ROOT) not in sys.path:
     sys.path.insert(0, str(_ROOT))
 
 from Forces.linkage_forces import calculate_linkage_forces
+
+PSI_TO_PA = 6894.757293168
 
 
 def prompt_float(prompt: str) -> float:
@@ -32,17 +35,17 @@ def main() -> None:
     axle = prompt_choice("Axle", ["front", "rear"])
     long_g = prompt_float("Longitudinal G: ")
     lat_g = prompt_float("Lateral G: ")
-    slip_angle = prompt_float("Slip angle (radians): ")
+    slip_angle_deg = prompt_float("Slip angle (degrees): ")
     slip_ratio = prompt_float("Slip ratio: ")
-    tire_pressure = prompt_float("Tire pressure (Pa): ")
+    tire_pressure_psi = prompt_float("Tire pressure (psi): ")
 
     forces = calculate_linkage_forces(
         lateral_g=lat_g,
         long_g=long_g,
         axle=axle,
-        slip_angle_rad=slip_angle,
+        slip_angle_rad=math.radians(slip_angle_deg),
         slip_ratio=slip_ratio,
-        pressure_pa=tire_pressure,
+        pressure_pa=tire_pressure_psi * PSI_TO_PA,
     )
 
     print("\nLinkage forces:")

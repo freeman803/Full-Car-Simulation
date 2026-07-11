@@ -57,9 +57,9 @@ It will prompt you for:
 | Axle | `front` or `rear` |
 | Longitudinal G | positive = braking load transfer to the front, negative = acceleration |
 | Lateral G | positive = load transfer to this corner while cornering |
-| Slip angle (radians) | tire slip angle — e.g. 5° ≈ `0.087` |
+| Slip angle (degrees) | tire slip angle, e.g. `5` |
 | Slip ratio | fraction, e.g. `0.1` for 10% wheel slip |
-| Tire pressure (Pa) | e.g. `100000` for ~14.5 psi |
+| Tire pressure (psi) | e.g. `14.5` |
 
 It prints the force in each linkage in Newtons, labeled `tension` or `compression`.
 
@@ -146,7 +146,7 @@ If you need numbers for final component sizing, cross-check against a proper mul
 | `ModuleNotFoundError: No module named 'kinematics'` or `'Forces'` | Shouldn't happen anymore — every script in this folder finds its imports automatically regardless of your working directory. If you do see this, make sure you didn't move a file out of `Forces/` on its own. |
 | `KeyError: 'rear_...'` | A rear-axle hardpoint is missing from `../kinematics/hardpoints.py`. Every `rear_...` point must exist alongside its front-axle counterpart. |
 | Plot window doesn't open | Some remote/headless terminals can't show a window — the PNG is still saved to `../results/linkage_forces_front.png` even if the window doesn't appear. |
-| Forces look too small / too large | Double check your slip angle is in **radians**, not degrees (multiply degrees by `π/180`, or divide by ~57.3). |
+| Forces look too small / too large | The interactive calculator takes degrees/psi directly, so this shouldn't bite there. If you're editing `slip_angle_rad`/`pressure_pa` constants directly in `visualize_linkage_forces.py`, remember those two are still in **radians**/**Pa**, not degrees/psi. |
 | Rear-axle forces look huge (thousands of N) under lateral load | Likely the rear tie rod geometry issue described in "A note on accuracy" above, not a bug — check `rear_tie_rod_inboard`/`outboard` in `hardpoints.py`. |
 | File changes don't seem to have any effect | Check that you saved the file (`Ctrl+S`) — look for a dot (●) on the tab. |
 
