@@ -11,8 +11,10 @@ if str(_ROOT) not in sys.path:
     sys.path.insert(0, str(_ROOT))
 
 from Forces.wheel_loads import calculate_total_wheel_load
-from Forces.linkages import calculate_linkage_unit_vectors
+from Forces.linkages import LINKAGE_POINTS, resolve_hardpoint, resolve_contact_patch
 from Forces.tire_model import PacejkaTireModel, DEFAULT_TIR_PATH
+
+LINKAGE_NAMES = list(LINKAGE_POINTS.keys())
 
 
 def calculate_linkage_forces(
@@ -25,16 +27,30 @@ def calculate_linkage_forces(
     pressure_pa: float | None = None,
 ) -> dict[str, dict[str, float]]:
     """
-    Solve a simplified linkage force balance for a single corner.
+    Solve the linkage force balance for a single corner.
 
-    The model uses the suspension linkage unit vectors and a single external
-    contact-patch force vector to solve for the force in each linkage. The
-    vertical component always comes from the load-transfer estimate; if
+    Each of the six linkages (upper/lower A-arm fore & aft, pushrod, tie rod)
+    is treated as a two-force member connecting a chassis (inboard) point to
+    an upright (outboard) point. The upright/wheel assembly is treated as a
+    single rigid body in equilibrium under those six reactions plus the
+    external tire wrench (force and moment) applied at the contact patch. Six
+    unknown member forces and six independent equilibrium equations (3 force
+    + 3 moment, taken about the contact patch) make this statically
+    determinate — no least-squares approximation involved.
+
+    A positive force means tension (the member pulling its inboard and
+    outboard ends together); negative means compression.
+
+    The vertical tire force always comes from the load-transfer estimate. If
     slip_angle_rad, slip_ratio, and pressure_pa are all supplied, the lateral
-    and longitudinal tire forces (from the Pacejka model) are included too, so
-    cornering/braking g's actually change the direction of the applied load
-    rather than just its magnitude. The linkages provide the reaction forces
-    needed to balance it.
+    and longitudinal tire forces and the tire's own moments (from the Pacejka
+    model) are included too, so cornering/braking g's change the direction
+    (and rotational loading) of the applied wrench, not just its magnitude.
+
+    Known simplification: the pushrod's outboard point is physically on the
+    lower A-arm rather than the upright (see hardpoints.py). This model
+    treats it as if it reacts directly against the upright/wheel assembly,
+    avoiding a full multi-body solve of the A-arm itself.
     """
     if wheel_force_n is None:
         wheel_force_n = calculate_total_wheel_load(
@@ -45,6 +61,9 @@ def calculate_linkage_forces(
 
     longitudinal_force_n = 0.0
     lateral_force_n = 0.0
+    moment_x_nm = 0.0
+    moment_y_nm = 0.0
+    moment_z_nm = 0.0
     if slip_angle_rad is not None and slip_ratio is not None and pressure_pa is not None:
         tire_model = PacejkaTireModel.from_tir(DEFAULT_TIR_PATH)
         tire_response = tire_model.calculate_tire_response(
@@ -55,38 +74,32 @@ def calculate_linkage_forces(
         )
         longitudinal_force_n = tire_response["longitudinal_force_N"]
         lateral_force_n = tire_response["lateral_force_N"]
+        moment_x_nm = tire_response["moment_x_Nm"]
+        moment_y_nm = tire_response["moment_y_Nm"]
+        moment_z_nm = tire_response["moment_z_Nm"]
 
-    unit_vectors = calculate_linkage_unit_vectors(axle=axle)
+    # Force and moment applied TO the wheel/upright assembly BY the ground,
+    # at the contact patch (SAE convention: +Z is the normal load supporting
+    # the corner's weight).
+    tire_force = np.array([longitudinal_force_n, lateral_force_n, wheel_force_n], dtype=float)
+    tire_moment = np.array([moment_x_nm, moment_y_nm, moment_z_nm], dtype=float)
+    contact_patch = resolve_contact_patch(axle)
 
-    # Use a small set of principal linkages and their directions.
-    # We form a statics system where the unknown linkage forces are solved from
-    # force equilibrium in the vertical direction.
-    linkage_names = [
-        "lower_aarm_fore",
-        "lower_aarm_aft",
-        "upper_aarm_fore",
-        "upper_aarm_aft",
-        "pushrod",
-        "tierod",
-    ]
+    # Build the 6x6 equilibrium system. Column i = [u_i; r_i x u_i], where
+    # u_i is linkage i's inboard->outboard unit vector and r_i is the moment
+    # arm from the contact patch to its outboard (upright) attachment point.
+    columns = []
+    for name in LINKAGE_NAMES:
+        inboard_name, outboard_name = LINKAGE_POINTS[name]
+        inboard = resolve_hardpoint(inboard_name, axle)
+        outboard = resolve_hardpoint(outboard_name, axle)
+        u = (outboard - inboard) / np.linalg.norm(outboard - inboard)
+        r = outboard - contact_patch
+        columns.append(np.concatenate([u, np.cross(r, u)]))
 
-    # Build a simple matrix with one equilibrium equation per active linkage
-    # direction. For this initial implementation we solve for the force needed
-    # in each linkage to support the wheel load in the vertical direction.
-    directions = np.array([unit_vectors[name] for name in linkage_names], dtype=float)
-
-    # Build an equilibrium matrix where each column is the direction vector of
-    # one linkage. The unknowns are the scalar force magnitudes in each linkage.
-    # The wheel load is expressed as an external force vector, and we solve for
-    # the linkage forces that balance it.
-    A = np.column_stack([unit_vectors[name].reshape(3, 1) for name in linkage_names])
-    A = A.reshape(3, 6)
-    wheel_force_vector = np.array(
-        [-longitudinal_force_n, -lateral_force_n, -wheel_force_n], dtype=float
-    )
-
-    forces = np.linalg.pinv(A) @ wheel_force_vector
-    forces = np.ravel(forces)
+    A = np.column_stack(columns)
+    b = np.concatenate([tire_force, tire_moment])
+    forces = np.linalg.solve(A, b)
 
     return {
         name: {
@@ -94,7 +107,7 @@ def calculate_linkage_forces(
             "sense": "tension" if float(force) >= 0.0 else "compression",
             "sign": 1.0 if float(force) >= 0.0 else -1.0,
         }
-        for name, force in zip(linkage_names, forces)
+        for name, force in zip(LINKAGE_NAMES, forces)
     }
 
 

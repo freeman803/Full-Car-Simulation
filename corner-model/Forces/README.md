@@ -10,7 +10,7 @@ Given the same car data used elsewhere in this repo (mass, track, wheelbase, aer
 
 - **Wheel load** — the vertical load on one corner, including static weight, longitudinal/lateral load transfer, and aero downforce (`wheel_loads.py`)
 - **Tire forces** — lateral and longitudinal contact-patch force from a Pacejka tire model, read from the `.tir` coefficient file (`tire_model.py`)
-- **Linkage forces** — the tension/compression force in each of the six main suspension links (upper/lower A-arm fore & aft, pushrod, tie rod), solved from the contact-patch force vector and the real hardpoint geometry (`linkage_forces.py`)
+- **Linkage forces** — the tension/compression force in each of the six main suspension links (upper/lower A-arm fore & aft, pushrod, tie rod), solved from a full 3-force + 3-moment equilibrium of the upright/wheel assembly against the tire's contact-patch wrench and the real hardpoint geometry (`linkage_forces.py`)
 - **A 3D picture** of those forces on the actual suspension geometry, colored by tension (green) / compression (red), darker meaning more force (`visualize_linkage_forces.py`)
 
 All of it reads hardpoints from `../kinematics/hardpoints.py` — the same file used by the kinematics model — so geometry only needs to be entered once.
@@ -117,11 +117,21 @@ For suspension geometry (hardpoint coordinates), edit `../kinematics/hardpoints.
 
 ---
 
+## How the linkage force solve works
+
+Each of the six linkages is treated as a two-force member (force only along its own axis) connecting a chassis point to an upright point. The upright + wheel is treated as one rigid body in equilibrium under those six reactions plus the tire's contact-patch wrench (3 force components + 3 moment components — overturning, rolling resistance, aligning torque — all from the Pacejka tire model). Six unknown member forces, six independent equilibrium equations (taken about the contact patch) — that's statically **determinate**, so it's solved directly (`np.linalg.solve`), not approximated.
+
+**Sign convention:** a positive force means **tension** (the member pulling its chassis and upright ends together); negative means **compression**.
+
+---
+
 ## A note on accuracy
 
 This is a **simplified** force model, useful for sizing/comparing linkages, not a final structural sign-off tool:
 
-- The linkage force solve uses three force-equilibrium equations (no moment balance) for six unknown linkage forces. It's statically indeterminate as posed, so it returns the minimum-norm solution rather than the unique answer a full rigid-body free-body diagram would give.
+- **Pushrod simplification.** The pushrod's outboard end is physically mounted on the lower A-arm, not the upright (see the `# lower arm pickup` comment on `pushrod_outboard` in `hardpoints.py`). This model treats it as if it reacts directly against the upright/wheel assembly instead of solving the lower A-arm as its own rigid body. This is a standard simplification for this kind of hand-check model, but it means the pushrod (and, to a lesser extent, the lower A-arm legs) number isn't from a full multi-body solve.
+- **Rear contact patch is approximated.** The front axle has an exact `contact_patch` hardpoint from CAD. The rear axle doesn't have one yet, so `linkages.py` approximates it as directly below `rear_wheel_center` by the nominal wheel radius. Add a real `rear_contact_patch` point to `hardpoints.py` for exact rear-axle results.
+- **Rear tie rod geometry looks unfinished.** As of this writing, `rear_tie_rod_inboard` and `rear_tie_rod_outboard` share the exact same Y coordinate (832.4617mm) — meaning that link currently has *zero* ability to react lateral load directly. Under cornering conditions this forces very large compensating forces through the other rear links via moment leverage (you'll see rear-axle numbers in the thousands of Newtons even for modest inputs). If those look real to you rather than a placeholder, they're a red flag worth double-checking in CAD before trusting rear-axle output. Front-axle results don't have this issue.
 - The tire model implements the standard Pacejka "Magic Formula" pure-slip equations for lateral and longitudinal force, but not combined-slip (simultaneous braking + cornering) effects.
 
 If you need numbers for final component sizing, cross-check against a proper multibody solver (e.g. ADAMS/Car, a Jacobian-based FBD, or hand calculations at the critical load case).
@@ -137,6 +147,7 @@ If you need numbers for final component sizing, cross-check against a proper mul
 | `KeyError: 'rear_...'` | A rear-axle hardpoint is missing from `../kinematics/hardpoints.py`. Every `rear_...` point must exist alongside its front-axle counterpart. |
 | Plot window doesn't open | Some remote/headless terminals can't show a window — the PNG is still saved to `../results/linkage_forces_front.png` even if the window doesn't appear. |
 | Forces look too small / too large | Double check your slip angle is in **radians**, not degrees (multiply degrees by `π/180`, or divide by ~57.3). |
+| Rear-axle forces look huge (thousands of N) under lateral load | Likely the rear tie rod geometry issue described in "A note on accuracy" above, not a bug — check `rear_tie_rod_inboard`/`outboard` in `hardpoints.py`. |
 | File changes don't seem to have any effect | Check that you saved the file (`Ctrl+S`) — look for a dot (●) on the tab. |
 
 ---
@@ -146,4 +157,4 @@ If you need numbers for final component sizing, cross-check against a proper mul
 If something is broken and you can't figure it out from the table above:
 1. Copy the full error message from the terminal
 2. Note exactly what command you ran and from which folder
-3. Talk to Austin and then Andrew if Austin can't figure it out
+
