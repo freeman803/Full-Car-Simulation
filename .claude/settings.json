@@ -1,7 +1,14 @@
 {
   "permissions": {
     "allow": [
-      "Bash(python -c ' *)"
+      "Bash(python -c ' *)",
+      "Bash(../.venv/Scripts/python.exe tire_viz_app.py --no-browser --port 8317)",
+      "Bash(curl -s http://127.0.0.1:8317/api/info)",
+      "Bash(curl -s -X POST http://127.0.0.1:8317/api/sweep -d '{\"swept\":\"sa\",\"output\":\"fy\",\"min\":-12,\"max\":12,\"points\":5,\"fixed\":{\"pressure\":14.5038,\"fz\":667,\"sr\":0,\"camber\":0}}')",
+      "Bash(curl -s -o /dev/null -w \"GET / -> %{http_code}, %{size_download} bytes\\\\n\" http://127.0.0.1:8317/)",
+      "Bash(curl -s -X POST http://127.0.0.1:8317/api/sweep -d '{\"swept\":\"bogus\",\"output\":\"fy\",\"min\":0,\"max\":1}')",
+      "PowerShell($edge = \"C:\\\\Program Files \\(x86\\)\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe\"; if \\(-not \\(Test-Path $edge\\)\\) { $edge = \"C:\\\\Program Files\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe\" }; $out = \"C:\\\\Users\\\\amp20\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-amp20-Full-Car-Simulation\\\\6aabd5ca-c9f9-4cc9-9fe8-93b1e712188b\\\\scratchpad\\\\app_light.png\"; & $edge --headless=new --disable-gpu --screenshot=$out --window-size=1280,940 --virtual-time-budget=4000 \"http://127.0.0.1:8317/\" ; Start-Sleep -Seconds 2; Get-Item $out | Select-Object Length)",
+      "PowerShell($dir = \"C:\\\\Users\\\\amp20\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-amp20-Full-Car-Simulation\\\\6aabd5ca-c9f9-4cc9-9fe8-93b1e712188b\\\\scratchpad\"; New-Item -ItemType Directory -Force $dir | Out-Null; $edge = \"C:\\\\Program Files \\(x86\\)\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe\"; if \\(-not \\(Test-Path $edge\\)\\) { $edge = \"C:\\\\Program Files\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe\" }; & $edge --headless=new --disable-gpu --screenshot=\"$dir\\\\app_light.png\" --window-size=1280,940 --virtual-time-budget=4000 \"http://127.0.0.1:8317/\"; Start-Sleep -Seconds 2; \\(Get-Item \"$dir\\\\app_light.png\"\\).Length)"
     ]
   }
 }
