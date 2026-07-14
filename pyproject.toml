@@ -8,6 +8,7 @@ dependencies = [
     "scipy>=1.13",
     "matplotlib>=3.9",
     "pandas>=2.2",
+    "plotly>=6.9.0",
 ]
 
 [tool.uv]
