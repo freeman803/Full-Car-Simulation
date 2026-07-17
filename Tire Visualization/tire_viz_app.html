@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MF-Tyre 6.2 Curve Explorer</title>
+<title>Magic Formula Tire Curve Explorer</title>
 <style>
   :root {
     --page:           #f9f9f7;
@@ -118,12 +118,16 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>MF-Tyre 6.2 Curve Explorer</h1>
+    <h1>Magic Formula Tire Curve Explorer</h1>
     <p id="tireinfo">Loading tire data&hellip;</p>
   </header>
 
   <div class="layout">
     <div class="card controls">
+      <label class="field">
+        <span class="lab">Tire model</span>
+        <select id="tire"></select>
+      </label>
       <label class="field">
         <span class="lab">Sweep this input</span>
         <select id="swept"></select>
@@ -196,6 +200,7 @@ const OUTPUTS = {
 
 const $ = id => document.getElementById(id);
 const state = {
+  tire: null, tires: {}, seeded: {},
   swept: "sa", output: "fy", swap: false,
   fixed: Object.fromEntries(Object.entries(INPUTS).map(([k, v]) => [k, v.fixed])),
   min: INPUTS.sa.sweep[0], max: INPUTS.sa.sweep[1], points: 300,
@@ -264,6 +269,7 @@ function refresh() {
 
 async function fetchSweep() {
   const body = {
+    tire: state.tire,
     swept: state.swept, output: state.output,
     min: state.min, max: state.max, points: state.points,
     fixed: state.fixed,
@@ -272,6 +278,8 @@ async function fetchSweep() {
     const res = await fetch("/api/sweep", { method: "POST", body: JSON.stringify(body) });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || res.statusText);
+    // Ignore a response that arrived after the user switched tires.
+    if (data.tire && data.tire !== state.tire) return;
     state.data = data;
     setNote();
     render();
@@ -285,10 +293,13 @@ async function fetchSweep() {
 function setNote() {
   const note = $("note");
   note.className = "note";
-  note.textContent =
-    (state.output === "my" && state.info && state.info.my_all_zero)
-      ? "All rolling-resistance coefficients (QSY1–QSY8) in this .tir are zero, so MY is identically 0."
-      : "";
+  const info = state.info;
+  const msgs = [];
+  if (state.output === "my" && info && info.my_all_zero)
+    msgs.push("All rolling-resistance coefficients (QSY1–QSY8) in this .tir are zero, so MY is identically 0.");
+  if (state.swept === "pressure" && info && info.pressure_dependent === false)
+    msgs.push(`This tire file (${info.format}) has no inflation-pressure model, so pressure has no effect on the output.`);
+  note.textContent = msgs.join(" ");
 }
 
 /* ---------- chart ---------- */
@@ -326,7 +337,7 @@ function render() {
     .filter(([k]) => k !== state.swept)
     .map(([k, m]) => `${m.label.split(" (")[0]} = ${withUnit(state.fixed[k], m.unit)}`)
     .join(", ");
-  $("csub").textContent = `${fixedDesc} — ${state.info ? state.info.file : ""}`;
+  $("csub").textContent = `${fixedDesc} — ${state.info ? `${state.info.file} · ${state.info.format}` : ""}`;
 
   // extents (pad y 5%)
   const fx = xs.filter(v => v !== null), fy = ys.filter(v => v !== null);
@@ -447,12 +458,53 @@ svgEl.addEventListener("pointerleave", () => {
   }
 });
 
-/* ---------- boot ---------- */
+/* ---------- initial control fill ---------- */
 fillSelect($("swept"), INPUTS, state.swept);
 fillSelect($("output"), OUTPUTS, state.output);
 renderFixedInputs();
 $("rmin").value = state.min; $("rmax").value = state.max;
 
+/* ---------- tire selection ---------- */
+function updateTireHeader(info) {
+  const press = info.pressure_dependent
+    ? `nominal pressure ${fmt(info.nompres_psi)} psi, `
+    : "pressure-independent, ";
+  $("tireinfo").textContent =
+    `${info.file} · ${info.format} — nominal load ${fmt(info.fnomin_n)} N, ` +
+    press + `unloaded radius ${fmt(info.r0_m)} m`;
+}
+
+async function loadInfo() {
+  let info;
+  try {
+    const res = await fetch("/api/info?tire=" + encodeURIComponent(state.tire));
+    info = await res.json();
+    if (!res.ok) throw new Error(info.error || res.statusText);
+  } catch (err) {
+    $("tireinfo").textContent = "Could not load tire info: " + err.message;
+    return;
+  }
+  state.info = info;
+  updateTireHeader(info);
+  // Seed sensible fixed values the first time each tire is viewed, so we don't
+  // overwrite values the user has since edited when they switch back to it.
+  if (!state.seeded[state.tire]) {
+    state.fixed.fz = Math.round(info.fnomin_n);
+    if (info.pressure_dependent && info.nompres_psi) state.fixed.pressure = info.nompres_psi;
+    state.seeded[state.tire] = true;
+  }
+  renderFixedInputs();
+  setNote();
+}
+
+async function onTireChanged() {
+  state.tire = $("tire").value;
+  await loadInfo();
+  refresh();
+}
+
+/* ---------- boot ---------- */
+$("tire").addEventListener("change", onTireChanged);
 $("swept").addEventListener("change", onSweptChanged);
 $("output").addEventListener("change", () => { state.output = $("output").value; setNote(); refresh(); });
 $("swap").addEventListener("change", () => { state.swap = $("swap").checked; render(); });
@@ -463,15 +515,23 @@ for (const [id, key] of [["rmin", "min"], ["rmax", "max"], ["rpts", "points"]]) 
   });
 }
 
-fetch("/api/info").then(r => r.json()).then(info => {
-  state.info = info;
-  $("tireinfo").textContent =
-    `${info.file} — nominal load ${fmt(info.fnomin_n)} N, ` +
-    `nominal pressure ${fmt(info.nompres_psi)} psi, unloaded radius ${fmt(info.r0_m)} m`;
-  setNote();
-  render();
+// Load the tire list, fill the dropdown, then fetch the default tire's info
+// and its first sweep.
+fetch("/api/tires").then(r => r.json()).then(async data => {
+  state.tires = Object.fromEntries(data.tires.map(t => [t.name, t]));
+  const sel = $("tire");
+  sel.replaceChildren();
+  for (const t of data.tires) {
+    const o = document.createElement("option");
+    o.value = t.name;
+    o.textContent = `${t.name}  —  ${t.format}`;
+    sel.appendChild(o);
+  }
+  state.tire = data.default;
+  sel.value = state.tire;
+  await loadInfo();
+  fetchSweep();
 });
-fetchSweep();
 </script>
 </body>
 </html>

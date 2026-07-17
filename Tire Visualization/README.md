@@ -1,9 +1,12 @@
 # Tire Visualization
 
-Interactive visualizer for MF-Tyre 6.2 (Magic Formula) tire data. It loads a
-`.tir` coefficient file, evaluates the full steady-state Pacejka equations
+Interactive visualizer for Magic Formula tire data. It loads `.tir`
+coefficient files, evaluates the full steady-state Pacejka equations
 (pure + combined slip, inflation-pressure and camber effects), and plots any
-model output against any swept input.
+model output against any swept input. Both **MF-Tyre 6.1/6.2** files (with a
+`NOMPRES` inflation-pressure model) and the older **PAC2002** format are
+supported, and you can switch between every `.tir` file in this folder from a
+dropdown in the app.
 
 There are two ways to use it: a **local web app** (recommended) and a
 **command-line script**.
@@ -15,8 +18,9 @@ There are two ways to use it: a **local web app** (recommended) and a
 | `run_tire_app.bat` | Double-click launcher for the web app |
 | `tire_viz_app.py` | Web app server (Python standard library only) |
 | `tire_viz_app.html` | Web app UI |
-| `tire_visualizer.py` | The MF 6.2 tire model + interactive CLI version |
-| `16inx18in_R20 1.tir` | Default tire coefficient file (CFR27) |
+| `tire_visualizer.py` | The Magic Formula tire model (MF 6.1/6.2 + PAC2002) + interactive CLI version |
+| `16inx18in_R20 1.tir` | MF-Tyre 6.1 tire coefficient file (CFR27) — the default |
+| `R20 7.5x10.TIR` | PAC2002 tire coefficient file |
 
 ## Quick start — web app
 
@@ -53,9 +57,12 @@ The tire model takes 5 **inputs** and computes 5 **outputs**:
 | Slip ratio [–] | MY — rolling resistance moment [N·m] |
 | Camber [deg] | MZ — aligning moment [N·m] |
 
-1. Pick which input to **sweep** and which output to **plot** against it.
-2. Set values for the other four (fixed) inputs.
-3. Adjust the sweep min/max/points.
+1. Pick the **tire model** from the dropdown — every `.tir` file in this
+   folder is listed with its format (e.g. `MF6.1` or `PAC2002`). Switching
+   updates the nominal load (and pressure, if applicable) automatically.
+2. Pick which input to **sweep** and which output to **plot** against it.
+3. Set values for the other four (fixed) inputs.
+4. Adjust the sweep min/max/points.
 
 The chart updates live as you type. Hover for exact values, tick
 "Put the output on the X axis" to flip the axes, and expand **Data table**
@@ -89,6 +96,14 @@ both are already in the project environment.
   Vehicle Dynamics*, 3rd ed.): pure-slip FX0/FY0, combined-slip weighting
   (Gxα, Gyκ), pneumatic trail + residual torque for MZ, and the PPX/PPY/
   PPZ/PPMX inflation-pressure terms — so pressure sweeps are meaningful.
+- **PAC2002 files** (`PROPERTY_FILE_FORMAT='PAC2002'`) are evaluated with the
+  same 6.1/6.2 equations, which are a strict superset: the loader supplies the
+  defaults PAC2002 omits — the `PKY4=2` cornering-stiffness factor, the
+  `LFZ0`/`LFZO` scaling-factor spelling, and a neutral reference pressure.
+  PAC2002 has no inflation-pressure model, so the **pressure input has no
+  effect** for those files (the app shows a note when you sweep pressure on
+  one). Note that MZ *is* meaningful for `R20 7.5x10.TIR`, unlike the MF6.1
+  file (see below).
 - The UI works in psi and degrees; the `.tir` file itself is in Pa and
   radians and is converted internally.
 - Outputs can never be fixed — they are functions of the inputs. That's why

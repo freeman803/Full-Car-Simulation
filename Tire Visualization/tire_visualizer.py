@@ -1,9 +1,12 @@
 """
-Interactive MF-Tyre 6.2 tire curve visualizer.
+Interactive Magic Formula tire curve visualizer.
 
-Loads a .tir coefficient file and evaluates the Magic Formula 6.1/6.2
-steady-state equations (pure + combined slip, with inflation-pressure
-effects).
+Loads a .tir coefficient file and evaluates the Magic Formula steady-state
+equations (pure + combined slip, with inflation-pressure effects). Supports
+both MF-Tyre 6.1/6.2 files (FITTYP 61/62, with NOMPRES and PP* pressure
+terms) and the older PAC2002 format (PROPERTY_FILE_FORMAT='PAC2002', no
+pressure model). The 6.x equation set is a strict superset that reduces to
+PAC2002 once the format-specific defaults are supplied on load.
 
     inputs  : tire pressure, FZ, slip angle, slip ratio, camber
     outputs : FX, FY, MX, MY, MZ
@@ -55,8 +58,44 @@ def _safe(x, eps=EPS):
     return np.where(x >= 0, np.maximum(x, eps), np.minimum(x, -eps))
 
 
+# FITTYP numeric switch -> human label, for files that use the [MODEL] code
+# instead of the PROPERTY_FILE_FORMAT string.
+_FITTYP_LABELS = {5: "MF5.2", 6: "MF5.2", 21: "MF6.1", 61: "MF6.1", 62: "MF6.2"}
+
+
+def detect_format(path: Path) -> str:
+    """Best-effort Magic Formula variant label for a .tir file.
+
+    Prefers the PROPERTY_FILE_FORMAT string (e.g. 'PAC2002'); falls back to
+    the numeric FITTYP switch (61 -> MF6.1, 62 -> MF6.2). Returns 'MF6.x'
+    when neither is present, since the evaluator is a 6.1/6.2 superset."""
+    fittyp = None
+    for raw in Path(path).read_text(encoding="utf-8").splitlines():
+        line = raw.split("$")[0].strip()
+        if "=" not in line or line.startswith("["):
+            continue
+        key, _, val = line.partition("=")
+        key = key.strip().upper()
+        val = val.strip().strip("'\"").strip()
+        if key == "PROPERTY_FILE_FORMAT" and val:
+            return val.upper()
+        if key == "FITTYP":
+            try:
+                fittyp = int(float(val))
+            except ValueError:
+                pass
+    if fittyp is not None:
+        return _FITTYP_LABELS.get(fittyp, f"FITTYP {fittyp}")
+    return "MF6.x"
+
+
 class MF62Tire:
-    """Steady-state MF-Tyre 6.1/6.2 (Pacejka 2012 eqs. 4.E1-4.E78).
+    """Steady-state Magic Formula tire (MF-Tyre 6.1/6.2 and PAC2002).
+
+    The 6.1/6.2 equations (Pacejka 2012 eqs. 4.E1-4.E78) are evaluated for
+    every file; PAC2002 files are handled by the same code because that
+    equation set is a strict superset — the loader supplies the defaults a
+    PAC2002 file omits (PKY4=2, no inflation-pressure model, LFZ0 alias).
 
     All methods accept scalars or numpy arrays (broadcasting) for
     fz [N], alpha [rad], kappa [-], press [Pa], and camber gamma [rad].
@@ -65,11 +104,35 @@ class MF62Tire:
     def __init__(self, tir_path: Path):
         self.path = Path(tir_path)
         self.p = parse_tir(self.path)
+        self.format = detect_format(self.path)
+        # The nominal-load scaling factor is lambda-Fz0. MF-Tyre files write
+        # it LFZO (letter O); many PAC2002 files write LFZ0 (digit zero).
+        # Accept either so the value is never silently dropped.
+        if "LFZO" not in self.p and "LFZ0" in self.p:
+            self.p["LFZO"] = self.p["LFZ0"]
+        # PAC2002 / MF5.2-era files predate the MF6.1 camber-stiffness
+        # coefficients PKY6/PKY7. They instead carry the camber horizontal
+        # shift in PHY3 and expect load-linear rolling resistance (QSY7=1), so
+        # forces() must pick the right camber & My form. Trust the format label
+        # when it is known; otherwise fall back to a capability check (a real
+        # MF6.x file always ships PKY6/PKY7).
+        if self.format in ("PAC2002", "MF5.2"):
+            self.legacy = True
+        elif self.format in ("MF6.1", "MF6.2"):
+            self.legacy = False
+        else:
+            self.legacy = "PKY6" not in self.p and "PKY7" not in self.p
         self.FZ0 = self.p["FNOMIN"]
-        self.P0 = self.p["NOMPRES"]
+        # PAC2002 has no inflation-pressure model: no NOMPRES and no PP*
+        # coefficients. When absent, pressure is inert (every PP* term is 0),
+        # so we only need a nonzero reference pressure to avoid dividing by
+        # zero when forming dpi = (p - P0)/P0.
+        nompres = self.p.get("NOMPRES")
+        self.pressure_dependent = nompres is not None and nompres > 0
+        self.P0 = nompres if self.pressure_dependent else 101325.0
         r0 = self.p.get("UNLOADED_RADIUS", 0.2)
-        # This .tir declares meters but stores 19.58, which is only
-        # plausible as centimeters (0.1958 m ~ a 16 in OD tire).
+        # A radius in meters is < ~1; some files store centimeters
+        # (e.g. 19.58 -> 0.1958 m, a 16 in OD tire).
         self.R0 = r0 / 100.0 if r0 > 2.0 else r0
 
     def c(self, name: str, default: float = 0.0) -> float:
@@ -124,15 +187,23 @@ class MF62Tire:
                * (1 + p("PPY3") * dpi + p("PPY4") * dpi**2)
                * (1 - p("PDY3") * g2) * p("LMUY", 1))
         Dy = muy * fz
+        # PKY4 governs the shape of Kya vs load; its physical default is 2
+        # (PAC2002 hardcodes this factor and omits the coefficient). Default
+        # to 2.0 so an absent PKY4 does not zero out the cornering stiffness.
         Kya = (p("PKY1") * FZ0p * (1 + p("PPY1") * dpi) * (1 - p("PKY3") * abs(gamma))
-               * np.sin(p("PKY4") * np.arctan(
+               * np.sin(p("PKY4", 2.0) * np.arctan(
                    fz / FZ0p / ((p("PKY2") + p("PKY5") * g2) * (1 + p("PPY2") * dpi))))
                * p("LKY", 1))
         Kya = _safe(Kya)
         Kyg0 = fz * (p("PKY6") + p("PKY7") * dfz) * (1 + p("PPY5") * dpi) * p("LKYC", 1)
         SVyg = fz * (p("PVY3") + p("PVY4") * dfz) * gamma * p("LKYC", 1) * p("LMUY", 1)
         SVy = fz * (p("PVY1") + p("PVY2") * dfz) * p("LVY", 1) * p("LMUY", 1) + SVyg
-        SHy = (p("PHY1") + p("PHY2") * dfz) * p("LHY", 1) + (Kyg0 * gamma - SVyg) / Kya
+        if self.legacy:
+            # PAC2002/MF5.2 carry the camber horizontal shift directly in PHY3
+            # and do not use the MF6.x Kyg0/SVyg reformulation (no PKY6/PKY7).
+            SHy = (p("PHY1") + p("PHY2") * dfz) * p("LHY", 1) + p("PHY3") * gamma
+        else:
+            SHy = (p("PHY1") + p("PHY2") * dfz) * p("LHY", 1) + (Kyg0 * gamma - SVyg) / Kya
         ay = alpha + SHy
         Ey = np.minimum((p("PEY1") + p("PEY2") * dfz)
                         * (1 + p("PEY5") * g2 - (p("PEY3") + p("PEY4") * gamma) * np.sign(ay))
@@ -175,7 +246,10 @@ class MF62Tire:
         My = (-self.R0 * self.FZ0 * p("LMY", 1)
               * (p("QSY1") + p("QSY2") * Fx / self.FZ0 + p("QSY3") + p("QSY4")
                  + (p("QSY5") + p("QSY6") * fzr) * g2)
-              * fzr ** p("QSY7") * (press / self.P0) ** p("QSY8"))
+              # PAC2002 My is linear in load; an absent QSY7 must default to 1,
+              # not 0 (fzr**0 would make My load-independent).
+              * fzr ** p("QSY7", 1.0 if self.legacy else 0.0)
+              * (press / self.P0) ** p("QSY8"))
         My = My * np.ones_like(Fx)
 
         # ---------------- aligning moment Mz ----------------
@@ -288,10 +362,14 @@ def main() -> None:
     nompres_psi = tire.P0 / PSI_TO_PA
 
     print("=" * 68)
-    print("MF-Tyre 6.2 curve visualizer")
+    print("Magic Formula tire curve visualizer")
     print(f"  Tire file       : {tir_path.name}")
+    print(f"  Model format    : {tire.format}")
     print(f"  Nominal load    : {tire.FZ0:g} N")
-    print(f"  Nominal pressure: {nompres_psi:.1f} psi ({tire.P0:g} Pa)")
+    if tire.pressure_dependent:
+        print(f"  Nominal pressure: {nompres_psi:.1f} psi ({tire.P0:g} Pa)")
+    else:
+        print("  Nominal pressure: n/a (no inflation-pressure model)")
     print(f"  Unloaded radius : {tire.R0:.4f} m")
     print("=" * 68)
 
