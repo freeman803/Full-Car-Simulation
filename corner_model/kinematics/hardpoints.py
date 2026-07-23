@@ -49,11 +49,42 @@ HP: dict[str, np.ndarray] = {
 # GLOBAL CAR PARAMETERS
 # ─────────────────────────────────────────────────────────────────────────────
 
-WHEEL_RADIUS  = 203    # mm  (18" OD tyre / 10" rim)
+WHEEL_RADIUS  = 203    # mm  (16" OD tyre / 10" rim)
 TRACK_WIDTH   = 1219.0   # mm  front track, centre-to-centre
 WHEELBASE     = 1543.0   # mm
 RACK_OFFSET_X = 86.64   # mm  rack centre relative to front axle (negative = behind axle)
-CG_HEIGHT     = 280.0    # mm  centre of gravity height (used for anti-dive calculation)
+CG_HEIGHT     = 313.0    # mm  centre of gravity height (used for anti-dive calculation)
+
+# ─────────────────────────────────────────────────────────────────────────────
+# WHEEL ORIENTATION (design / static setup values)
+# ─────────────────────────────────────────────────────────────────────────────
+# Camber and toe are properties of the wheel SPIN AXIS (spindle), which is not
+# otherwise derivable from the hardpoints above. Enter your design values here
+# (from the CAD model / setup sheet). Sign conventions, LEFT-FRONT wheel:
+#   camber: negative = top of tyre leans inboard  (usual FSAE choice)
+#   toe:    negative = toe-out, positive = toe-in
+DESIGN_CAMBER_DEG = 0.0
+DESIGN_TOE_DEG    = 0.0
+
+def _static_spindle_axis(camber_deg: float, toe_deg: float) -> np.ndarray:
+    """
+    Unit vector along the wheel spin axis at static ride height, for a LEFT
+    wheel (base direction +Y, outboard). Camber tilts it in the YZ plane;
+    toe rotates it in the XY plane.
+    """
+    cam = np.radians(camber_deg)
+    toe = np.radians(toe_deg)
+    ax  = np.array([0.0, 1.0, 0.0])
+    Rx  = np.array([[1, 0, 0],
+                    [0, np.cos(cam), -np.sin(cam)],
+                    [0, np.sin(cam),  np.cos(cam)]])
+    Rz  = np.array([[np.cos(toe), -np.sin(toe), 0],
+                    [np.sin(toe),  np.cos(toe), 0],
+                    [0, 0, 1]])
+    return Rz @ Rx @ ax
+
+# Static spindle axis, consumed by suspension.py to track camber/toe through travel
+HP["spindle_axis"] = _static_spindle_axis(DESIGN_CAMBER_DEG, DESIGN_TOE_DEG)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # PUSHROD  (lower A-arm outboard → bellcrank)
@@ -83,6 +114,6 @@ HP["damper_inboard"]  = np.array([  743.36,  25.78, 675])  # chassis top mount
 
 SPRING_RATE     = 39.403  # N/mm  spring rate at the damper
 DAMPER_RATE     = 2.5    # N·s/mm  linear damping coefficient at the damper
-UNSPRUNG_MASS   = 8.0    # kg    corner unsprung mass (wheel + upright + half-arms)
+UNSPRUNG_MASS   = 10.0    # kg    corner unsprung mass (wheel + upright + half-arms)
 SPRUNG_MASS     = 53.75   # kg    corner sprung mass (quarter car)
-TYRE_STIFFNESS  = 130.0  # N/mm  vertical tyre stiffness
+TYRE_STIFFNESS  = 91.24  # N/mm  vertical tyre stiffness (@ 10 psi & 0 deg camber)
