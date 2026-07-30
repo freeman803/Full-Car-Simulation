@@ -115,16 +115,53 @@ def trim_window(t, s, e, trim_s):
 MIN_LAT_G_FOR_TURN = 0.3     # g — below this, not really "turning"
 MIN_RUN_SECONDS = 2.0         # minimum REAL elapsed duration to count as a real circling segment
 TRIM_SECONDS = 0.5            # trim this much off each end (entry/exit transition)
-RUNS_PER_DIRECTION = 2        # file has 2 back-to-back runs, each direction once per run
+
+# How segments are separated from transitions, WITHOUT assuming how many runs
+# a file contains.
+#
+# This replaced a hard `RUNS_PER_DIRECTION = 2` cap, which encoded "the file
+# has 2 back-to-back runs, one each way". That held for
+# skidpad_austin_both.csv but silently discarded data as soon as the session
+# format changed: three runs per direction reported two, and four runs
+# combined into one CSV reported two. Anything past the second-longest
+# vanished with no warning.
+#
+# The cap could not simply be removed, because it was doing real work. On
+# skidpad_austin_both sign -1, FIVE segments clear the 2.0s min_run_s gate:
+# 11.2, 10.8, 5.7, 3.5 and 2.0s. Only the first two are steady circles; the
+# rest are entry/exit arcs and transitions, and averaging them in would
+# corrupt the result.
+#
+# So the two jobs are now separated: min_run_s rejects noise, and this
+# RELATIVE criterion rejects transitions — keep every segment at least this
+# fraction as long as the longest one of the same sign. That adapts to any
+# run count while still discriminating properly, because real runs of the
+# same manoeuvre have similar durations and transitions are much shorter.
+#
+# 0.7 verified against every real file: it reproduces the previous cap-of-2
+# results exactly, with a wide margin either side — the genuine second run
+# is 0.96 of the longest, while the longest spurious segment is 0.51.
+MIN_FRACTION_OF_LONGEST = 0.7
 
 
 def find_steady_segments(signal_f, t, threshold=MIN_LAT_G_FOR_TURN,
-                          min_run_s=MIN_RUN_SECONDS, runs_per_direction=RUNS_PER_DIRECTION):
-    """Return {sign: [(start_idx, end_idx, duration_s), ...]} — the top
-    `runs_per_direction` longest qualifying steady segments of each sign of
-    `signal_f`, sorted longest-first (then put back in time order).
+                          min_run_s=MIN_RUN_SECONDS, runs_per_direction=None,
+                          min_fraction_of_longest=MIN_FRACTION_OF_LONGEST):
+    """Return {sign: [(start_idx, end_idx, duration_s), ...]} — the
+    qualifying steady segments of each sign of `signal_f`, in time order.
     `duration_s` and the `min_run_s` gate are real elapsed time (t[e]-t[s]),
     not sample-count * dt — see module docstring.
+
+    Segment selection adapts to however many runs the file contains: a
+    segment is kept if it lasts at least `min_fraction_of_longest` of the
+    longest segment of the same sign (see the comment above). So one run,
+    two runs, five runs, or a single-direction mock skidpad all work without
+    changing anything.
+
+    `runs_per_direction` is an optional HARD cap on the number kept per
+    sign, applied after the relative filter, for callers that genuinely know
+    the structure (case3's brake fallback does). Leave it None otherwise —
+    setting it is how the original assumption got baked in.
 
     Written against lateral G specifically (see case1_max_gs.py's docstring
     for why steering-rate gating was tried and abandoned) — pass the
@@ -159,8 +196,12 @@ def find_steady_segments(signal_f, t, threshold=MIN_LAT_G_FOR_TURN,
     top_by_sign = {}
     for sg, run_list in by_sign.items():
         run_list.sort(key=lambda r: r[2], reverse=True)
-        top_by_sign[sg] = run_list[:runs_per_direction]
-        top_by_sign[sg].sort(key=lambda r: r[0])   # back to time order for reporting
+        longest = run_list[0][2]
+        kept = [r for r in run_list if r[2] >= min_fraction_of_longest * longest]
+        if runs_per_direction is not None:
+            kept = kept[:runs_per_direction]
+        kept.sort(key=lambda r: r[0])              # back to time order for reporting
+        top_by_sign[sg] = kept
     return top_by_sign
 
 

@@ -55,7 +55,7 @@ from case_common import (
     detect_event_type, group_by_event,
     fill_gaps, lowpass, elapsed_seconds, trim_window,
     find_steady_segments, top_k_peaks,
-    MIN_LAT_G_FOR_TURN, MIN_RUN_SECONDS, TRIM_SECONDS, RUNS_PER_DIRECTION,
+    MIN_LAT_G_FOR_TURN, MIN_RUN_SECONDS, TRIM_SECONDS, MIN_FRACTION_OF_LONGEST,
     TOP_K_PEAKS, PEAK_MIN_DISTANCE_S,
 )
 
@@ -218,7 +218,7 @@ def report_skidpad(results):
         fname = os.path.basename(r["path"])
         if not r["segments"]:
             print(f"  [!] {fname}: no qualifying steady segments found — "
-                  f"check MIN_LAT_G_FOR_TURN / RUNS_PER_DIRECTION.")
+                  f"check MIN_LAT_G_FOR_TURN / MIN_RUN_SECONDS.")
             continue
         for sg, info in sorted(r["segments"].items()):
             direction = "positive-lateral-G direction" if sg > 0 else "negative-lateral-G direction"

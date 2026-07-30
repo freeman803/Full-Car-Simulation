@@ -18,7 +18,11 @@ Everything here is **measurement-based**. Nothing imports from `corner-model/` o
 >
 > Until then, ask whoever pulled the current set for a copy.
 
-**The data is not in git and never should be.** The 11 CSVs total 406 MB and `endurance_full.csv` alone is 235 MB — over GitHub's hard 100 MB per-file limit, so it *cannot* be committed even if we wanted to. `.gitignore` excludes `comp2026_data/`, `*.csv`, the `*.parsed.pkl` caches and all generated output.
+**The data is deliberately not in git.** `.gitignore` excludes `comp2026_data/`, `*.csv`, the `*.parsed.pkl` caches and all generated output.
+
+Raw CSVs *can't* be committed regardless: the 11 files total 405 MB and `endurance_full.csv` alone is 235 MB, over GitHub's hard 100 MB per-file limit. But this is a deferred decision rather than a permanent rule — telemetry CSV compresses about 10×, which would put endurance at ~23 MB and the whole set at ~40 MB. If we revisit it, the options are Git LFS (preferred, keeps clones lean and scales to future seasons), or committing `.csv.gz` plus a one-time `gzip -d` — the latter needs a ~3-line change in `parse_influx.py`, which line-scans with plain `open()` and currently fails on gzip.
+
+**Do not split `endurance_full.csv` to get under the limit.** Every chunk boundary becomes a `filtfilt` edge, and that is exactly what produced a fake 17.36mm pitch peak against a 16.33mm real one in `accel_corinne1` — splitting would manufacture that artifact at every seam, in the file holding the design-driving events. Mid-session chunks may also lack a stopped-car window to baseline against.
 
 **Where to put your CSVs:** in `scripts/comp2026_data/`, or any folder you pass to `--dir`. Filenames matter — event type is detected from the name by case-insensitive substring match, first hit winning, in this order:
 
