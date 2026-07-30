@@ -313,9 +313,24 @@ A pure *gain* error on a rear pot cannot cause this — in roll, one pot compres
 
 Related: **FR is the worst-loaded corner in 8 of 11 files**, too consistent to be noise.
 
-### 5. `braketest2.csv` is unreliable
+### 5. `braketest2.csv` — earlier "unreliable" verdict was WRONG
 
-Three independent red flags: shock-pot noise 10–20× every other file (0.394/0.667mm vs a 0.031mm median), elevated combined-angle noise, and filter overshoot stuck at 106% across all cutoffs. It also holds 6 of the 12 step glitches. Don't let it drive a design conclusion.
+This file was previously flagged as unreliable on three counts: shock-pot noise 10–20× every other file (0.394/0.667mm against a 0.031mm median), elevated combined-angle noise, and filter overshoot stuck at 106% across all cutoffs. **All three were the same artefact, and the file is fine.**
+
+It holds step glitches at 46.23s and 46.33s, and `find_static_window` selects 0.5–50.2s as its stopped-car window — so **the glitches sit inside the baseline window**. The 10–20× "noise" was std computed across a step discontinuity, not sensor noise. Masking the glitch:
+
+| corner | baseline median as-is | glitch-masked | std as-is | std masked |
+|---|---|---|---|---|
+| FL | 53.330 | **53.330** | 0.570 | **0.007** |
+| FR | 38.380 | **38.380** | 0.964 | **0.024** |
+
+Two conclusions. The **baseline was never damaged** — `static_baseline` uses a median, which is robust to the step, identical to three decimals. And with the glitch excluded the file's noise is **0.007–0.043mm**, making it one of the *cleanest* in the set rather than the worst.
+
+The window is also genuinely stopped (mean longitudinal G +0.005 g), so it is not a lockup being mistaken for a standstill — a real risk in principle, since `VCFRONT_vehicleSpeed` comes from wheel speed and reads ~zero during a four-wheel lockup while the car is still moving. Worth remembering for future brake data, but it did not happen here.
+
+**Context that makes this the opposite of a throwaway file:** `braketest2` is the brake test that *passed* at competition — up to the required speed, braking at the mandated point, all four wheels locked. It is prime data.
+
+The only genuine issue is the step glitches themselves, which `find_step_glitches()` now rejects automatically. One caution remains: any *std-based* measurement over a window containing a glitch will be inflated, so re-derive noise floors with the glitch mask applied.
 
 ### 6. `endurance_full.csv` brake pressure saturates
 
