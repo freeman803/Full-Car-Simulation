@@ -53,6 +53,67 @@ Each prints a console report and writes interactive plots under `plots/<case>/<e
 
 It skips only the plotting, so it's faster than running all four.
 
+## Raw signal survey — `batch_signal_stats.py`
+
+**Start here with a new data set**, before any case script. It answers "what's actually in these files and does it look sane?" — min/max/mean for every signal, pooled per event, plus optional time-series grids.
+
+```powershell
+uv run batch_signal_stats.py --dir comp2026_data --list-signals   # cheap peek, no parse
+uv run batch_signal_stats.py --dir comp2026_data                  # stats tables
+uv run batch_signal_stats.py --dir comp2026_data --plot           # + time-series grids
+uv run batch_signal_stats.py comp2026_data/skidpad_austin_both.csv   # single file
+```
+
+**`--list-signals` first, with unfamiliar data.** It reads only the `_field`/`_value` columns — no pivot, no union grid, no pickle cache written — and reports `n`/`min`/`max` per signal. **1.0s on the 234 MB endurance file against 3.8s for a cold full parse.**
+
+It's also the *only* view showing each signal's true update rate, since the stats tables count samples on the resampled union grid. That difference is real and easy to miss: on skidpad, `VCFRONT_brakePressure` has **977 samples where the shock pots have 9783** — roughly 10 Hz against 100 Hz.
+
+`--plot` saves one PNG per event — a grid with a subplot per signal and a line per file, x-axis in elapsed seconds so files with different absolute start times overlay correctly. Lines longer than 20,000 points are stride-decimated for drawing only; the stats always use full data. PNGs go to `./plots`, or `--plot-dir <folder>`.
+
+**Plotting is selectable; stats are not.** A subplot grid stops being readable well before the signal list does (19 signals is already a 2340×1820 image), but a text table costs nothing and narrowing it would hide the anomalies that make this tool diagnostic — you'd have to already suspect `FL` to select `FL`.
+
+```powershell
+uv run batch_signal_stats.py --dir comp2026_data --plot --signals VCPDU_lat,VCPDU_lon
+```
+
+With `--plot` and no `--signals`, you get an interactive numbered prompt accepting `all`, `1,4,7`, or ranges like `2-6,9`; bare Enter keeps everything, so the prompt is a filter you reach for rather than a gate you pass through. It's skipped when stdin isn't a TTY, so scripted and piped runs never block.
+
+Files are grouped by event from the filename, and **all samples from all files of an event are pooled into one table** — every `accel_*.csv` becomes a single ACCEL row set, not one table per file. A final ALL EVENTS table pools everything.
+
+It's genuinely diagnostic, not just descriptive. Reading the skidpad table alone surfaces three of the known data problems below: `steeringAngle` with a mean of −151° and a max of −69° (never positive), `shockpotdispFL` spanning 18.4mm against `shockpotdispFR`'s 34.4mm, and `VCPDU_lat` reaching ±20 (confirming m/s², not g).
+
+## Will it handle new signals?
+
+Mostly yes, automatically. The split is deliberate:
+
+| script | new signals? | why |
+|---|---|---|
+| `parse_influx.py` | ✅ **automatic** | Discovers signals from the CSV's own `_field` column. Never had a fixed list |
+| `batch_signal_stats.py` | ✅ **automatic** | `discover_signals()` reports everything present, appends unrecognised names at the end of the table and prints `[i] N signal(s) not in PREFERRED_SIGNAL_ORDER`. `PREFERRED_SIGNAL_ORDER` only controls display order — it is **not** a filter |
+| `filter_compare.py` | ⚠️ **one-line edit** | Add a tuple to `EXTRA_SIGNALS`: `(signal_name, plot_title, y_label, file_stem)`. Curated on purpose — you pick which signals to compare cutoffs on. Missing signals are skipped with a warning |
+| `case_common.py` | ⚠️ **explicit** | `CORNER_SIGNAL_NAMES` and `BRAKE_PRESSURE_SIGNALS` name specific physical sensors; there's no generic meaning to substitute |
+| `case1`–`case4` | ⚠️ **explicit** | Each declares `REQUIRED_SIGNALS` and refuses to run a file without them. Correct by design — a case is a physics question, not a signal dump |
+
+So a new channel appears in the survey with no code change, and only needs wiring where a specific physical meaning is required.
+
+**Two things to watch when adding a signal:**
+
+- **Check its units in the DBC.** `VCPDU_lat`/`lon` are `m/s2` despite reading like g's, and that exact mistake reached production here — case2 and case3 gated segmentation at an effective 0.031 g instead of 0.3 g, understating accel pitch by up to 32%.
+- **Check its update rate in firmware** (`grep periodic.*Hz_CLK`). It bounds any usable cutoff: shock pots and the IMU are 100 Hz (Nyquist 50), but steering angle is 10 Hz (Nyquist 5), so filtering it above 5 Hz is meaningless.
+
+## Adding a new case
+
+The four cases share a deliberate shape. To add `case5_<thing>.py`:
+
+1. **Reuse `case_common`** — `lowpass`, `elapsed_seconds`, `trim_window`, `find_steady_segments`, `top_k_peaks`, `baseline_corner_displacements`, `to_wheel_travel`, `find_step_glitches`, `find_braking_windows`. Don't redefine constants; if a pattern would be duplicated across cases, it belongs in `case_common` instead.
+2. **Declare `REQUIRED_SIGNALS`** and skip files that lack them.
+3. **Verify every threshold against real data before committing to it** — measure the noise floor in stopped-car windows to pick a peak prominence, and confirm your event windows exist and have the durations you assume. Every constant in the existing cases has its measurement recorded in a comment; match that.
+4. **Convert to wheel travel before any axle arithmetic** if you touch the shock pots, because the front and rear motion ratios differ.
+5. **Have your `report_*` function return a summary dict** as well as printing. That's what lets `case_summary.py` include the case without duplicating logic.
+6. **Register it in `case_summary.py`** — add a `collect_caseN()` mirroring the others, and a column in `build_rows()`.
+7. **Write plots to `plots/case5_<thing>/<event>/`**, plus one headline chart.
+8. **Document the methodology in this README**, including anything you rejected and why. The reasoning is the expensive part to reconstruct — `case4` exists in its current form only because `√(roll² + pitch²)` was tried, measured, and found to reproduce `case2` to three decimals.
+
 ## Vehicle constants
 
 | constant | value |
