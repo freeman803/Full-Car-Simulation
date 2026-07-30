@@ -1,0 +1,25 @@
+# ── Telemetry data — NEVER commit ────────────────────────────────────────
+# The InfluxDB CSV exports are far too large for git: the 10 files that were
+# briefly committed came to 171 MB, and endurance_full.csv alone is 235 MB,
+# which exceeds GitHub's hard 100 MB per-file limit outright. The data lives
+# in the team's shared drive instead — see README.md for where to get it and
+# where to put it.
+comp2026_data/
+*.csv
+
+# parse_influx.py's pickled parse cache — regenerated automatically on first
+# run of any case script (369 MB across the current data set).
+*.parsed.pkl
+
+# ── Generated analysis output — all reproducible by rerunning ─────────────
+# plots/ is ~633 MB and contains individual HTML files over 100 MB (the
+# endurance before/after plots), so it cannot be committed even in part.
+plots/
+filter_compare_results/
+
+# ── Windows / editor cruft ───────────────────────────────────────────────
+*:Zone.Identifier
+*.Zone.Identifier
+
+# ── Superseded exploratory work, kept locally only ───────────────────────
+old - ignore/
