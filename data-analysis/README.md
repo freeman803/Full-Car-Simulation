@@ -1,4 +1,4 @@
-# CFR26 Telemetry Analysis — `scripts/`
+# CFR26 Telemetry Analysis — `data-analysis/`
 
 Analysis of the 2026 competition telemetry in `comp2026_data/`, answering: **what G's, roll and pitch did the car actually see, per event?** — so we know where we are before setting targets for the next suspension.
 
@@ -24,7 +24,7 @@ Raw CSVs *can't* be committed regardless: the 11 files total 405 MB and `enduran
 
 **Do not split `endurance_full.csv` to get under the limit.** Every chunk boundary becomes a `filtfilt` edge, and that is exactly what produced a fake 17.36mm pitch peak against a 16.33mm real one in `accel_corinne1` — splitting would manufacture that artifact at every seam, in the file holding the design-driving events. Mid-session chunks may also lack a stopped-car window to baseline against.
 
-**Where to put your CSVs:** in `scripts/comp2026_data/`, or any folder you pass to `--dir`. Filenames matter — event type is detected from the name by case-insensitive substring match, first hit winning, in this order:
+**Where to put your CSVs:** in `data-analysis/comp2026_data/`, or any folder you pass to `--dir`. Filenames matter — event type is detected from the name by case-insensitive substring match, first hit winning, in this order:
 
 ```
 skidpad, autocross, endurance, brake, accel
