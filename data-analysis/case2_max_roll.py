@@ -8,16 +8,38 @@ ENDURANCE (kept separate), derived from the 4 shock-pot linear-displacement
 signals (NOT the VCPDU IMU roll signal — this is an independent
 mechanical-linkage estimate of roll, useful as a cross-check against it).
 
-Roll, per axle, per sample:
-    roll_front_mm = VCFRONT_shockpotdispFR - VCFRONT_shockpotdispFL
-    roll_rear_mm  = VCREAR_shockpotdispRR  - VCREAR_shockpotdispRL
-(right-side travel minus left-side travel; positive = right side more
-compressed than left, i.e. car rolling toward the right/outside of a
-left-hand turn).
+Roll, per axle, per sample (right-side travel minus left-side travel):
+    roll_front_mm = wheel FR - wheel FL
+    roll_rear_mm  = wheel RR - wheel RL
 
-mm -> degrees, small-angle:
-    wheel_travel_mm = shock_travel_mm * MOTION_RATIO
-    roll_deg = atan(wheel_travel_mm / track_width_mm) * 180/pi
+SIGN CONVENTION — verified against real data, and the OPPOSITE of what the
+formula suggests at a glance. A HIGHER mm reading is more EXTENSION on this
+car's shock-pot calibration (established empirically in case3_max_pitch.py
+against vehicle speed), so the corner reading higher is the UNLOADED one:
+
+    roll_*_mm > 0  ~  right side EXTENDED, LEFT side compressed
+    roll_*_mm < 0  ~  left side extended, RIGHT side compressed
+
+Measured on skidpad to confirm: during negative lateral G, FL sits at
+-6.53mm (compressed) and FR at +15.97mm (extended), giving roll_front of
++22.55mm. Correlation between lateral G and roll_front is -0.998, so the
+relationship is unambiguous.
+
+An earlier version of this comment claimed positive meant the RIGHT side was
+more compressed — inverted, and it would have made every roll direction read
+backwards. Magnitudes were never affected, only the interpretation.
+
+mm -> degrees, small-angle. NOTE the motion ratio is applied PER CORNER
+upstream (front 1.15, rear 1.038 differ), so the mm below are already WHEEL
+travel:
+    roll_deg = atan(roll_mm / track_width_mm) * 180/pi
+
+The whole-car "avg" figure converts the mean of front and rear mm over the
+mean of the two track widths. That is an approximation — strictly it should
+be the mean of the two separately-converted angles — but the two tracks
+differ by only 4.3%, so the error is 0.17-0.19% (e.g. 1.6201 deg reported
+against 1.6231 deg exact at the endurance peak). Documented rather than
+"fixed", so published numbers stay comparable.
 
 Filtering is IDENTICAL to case1_max_gs.py (imported from case_common, not
 redefined here): 4th-order Butterworth, filtfilt, 2 Hz for skidpad / 5 Hz
@@ -173,7 +195,10 @@ def load_roll_signals(path, cutoff_hz):
         "RL": drl - baseline_rl, "RR": drr - baseline_rr,
     })
 
-    roll_front_raw = wheel["FR"] - wheel["FL"]   # +ve = right more compressed than left
+    # +ve = right side EXTENDED / left side compressed — higher mm is more
+    # extension on this car. See the sign-convention note in the docstring;
+    # the obvious reading of this line is backwards.
+    roll_front_raw = wheel["FR"] - wheel["FL"]
     roll_rear_raw = wheel["RR"] - wheel["RL"]
 
     roll_front_f = lowpass(roll_front_raw, dt, cutoff_hz)
