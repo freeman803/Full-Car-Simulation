@@ -4,6 +4,48 @@ Analysis of the 2026 competition telemetry in `comp2026_data/`, answering: **wha
 
 Everything here is **measurement-based**. Nothing imports from `corner-model/` or any other simulation model, deliberately.
 
+## Getting the data
+
+> ### ⚠️ TODO — pulling data from InfluxDB
+>
+> **Not written yet.** To fill this in, this section needs:
+>
+> - [ ] Where the InfluxDB instance lives (URL / host), and how to get access
+> - [ ] The query used to export a session (bucket, measurement, time range)
+> - [ ] Which export format/dialect to choose — the parser needs the **long format** with `_time`, `_field` and `_value` columns, not a pivoted wide table
+> - [ ] Whether signals are selected at export time or everything is dumped
+> - [ ] Where the shared CSVs are archived, so nobody re-exports unnecessarily
+>
+> Until then, ask whoever pulled the current set for a copy.
+
+**The data is not in git and never should be.** The 11 CSVs total 406 MB and `endurance_full.csv` alone is 235 MB — over GitHub's hard 100 MB per-file limit, so it *cannot* be committed even if we wanted to. `.gitignore` excludes `comp2026_data/`, `*.csv`, the `*.parsed.pkl` caches and all generated output.
+
+**Where to put your CSVs:** in `scripts/comp2026_data/`, or any folder you pass to `--dir`. Filenames matter — event type is detected from the name by case-insensitive substring match, first hit winning, in this order:
+
+```
+skidpad, autocross, endurance, brake, accel
+```
+
+So `braketest1.csv` → BRAKE, `accel_corinne1.csv` → ACCEL. A file matching none of them lands in an `unknown` group and gets skipped by the case scripts. Current naming for reference:
+
+```
+comp2026_data/
+  accel_corinne1.csv  accel_corinne2.csv  accel_jamie_both.csv
+  autocross_andrew1.csv  autocross_andrew2.csv
+  autocross_josh1.csv    autocross_josh2.csv
+  braketest1.csv  braketest2.csv
+  endurance_full.csv
+  skidpad_austin_both.csv
+```
+
+**First run is slower.** `parse_influx.py` writes a `<file>.csv.parsed.pkl` cache beside each CSV and reuses it while the CSV is unchanged, so subsequent runs are near-instant. Those caches are gitignored (369 MB for the current set).
+
+**Sanity-check a new export before trusting it** — `--list-signals` costs about a second and needs no parse:
+
+```powershell
+uv run batch_signal_stats.py --dir comp2026_data --list-signals
+```
+
 ## Running
 
 Start here — one table across all four cases:
