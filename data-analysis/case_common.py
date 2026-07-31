@@ -254,8 +254,29 @@ STATIC_TRIM_S = 0.5                # trim this much off each end of the chosen w
 STATIC_EDGE_FRACTION = 0.15        # "near the start/end" = within this fraction of total elapsed duration
 
 
-def _low_speed_runs(speed, t, threshold=STATIC_SPEED_THRESHOLD_MS, min_duration_s=STATIC_MIN_DURATION_S):
+# LOCKUP GUARD. VCFRONT_vehicleSpeed comes from wheel speed, so during a
+# four-wheel lockup it reads ~zero while the car is still moving — and a
+# locked, decelerating car is the worst possible baseline reference, since
+# it is pitched hard forward under maximum load. Speed alone cannot tell
+# the two apart.
+#
+# Longitudinal G can: a genuinely parked car reads ~0 g, a car under
+# threshold braking reads ~1 g. Verified on braketest2, whose stopped
+# window really is stopped (mean lon G +0.005 g) — this guard confirms it
+# rather than changing it. That file matters: it is the brake test that
+# PASSED at competition, with all four wheels locked, so it is exactly the
+# data where a lockup could have been mistaken for a standstill.
+#
+# 0.15 g is well clear of a real stop's ~0.005 g and far below any braking
+# worth the name.
+STATIC_MAX_LON_G = 0.15
+
+
+def _low_speed_runs(speed, t, threshold=STATIC_SPEED_THRESHOLD_MS,
+                    min_duration_s=STATIC_MIN_DURATION_S,
+                    lon_g=None, max_lon_g=STATIC_MAX_LON_G):
     low = np.abs(speed) < threshold
+
     runs = []
     start = None
     for i in range(len(low)):
@@ -266,10 +287,52 @@ def _low_speed_runs(speed, t, threshold=STATIC_SPEED_THRESHOLD_MS, min_duration_
             start = None
     if start is not None:
         runs.append((start, len(low) - 1))
-    return [(s, e) for s, e in runs if (t[e] - t[s]) >= min_duration_s]
+    runs = [(s, e) for s, e in runs if (t[e] - t[s]) >= min_duration_s]
+
+    if lon_g is None:
+        return runs
+
+    # LOCKUP GUARD, applied PER RUN rather than per sample.
+    #
+    # Rejecting individual samples was the obvious implementation and it is
+    # wrong: it fragments genuine stops on the brief lon-G transient of
+    # rolling to a halt, and measurably so — it moved accel_jamie_both's
+    # baseline window from 0.0-9.2s to an entirely different 17.2-25.3s,
+    # and trimmed the tail off nine others.
+    #
+    # A lockup is a SUSTAINED deceleration of order 1 g, not a scattering
+    # of samples, so the mean over the run is the right statistic. Every
+    # genuine stop in comp2026_data averages 0.008-0.031 g — two orders of
+    # magnitude of headroom under the threshold — while briefly touching
+    # 0.26-0.94 g at the edges, which is exactly the transient that must
+    # NOT disqualify it.
+    lon_g = np.asarray(lon_g, dtype=float)
+
+    kept = []
+    for s, e in runs:
+        segment = np.abs(lon_g[s:e + 1])
+        segment = segment[np.isfinite(segment)]
+        if segment.size == 0 or float(np.mean(segment)) < max_lon_g:
+            kept.append((s, e))
+
+    return kept
 
 
-def find_static_window(speed, t, edge_fraction=STATIC_EDGE_FRACTION):
+def lon_g_or_none(signals):
+    """Longitudinal acceleration in g from a parsed SignalSet, or None if
+    the channel is absent. Convenience for the lockup guard, so every
+    caller of find_static_window() enables it the same way rather than
+    each remembering to divide by G.
+
+    VCPDU_lon is m/s^2 in the DBC (range [-32|32]), NOT g — that unit bug
+    was a real one here once.
+    """
+    if "VCPDU_lon" not in signals:
+        return None
+    return np.asarray(signals["VCPDU_lon"].value, dtype=float) / G
+
+
+def find_static_window(speed, t, edge_fraction=STATIC_EDGE_FRACTION, lon_g=None):
     """Return (start_idx, end_idx) of a stopped-car window to use as a
     sensor baseline reference, or None if no qualifying stop exists.
 
@@ -279,8 +342,13 @@ def find_static_window(speed, t, edge_fraction=STATIC_EDGE_FRACTION):
     — else the single longest stop anywhere in the file (by real elapsed
     time), which catches a mid-session stop (e.g. an endurance driver
     change) when there's no clean stop at either edge.
+
+    Pass `lon_g` (longitudinal acceleration in g) to enable the lockup
+    guard — see STATIC_MAX_LON_G. Optional so callers whose files lack the
+    channel still work, but supply it whenever you have it: without it,
+    a four-wheel lockup can be selected as "stopped".
     """
-    runs = _low_speed_runs(speed, t)
+    runs = _low_speed_runs(speed, t, lon_g=lon_g)
     if not runs:
         return None
 
@@ -304,16 +372,44 @@ def find_static_window(speed, t, edge_fraction=STATIC_EDGE_FRACTION):
     return max(runs, key=real_dur)   # longest stop anywhere, by real elapsed time
 
 
-def static_baseline(values, t, window, trim_s=STATIC_TRIM_S):
+def static_baseline(values, t, window, trim_s=STATIC_TRIM_S, bad_mask=None):
     """Median of `values` over `window` (start_idx, end_idx), trimmed by
     `trim_s` real seconds off each end (via trim_window()) to skip the
     settling transition into/out of the stop. Returns None if `window` is
-    None."""
+    None.
+
+    `bad_mask` excludes samples — pass find_step_glitches()'s mask. THE
+    MEDIAN DOES NOT NEED IT: a step discontinuity inside the window shifts
+    a median by nothing measurable, verified on braketest2, whose
+    stopped-car window (0.5-50.2s) contains the 46.23s and 46.33s glitches
+    and whose baselines are identical to three decimals either way
+    (FL 53.330, FR 38.380).
+
+    It is here because ANY STD-BASED measurement over such a window is
+    inflated, and that is precisely how braketest2 was misdiagnosed as the
+    noisiest file in the set: its "10-20x sensor noise" (0.394/0.667mm
+    against a 0.031mm median) was std computed across a step, not noise.
+    Masked, the same file measures 0.007-0.043mm — one of the CLEANEST.
+    So anything reaching for a spread statistic over the baseline window
+    gets the mask by default, and cannot repeat that mistake.
+    """
     if window is None:
         return None
     s, e = window
     ts, te = trim_window(t, s, e, trim_s)
-    return float(np.median(values[ts:te + 1]))
+
+    segment = np.asarray(values[ts:te + 1], dtype=float)
+
+    if bad_mask is not None:
+        keep = ~np.asarray(bad_mask[ts:te + 1], dtype=bool)
+        # Fall back to the unmasked segment rather than returning None if a
+        # glitch happens to span the whole window — a slightly-suspect
+        # baseline still beats no baseline at all, and the caller's
+        # baselines_found flag would otherwise misreport the cause.
+        if keep.any():
+            segment = segment[keep]
+
+    return float(np.median(segment))
 
 
 # ── The four shock pots: naming + per-corner baselining ──────────────────
@@ -354,6 +450,159 @@ CORNER_MOTION_RATIO = {
     "RL": MOTION_RATIO_REAR,
     "RR": MOTION_RATIO_REAR,
 }
+
+
+# ── Uniform resampling ───────────────────────────────────────────────────
+#
+# The union grid is NOT a sample rate — it is the merged timestamps of every
+# signal in the file, so its density reflects how many CAN messages happened
+# to be active, not how fast anything was measured. On endurance_full its
+# median spacing is 0.39ms (2577 Hz) while individual gaps run from 0.019ms
+# to 19.3ms: a range of 1030x WITHIN ONE FILE.
+#
+# That breaks three things:
+#
+#   1. FILTERING. lowpass() designs a Butterworth from one scalar dt, so on
+#      a grid this uneven the assumed dt is locally wrong and the filter is
+#      effectively position-dependent — heavier where samples are dense.
+#   2. ANY SPECTRUM. An FFT/PSD of a non-uniformly sampled signal is not
+#      defined. Nothing in the frequency domain is possible without this.
+#   3. ANY DERIVATIVE. Already documented above for dv/dt, which reaches
+#      9-13 g on this grid.
+#
+# MEASURED TRUE RATES (median dt of the RAW per-signal samples, not the
+# union grid), confirming the firmware's periodic task rates:
+#
+#   shock pots FL/FR/RL/RR   100 Hz     jitter p99 ~1.8ms
+#   VCPDU_lat / VCPDU_lon    100 Hz     jitter p99 ~1.5ms
+#   VCFRONT_vehicleSpeed     100 Hz     jitter p99 ~1.2ms
+#   VCREAR_brakePressure     100 Hz     jitter p99 ~1.7ms
+#   VCFRONT_brakePressure     10 Hz  <-- TEN, not a hundred
+#
+# The front brake pressure rate is the surprise and it has teeth: at 10 Hz
+# its Nyquist is 5 Hz, so ANY CUTOFF AT OR ABOVE 5 Hz IS MEANINGLESS for
+# that channel. It is the signal find_braking_windows() thresholds.
+UNIFORM_RATE_HZ = 100.0
+
+# Per-signal overrides for anything not sampled at UNIFORM_RATE_HZ.
+SIGNAL_RATE_HZ = {
+    "VCFRONT_brakePressure": 10.0,
+}
+
+
+def signal_rate_hz(name):
+    """True source rate of a named signal, for resampling and for Nyquist
+    checks. Defaults to UNIFORM_RATE_HZ."""
+    return SIGNAL_RATE_HZ.get(name, UNIFORM_RATE_HZ)
+
+
+def uniform_resample(signal, target_hz=None, name=None):
+    """Put one signal on a genuinely uniform grid, returning (t, values).
+
+    RESAMPLES FROM THE RAW PER-SIGNAL SAMPLES (`signal.time_raw` /
+    `value_raw`), NEVER from the union-grid copy. This is not a detail.
+    The union grid is built by zero-order hold (parse_influx._zoh_previous),
+    and a zero-order hold is a staircase — it carries broadband
+    high-frequency content that is an artefact of the resampling, not of
+    the signal. Feeding that into a PSD would manufacture spectral energy
+    across the whole band, which is precisely the measurement the spectral
+    work exists to make.
+
+    Linear interpolation is appropriate here because the raw samples are
+    already near-uniform (100 Hz with <2ms jitter) — this corrects jitter
+    and lands on an exact grid, it does not invent intermediate detail.
+    """
+    if target_hz is None:
+        target_hz = signal_rate_hz(name if name is not None
+                                   else getattr(signal, "name", None))
+
+    t_raw = elapsed_seconds(signal.time_raw)
+    v_raw = np.asarray(signal.value_raw, dtype=float)
+
+    finite = np.isfinite(v_raw)
+    if finite.sum() < 2:
+        return np.asarray([]), np.asarray([])
+
+    t_raw, v_raw = t_raw[finite], v_raw[finite]
+
+    step = 1.0 / target_hz
+    t_uniform = np.arange(t_raw[0], t_raw[-1] + step / 2.0, step)
+
+    return t_uniform, np.interp(t_uniform, t_raw, v_raw)
+
+
+def uniform_resample_corners(signals, target_hz=UNIFORM_RATE_HZ):
+    """The four shock pots on ONE shared uniform grid, as (t, {corner: v}).
+
+    A shared grid matters: roll and pitch are differences between corners,
+    so the corners must be sampled at the same instants or the difference
+    mixes in a time offset. The grid spans the overlap of all four, since
+    they do not start and end at exactly the same timestamp.
+    """
+    per_corner = {
+        corner: uniform_resample(signals[CORNER_SIGNAL_NAMES[corner]],
+                                 target_hz=target_hz)
+        for corner in CORNERS
+    }
+
+    start = max(t[0] for t, _ in per_corner.values())
+    end = min(t[-1] for t, _ in per_corner.values())
+
+    step = 1.0 / target_hz
+    t = np.arange(start, end + step / 2.0, step)
+
+    return t, {
+        corner: np.interp(t, tc, vc)
+        for corner, (tc, vc) in per_corner.items()
+    }
+
+
+# ── Vehicle geometry, and wheel travel -> angle ──────────────────────────
+#
+# These live here for the reason this module exists at all: they were
+# previously defined THREE TIMES, in case2 (track widths), case3
+# (wheelbase) and case4 (both). The values happened to agree, but nothing
+# enforced that — and this file was created precisely because case1 and
+# filter_compare had silently drifted onto two different values of G.
+#
+# The wheelbase disagrees with corner-model/Forces/car_data.py, which says
+# 1545mm. 1543 is correct; 1545 is a known error on another branch.
+FRONT_TRACK_MM = 1219.2   # centre-to-centre
+REAR_TRACK_MM = 1168.4    # centre-to-centre
+WHEELBASE_MM = 1543
+AVG_TRACK_MM = (FRONT_TRACK_MM + REAR_TRACK_MM) / 2.0
+
+
+def mm_to_deg(wheel_mm, span_mm):
+    """Convert a WHEEL-travel difference (mm) to an angle (deg) about a
+    span: track width for roll, wheelbase for pitch.
+
+        angle = atan(wheel_mm / span_mm)
+
+    NOT the small-angle approximation, despite what the case2/case3
+    docstrings used to claim. `atan` is the EXACT relation for two vertical
+    displacements separated by a horizontal span, so there is no
+    approximation here to worry about. (For scale, had it been small-angle:
+    the two agree to 0.002% at 10mm and 0.03% at 35mm, so the mislabel
+    never changed a number — but it implied a limitation that does not
+    exist.)
+
+    Pass WHEEL travel, not raw shock-pot mm — see to_wheel_travel() and the
+    motion-ratio comment above.
+    """
+    return np.degrees(np.arctan(np.asarray(wheel_mm, dtype=float) / span_mm))
+
+
+# WHOLE-CAR "AVG ROLL" IS AN APPROXIMATION. Converting a mean-mm over a
+# mean-track (mm_to_deg(avg_mm, AVG_TRACK_MM)) is not the same as averaging
+# two separately-converted angles, because atan is non-linear and the two
+# tracks differ by 50.8mm. Measured error is 0.17-0.19% — 1.6201 deg the
+# approximate way against 1.6231 deg exact.
+#
+# Kept as-is deliberately, so published numbers stay comparable to what has
+# already been shared. Documented rather than silently corrected. If you
+# ever do want the exact figure, average mm_to_deg(front_mm, FRONT_TRACK_MM)
+# and mm_to_deg(rear_mm, REAR_TRACK_MM) instead.
 
 
 # ── Brake pressure: detecting when the car is actually braking ───────────
@@ -521,11 +770,24 @@ def baseline_corner_displacements(signals, t, speed):
     baselines of 0.0 and baselines_found=False, so the caller can warn
     rather than silently reporting un-baselined numbers.
     """
-    static_window = find_static_window(speed, t)
+    static_window = find_static_window(speed, t, lon_g=lon_g_or_none(signals))
     corners, baselines = {}, {}
+
+    raws = {
+        corner: np.asarray(signals[CORNER_SIGNAL_NAMES[corner]].value, dtype=float)
+        for corner in CORNERS
+    }
+
+    # Step glitches are excluded from the baseline window. This does not
+    # move the numbers — the median is robust to a step — but it keeps the
+    # window clean for anything that later measures spread over it. See
+    # static_baseline() for why that distinction cost a whole file's
+    # reputation once.
+    glitch_mask, _ = find_step_glitches(raws, t)
+
     for corner in CORNERS:
-        raw = np.asarray(signals[CORNER_SIGNAL_NAMES[corner]].value, dtype=float)
-        baseline = static_baseline(raw, t, static_window)
+        raw = raws[corner]
+        baseline = static_baseline(raw, t, static_window, bad_mask=glitch_mask)
         baselines[corner] = baseline
         corners[corner] = raw
 

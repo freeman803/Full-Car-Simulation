@@ -8,3 +8,14 @@ wheels/
 
 # Virtual environments
 .venv/
+
+# Generated analysis output — regenerable, and large (filter_compare_results
+# alone is ~360 MB for a 7-frequency sweep across all 11 files, once the
+# interactive Plotly overlays and their bundled plotly.min.js are included).
+#
+# NOT ignored, deliberately: data-analysis/regression_expected.json (the
+# pinned numbers — the diff on that file IS the record of what changed) and
+# data-analysis/cutoff_decisions.yaml (the decisions themselves).
+data-analysis/filter_compare_results/
+data-analysis/review_cutoffs/
+data-analysis/plots/

@@ -29,7 +29,8 @@ An earlier version of this comment claimed positive meant the RIGHT side was
 more compressed — inverted, and it would have made every roll direction read
 backwards. Magnitudes were never affected, only the interpretation.
 
-mm -> degrees, small-angle. NOTE the motion ratio is applied PER CORNER
+mm -> degrees via atan (EXACT for this geometry — not the small-angle
+approximation this line used to claim). NOTE the motion ratio is applied PER CORNER
 upstream (front 1.15, rear 1.038 differ), so the mm below are already WHEEL
 travel:
     roll_deg = atan(roll_mm / track_width_mm) * 180/pi
@@ -97,14 +98,15 @@ from case_common import (
     group_by_event,
     lowpass, elapsed_seconds, trim_window,
     find_steady_segments, top_k_peaks,
-    find_static_window, static_baseline, to_wheel_travel,
+    find_static_window, static_baseline, to_wheel_travel, lon_g_or_none,
     MOTION_RATIO_FRONT, MOTION_RATIO_REAR,
     TRIM_SECONDS, TOP_K_PEAKS,
+    FRONT_TRACK_MM, REAR_TRACK_MM, mm_to_deg,
 )
 
-# ── Vehicle geometry — plain constants, not tied to corner-model/ ────────
-FRONT_TRACK_MM = 1219.2   # mm, centre-to-centre
-REAR_TRACK_MM = 1168.4    # mm, centre-to-centre
+# Vehicle geometry and the mm -> degree conversion now come from
+# case_common too. They used to be redefined here, in case3 and in case4;
+# the values agreed, but nothing enforced it.
 
 # Motion ratio comes from case_common (measured: 1.15 front, 1.038 rear,
 # wheel/spring displacement) and is applied PER CORNER via
@@ -127,13 +129,6 @@ PEAK_PROMINENCE_MM = 2.0
 # rather than plots/<event>/ shared with other case scripts — see
 # case1_max_gs.py's PLOTS_ROOT comment for why.
 PLOTS_ROOT = os.path.join("plots", "case2_max_roll")
-
-
-def mm_to_deg(wheel_mm, track_mm):
-    """Small-angle conversion: WHEEL-travel mm difference -> roll angle (deg).
-    Takes wheel mm, not shock-pot mm — motion ratio is applied upstream in
-    to_wheel_travel()."""
-    return float(np.degrees(np.arctan(wheel_mm / track_mm)))
 
 
 # ── Parsing / derived signals ────────────────────────────────────────────
@@ -176,7 +171,7 @@ def load_roll_signals(path, cutoff_hz):
     # difference) doesn't get counted as cornering-induced roll. Without
     # this, roll_front = FR - FL would carry whatever offset existed
     # between those two pots even at rest.
-    static_window = find_static_window(speed, t)
+    static_window = find_static_window(speed, t, lon_g=lon_g_or_none(signals))
     baseline_fl = static_baseline(dfl, t, static_window)
     baseline_fr = static_baseline(dfr, t, static_window)
     baseline_rl = static_baseline(drl, t, static_window)

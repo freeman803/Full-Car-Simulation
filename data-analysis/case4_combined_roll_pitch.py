@@ -124,16 +124,13 @@ from case_common import (
     baseline_corner_displacements, to_wheel_travel, find_step_glitches,
     CORNERS, MOTION_RATIO_FRONT, MOTION_RATIO_REAR,
     TRIM_SECONDS, TOP_K_PEAKS,
+    FRONT_TRACK_MM, REAR_TRACK_MM, WHEELBASE_MM, AVG_TRACK_MM, mm_to_deg,
 )
 
-# ── Vehicle geometry — plain constants, not tied to corner-model/ ────────
-# Same values as case2/case3. CFR26 wheelbase is 1543mm (1545 in
-# corner-model/Forces/car_data.py is a known mistake from another branch —
-# fixed here only, per instruction not to touch corner-model/).
-FRONT_TRACK_MM = 1219.2   # mm, centre-to-centre
-REAR_TRACK_MM = 1168.4    # mm, centre-to-centre
-WHEELBASE_MM = 1543       # mm
-AVG_TRACK_MM = (FRONT_TRACK_MM + REAR_TRACK_MM) / 2.0
+# Vehicle geometry and the mm -> degree conversion now come from
+# case_common too. They used to be redefined here, in case2 and in case3;
+# the values agreed, but nothing enforced it. See case_common for the note
+# on AVG_TRACK_MM being an approximation for whole-car roll.
 
 # Motion ratio now comes from case_common (measured: 1.15 front, 1.038
 # rear, wheel/spring displacement) and is applied PER CORNER before any
@@ -171,17 +168,7 @@ PLOTS_ROOT = os.path.join("plots", "case4_combined_roll_pitch")
 CORNER_COLORS = {"FL": "#2a78d6", "FR": "#e34948", "RL": "#48b56b", "RR": "#d69a2a"}
 
 
-# ── mm -> deg conversions (same small-angle form as case2/case3) ─────────
-
-def mm_to_deg(wheel_mm, span_mm):
-    """Small-angle conversion of a WHEEL-travel mm difference to an angle
-    (deg) about a given span (track for roll, wheelbase for pitch).
-
-    Takes wheel millimetres, not shock-pot millimetres — the motion-ratio
-    conversion happens upstream in to_wheel_travel(), because front and rear
-    ratios differ and cannot be applied after mixing axles."""
-    return np.degrees(np.arctan(np.asarray(wheel_mm, dtype=float) / span_mm))
-
+# ── mm -> deg conversions (mm_to_deg imported from case_common) ──────────
 
 def roll_deg(roll_mm):
     return mm_to_deg(roll_mm, AVG_TRACK_MM)
@@ -300,6 +287,22 @@ def load_corner_signals(path, cutoff_hz):
     # case2/case3-compatible whole-car roll and pitch, for the scatter plot
     # and for cross-referencing back to those cases. roll_avg here is the
     # mean of front and rear roll, exactly as case2 defines it.
+    #
+    # SIGN CONVENTION — the OPPOSITE of what these two lines suggest at a
+    # glance, so read this before interpreting the sign of any roll number
+    # below. A HIGHER mm reading is more EXTENSION on this car's shock-pot
+    # calibration (established empirically in case3_max_pitch.py against
+    # vehicle speed), so the corner reading higher is the UNLOADED one:
+    #
+    #     roll_* > 0  ~  right side EXTENDED, LEFT side compressed
+    #     roll_* < 0  ~  left side extended, RIGHT side compressed
+    #
+    # Verified on skidpad: at negative lateral G, FL = -6.53mm (compressed)
+    # and FR = +15.97mm (extended), giving roll_front = +22.55mm, with a
+    # correlation of -0.998 against lateral G. case2 carried the inverted
+    # description in its docs for a while (fixed in fe05750) — magnitudes
+    # were never wrong, but anyone reading it concluded the car rolled the
+    # other way. Same trap applies here.
     roll_front = travel["FR"] - travel["FL"]
     roll_rear = travel["RR"] - travel["RL"]
     roll_avg = (roll_front + roll_rear) / 2.0

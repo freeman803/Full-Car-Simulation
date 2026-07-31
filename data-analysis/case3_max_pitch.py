@@ -26,7 +26,8 @@ This is the opposite of the "positive = nose-down" convention you might
 guess at from the formula alone — called out here so it isn't silently
 misread later.
 
-mm -> degrees, small-angle (same form as case2's roll conversion). NOTE the
+mm -> degrees via atan (EXACT for this geometry — not the small-angle
+approximation this line used to claim; same form as case2's roll conversion). NOTE the
 motion ratio is applied PER CORNER first, because front and rear differ
 (1.15 vs 1.038) — so the axle averages above are already WHEEL travel:
     pitch_mm  = avg(wheel FL, wheel FR) - avg(wheel RL, wheel RR)
@@ -126,13 +127,12 @@ from case_common import (
     find_braking_windows, BRAKE_PRESSURE_SIGNALS, BRAKE_PRESSURE_MAX_PSI,
     BRAKING_PRESSURE_PSI,
     TRIM_SECONDS, TOP_K_PEAKS,
+    WHEELBASE_MM, mm_to_deg,
 )
 
-# ── Vehicle geometry — plain constants, not tied to corner-model/ ────────
-# CFR26 wheelbase is 1543mm (1545 in corner-model/Forces/car_data.py is a
-# known mistake from another branch — fixed here only, per instruction not
-# to touch corner-model/).
-WHEELBASE_MM = 1543   # mm
+# Vehicle geometry and the mm -> degree conversion now come from
+# case_common too. They used to be redefined here, in case2 and in case4;
+# the values agreed, but nothing enforced it.
 
 # Motion ratio comes from case_common (measured: 1.15 front, 1.038 rear,
 # wheel/spring displacement), applied PER CORNER via to_wheel_travel()
@@ -167,11 +167,10 @@ CASE3_EVENTS = ["accel", "brake", "skidpad", "autocross", "endurance"]
 PLOTS_ROOT = os.path.join("plots", "case3_max_pitch")
 
 
-def mm_to_deg(wheel_mm, wheelbase_mm=WHEELBASE_MM):
-    """Small-angle conversion: front/rear WHEEL-travel mm difference -> pitch
-    angle (deg). Takes wheel mm, not shock-pot mm — motion ratio is applied
-    upstream in to_wheel_travel()."""
-    return float(np.degrees(np.arctan(wheel_mm / wheelbase_mm)))
+def pitch_mm_to_deg(wheel_mm):
+    """Pitch angle (deg) from a front-minus-rear WHEEL-travel mm difference.
+    Thin wrapper so callers don't repeat the wheelbase."""
+    return mm_to_deg(wheel_mm, WHEELBASE_MM)
 
 
 # ── Parsing / derived signals ────────────────────────────────────────────
@@ -214,7 +213,7 @@ def load_pitch_signals(path, cutoff_hz):
     # Same per-corner static baselining as case2_max_roll.py — zero each
     # shock pot against its own stopped-car reading before combining, so a
     # sensor/calibration offset doesn't get counted as pitch.
-    static_window = find_static_window(speed, t)
+    static_window = find_static_window(speed, t, lon_g=lon_raw)
     baseline_fl = static_baseline(dfl, t, static_window)
     baseline_fr = static_baseline(dfr, t, static_window)
     baseline_rl = static_baseline(drl, t, static_window)
@@ -451,19 +450,19 @@ def report_steady(event, results):
             print(f"  [!] {fname}: no qualifying steady window found.")
             continue
         for i, run in enumerate(r["runs"], 1):
-            deg = mm_to_deg(run["median_pitch_mm"])
+            deg = pitch_mm_to_deg(run["median_pitch_mm"])
             print(f"    {fname} run {i}: median pitch={run['median_pitch_mm']:+.3f}mm ({deg:+.4f} deg) "
                   f"({run['start_s']:.1f}s-{run['end_s']:.1f}s, dur={run['duration_s']:.1f}s after trimming)")
         if r["combined_median_mm"] is not None:
             print(f"    {fname} combined: median pitch={r['combined_median_mm']:+.3f}mm "
-                  f"({mm_to_deg(r['combined_median_mm']):+.4f} deg)")
+                  f"({pitch_mm_to_deg(r['combined_median_mm']):+.4f} deg)")
             all_medians.append(r["combined_median_mm"])
 
     if not all_medians:
         return None
     typical_mm = float(np.median(all_medians))
-    print(f"  Across all files: typical pitch = {typical_mm:+.3f}mm ({mm_to_deg(typical_mm):+.4f} deg)")
-    return {"typical_deg": mm_to_deg(abs(typical_mm)), "worst_deg": None}
+    print(f"  Across all files: typical pitch = {typical_mm:+.3f}mm ({pitch_mm_to_deg(typical_mm):+.4f} deg)")
+    return {"typical_deg": pitch_mm_to_deg(abs(typical_mm)), "worst_deg": None}
 
 
 def report_brake(results):
@@ -488,16 +487,16 @@ def report_brake(results):
     for abs_mm, signed_mm, r, idx, dur in pool:
         fname = os.path.basename(r["path"])
         print(f"    {fname} @ {r['t'][idx]:.2f}s (pulse dur={dur:.2f}s): "
-              f"pitch={signed_mm:+.3f}mm ({mm_to_deg(signed_mm):+.4f} deg)")
+              f"pitch={signed_mm:+.3f}mm ({pitch_mm_to_deg(signed_mm):+.4f} deg)")
 
     top = pool[:TOP_K_PEAKS]
     avg_mm = float(np.mean([abs_mm for abs_mm, *_ in top]))
     best_abs, best_signed, best_r, best_idx, best_dur = pool[0]
-    print(f"  Top {len(top)} braking pulses averaged: {avg_mm:.3f} mm ({mm_to_deg(avg_mm):.4f} deg)")
-    print(f"  Single hardest braking pulse: {best_signed:+.3f} mm ({mm_to_deg(best_signed):+.4f} deg) "
+    print(f"  Top {len(top)} braking pulses averaged: {avg_mm:.3f} mm ({pitch_mm_to_deg(avg_mm):.4f} deg)")
+    print(f"  Single hardest braking pulse: {best_signed:+.3f} mm ({pitch_mm_to_deg(best_signed):+.4f} deg) "
           f"— {os.path.basename(best_r['path'])} @ {best_r['t'][best_idx]:.2f}s")
 
-    return {"typical_deg": mm_to_deg(avg_mm), "worst_deg": mm_to_deg(best_abs)}
+    return {"typical_deg": pitch_mm_to_deg(avg_mm), "worst_deg": pitch_mm_to_deg(best_abs)}
 
 
 def report_transient(event, results):
@@ -522,12 +521,12 @@ def report_transient(event, results):
     best_t = best_r["t"][best_idx]
     best_signed = best_r["pitch_f"][best_idx]
 
-    print(f"    Top {len(top)} peaks averaged: {avg_mm:.3f} mm ({mm_to_deg(avg_mm):.4f} deg) "
+    print(f"    Top {len(top)} peaks averaged: {avg_mm:.3f} mm ({pitch_mm_to_deg(avg_mm):.4f} deg) "
           f"(values: {', '.join(f'{v:.2f}' for v, _, _ in top)})")
-    print(f"    Single highest peak: {best_val:.3f} mm ({mm_to_deg(best_val):.4f} deg) "
+    print(f"    Single highest peak: {best_val:.3f} mm ({pitch_mm_to_deg(best_val):.4f} deg) "
           f"— {best_fname} @ {best_t:.2f}s (signed: {best_signed:+.3f}mm)")
 
-    return {"typical_deg": mm_to_deg(avg_mm), "worst_deg": mm_to_deg(best_val)}
+    return {"typical_deg": pitch_mm_to_deg(avg_mm), "worst_deg": pitch_mm_to_deg(best_val)}
 
 
 # ── Main ─────────────────────────────────────────────────────────────────
