@@ -1,0 +1,216 @@
+{
+  "cases": {
+    "case1_max_gs": {
+      "autocross": {
+        "peak_combined_g": 1.728533603156801,
+        "peak_lat_g": 1.728475090470086,
+        "peak_lon_g": 1.3443865013063234,
+        "sustained_lat_g_max": null,
+        "sustained_lat_g_min": null
+      },
+      "endurance": {
+        "peak_combined_g": 1.790687404640919,
+        "peak_lat_g": 1.7798220657898192,
+        "peak_lon_g": 1.6496902826571442,
+        "sustained_lat_g_max": null,
+        "sustained_lat_g_min": null
+      },
+      "skidpad": {
+        "peak_combined_g": null,
+        "peak_lat_g": null,
+        "peak_lon_g": null,
+        "sustained_lat_g_max": 1.352710152733759,
+        "sustained_lat_g_min": 1.2593207538212978
+      }
+    },
+    "case2_max_roll": {
+      "autocross": {
+        "avg_deg": 1.4420740208243095,
+        "front_deg": 1.332897880797979,
+        "rear_deg": 1.573963686127984
+      },
+      "endurance": {
+        "avg_deg": 1.5738112980751917,
+        "front_deg": 1.4832378356261249,
+        "rear_deg": 1.762950245148727
+      },
+      "skidpad": {
+        "avg_deg": 1.1809632470758575,
+        "front_deg": 1.1017250254531372,
+        "rear_deg": 1.27548177453913
+      }
+    },
+    "case3_max_pitch": {
+      "accel": {
+        "typical_deg": 0.3620162312712947,
+        "worst_deg": null
+      },
+      "autocross": {
+        "typical_deg": 0.7063502220184505,
+        "worst_deg": 0.9123159566106507
+      },
+      "brake": {
+        "typical_deg": 0.6371592422415636,
+        "worst_deg": 0.7317411251555525
+      },
+      "endurance": {
+        "typical_deg": 0.7584424349460747,
+        "worst_deg": 0.8857971474823613
+      },
+      "skidpad": {
+        "typical_deg": 0.1011768865265291,
+        "worst_deg": null
+      }
+    },
+    "case4_combined_roll_pitch": {
+      "accel": {
+        "top_avg_mm": 13.27655984155723,
+        "worst_corner": "RR",
+        "worst_modes": {
+          "heave": 1.2840541101163754,
+          "pitch": 5.915368231852412,
+          "roll": 5.586195705262636,
+          "warp": 2.9085628828433188
+        },
+        "worst_pitch_deg": -0.43929875897889176,
+        "worst_roll_deg": 0.536197174801669,
+        "worst_travel_mm": 15.694180930074742
+      },
+      "autocross": {
+        "top_avg_mm": 22.824858133322756,
+        "worst_corner": "FR",
+        "worst_modes": {
+          "heave": -9.973305474989715,
+          "pitch": -12.244687205952253,
+          "roll": -2.68101730935413,
+          "warp": -2.88923259187968
+        },
+        "worst_pitch_deg": -0.9092806215006086,
+        "worst_roll_deg": -0.25734619475245507,
+        "worst_travel_mm": -27.788242582175776
+      },
+      "brake": {
+        "top_avg_mm": 19.23068656021014,
+        "worst_corner": "FR",
+        "worst_modes": {
+          "heave": -2.6507499766178255,
+          "pitch": -4.954369511528887,
+          "roll": -12.118171539769945,
+          "warp": -0.7279629717944913
+        },
+        "worst_pitch_deg": -0.36793332623284586,
+        "worst_roll_deg": -1.163050287761869,
+        "worst_travel_mm": -20.45125399971115
+      },
+      "endurance": {
+        "top_avg_mm": 22.487629833635452,
+        "worst_corner": "FR",
+        "worst_modes": {
+          "heave": -2.3132034471529614,
+          "pitch": -5.781020927122297,
+          "roll": -13.096348945790687,
+          "warp": -2.6801507543561445
+        },
+        "worst_pitch_deg": -0.4293219718765898,
+        "worst_roll_deg": -1.2569025802757943,
+        "worst_travel_mm": -23.87072407442209
+      },
+      "skidpad": {
+        "top_avg_mm": 17.835365521926533,
+        "worst_corner": "FR",
+        "worst_modes": {
+          "heave": 2.6328793505327845,
+          "pitch": 3.04422061388452,
+          "roll": 13.010599838878656,
+          "warp": -0.5174129932979965
+        },
+        "worst_pitch_deg": 0.22607918063896457,
+        "worst_roll_deg": 1.248675551631409,
+        "worst_travel_mm": 18.170286809997965
+      }
+    }
+  },
+  "files": [
+    "accel_corinne1.csv",
+    "accel_corinne2.csv",
+    "accel_jamie_both.csv",
+    "autocross_andrew1.csv",
+    "autocross_andrew2.csv",
+    "autocross_josh1.csv",
+    "autocross_josh2.csv",
+    "braketest1.csv",
+    "braketest2.csv",
+    "endurance_full.csv",
+    "skidpad_austin_both.csv"
+  ],
+  "glitches": {
+    "accel_corinne1.csv": [
+      {
+        "corner": "FL",
+        "jump_mm": 12.02,
+        "time_s": 118.84
+      },
+      {
+        "corner": "FR",
+        "jump_mm": 20.35,
+        "time_s": 118.84
+      }
+    ],
+    "autocross_andrew1.csv": [
+      {
+        "corner": "FL",
+        "jump_mm": 13.04,
+        "time_s": 76.99
+      },
+      {
+        "corner": "FR",
+        "jump_mm": 22.26,
+        "time_s": 76.99
+      }
+    ],
+    "autocross_josh1.csv": [
+      {
+        "corner": "FL",
+        "jump_mm": 13.36,
+        "time_s": 84.56
+      },
+      {
+        "corner": "FR",
+        "jump_mm": 22.24,
+        "time_s": 84.56
+      }
+    ],
+    "braketest2.csv": [
+      {
+        "corner": "FL",
+        "jump_mm": 12.84,
+        "time_s": 46.23
+      },
+      {
+        "corner": "FR",
+        "jump_mm": 21.72,
+        "time_s": 46.23
+      },
+      {
+        "corner": "FL",
+        "jump_mm": 12.69,
+        "time_s": 46.33
+      },
+      {
+        "corner": "FR",
+        "jump_mm": 21.42,
+        "time_s": 46.33
+      },
+      {
+        "corner": "FL",
+        "jump_mm": 13.89,
+        "time_s": 147.95
+      },
+      {
+        "corner": "FR",
+        "jump_mm": 23.32,
+        "time_s": 147.95
+      }
+    ]
+  }
+}
