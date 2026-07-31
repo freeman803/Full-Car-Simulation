@@ -433,7 +433,19 @@ This is the same phenomenon as *Known data problems #3* ("FL shock pot is suspec
 
 **What to do with it.** Treat `autocross_josh2` and `autocross_andrew1` front data as unusable, and quote the front gradient from `josh1`, `andrew2`, skidpad and endurance, which agree at **0.78–0.83 °/g**. The rear is unaffected in all four files and needs no exclusion. The **pooled autocross figure of 0.542 °/g must not be quoted** — `case5_gradients.py` prints per-file gradients and warns when the front spread exceeds 1.5×, and its per-corner table is what separates a one-channel sensor fault from an axle-wide one.
 
-The open question is *why* the front pots ended up at their extension limit for those two runs and not the neighbouring ones. A physical check of the front pot mounting and stroke range would settle it; the telemetry can localise the problem but not diagnose the hardware.
+**Confirmed independent of position around the lap.** Using `lap_detection.py` to put all four runs on a common distance axis, the front/rear roll amplitude ratio per 79 m segment is:
+
+| segment | `josh1` | `josh2` | `andrew1` | `andrew2` |
+|---|---|---|---|---|
+| 0–79 m | 1.39 | **0.59** | **0.60** | 1.46 |
+| 157–236 | 1.50 | **0.61** | **0.64** | 1.63 |
+| 314–393 | 1.57 | **0.59** | **0.52** | 1.46 |
+| 550–629 | 1.63 | **0.61** | **0.61** | 1.48 |
+| 629–707 | 1.46 | **0.56** | **0.59** | 1.51 |
+
+~1.5 on the clean runs, ~0.6 on the bad ones, **constant all the way round**. (The last segment is the slowdown to the finish, where roll is tiny and the ratio is noise.) That rules out driving style, a specific corner, and the Run 1 off-course excursion — a run-long, position-independent factor of ~2.5 is a property of the measurement, not of how the car was driven.
+
+The open question is *why* the front pots ended up at their extension limit for those two runs and not the neighbouring ones. The pattern is clean → bad → bad → clean across a driver change and a 50-minute gap, with `andrew1` and `andrew2` only two minutes apart — so nothing physical changed between the last two. A check of the front pot mounting and usable stroke range would settle it; the telemetry can localise the problem but not diagnose the hardware.
 
 ## What each file actually is — official results and run provenance
 
