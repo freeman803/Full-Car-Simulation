@@ -99,6 +99,46 @@ Each prints a console report and writes interactive plots under `plots/<case>/<e
 
 It skips only the plotting, so it's faster than running all four.
 
+## How much does the cutoff matter? — `cutoff_sweep.py`
+
+Re-runs the whole case1–case4 pipeline at each of a list of frequencies and reports how much each headline number moves. The review pages show what a cutoff does to a **trace**; this shows what it does to the **number you report**.
+
+```powershell
+uv run cutoff_sweep.py --dir comp2026_data
+uv run cutoff_sweep.py --dir comp2026_data --freqs 2 3 4 5 6 8 10 15 20
+```
+
+Cheap: a full pass over 11 files and 4 cases is ~20 s, so a seven-point sweep is a couple of minutes. It patches the cutoff constants on the case modules and calls `case_summary`'s collectors, so nothing is reimplemented and it cannot drift from what the cases really do. Both constants are set to the same value at each step — deliberately *not* production config — so each event shows its own sensitivity.
+
+### Result: most numbers here are filter-dominated
+
+Across 2–20 Hz, of 65 headline numbers: **6 move less than 2%**, and **35 move more than 10%**.
+
+The split is clean and physical. **Skidpad steady-state numbers are nearly cutoff-independent**, because they report a *median over steady segments* — smooth low-frequency content a low-pass barely touches:
+
+| quantity | 2 Hz → 20 Hz | spread |
+|---|---|---|
+| `case2.skidpad.front_deg` | 1.1017 → 1.1009 | **0.3%** |
+| `case2.skidpad.rear_deg` | 1.2755 → 1.2730 | **0.3%** |
+| `case2.skidpad.avg_deg` | 1.1810 → 1.1772 | **0.5%** |
+| `case1.skidpad.sustained_lat_g_min` | 1.2593 → 1.2540 | **0.9%** |
+
+**Transient peak numbers are dominated by it**, because a peak is exactly what a low-pass attenuates:
+
+| quantity | 2 Hz → 20 Hz | spread |
+|---|---|---|
+| `case3.endurance.worst_deg` | 0.6016 → 0.9371 | **39%** |
+| `case1.endurance.peak_lon_g` | 1.1960 → 1.7232 | **33%** |
+| `case1.autocross.peak_lon_g` | 1.3749 → 1.7802 | **33%** |
+| `case3.endurance.typical_deg` | 0.5683 → 0.8033 | **31%** |
+
+**Every peak-based figure should be quoted with its cutoff attached.** "Peak longitudinal G was 1.65 g" is not a fact about the car without "at 5 Hz" beside it.
+
+Two things the tool reports separately, both learned by getting them wrong first:
+
+- **Sign flips.** Six quantities change sign across the sweep — `case4.skidpad.worst_travel_mm` reads +18.5 mm at 5 Hz and −19.8 mm at 8 Hz. That is not a 216% change in the physical answer; skidpad runs both directions, so the two candidate peaks are near-equal and the filter breaks the tie. Spread is measured on **magnitude** and the sign flip is flagged as its own fact. An earlier version differenced signed values and put seven such rows at the top of the table with 200%+ spreads.
+- **Small bases.** `case4.*.worst_modes.warp` shows the largest spreads (49–231%), but warp is 0.5–1.7 mm — the percentage is large because the base is small, not because much is moving.
+
 ## Regression test — `test_regression.py`
 
 Pins every headline number so a change that moves them has to be one someone **meant** to make.
