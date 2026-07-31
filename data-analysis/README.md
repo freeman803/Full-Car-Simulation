@@ -85,15 +85,28 @@ Each prints a console report and writes interactive plots under `plots/<case>/<e
 
 `case_summary.py` prints one row per event across all four cases, and writes `plots/case_summary.md` (for pasting into docs or a PR) and `plots/case_summary.html`.
 
+**At the current 10 Hz cutoff** (see *How much does the cutoff matter?* below — most of these numbers depend on that choice):
+
 | Event | Sustained lat G | Peak lat G | Peak lon G | Roll (deg) | Pitch (deg) | Worst corner travel |
 |---|---|---|---|---|---|---|
-| SKIDPAD | 1.26–1.35 g | — | — | 1.18 | 0.10* | +18.2 mm (FR) |
-| ACCEL | — | — | — | — | 0.36* | +15.7 mm (RR) |
-| BRAKE | — | — | — | — | 0.73 | −20.5 mm (FR) |
-| AUTOCROSS | — | 1.73 | 1.34 | 1.44 | 0.91 | **−27.8 mm (FR)** |
-| ENDURANCE | — | 1.78 | 1.65 | 1.57 | 0.89 | −23.9 mm (FR) |
+| SKIDPAD | 1.26–1.33 g | — | — | 1.18 | 0.10* | −20.1 mm (FR) |
+| ACCEL | — | — | — | — | 0.36* | +15.8 mm (RR) |
+| BRAKE | — | — | — | — | 0.77 | −21.4 mm (FR) |
+| AUTOCROSS | — | 1.76 | 1.39 | 1.48 | 0.92 | **−28.0 mm (FR)** |
+| ENDURANCE | — | 1.60 | 1.72 | 1.44 | 0.93 | −23.5 mm (FR) |
 
 `*` = sustained value; that event has no separate peak by design. `—` = not covered by that case, or the quantity doesn't apply.
+
+For reference, the same table at the previous 2 Hz / 5 Hz cutoffs — skidpad roll and pitch are **identical**, exactly as the sensitivity sweep predicted, and everything that moved is a transient peak:
+
+| Event | Peak lat G | Peak lon G | Roll | Pitch | Worst travel |
+|---|---|---|---|---|---|
+| SKIDPAD | — | — | 1.18 | 0.10* | +18.2 mm |
+| BRAKE | — | — | — | 0.73 | −20.5 mm |
+| AUTOCROSS | 1.73 | 1.34 | 1.44 | 0.91 | −27.8 mm |
+| ENDURANCE | 1.78 | 1.65 | 1.57 | 0.89 | −23.9 mm |
+
+The skidpad travel sign flip (+18.2 → −20.1 mm) is the near-equal-peak tie-break described under the sweep, not a reversal of the physics — the magnitude went 18.2 → 20.1 mm.
 
 **It does not recompute anything.** It imports case1–case4 and calls their own analyse and report functions, taking the summary dicts they already return with their console output suppressed. Change a case's methodology and this table follows automatically — so it cannot drift from what the individual scripts print. Verified: every value matches its source script (e.g. skidpad roll 1.18 vs case2's 1.1810°, brake pitch 0.73 vs case3's −0.7317°).
 
