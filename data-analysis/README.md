@@ -99,6 +99,32 @@ Each prints a console report and writes interactive plots under `plots/<case>/<e
 
 It skips only the plotting, so it's faster than running all four.
 
+## Regression test — `test_regression.py`
+
+Pins every headline number so a change that moves them has to be one someone **meant** to make.
+
+```powershell
+uv run test_regression.py --dir comp2026_data            # check
+uv run test_regression.py --dir comp2026_data --update   # re-pin
+```
+
+Six real bugs were found and fixed here in quick succession — `VCPDU_lat`/`lon` read as g when the DBC says m/s², a hardcoded runs-per-direction cap that silently discarded data, step glitches winning the peak search, `filtfilt` edge artefacts, an inverted roll sign convention, and the `braketest2` misdiagnosis. Every fix moved published numbers, and nothing existed that would have caught any of them going the other way.
+
+It pins the summary dicts from all four cases plus the **12-event step-glitch inventory**, and reports each difference with a percentage:
+
+```
+  cases.case4_combined_roll_pitch.endurance.worst_roll_deg
+      pinned: -1.2569025802757943
+      now:    -1.2498403951472068
+      change: +0.562%
+```
+
+- **It is not a correctness test.** It cannot tell you a number is *right*, only that it is the *same*. That's the useful property while cutoff selection is in flight: when the per-signal cutoff table lands, every roll/pitch/travel figure will move, and the question is whether they moved where you expected.
+- **It doesn't reimplement anything** — it calls `case_summary.py`'s collectors, which call each case's real analyse/report functions, so a methodology change is picked up rather than tested against a stale copy.
+- **A failure is information, not an error to silence.** Read the diff, decide if the change was intended, then re-pin with `--update` and **commit `regression_expected.json`**. That commit is the record of what moved and why.
+
+Verified end to end: changing `AUTOX_END_CUTOFF_HZ` from 5.0 to 6.0 was caught across every affected value with exit code 1.
+
 ## Raw signal survey — `batch_signal_stats.py`
 
 **Start here with a new data set**, before any case script. It answers "what's actually in these files and does it look sane?" — min/max/mean for every signal, pooled per event, plus optional time-series grids.
@@ -162,15 +188,33 @@ The four cases share a deliberate shape. To add `case5_<thing>.py`:
 
 ## Vehicle constants
 
+All of these live in **`case_common.py`** and are imported by the case scripts. They used to be redefined in case2, case3 and case4 independently — the values agreed, but nothing enforced that, and `case_common.py` exists precisely because `case1` and `filter_compare` once drifted onto two different values of `G`.
+
 | constant | value |
 |---|---|
-| Front track | 1219.2 mm |
-| Rear track | 1168.4 mm |
+| Front track | 1219.2 mm (centre-to-centre) |
+| Rear track | 1168.4 mm (centre-to-centre) |
 | Wheelbase | **1543 mm** (1545 in `corner-model/Forces/car_data.py` is a known error on another branch) |
 | Motion ratio, front | **1.15** (wheel ÷ spring) |
 | Motion ratio, rear | **1.038** |
 
 Front and rear motion ratios differ, which dictates *where* the conversion happens: every corner is converted to wheel travel **before** any roll, pitch or modal arithmetic. Differencing axles on raw shock-pot mm and applying one ratio afterwards is only valid when the ratios match, and they don't.
+
+### mm → degrees
+
+```
+angle = atan(wheel_travel_mm / span_mm)      # span = track for roll, wheelbase for pitch
+```
+
+This is **exact, not a small-angle approximation** — `atan` is the exact relation for two vertical displacements separated by a horizontal span. The case2/case3/case4 docstrings described it as "small-angle" for a while, which was simply wrong; it never changed a number (linear and `atan` agree to 0.002% at 10 mm and 0.03% at 35 mm) but it implied a limitation that doesn't exist.
+
+Pass **wheel** travel, not raw shock-pot mm.
+
+### The one real approximation: whole-car "avg roll"
+
+`AVG_TRACK_MM` converts a mean-mm over a mean-track rather than averaging two separately-converted angles. Because `atan` is non-linear and the two tracks differ by 50.8 mm, these are not the same: measured error is **0.17–0.19%** — 1.6201° the approximate way against 1.6231° exact.
+
+Kept as-is deliberately so published numbers stay comparable with what's already been shared. Documented rather than silently corrected. Front and rear roll, reported separately, are each exact — it's only the combined figure that carries this.
 
 ## Shared foundation
 
@@ -181,7 +225,7 @@ Inherited by every case; none of them redefine these.
 | **Filter** | 4th-order Butterworth, zero-phase (`filtfilt`). **2.0 Hz** skidpad, **5.0 Hz** everything else |
 | **Units** | `G = 9.80665`. `VCPDU_lat`/`lon` are **m/s²** in the DBC and are divided by G |
 | **Time** | The InfluxDB union grid is **not uniformly sampled**. Every duration is real elapsed `t[e]−t[s]`, never `sample_count × dt` — that errs by 3–5×. Scalar `dt` is used *only* for filter design |
-| **Baselining** | Each corner is zeroed against its own stopped-car window (speed <0.5 m/s, ≥2s real, trimmed 0.5s/end; prefers file start → end → longest anywhere, which catches an endurance driver change). Mandatory: each pot carries its own zero offset, and differencing without removing it counts the offset as suspension movement |
+| **Baselining** | Each corner is zeroed against its own stopped-car window (speed <0.5 m/s, ≥2s real, trimmed 0.5s/end; prefers file start → end → longest anywhere, which catches an endurance driver change). Mandatory: each pot carries its own zero offset, and differencing without removing it counts the offset as suspension movement. Step glitches are excluded from the window, and a **lockup guard** rejects candidate stops whose mean \|lon G\| ≥ 0.15 g |
 | **Glitch rejection** | Per-sensor-update jumps >8mm are masked ±1s — see *Known data problems* |
 | **Peak detection** | `find_peaks` by **prominence only** — no index-based `distance`, because a fixed sample count spans different real time in different parts of a file. Spacing is enforced afterwards against elapsed time: tallest candidate first, reject any peak within 1.0s of an accepted one. Top 5 |
 
@@ -273,6 +317,84 @@ So the report states precisely how many mm came from roll vs pitch vs heave vs *
 
 ---
 
+## Case 5 — Roll and pitch gradient (°/g)
+
+**Events:** roll on skidpad/autocross/endurance, pitch on accel/brake/autocross/endurance.
+
+The headline suspension metric, and the one number the rest of the analysis was building toward. Cases 1–4 answer *"how much did the car roll?"* — a property of the **run**, since a driver who pushed harder gets a bigger number. Gradient answers *"how much does this car roll per unit of lateral acceleration"* — a property of the **car**, and the bridge to a roll stiffness in N·m/deg.
+
+Nothing is reimplemented: roll comes from `case2_max_roll`'s loader and pitch from `case3_max_pitch`'s, so the angles behind these gradients are the exact numbers those cases report.
+
+### The number
+
+**Skidpad steady segments — the cleanest estimate, and the one to quote:**
+
+| | gradient | R² |
+|---|---|---|
+| Front | **0.833 °/g** | 0.997 |
+| Rear | **0.941 °/g** | 0.997 |
+| Whole car | **0.886 °/g** | 0.998 |
+
+`endurance_full` independently gives 0.812 / 0.918 / 0.864 °/g — a different event, different driver, 919k samples, agreeing to within 3%.
+
+This lands squarely on the **0.83–0.94 °/g** hand-derived estimate. Two things are worth noting about that: the hand estimate's *range* turns out to have been the front-to-rear spread, and a completely independent check — dividing case2's skidpad roll angle by case1's sustained lateral G, neither of which computes a gradient — gives 0.814 / 0.943 / 0.873 °/g, within 2%.
+
+**Pitch gradient** is 0.54 °/g, and accel (0.544) and brake (0.543) agree to three decimals despite being squat and dive respectively.
+
+Intercepts are 0.002–0.101°, which is the baselining checking out: a level car at 0 g.
+
+### Fitting choices
+
+- **Intercept is fitted, not forced through zero.** The car is physically level at 0 g, so a large intercept is not a free parameter — it is evidence a baseline is off, and reporting it is the point.
+- **Excluded:** step glitches, and samples below 2 m/s (a parked car is a dense cluster at the origin that inflates R² without informing the slope).
+- **Transients are kept.** The scatter they produce is a result, not contamination — roll lags lateral G, so a corner entry and its matching exit trace different paths and the cloud opens into a loop. Steady-state skidpad gives R² = 0.997; autocross does not, and the width is the information. That is why the scatter plot is a deliverable and not just a diagnostic.
+- **Signs are checked, not absolute-valued.** A positive raw slope would mean a convention flipped upstream, and is reported as an error rather than quietly hidden.
+
+### Finding: two autocross runs have unusable front shock-pot data
+
+The autocross files do not give one answer. Front gradient per file:
+
+| file | front | rear | rear/front |
+|---|---|---|---|
+| `autocross_andrew2` | 0.780 | 0.884 | 1.13× |
+| `autocross_josh1` | 0.794 | 0.895 | 1.13× |
+| **`autocross_andrew1`** | **0.294** | 0.871 | **2.96×** |
+| **`autocross_josh2`** | **0.311** | 0.905 | **2.91×** |
+
+Per-corner travel per g isolates it completely — **both front corners drop by ~2.6× while both rears are untouched**:
+
+| file | FL | FR | RL | RR |
+|---|---|---|---|---|
+| `autocross_andrew2` | 6.03 | −10.57 | 8.89 | −9.13 |
+| `autocross_josh1` | 6.38 | −10.52 | 8.78 | −9.47 |
+| `skidpad` | 6.56 | −11.04 | 9.13 | −9.95 |
+| `endurance_full` | 6.36 | −10.93 | 9.37 | −9.34 |
+| **`autocross_andrew1`** | **2.40** | **−3.86** | 8.55 | −9.21 |
+| **`autocross_josh2`** | **2.50** | **−4.13** | 8.96 | −9.50 |
+
+**This is a measurement problem, not the car.** Three things establish that:
+
+**The runs are effectively identical.** In chronological order — `josh1` 18:38, `josh2` 18:47, `andrew1` 19:37, `andrew2` 19:39 — the pattern is normal, bad, bad, normal. Lateral-G content is the same in all four (\|lat\| p99 1.47–1.62 g, range 3.18–3.31 g), so it is not driving style. And `andrew1` → `andrew2` are **two minutes apart**, which rules out any physical change to the car. (There is also no anti-roll bar on the 2026 car, so an earlier ARB hypothesis in this file was wrong on the mechanism as well as the timing.)
+
+**The decode is fine.** `disp ← volt` fits −25.495 to −25.511 mm/V in every file, against the documented global −25.510. Nothing is wrong with units or scaling.
+
+**The front pots are sitting at the end of their range.** The raw voltage is what differs:
+
+| file | FL volt median | FR volt median | front gradient |
+|---|---|---|---|
+| `josh1` | 0.816 | 1.241 | 0.794 |
+| `josh2` | **0.332** | **0.550** | 0.311 |
+| `andrew1` | **0.378** | **0.597** | 0.294 |
+| `andrew2` | 0.855 | 1.340 | 0.780 |
+
+Since `disp = −25.51·V + c`, low voltage is high extension. In the bad runs both front pots sit at roughly 0.2–0.8 V — the bottom of their electrical range and the maximum-extension end of their stroke — where they read 70.7 mm against the 63.6–66.7 mm every other file tops out at, and where travel compresses (`josh2` FL sweeps just **7.2 mm** against 22.4 mm in `josh1`).
+
+This is the same phenomenon as *Known data problems #3* ("FL shock pot is suspect", static baseline wandering 42.4–66.9 mm across sessions) — but it affects **both front pots**, not just FL, and it now has a measured consequence: it more than halves the apparent front roll gradient.
+
+**What to do with it.** Treat `autocross_josh2` and `autocross_andrew1` front data as unusable, and quote the front gradient from `josh1`, `andrew2`, skidpad and endurance, which agree at **0.78–0.83 °/g**. The rear is unaffected in all four files and needs no exclusion. The **pooled autocross figure of 0.542 °/g must not be quoted** — `case5_gradients.py` prints per-file gradients and warns when the front spread exceeds 1.5×, and its per-corner table is what separates a one-channel sensor fault from an axle-wide one.
+
+The open question is *why* the front pots ended up at their extension limit for those two runs and not the neighbouring ones. A physical check of the front pot mounting and stroke range would settle it; the telemetry can localise the problem but not diagnose the hardware.
+
 ## Known data problems
 
 Read this before trusting any number.
@@ -323,20 +445,52 @@ It holds step glitches at 46.23s and 46.33s, and `find_static_window` selects 0.
 |---|---|---|---|---|
 | FL | 53.330 | **53.330** | 0.570 | **0.007** |
 | FR | 38.380 | **38.380** | 0.964 | **0.024** |
+| RR | 41.340 | **41.320** | | |
+
+The glitch mask is now applied to baselining (`static_baseline(..., bad_mask=...)`). Across all 11 files this moves exactly **one** number: `braketest2`'s RR baseline, by **0.02 mm**. FL and FR are unchanged, as the table above says. That 0.02 mm propagates into six case4 brake figures by at most 0.72%. The mask is there for the *std* column, not the median one — see below.
 
 Two conclusions. The **baseline was never damaged** — `static_baseline` uses a median, which is robust to the step, identical to three decimals. And with the glitch excluded the file's noise is **0.007–0.043mm**, making it one of the *cleanest* in the set rather than the worst.
 
-The window is also genuinely stopped (mean longitudinal G +0.005 g), so it is not a lockup being mistaken for a standstill — a real risk in principle, since `VCFRONT_vehicleSpeed` comes from wheel speed and reads ~zero during a four-wheel lockup while the car is still moving. Worth remembering for future brake data, but it did not happen here.
+The window is also genuinely stopped (mean longitudinal G +0.005 g), so it is not a lockup being mistaken for a standstill — a real risk in principle, since `VCFRONT_vehicleSpeed` comes from wheel speed and reads ~zero during a four-wheel lockup while the car is still moving.
+
+**There is now a code guard for this**, not just a note. `find_static_window(..., lon_g=...)` rejects any candidate stop whose **mean** \|lon G\| reaches 0.15 g.
+
+Two details matter. It is applied **per run, not per sample** — the per-sample version was tried first and is wrong: a genuine stop briefly touches 0.26–0.94 g as the car rolls to a halt, so sample-wise rejection fragments real stops, and measurably did (it moved `accel_jamie_both`'s window from 0.0–9.2 s to an entirely different 17.2–25.3 s, and trimmed nine others). A lockup is a *sustained* ~1 g deceleration, so the mean over the run is the right statistic. Every genuine stop in `comp2026_data` averages **0.008–0.031 g**, two orders of magnitude clear of the threshold.
+
+The guard therefore changes **nothing** on the current data — all 11 windows are byte-identical with and without it. It was verified on a synthetic file instead: given a real standstill and a four-wheel lockup both reading speed ≈ 0, it picks the standstill; given only the lockup, it returns `None`, so `baselines_found=False` and the caller warns rather than silently baselining against a hard-braking car.
 
 **Context that makes this the opposite of a throwaway file:** `braketest2` is the brake test that *passed* at competition — up to the required speed, braking at the mandated point, all four wheels locked. It is prime data.
 
 The only genuine issue is the step glitches themselves, which `find_step_glitches()` now rejects automatically. One caution remains: any *std-based* measurement over a window containing a glitch will be inflated, so re-derive noise floors with the glitch mask applied.
 
-### 6. `endurance_full.csv` brake pressure saturates
+### 6. IMU 2-sample spikes — visible in plots, harmless to the numbers
+
+`VCPDU_lat` and `VCPDU_lon` carry isolated spikes that are **not vehicle motion**. This is the big downward spike visible in `accel_corinne1`'s longitudinal traces, and it is not unique to that file.
+
+The signature is unmistakable and consistent across files:
+
+| file | channel | value | samples |
+|---|---|---|---|
+| `accel_corinne1` | lon | −20.675 m/s² (**−2.108 g**) | 2 |
+| `endurance_full` | lat | +27.591 m/s² (**+2.813 g**) | 2 |
+| `autocross_josh1` | lon | +24.371 m/s² (**+2.485 g**) | 2 |
+| `autocross_andrew2` | lat | −21.519 m/s² (**−2.194 g**) | 2 |
+
+Three things mark these as artefacts rather than data:
+
+- **Always exactly two consecutive samples, 10 ms apart**, holding a *bit-identical* value. A real accelerometer at a genuine peak does not produce the same float twice — noise alone would differ in the last bits.
+- **Physically implausible.** 2.1–2.8 g where each file's own p99.9 is 0.9–1.9 g, reached in a single 10 ms step of 7–20 m/s².
+- **Not a DBC rail** — the value differs per file, so this is not the brake-pressure-style saturation seen in `endurance_full`'s brake channel below.
+
+**They do not affect any reported number.** Verified on `endurance_full`, whose spike is the largest at 2.813 g: the whole-file filtered maximum is **1.7798 g with the spike and 1.7798 g with it removed** — identical. The 5 Hz low-pass eliminates a 2-sample impulse, and the local filtered peak at the spike is only 1.09 g, well below the file's actual 1.78 g maximum elsewhere. Case 1's peak G figures stand.
+
+**Where they do bite is the peak-attenuation table**, whose denominator is the raw *max*. A file whose raw max is a spike reads as if the filters were destroying signal (57–66% retained) when they are correctly rejecting an artefact. `filter_compare.py` prints a `raw p99.9` column beside the max and flags any cell where the two diverge by more than 1.3× — see its `spike_dominated` flag.
+
+### 7. `endurance_full.csv` brake pressure saturates
 
 Its front pressure p99 is exactly 2000 psi, the top of the DBC range `[0|2000]`. Pressure-derived peaks there are floors, not maxima.
 
-### 7. IMU attitude signals
+### 8. IMU attitude signals
 
 `VCPDU_angleRoll` / `anglePitch` read ±20–36° against ±1.3° derived from the shock pots — consistent with an uncalibrated gravity-vector tilt rather than chassis attitude (the DBC carries `IMU_UNCALIBRATED` and `IMU_YAW_CALIBRATION_FAILED` warnings). Not used. The raw *rates* (`VCPDU_roll`/`pitch`, deg/s) are a separate question and have not been validated.
 
@@ -357,7 +511,50 @@ uv run filter_compare.py comp2026_data/accel_*.csv --freqs 5 8 --zoom-on-peak
 uv run filter_compare.py comp2026_data/braketest1.csv --freqs 2 5 10 --zoom-at 100
 ```
 
-- Prints a **peak-attenuation table** — how much of each signal's peak survives each cutoff. The numerical version of what the plots show by eye.
+### Three views per signal
+
+A single overlay hid the data it was meant to show, and the cause is structural rather than cosmetic: **the higher the cutoff, the closer the filtered trace is to raw**, so the 15 and 20 Hz traces land almost exactly on the raw trace and — drawn last — paint over raw *and* every lower cutoff. Sweeping more frequencies makes it strictly worse, so no palette change fixes it. Each signal now produces:
+
+| view | what it's for |
+|---|---|
+| `_panels` | **Primary.** Small multiples, one panel per cutoff, raw redrawn pale behind each. Nothing can be occluded because nothing competes |
+| `_residual` | **What settles a borderline call.** `raw − filtered`, i.e. exactly what each cutoff *discards*, with RMS per panel. A formless residual means the cutoff is safe; coherent oscillation means real signal is being deleted |
+| `_overlay` | All cutoffs on one axis — still the best view for judging *where* traces separate. Z-order is reversed (highest cutoff drawn first) so the lowest cutoff ends on top instead of buried |
+
+Each cutoff gets a **distinct hue**, in fixed slot order by ascending frequency, so a given cutoff is the same colour on every signal and every file. A sequential single-hue ramp was tried first — cutoff is strictly an ordered magnitude, which argues for one — but seven steps of the same blue proved unreadable on a busy trace, and telling "the third blue" from "the fourth" is exactly what the overlay asks you to do. The palette is validated at 7 slots on the light surface (worst adjacent CVD ΔE 9.1, normal-vision ΔE 19.6); aqua, yellow and magenta fall below 3:1 contrast, so every view carries visible labels and never relies on colour alone. Past **8 cutoffs** the script raises rather than cycling hues — sweep fewer at a time.
+
+Plots render at **220 dpi**, because the review pages scale them down to fit the column and the lightbox then blows them back up.
+
+Prefer the `_zoom` views for choosing a cutoff. At full-file extent every cutoff collapses into the same smear and the views are context only.
+
+- Prints a **peak-attenuation table** — how much of each signal's peak survives each cutoff. The numerical version of what the plots show by eye. Also written to `peak_attenuation.json` per file, which `build_cutoff_review.py` reads.
+- **Read low percentages carefully.** The table's denominator is the raw *max*, which on some files is a 1–2 sample spike rather than the real peak of the manoeuvre — `endurance_full`'s raw lateral G maxes at **2.813 g** and holds 33 samples above 2.0 g, which is not physical for this car. A `raw p99.9` column sits beside the max and cells where the two diverge by >1.3× are flagged `spike_dominated`. In those cells a low "% retained" means the filter is *rejecting a glitch*, not destroying signal.
+- `--skip-plots` refreshes `peak_attenuation.json` without regenerating the plots.
+
+## Choosing cutoffs — `build_cutoff_review.py`
+
+`case_common.py` currently carries exactly **two** cutoff constants and applies them to every signal regardless of content. Accel and brake have no chosen cutoff at all — they inherit the 5 Hz autocross value by accident of the `if/else` in each case script.
+
+This tool lays out every decision that actually needs making — **29 cells**, as (quantity × event) rather than a mostly-N/A 9×5 grid — puts the relevant plots beside each one, and gives you somewhere to record the answer. It decides nothing itself.
+
+```powershell
+uv run build_cutoff_review.py
+```
+
+| output | |
+|---|---|
+| `review_cutoffs/<event>.html` | one scrollable page per event, plots inline in worklist order |
+| `cutoff_decisions.yaml` | one block per cell with blank `chosen_hz:` / `why:` fields |
+
+**Click any plot to zoom.** The pages carry a lightbox — scroll to zoom (about the cursor, so the detail under the pointer stays put), drag to pan, `fit` / `1:1` buttons, Esc to close. The inline images are scaled down to fit the column; the lightbox is where the 220 dpi detail actually becomes visible.
+
+**"open interactive ↗" on the overlay** loads a Plotly version where each cutoff can be toggled from the legend — click to hide one, double-click to isolate it. That's the question a static overlay can't answer once you're down to two or three candidates ("what does this look like *without* 15 and 20 Hz?"). Box-zoom and pan come free. Generated at zoom extent only, and decimated to ~3000 points for display — the filtering still happens at full grid density, so it's the real filtered signal, just not every redundant sample of it.
+
+Note the `_zoom` window is **10 s** by default, narrowed from 20 s because seven panels across 20 s left each cutoff too few pixels to judge. `--zoom-duration` overrides it.
+
+Roll and pitch each appear **twice**, under different quantities. That is the point, not a duplication: `case2`/`case3` report them as body **angles** while `case4` reports physical wheel **travel**. Wheel hop is real travel but is not chassis attitude, so the travel answer can legitimately sit *above* the 6–8 Hz mode while the angle answer sits *below* it.
+
+Leaving a cell at its current value is a valid answer — but the `why` still gets filled in, so the next person knows it was decided rather than inherited.
 - `--zoom-on-peak` centres each zoom on that signal's own largest moment (the fixed 600s window lands on arbitrary quiet track for short accel/brake events). `--zoom-at <seconds>` overrides it — useful because the automatic peak sometimes lands on a step glitch.
 - Peak stats exclude the outer 2% of each file, since `filtfilt` overshoots at boundaries.
 
