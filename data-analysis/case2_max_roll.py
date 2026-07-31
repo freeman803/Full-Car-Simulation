@@ -91,6 +91,7 @@ import pandas as pd
 import plotly.graph_objects as go
 
 from parse_influx import parse_influx
+from case_report import report_page, write_index
 from case_common import (
     G,
     FILTER_ORDER, SKIDPAD_CUTOFF_HZ, AUTOX_END_CUTOFF_HZ,
@@ -555,6 +556,10 @@ def main():
 
     print("\nDone.")
 
+    return summaries_by_event
+
 
 if __name__ == "__main__":
-    main()
+    with report_page("case2_max_roll", "Case 2 — Max Roll", PLOTS_ROOT) as page:
+        page.summary = main()
+    write_index()

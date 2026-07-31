@@ -48,6 +48,7 @@ import argparse
 
 import numpy as np
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 from case_common import group_by_event, SKIDPAD_CUTOFF_HZ, AUTOX_END_CUTOFF_HZ
 
@@ -214,25 +215,98 @@ def main():
               f"candidates whose tie the filter breaks, not a magnitude change")
     print(f"{'=' * 100}")
 
-    # Plot, normalised so quantities of different units share an axis.
-    fig = go.Figure()
-    for key, base, values, spread, flipped in rows:
-        fig.add_trace(go.Scatter(
-            x=freqs, y=100.0 * np.abs(values) / abs(base), mode="lines+markers",
-            name=f"{key.split('.', 1)[-1][:40]} ({spread:.0f}%)",
-            line=dict(width=1.5),
-        ))
+    os.makedirs(PLOTS_ROOT, exist_ok=True)
 
-    fig.update_layout(
-        title="Each headline number vs cutoff, as % of its production value",
-        xaxis_title="cutoff (Hz)", yaxis_title="% of production value",
-        template="plotly_white", hovermode="x unified",
+    # TWO CHARTS, because there are two different questions and one chart
+    # answering both answers neither. An earlier version drew all 65
+    # quantities as lines on a single normalised axis — unreadable, and it
+    # forced you to decode "% of production value" before it said anything.
+
+    # 1. WHICH numbers care about the cutoff? A ranked bar chart. This is
+    #    the one to read first: it turns 65 quantities into a short list of
+    #    the ones worth thinking about.
+    bar = go.Figure()
+
+    case_colors = {"case1": "#2a78d6", "case2": "#eb6834",
+                   "case3": "#1baf7a", "case4": "#eda100"}
+
+    ordered = sorted(rows, key=lambda r: r[3])
+
+    bar.add_trace(go.Bar(
+        x=[r[3] for r in ordered],
+        y=[r[0] for r in ordered],
+        orientation="h",
+        marker=dict(color=[case_colors.get(r[0].split(".")[0], "#888")
+                           for r in ordered]),
+        hovertemplate="%{y}<br>moves %{x:.1f}%<extra></extra>",
+    ))
+
+    bar.add_vline(x=INSENSITIVE_PCT, line=dict(color="#1baf7a", dash="dash"),
+                  annotation_text=f"{INSENSITIVE_PCT:.0f}% — below this the "
+                                  f"cutoff isn't what decides the number")
+    bar.add_vline(x=SENSITIVE_PCT, line=dict(color="#e34948", dash="dash"),
+                  annotation_text=f"{SENSITIVE_PCT:.0f}% — above this, quote "
+                                  f"the cutoff with the number")
+
+    bar.update_layout(
+        title=f"How much each number changes across a {freqs[0]:.0f}-"
+              f"{freqs[-1]:.0f} Hz cutoff sweep",
+        xaxis_title="change from lowest to highest cutoff (% of today's value)",
+        yaxis_title="",
+        template="plotly_white",
+        height=max(600, 18 * len(ordered)),
+        margin=dict(l=380),
+        showlegend=False,
     )
 
-    os.makedirs(PLOTS_ROOT, exist_ok=True)
-    out = os.path.join(PLOTS_ROOT, "cutoff_sensitivity.html")
-    fig.write_html(out, include_plotlyjs="cdn")
-    print(f"\nPlot: {out}\n")
+    out_bar = os.path.join(PLOTS_ROOT, "which_numbers_care.html")
+    bar.write_html(out_bar, include_plotlyjs="cdn")
+
+    # 2. HOW do the sensitive ones move? Small multiples in each quantity's
+    #    OWN units, so nothing needs normalising or decoding. Only the ones
+    #    that actually move — plotting the flat ones wastes the space.
+    movers = [r for r in rows if r[3] >= INSENSITIVE_PCT][:24]
+
+    ncols = 4
+    nrows = int(np.ceil(len(movers) / ncols)) or 1
+
+    panels = make_subplots(
+        rows=nrows, cols=ncols,
+        subplot_titles=[f"{r[0].split('.', 1)[-1][:34]}<br>"
+                        f"<sub>{r[3]:.0f}%</sub>" for r in movers],
+        vertical_spacing=0.08, horizontal_spacing=0.06,
+    )
+
+    for i, (key, base, values, spread, flipped) in enumerate(movers):
+        panels.add_trace(
+            go.Scatter(x=freqs, y=np.abs(values), mode="lines+markers",
+                       line=dict(color=case_colors.get(key.split(".")[0], "#888"),
+                                 width=2),
+                       showlegend=False),
+            row=i // ncols + 1, col=i % ncols + 1,
+        )
+        # Where the number sits today, so the panel reads as "what would
+        # change" rather than as an abstract curve.
+        panels.add_hline(y=abs(base), line=dict(color="#999", dash="dot"),
+                         row=i // ncols + 1, col=i % ncols + 1)
+
+    panels.update_layout(
+        title="How each cutoff-sensitive number moves — real units, "
+              "dotted line = today's value",
+        template="plotly_white",
+        height=260 * nrows,
+        showlegend=False,
+    )
+    panels.update_xaxes(title_text="cutoff (Hz)", row=nrows)
+
+    out_panels = os.path.join(PLOTS_ROOT, "how_they_move.html")
+    panels.write_html(out_panels, include_plotlyjs="cdn")
+
+    print(f"\nPlots:")
+    print(f"  {out_bar}")
+    print(f"      WHICH numbers care — read this first")
+    print(f"  {out_panels}")
+    print(f"      HOW the sensitive ones move, in their own units\n")
 
 
 if __name__ == "__main__":
