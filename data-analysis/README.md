@@ -454,19 +454,26 @@ This matters because a telemetry file is not self-describing. Knowing that one a
 
 ### Endurance — Andrew first, then Josh. **DNF on the last lap.**
 
-**1483.688 s, 21 laps completed**, DNF. Official lap times:
+**1483.688 s, 21 scored laps**, DNF. Two sources, and they differ in a way worth knowing about — the [results portal](https://results.fsaeonline.com/MyResults.aspx?carnum=43&tab=endurance) records **23 transponder passes** (the first is transponder initialisation) and labels the count *"Lap Count (Incl. Driver Chg & Black Flag): 22"*, while the official PDF lists 21 and carries `DNF` in its Other column. 23 passes − 1 init − 1 driver-change lap = 21 scored laps, so the two reconcile. The portal shows no explicit DNF text; the PDF is the official document, so DNF stands.
+
+Lap times, with the portal's driver-change lap restored (the PDF omits it, which shifts every subsequent lap number by one):
 
 ```
-68.197  68.186  71.313  67.568  67.159  69.294  69.068
-70.252  69.225  70.102  76.539  121.893  68.476  67.020
-64.873  66.610  66.858  66.799  64.425  63.364  66.467
+ 1  68.197    7  69.067   13  121.893  ← momentary stop     19  66.800
+ 2  68.187    8  70.253   14   68.477                       20  64.423
+ 3  71.313    9  69.223   15   67.020                       21  63.363  ← best
+ 4  67.567   10  70.104   16   64.873                       22  66.470
+ 5  67.160   11  76.540   17   66.610
+ 6  69.293   12 168.890 ← DRIVER CHANGE   18  66.857
 ```
 
-**Lap 12 is 121.893 s against a ~67 s norm.** That is the driver change plus a *momentary stop near the beginning of Josh's stint* — team-confirmed, not inferred. Lap 11 at 76.539 s is the run-in to it. The last seven laps (63–67 s) are the fastest of the event, so the car recovered fully.
+**Lap 12 (168.890 s, 16:07:08) is the driver change itself** — the portal notes *"The Driver Change lap will appear below as a long lap."* **Lap 13 (121.893 s, 16:09:10) is the separate momentary stop near the start of Josh's stint**, team-confirmed. These are two distinct events, not one; an earlier version of this section conflated them because the PDF's list omits the driver-change lap entirely.
+
+Lap 11 at 76.540 s is the run-in to the change. The last seven laps (63–67 s) are the fastest of the event, so the car recovered fully — best lap 63.363 s came at lap 21.
 
 Note `endurance_full.csv` spans 1740 s against the official 1483.7 s, so the file holds roughly four minutes beyond the scored run.
 
-**This gives lap detection a ground truth.** Any lap detector can be validated against 21 known laps with known durations, rather than eyeballed.
+**This gives lap detection a ground truth**, and a strong one: 22 laps with durations known to the millisecond, two of which (12 and 13) are stationary events a detector must handle rather than trip over. The portal also gives wall-clock timestamps per lap, so a detector's laps can be checked against absolute time, not just count and duration.
 
 ### Skidpad — Austin only
 
