@@ -13,9 +13,14 @@ wheels/
 # alone is ~360 MB for a 7-frequency sweep across all 11 files, once the
 # interactive Plotly overlays and their bundled plotly.min.js are included).
 #
-# NOT ignored, deliberately: data-analysis/regression_expected.json (the
-# pinned numbers — the diff on that file IS the record of what changed) and
-# data-analysis/cutoff_decisions.yaml (the decisions themselves).
+# NOT ignored, deliberately: data-analysis/regression_expected.json — the
+# pinned numbers, whose diff IS the record of what changed and why.
 data-analysis/filter_compare_results/
 data-analysis/review_cutoffs/
 data-analysis/plots/
+
+# Generated on demand, not kept in the repo — a blank worksheet in version
+# control implies outstanding work that is not outstanding. The cutoff
+# decision itself lives in data-analysis/case_common.py.
+data-analysis/cutoff_decisions.yaml
+data-analysis/cutoff_decisions.yaml.new

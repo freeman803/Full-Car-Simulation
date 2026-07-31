@@ -545,6 +545,21 @@ Note `endurance_full.csv` spans 1740 s against the official 1483.7 s, so the fil
 
 15th, best 5.178 s. Austin ran first and **only his two runs were pulled**: 5.461/5.122 R/L (avg 5.291) and 5.297/5.061 (avg **5.178**, the counting run). The second driver DNF'd one run and was slower, so that data was deliberately not exported. `skidpad_austin_both.csv` is therefore both of Austin's runs and nothing else.
 
+### Brake test — `braketest2` is the valid run
+
+Both runs achieved **full four-wheel lockup**. `braketest1` is invalid on procedure only: the driver braked **too early**, before the mandated point. `braketest2` is the run that counted — up to the required speed, braking at the right place, all four locked.
+
+Procedure invalidates it for scoring, not for engineering: `braketest1` is still real maximum-braking data and is used by the case scripts alongside `braketest2`.
+
+Peak front pressures are the interesting part, and they run counter to intuition:
+
+| file | peak front pressure | status |
+|---|---|---|
+| `braketest1` | **1830 psi** | invalid — braked too early |
+| `braketest2` | **1112 psi** | **the valid run** |
+
+The *invalid* run used 65% more pressure for the same outcome. That is not a contradiction — **past lockup, extra pressure does nothing**. Once all four wheels are sliding, more pedal force cannot increase deceleration, so pressure above the lock threshold is only a record of how hard the driver pushed. It means peak brake pressure is a poor proxy for braking performance, and that lockup on this car happens somewhere at or below ~1100 psi.
+
 ### Acceleration — Jamie first, then Corinne
 
 20th, best 4.521 s. Runs were 4.569 / **4.521** (Jamie, both in `accel_jamie_both.csv`) then 4.604 / 4.601 (`accel_corinne1`, `accel_corinne2`). Remarkably consistent across drivers — 4.52–4.60 s.
@@ -640,13 +655,56 @@ Three things mark these as artefacts rather than data:
 
 **Where they do bite is the peak-attenuation table**, whose denominator is the raw *max*. A file whose raw max is a spike reads as if the filters were destroying signal (57–66% retained) when they are correctly rejecting an artefact. `filter_compare.py` prints a `raw p99.9` column beside the max and flags any cell where the two diverge by more than 1.3× — see its `spike_dominated` flag.
 
-### 7. `endurance_full.csv` brake pressure saturates
+### 7. `endurance_full.csv` brake pressure saturates — and it is a firmware clamp
 
-Its front pressure p99 is exactly 2000 psi, the top of the DBC range `[0|2000]`. Pressure-derived peaks there are floors, not maxima.
+Its front pressure reads exactly **2000 psi** at its maximum, p99.9 *and* p99. That ceiling is not the sensor's physical limit or the car's — it is an explicit clamp in `brakePressure.c`:
 
-### 8. IMU attitude signals
+```c
+else if (brakePressure_data.voltage >= 4.5f)
+    brakePressure_data.pressure = 2000.0f;      // hard clamp
+else
+    brakePressure_data.pressure = (voltage - 0.5f) * 500.0f;
+```
 
-`VCPDU_angleRoll` / `anglePitch` read ±20–36° against ±1.3° derived from the shock pots — consistent with an uncalibrated gravity-vector tilt rather than chassis attitude (the DBC carries `IMU_UNCALIBRATED` and `IMU_YAW_CALIBRATION_FAILED` warnings). Not used. The raw *rates* (`VCPDU_roll`/`pitch`, deg/s) are a separate question and have not been validated.
+The sensor is calibrated across 0.5–4.5 V → 0–2000 psi. **Any true pressure that pushes it past 4.5 V reads exactly 2000**, so those samples are a *floor*, not a measurement.
+
+Three things confirm it is genuinely saturating rather than coincidentally touching a real limit:
+
+- **198 samples pinned at exactly 2000**, in only 5 episodes — a pile-up, which is the clipping signature. A real maximum is approached and rarely touched.
+- **One episode runs 11.3 seconds continuously.** Braking pulses in this data are 0.31–2.43 s. Eleven seconds at maximum brake pressure is not a braking event.
+- **Both brake tests achieved full four-wheel lockup at 1112 and 1830 psi.** Past lockup, extra pressure buys nothing — so 2000+ psi sustained for 11.3 s is far beyond anything braking requires.
+
+All five episodes fall in a 30-second window (t = 1066–1096 s), which is oddly clustered for racing. Whether that is a stationary period with someone standing on the pedal or a sensor problem cannot be told from this export — the fault flag (`FM_FAULT_VCFRONT_BRAKEPRESSURESENSORFAULT`, which the firmware sets from the same voltage) and the brake voltage channel would settle it, and neither was pulled. **Worth adding both to the next export.**
+
+Practical effect: pressure-derived peaks in `endurance_full` are floors, and `find_braking_windows` may merge braking events there since a clamped signal cannot show the dip between two pulses.
+
+### 8. `VCFRONT_brakePressure` is 10 Hz, not 100 Hz
+
+Measured on all 11 files: front **10.0 Hz**, rear **100.0 Hz**, exactly. Every other channel in the export is 100 Hz.
+
+**The sensors are identical — the CAN messages are not.** Both modules sample at 100 Hz (`brakePressure.c` has `brakePressure_periodic_100Hz`); the difference is transmission rate, set in the message definitions:
+
+| | message | `cycleTimeMs` | rate |
+|---|---|---|---|
+| Front | `VCFRONT_pedalInformation` (`0x51`) | 100 | **10 Hz** |
+| Rear | `VCREAR_rearBrakePressure` (`0x453`) | 10 | **100 Hz** |
+
+The reason is visible in the design. Front pressure rides on a **shared** 8-byte message alongside both APPS voltages and the brake pot — it is only logged and displayed. Rear pressure has its **own dedicated** message because `VCFRONT` subscribes to it: `torque.c` uses it live to compute brake torque for torque allocation, so it has to be fast and fresh.
+
+Two consequences:
+
+- **Nyquist is 5 Hz** for the front channel, so any cutoff at or above that is meaningless for it. It is filtered at 3 Hz for exactly this reason.
+- **`find_braking_windows` uses the front channel**, on the sound reasoning that front and rear track each other and front is larger — but that happens to pick the 10× slower one, which can only place a window edge to within 100 ms against braking pulses of 0.31–2.43 s. Whether rear gives cleaner edges is worth checking.
+
+Note the data **exists** at 100 Hz on the module and is simply not transmitted, so front pressure at 100 Hz is a firmware change (raise `cycleTimeMs`, or give it its own message), not new hardware — to be weighed against CAN bus load.
+
+### 9. IMU attitude signals
+
+`VCPDU_angleRoll` / `anglePitch` read ±20–36° against ±1.3° derived from the shock pots — consistent with an uncalibrated gravity-vector tilt rather than chassis attitude (the DBC carries `IMU_UNCALIBRATED` and `IMU_YAW_CALIBRATION_FAILED` warnings). Not used.
+
+`VCPDU_yaw` is partially characterised: dead-reckoning a path from yaw rate and speed does **not close** — the integrated autocross course spans ~365 m while start and end land 156–177 m apart. Consistent with the calibration warning, and the reason there is no track map (see *Lap detection*).
+
+The raw *rates* (`VCPDU_roll`/`pitch`, deg/s) are a separate question and have **not** been validated — they are different signals from the angle channels and may well fail for different reasons, or not at all. A proper write-up of all of this is outstanding.
 
 ---
 
@@ -687,9 +745,9 @@ Prefer the `_zoom` views for choosing a cutoff. At full-file extent every cutoff
 
 ## Choosing cutoffs — `build_cutoff_review.py`
 
-`case_common.py` currently carries exactly **two** cutoff constants and applies them to every signal regardless of content. Accel and brake have no chosen cutoff at all — they inherit the 5 Hz autocross value by accident of the `if/else` in each case script.
+**The cutoff decision has been made** — 10 Hz everywhere, 3 Hz for front brake pressure, with the reasoning in `case_common.py` and the evidence under *How much does the cutoff matter?* above. This tool is what supported that decision and what to re-run if the data set changes or you want to revisit it.
 
-This tool lays out every decision that actually needs making — **29 cells**, as (quantity × event) rather than a mostly-N/A 9×5 grid — puts the relevant plots beside each one, and gives you somewhere to record the answer. It decides nothing itself.
+It lays out every choice that genuinely needs making — **29 cells**, as (quantity × event) rather than a mostly-N/A 9×5 grid — puts the relevant plots beside each one, and gives you somewhere to record the answer. It decides nothing itself.
 
 ```powershell
 uv run build_cutoff_review.py
@@ -699,6 +757,10 @@ uv run build_cutoff_review.py
 |---|---|
 | `review_cutoffs/<event>.html` | one scrollable page per event, plots inline in worklist order |
 | `cutoff_decisions.yaml` | one block per cell with blank `chosen_hz:` / `why:` fields |
+
+Both are **generated on demand and not kept in the repo**. A blank worksheet sitting in version control would imply outstanding work that isn't outstanding; the decision itself lives in `case_common.py`, which is where anything reading the code will look.
+
+The generated worksheet also carries the *which cells even matter* guidance from the sensitivity sweep — all skidpad cells are insensitive (0.3–1.7%), front brake pressure is Nyquist-forced, vehicle speed is coarse gating only, and that leaves the autocross/endurance/brake peak cells which move 24–39%.
 
 **Click any plot to zoom.** The pages carry a lightbox — scroll to zoom (about the cursor, so the detail under the pointer stays put), drag to pan, `fit` / `1:1` buttons, Esc to close. The inline images are scaled down to fit the column; the lightbox is where the 220 dpi detail actually becomes visible.
 
