@@ -7,12 +7,12 @@
 # is a valid answer — but write down WHY, so the next person knows it
 # was decided rather than inherited.
 #
-# Reminder: the README records a real 6-8 Hz mode carrying 5.88mm of
-# travel. A cutoff below it is EXCLUDING REAL SIGNAL on purpose, which
-# is a legitimate modelling choice for body-attitude angles but must
-# be documented as a choice, not as noise rejection. Sitting exactly
-# ON the mode (5 or 8 Hz) is the one option to avoid — the reported
-# peak becomes hypersensitive to the exact value.
+# NOTE: an earlier version of this file warned about a 6-8 Hz
+# resonance. spectral_analysis.py checked and it does not exist —
+# no consistent mode in heave/roll/pitch/warp across the 11 files,
+# and inter-corner coherence never exceeds 0.41. There is no
+# resonance to avoid sitting on. What you are choosing is how much
+# uncorrelated road and sensor content belongs in each number.
 
 decisions:
   - quantity: lateral_g
@@ -86,7 +86,7 @@ decisions:
     used_by: "case1_max_gs; braking/accel segmentation in case3/case4"
     current_hz: 5.0          # AUTOX_END_CUTOFF_HZ (inherited by accident — never chosen)
     review_page: review_cutoffs/brake.html
-    # peak retained (braketest1): 2.0Hz 91%, 3.0Hz 93%, 5.0Hz 97%, 8.0Hz 96%, 10.0Hz 97%, 15.0Hz 99%, 20.0Hz 100%
+    # peak retained (braketest1): 5.0Hz 97%, 6.0Hz 97%, 7.0Hz 96%, 8.0Hz 96%
     chosen_hz:            # <-- fill in
     why:                  # <-- fill in
 
@@ -159,7 +159,7 @@ decisions:
     used_by: "case3_max_pitch"
     current_hz: 5.0          # AUTOX_END_CUTOFF_HZ (inherited by accident — never chosen)
     review_page: review_cutoffs/brake.html
-    # peak retained (braketest1): 2.0Hz 86%, 3.0Hz 92%, 5.0Hz 94%, 8.0Hz 98%, 10.0Hz 99%, 15.0Hz 99%, 20.0Hz 100%
+    # peak retained (braketest1): 5.0Hz 94%, 6.0Hz 96%, 7.0Hz 98%, 8.0Hz 98%
     chosen_hz:            # <-- fill in
     why:                  # <-- fill in
 
@@ -204,7 +204,7 @@ decisions:
     used_by: "case4_combined_roll_pitch"
     current_hz: 5.0          # AUTOX_END_CUTOFF_HZ (inherited by accident — never chosen)
     review_page: review_cutoffs/brake.html
-    # peak retained (braketest1): 2.0Hz 84%, 3.0Hz 88%, 5.0Hz 101%, 8.0Hz 100%, 10.0Hz 99%, 15.0Hz 100%, 20.0Hz 100%
+    # peak retained (braketest1): 5.0Hz 101%, 6.0Hz 103%, 7.0Hz 102%, 8.0Hz 100%
     chosen_hz:            # <-- fill in
     why:                  # <-- fill in
 
@@ -231,7 +231,7 @@ decisions:
     used_by: "case_common.find_braking_windows (via case3)"
     current_hz: 5.0          # AUTOX_END_CUTOFF_HZ (inherited by accident — never chosen)
     review_page: review_cutoffs/brake.html
-    # peak retained (braketest1): 2.0Hz 103%, 3.0Hz 101%, 5.0Hz 100%, 8.0Hz 100%, 10.0Hz 100%, 15.0Hz 100%, 20.0Hz 100%
+    # peak retained (braketest1): 5.0Hz 100%, 6.0Hz 100%, 7.0Hz 100%, 8.0Hz 100%
     chosen_hz:            # <-- fill in
     why:                  # <-- fill in
 
@@ -276,6 +276,6 @@ decisions:
     used_by: "case_common.find_static_window — currently used RAW"
     current_hz: 5.0          # AUTOX_END_CUTOFF_HZ (inherited by accident — never chosen)
     review_page: review_cutoffs/brake.html
-    # peak retained (braketest1): 2.0Hz 98%, 3.0Hz 100%, 5.0Hz 101%, 8.0Hz 100%, 10.0Hz 100%, 15.0Hz 100%, 20.0Hz 100%
+    # peak retained (braketest1): 5.0Hz 101%, 6.0Hz 101%, 7.0Hz 100%, 8.0Hz 100%
     chosen_hz:            # <-- fill in
     why:                  # <-- fill in

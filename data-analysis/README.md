@@ -498,7 +498,7 @@ Its front pressure p99 is exactly 2000 psi, the top of the DBC range `[0|2000]`.
 
 ## Open questions
 
-- **Low-pass cutoff for accel/brake.** No cutoff was ever chosen for these two events — they inherit `AUTOX_END_CUTOFF_HZ` (5 Hz), a constant validated for autocross/endurance transients. It matters: peak pitch moves ~12% across 2→10 Hz. Complicating it, there is a real **6–8 Hz mode carrying 5.88mm** of travel, and both 5 and 8 Hz sit *on* that resonance, which makes the reported peak hypersensitive to the exact value. The choice is really whether that mode belongs in the answer: below it (~3 Hz) reports body attitude, above it (~15 Hz) reports true wheel travel. Affects case4's travel far more than case1–3's angles.
+- **Low-pass cutoff for accel/brake.** No cutoff was ever chosen for these two events — they inherit `AUTOX_END_CUTOFF_HZ` (5 Hz), a constant validated for autocross/endurance transients. It matters: peak pitch moves ~12% across 2→10 Hz. See *Spectral analysis* below — an earlier version of this entry said a real 6–8 Hz mode made the choice delicate, and that turned out not to be true, which makes the decision simpler than it looked.
 - **Motion ratio** is a single value per axle. If it varies meaningfully with travel, a curve would be more accurate.
 - **Case 7 from the original brief (max yaw timing)** is deliberately not implemented.
 
@@ -552,7 +552,41 @@ uv run build_cutoff_review.py
 
 Note the `_zoom` window is **10 s** by default, narrowed from 20 s because seven panels across 20 s left each cutoff too few pixels to judge. `--zoom-duration` overrides it.
 
-Roll and pitch each appear **twice**, under different quantities. That is the point, not a duplication: `case2`/`case3` report them as body **angles** while `case4` reports physical wheel **travel**. Wheel hop is real travel but is not chassis attitude, so the travel answer can legitimately sit *above* the 6–8 Hz mode while the angle answer sits *below* it.
+Roll and pitch each appear **twice**, under different quantities. That is the point, not a duplication: `case2`/`case3` report them as body **angles** while `case4` reports physical wheel **travel**. High-frequency wheel motion is real travel but is not chassis attitude, so the travel answer can legitimately sit *higher* than the angle answer even though it is the same four sensors.
+
+## Spectral analysis — `spectral_analysis.py`
+
+Runs on a true 100 Hz grid (a Fourier transform of non-uniformly sampled data is undefined, and the union grid's zero-order-hold staircase would manufacture broadband energy that no sensor measured). Works in `case4`'s exact heave/roll/pitch/warp modal basis, because a PSD peak alone identifies nothing — what distinguishes a body mode from local wheel motion is **how the corners move relative to each other**.
+
+```powershell
+uv run spectral_analysis.py --dir comp2026_data
+uv run spectral_analysis.py --dir comp2026_data --band 4 12
+```
+
+### Result: there is no 6–8 Hz mode
+
+This README previously recorded "a real **6–8 Hz mode carrying 5.88mm** of travel" and treated it as the crux of every cutoff decision. **It is not supported by the data.**
+
+| mode | verdict across 11 files |
+|---|---|
+| heave | 8/11 have a prominent peak, but at 1.1, 1.1, 3.4, 3.5, 3.9, 8.0, 8.8, 21.9 Hz — **no cluster** |
+| roll | 9/11 prominent, at 1.1–21.8 Hz — **no cluster** |
+| pitch | only 6/11 have a prominent peak at all |
+| warp | 9/11 prominent, at 1.1–21.9 Hz — **no cluster** |
+
+A resonance is a property of the structure, so it has to land at the *same* frequency file after file. These don't. Inter-corner coherence says the same thing independently — it never exceeds **0.41** in any band:
+
+| band | FL–FR | RL–RR | FL–RL | FR–RR |
+|---|---|---|---|---|
+| 1–4 Hz | 0.22 | 0.24 | 0.27 | 0.21 |
+| 4–9 Hz | 0.29 | 0.41 | 0.21 | 0.24 |
+| 9–16 Hz | 0.13 | 0.14 | 0.12 | 0.12 |
+
+Coherence that low means the corners are **not** moving together, so what the shock pots see above 1 Hz is largely uncorrelated per-corner content — road input and sensor noise — rather than coordinated body motion.
+
+**This simplifies the cutoff decision.** There is no resonance to avoid sitting on, so 5 and 8 Hz are not special, and the choice is the plainer one of how much uncorrelated content belongs in each reported number.
+
+Two cautions on the method. Local maxima on a falling spectrum are mostly ripple, so a peak must also stand above its local background — an earlier pass here reported the roll-off shoulder as a mode. And a peak count is not a mode: taking the median of scattered peak frequencies produced a confident "1.50 Hz mode" from frequencies spanning 1.12–21.88 Hz, which is why the clustering test exists.
 
 Leaving a cell at its current value is a valid answer — but the `why` still gets filled in, so the next person knows it was decided rather than inherited.
 - `--zoom-on-peak` centres each zoom on that signal's own largest moment (the fixed 600s window lands on arbitrary quiet track for short accel/brake events). `--zoom-at <seconds>` overrides it — useful because the automatic peak sometimes lands on a step glitch.

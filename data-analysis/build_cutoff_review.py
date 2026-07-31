@@ -32,11 +32,15 @@ Outputs:
 WHICH PLOT SETTLES IT. The `_panels` view is the primary one — raw redrawn
 behind each cutoff, so nothing is occluded. The `_residual` view is what
 settles a borderline call: it shows what each cutoff DISCARDS, so coherent
-structure there means real signal is being deleted rather than noise. The
-README records a real 6-8 Hz mode carrying 5.88mm, and both 5 and 8 Hz sit
-ON that resonance — the worst place to be, because the reported peak then
-becomes hypersensitive to the exact value. Deciding whether that mode
-belongs in the answer is the substance of this exercise.
+structure there means real signal is being deleted rather than noise.
+
+An earlier note here said a real 6-8 Hz mode made this choice delicate.
+spectral_analysis.py checked, and it does not exist: no consistent
+resonance in heave, roll, pitch or warp across the 11 files, and
+inter-corner coherence never exceeds 0.41 in any band. So there is no
+resonance to avoid sitting on, and the choice is the simpler one of how
+much uncorrelated road and sensor content you want in the reported
+number.
 """
 
 import json
@@ -71,7 +75,8 @@ EVENT_FILES = {
 # while case4 reports physical wheel TRAVEL, and those are different
 # physical questions about the same sensors. Wheel hop is real travel but
 # is not chassis attitude, so the travel answer can legitimately sit above
-# the 6-8 Hz mode while the angle answer sits below it.
+# a wheel-hop band while the angle answer sits below it — though see
+# spectral_analysis.py: no such resonance was actually found.
 #
 #   key            -> label, filter_compare plot stem, consumer, events
 CELLS = [
@@ -100,9 +105,11 @@ CELLS = [
         "used_by": "case2_max_roll",
         "events": ["skidpad", "autocross", "endurance"],
         "note": "Reported as a chassis attitude angle. Wheel hop is not "
-                "chassis attitude, so excluding the 6-8 Hz mode here is "
-                "defensible — but it is a MODELLING CHOICE, not noise "
-                "rejection, and has to be documented as one.",
+                "chassis attitude, so a lower cutoff here is defensible. Note "
+                "spectral_analysis.py found NO consistent resonance in any "
+                "mode, so this is not about avoiding a specific frequency — "
+                "it is about how much uncorrelated content belongs in an "
+                "attitude number.",
     },
     {
         "key": "pitch_angle",
@@ -124,9 +131,9 @@ CELLS = [
                 "not plot per-corner travel separately, but it is the same "
                 "four sensors and the same frequency content, so the plots "
                 "answer the same question. Here the reported quantity is how "
-                "far the wheel really moved, and it really does move at "
-                "6-8 Hz — so this cutoff should probably sit ABOVE the mode "
-                "even where the angle cutoffs sit below it.",
+                "far the wheel really moved, and the wheel really does move "
+                "at high frequency — so this cutoff can sit HIGHER than the "
+                "angle cutoffs even though it is the same sensors.",
     },
     {
         "key": "brake_pressure_front",
@@ -575,12 +582,12 @@ def build_worksheet():
         "# is a valid answer — but write down WHY, so the next person knows it",
         "# was decided rather than inherited.",
         "#",
-        "# Reminder: the README records a real 6-8 Hz mode carrying 5.88mm of",
-        "# travel. A cutoff below it is EXCLUDING REAL SIGNAL on purpose, which",
-        "# is a legitimate modelling choice for body-attitude angles but must",
-        "# be documented as a choice, not as noise rejection. Sitting exactly",
-        "# ON the mode (5 or 8 Hz) is the one option to avoid — the reported",
-        "# peak becomes hypersensitive to the exact value.",
+        "# NOTE: an earlier version of this file warned about a 6-8 Hz",
+        "# resonance. spectral_analysis.py checked and it does not exist —",
+        "# no consistent mode in heave/roll/pitch/warp across the 11 files,",
+        "# and inter-corner coherence never exceeds 0.41. There is no",
+        "# resonance to avoid sitting on. What you are choosing is how much",
+        "# uncorrelated road and sensor content belongs in each number.",
         "",
         "decisions:",
     ]

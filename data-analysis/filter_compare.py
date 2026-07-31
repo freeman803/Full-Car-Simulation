@@ -380,8 +380,9 @@ def fill_nans(values):
 #              decision-relevant view: it shows exactly WHAT IS BEING
 #              DISCARDED at each cutoff. A formless residual means the
 #              cutoff is safe; a visibly coherent oscillation means real
-#              signal is being deleted. The known 6-8 Hz mode (README,
-#              "Open questions") should be legible here at 5 Hz.
+#              signal is being deleted. Note spectral_analysis.py found no
+#              consistent resonance in any mode, so structure here is road
+#              and sensor content rather than a vehicle mode.
 #
 # COLOUR: distinct hues, not shades of one.
 #
