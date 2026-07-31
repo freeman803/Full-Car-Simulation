@@ -435,6 +435,47 @@ This is the same phenomenon as *Known data problems #3* ("FL shock pot is suspec
 
 The open question is *why* the front pots ended up at their extension limit for those two runs and not the neighbouring ones. A physical check of the front pot mounting and stroke range would settle it; the telemetry can localise the problem but not diagnose the hardware.
 
+## What each file actually is — official results and run provenance
+
+From the [FSAE Electric 2026 official results](https://www.fsaeonline.com/CompResources/2026/07af50d8-cbb6-4b9b-aaf8-5ff6a7e44057/FSAE_2026_MI6_results.pdf) plus team context. **Concordia is car #43, 19th overall, 475.1 points** (3rd in Cost at $25,197; car is 1 motor, 370 V, **215.5 kg** — the mass you need to turn a °/g gradient into N·m/deg).
+
+This matters because a telemetry file is not self-describing. Knowing that one autocross run went off course, or that an endurance lap contains an unscheduled stop, changes how you read an anomaly in it.
+
+### Autocross — Josh ran first, then Andrew
+
+| official run | file | raw time | penalty | adjusted |
+|---|---|---|---|---|
+| 1 | `autocross_josh1` | 50.508 | **1 off course (+20 s)** | 70.508 |
+| 2 | `autocross_josh2` | **49.541** | clean | 49.541 — best |
+| 3 | `autocross_andrew1` | 54.514 | clean | 54.514 |
+| 4 | `autocross_andrew2` | 51.687 | clean | 51.687 |
+
+18th place, 81.81 points. Our own measurements corroborate the ordering: `andrew1` is the slowest official run *and* the slowest in telemetry (65.8 s moving, against 57–59 s), with the longest distance (804 m against 787–791 m).
+
+### Endurance — Andrew first, then Josh. **DNF on the last lap.**
+
+**1483.688 s, 21 laps completed**, DNF. Official lap times:
+
+```
+68.197  68.186  71.313  67.568  67.159  69.294  69.068
+70.252  69.225  70.102  76.539  121.893  68.476  67.020
+64.873  66.610  66.858  66.799  64.425  63.364  66.467
+```
+
+**Lap 12 is 121.893 s against a ~67 s norm.** That is the driver change plus a *momentary stop near the beginning of Josh's stint* — team-confirmed, not inferred. Lap 11 at 76.539 s is the run-in to it. The last seven laps (63–67 s) are the fastest of the event, so the car recovered fully.
+
+Note `endurance_full.csv` spans 1740 s against the official 1483.7 s, so the file holds roughly four minutes beyond the scored run.
+
+**This gives lap detection a ground truth.** Any lap detector can be validated against 21 known laps with known durations, rather than eyeballed.
+
+### Skidpad — Austin only
+
+15th, best 5.178 s. Austin ran first and **only his two runs were pulled**: 5.461/5.122 R/L (avg 5.291) and 5.297/5.061 (avg **5.178**, the counting run). The second driver DNF'd one run and was slower, so that data was deliberately not exported. `skidpad_austin_both.csv` is therefore both of Austin's runs and nothing else.
+
+### Acceleration — Jamie first, then Corinne
+
+20th, best 4.521 s. Runs were 4.569 / **4.521** (Jamie, both in `accel_jamie_both.csv`) then 4.604 / 4.601 (`accel_corinne1`, `accel_corinne2`). Remarkably consistent across drivers — 4.52–4.60 s.
+
 ## Known data problems
 
 Read this before trusting any number.

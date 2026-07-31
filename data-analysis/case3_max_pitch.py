@@ -126,7 +126,7 @@ from case_common import (
     find_static_window, static_baseline, to_wheel_travel,
     MOTION_RATIO_FRONT, MOTION_RATIO_REAR,
     find_braking_windows, BRAKE_PRESSURE_SIGNALS, BRAKE_PRESSURE_MAX_PSI,
-    BRAKING_PRESSURE_PSI,
+    BRAKING_PRESSURE_PSI, BRAKE_PRESSURE_CUTOFF_HZ,
     TRIM_SECONDS, TOP_K_PEAKS,
     WHEELBASE_MM, mm_to_deg,
 )
@@ -241,7 +241,11 @@ def load_pitch_signals(path, cutoff_hz):
     bp_name = BRAKE_PRESSURE_SIGNALS["front"]
     if bp_name in signals:
         bp_raw = np.asarray(signals[bp_name].value, dtype=float)
-        bp_front = lowpass(bp_raw, dt, cutoff_hz)
+        # NOT the event cutoff. Front brake pressure is sampled at 10 Hz —
+        # the only channel here that is not 100 Hz — so its Nyquist is 5 Hz
+        # and filtering it at the event's 10 Hz would be meaningless. See
+        # case_common.BRAKE_PRESSURE_CUTOFF_HZ.
+        bp_front = lowpass(bp_raw, dt, BRAKE_PRESSURE_CUTOFF_HZ)
         bp_saturated = bool(np.nanmax(bp_raw) >= BRAKE_PRESSURE_MAX_PSI)
     else:
         bp_front, bp_saturated = None, False

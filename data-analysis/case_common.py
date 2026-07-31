@@ -39,8 +39,51 @@ from scipy.signal import butter, filtfilt, find_peaks
 # ── Physical / filter constants ──────────────────────────────────────────
 G = 9.80665                  # standard gravity (m/s^2) — matches filter_compare.py
 FILTER_ORDER = 4              # Butterworth order, every case script
-SKIDPAD_CUTOFF_HZ = 2.0       # locked-in cutoff for skidpad (steady-state cornering)
-AUTOX_END_CUTOFF_HZ = 5.0     # locked-in cutoff for autocross/endurance (transient)
+# ── Low-pass cutoffs ─────────────────────────────────────────────────────
+#
+# CHOSEN 2026-07-31 FROM MEASUREMENT, replacing an inherited 2.0 / 5.0 that
+# no one had validated. Three findings drove it, all reproducible:
+#
+# 1. THERE IS NO RESONANCE TO AVOID. This file's previous guidance was built
+#    around "a real 6-8 Hz mode carrying 5.88mm", which spectral_analysis.py
+#    checked and disproved: no consistent mode in heave/roll/pitch/warp
+#    across the 11 files (prominent peaks scatter 1.1-21.9 Hz), and
+#    inter-corner coherence never exceeds 0.41 in any band. So 5 and 8 Hz
+#    are not special values and the choice is not about dodging a frequency.
+#
+# 2. LOW CUTOFFS ARE THE UNSTABLE REGION — the opposite of the intuition.
+#    cutoff_sweep.py measures how much each reported number moves if the
+#    cutoff shifts one step. Mean across the peak-based quantities:
+#
+#        2 Hz  7.1%    5 Hz  6.0%    10 Hz  1.9%    20 Hz  3.3%
+#        3 Hz  7.1%    8 Hz  3.0%    15 Hz  2.9%
+#
+#    Smoothing pushes candidate peaks toward each other, so at low cutoffs a
+#    tiny filter change flips which peak the detector picks —
+#    case3.endurance.worst_deg moves 15-21% PER STEP down there. By 10 Hz
+#    the peaks are sharp and unambiguous. The old 5.0 sat on that slope,
+#    which is the worst place to be.
+#
+# 3. ABOVE 10 Hz the numbers climb again as sharp transient content enters
+#    (kerb strikes, driveline shock). That content is REAL — checked, it is
+#    not the IMU 2-sample artefacts, which contribute 0.0% at every cutoff
+#    except endurance lateral at 20 Hz — but whether it belongs in "peak
+#    longitudinal G" is a modelling choice, and including it makes the
+#    number less stable rather than more informative.
+#
+# Skidpad keeps the same value as everything else now. Its numbers are
+# medians over steady segments and move only 0.3-1.7% across the whole
+# 2-20 Hz sweep, so it has no preference worth encoding — and one constant
+# is easier to reason about than two.
+SKIDPAD_CUTOFF_HZ = 10.0      # was 2.0 — see above; skidpad is insensitive anyway
+AUTOX_END_CUTOFF_HZ = 10.0    # was 5.0 — 5 Hz sat on the unstable slope
+
+# FRONT BRAKE PRESSURE IS NOT A FREE CHOICE. Measured from its raw
+# timestamps it is sampled at 10 Hz, the only channel here that is not 100
+# Hz, so its Nyquist is 5 Hz and any higher cutoff is undefined for it.
+# It is consumed by find_braking_windows() for SEGMENTATION rather than
+# reporting, so what it needs is clean window edges, not a faithful peak.
+BRAKE_PRESSURE_CUTOFF_HZ = 3.0
 
 # ── Event detection ───────────────────────────────────────────────────────
 EVENT_KEYWORDS = ["skidpad", "autocross", "endurance", "brake", "accel"]
