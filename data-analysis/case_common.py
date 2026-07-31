@@ -467,6 +467,61 @@ CORNER_SIGNAL_NAMES = {
 }
 
 
+# ── Known-bad channels, per file ─────────────────────────────────────────
+#
+# PER FILE AND PER CORNER, not per file. Throwing away a whole file to
+# escape one bad channel discards good data for no reason — in the case
+# below the rear pots are healthy in all four autocross runs, and the rear
+# roll gradient moves 0.886 -> 0.885 whether the suspect files are in or
+# out, i.e. not at all.
+#
+# WHY THESE TWO FILES. In autocross_josh2 and autocross_andrew1 BOTH front
+# shock pots sit in a voltage band that never rises above 1.0 V — the
+# extension end of their stroke — against 0.32-1.20 V in the two
+# neighbouring runs. The front sweeps 7-13mm instead of 22-38mm, and the
+# front roll gradient reads 0.29-0.31 deg/g against 0.78-0.79. Three checks
+# rule out anything but a measurement problem:
+#
+#   - The runs are otherwise identical: matching lateral-G content, and
+#     andrew1/andrew2 are TWO MINUTES apart, so nothing physical changed.
+#   - The disp<-volt decode is identical in every file (-25.495 to -25.511
+#     mm/V against the documented -25.510), so it is not units or scaling.
+#   - The deficit is UNIFORM around the lap. Front/rear roll amplitude
+#     ratio per 79m segment is ~0.6 in these files and ~1.5 in the clean
+#     ones, constant all the way round — so not driving style, not one
+#     corner, and not the Run 1 off-course excursion.
+#
+# WHICH CASES NEED THIS. Only case5. Cases 1-4 report PEAKS, and bad front
+# data is SMALLER than good, so it never wins a peak search — verified by
+# re-running case2 without these files, which changes its autocross roll by
+# exactly 0.0%. A gradient is a fit over every sample, so bad data does not
+# have to win anything, it just drags the slope: excluding these moves the
+# autocross front gradient 0.540 -> 0.784 and its R^2 0.770 -> 0.930.
+#
+# The R^2 improvement is the tell that this is removing genuinely bad data
+# rather than inconvenient data.
+SUSPECT_CORNERS = {
+    "autocross_josh2": {"FL", "FR"},
+    "autocross_andrew1": {"FL", "FR"},
+}
+
+
+def suspect_corners(path):
+    """Corners whose data is known bad in this file. Empty set if clean."""
+    stem = os.path.splitext(os.path.basename(path))[0]
+    return SUSPECT_CORNERS.get(stem, set())
+
+
+def is_suspect(path, corners):
+    """True if ANY of `corners` is known bad in this file.
+
+    Pass the corners a quantity actually depends on: rear roll needs only
+    RL/RR, so it survives a bad front pair, while whole-car roll needs all
+    four and does not.
+    """
+    return bool(suspect_corners(path) & set(corners))
+
+
 # ── Motion ratio: shock/spring travel -> wheel travel ────────────────────
 #
 # Measured values (from the team's suspension loads sheet), defined as

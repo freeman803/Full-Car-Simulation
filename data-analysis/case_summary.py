@@ -43,6 +43,7 @@ import case1_max_gs as c1
 import case2_max_roll as c2
 import case3_max_pitch as c3
 import case4_combined_roll_pitch as c4
+import case5_gradients as c5
 
 
 # ── Collectors: mirror each case's own main() loop, minus the plotting ────
@@ -127,6 +128,29 @@ def collect_case4(grouped):
     return out
 
 
+def collect_case5(grouped):
+    """Roll gradient per event, from case5's own main().
+
+    case5 returns a FLAT dict keyed "<event>_roll_<which>" / "<event>_pitch",
+    because a gradient is not per-event in the same way the other cases are —
+    it is a property of the car measured on that event. Re-keyed to
+    {event: {...}} here so it slots into the same table.
+    """
+    out = {}
+    flat = _quiet(c5.summary_only, grouped)
+    for key, value in (flat or {}).items():
+        if value is None:
+            continue
+        if key.startswith("skidpad_steady_roll_"):
+            out.setdefault("skidpad", {})[key.rsplit("_", 1)[-1]] = value
+        elif "_roll_" in key:
+            event, which = key.split("_roll_")
+            out.setdefault(event, {}).setdefault(which, value)
+        elif key.endswith("_pitch"):
+            out.setdefault(key[:-6], {})["pitch"] = value
+    return out
+
+
 # ── Table assembly ───────────────────────────────────────────────────────
 
 ALL_EVENTS = ["skidpad", "accel", "brake", "autocross", "endurance"]
@@ -139,6 +163,8 @@ HEADERS = [
     "Roll (deg)",
     "Pitch (deg)",
     "Worst corner travel",
+    "Roll grad (deg/g)",
+    "Pitch grad (deg/g)",
 ]
 
 
@@ -146,13 +172,14 @@ def _fmt(value, spec, dash="—"):
     return dash if value is None else format(value, spec)
 
 
-def build_rows(s1, s2, s3, s4):
+def build_rows(s1, s2, s3, s4, s5=None):
     """One row per event. A dash means that case does not cover this event, or
     the quantity does not exist for it (e.g. skidpad has no separate peak G —
     it is a sustained measurement by design)."""
     rows = []
     for event in ALL_EVENTS:
         a, b, c, d = s1.get(event), s2.get(event), s3.get(event), s4.get(event)
+        e = (s5 or {}).get(event)
 
         sustained = peak_lat = peak_lon = None
         if a:
@@ -183,6 +210,22 @@ def build_rows(s1, s2, s3, s4):
             if mm is not None:
                 travel = f"{mm:+.1f} mm ({corner})"
 
+        # Whole-car roll gradient. Skidpad's is the steady-segment fit,
+        # which is the cleanest and the one to quote.
+        #
+        # The two gradients cover DIFFERENT events by design — roll needs
+        # sustained lateral G (skidpad, autocross, endurance) and pitch needs
+        # sustained longitudinal G (accel, brake, autocross, endurance). So
+        # accel and brake have a pitch gradient and no roll gradient, and
+        # skidpad the reverse. The dashes are meaningful, not missing data.
+        gradient = None
+        if e and e.get("avg") is not None:
+            gradient = f"{abs(e['avg']):.3f}"
+
+        pitch_gradient = None
+        if e and e.get("pitch") is not None:
+            pitch_gradient = f"{abs(e['pitch']):.3f}"
+
         rows.append([
             event.upper(),
             sustained or "—",
@@ -191,6 +234,8 @@ def build_rows(s1, s2, s3, s4):
             roll or "—",
             pitch or "—",
             travel or "—",
+            gradient or "—",
+            pitch_gradient or "—",
         ])
     return rows
 
@@ -295,7 +340,10 @@ def main():
     print("Collecting case4 (combined / corner travel)...", flush=True)
     s4 = collect_case4(grouped)
 
-    rows = build_rows(s1, s2, s3, s4)
+    print("Collecting case5 (gradients)...")
+    s5 = collect_case5(grouped)
+
+    rows = build_rows(s1, s2, s3, s4, s5)
     print_console(rows)
 
     out_root = os.path.join("plots")

@@ -76,9 +76,10 @@ from case_common import (
     find_step_glitches, find_steady_segments, trim_window,
     baseline_corner_displacements, to_wheel_travel, lowpass,
     mm_to_deg, FRONT_TRACK_MM, REAR_TRACK_MM, AVG_TRACK_MM, WHEELBASE_MM,
-    CORNERS, CORNER_SIGNAL_NAMES, TRIM_SECONDS,
+    CORNERS, CORNER_SIGNAL_NAMES, TRIM_SECONDS, is_suspect,
 )
 from parse_influx import parse_influx
+from case_report import report_page, write_index
 
 import case2_max_roll as c2
 import case3_max_pitch as c3
@@ -107,6 +108,26 @@ PLOTS_ROOT = os.path.join("plots", "case5_gradients")
 
 COLORS = {"front": "#2a78d6", "rear": "#eb6834", "avg": "#1baf7a",
           "pitch": "#4a3aa7"}
+
+
+# A quantity is only as trustworthy as the corners it is built from. Rear
+# roll survives a bad front pair; whole-car roll does not.
+QUANTITY_CORNERS = {
+    "front": ("FL", "FR"),
+    "rear":  ("RL", "RR"),
+    "avg":   ("FL", "FR", "RL", "RR"),
+    "pitch": ("FL", "FR", "RL", "RR"),
+}
+
+
+def usable_series(series, which):
+    """Drop runs whose data for THIS quantity is known bad.
+
+    Per quantity rather than per file, so a bad front pair does not cost us
+    the rear data in the same run. See case_common.SUSPECT_CORNERS.
+    """
+    corners = QUANTITY_CORNERS[which]
+    return [s for s in series if not is_suspect(s["path"], corners)]
 
 
 def _quiet(fn, *args, **kwargs):
@@ -301,6 +322,71 @@ def build_scatter(fits, title, xlabel, output_path):
     fig.write_html(output_path, include_plotlyjs="cdn")
 
 
+def summary_only(grouped):
+    """The gradient numbers, without plots or console output.
+
+    For case_summary.py, which wants the figures but not the 30 seconds of
+    plotting. Reuses roll_series / pitch_series / fit_gradient rather than
+    duplicating the fit, so it cannot disagree with what main() reports.
+
+    Returns the same FLAT shape main() does: "<event>_roll_<which>",
+    "skidpad_steady_roll_<which>", "<event>_pitch".
+    """
+    out = {}
+
+    for event in ROLL_EVENTS:
+        paths = grouped.get(event, [])
+        if not paths:
+            continue
+
+        cutoff = SKIDPAD_CUTOFF_HZ if event == "skidpad" else AUTOX_END_CUTOFF_HZ
+        series = [s for p in paths if (s := roll_series(p, cutoff)) is not None]
+        if not series:
+            continue
+
+        for which in ("front", "rear", "avg"):
+            use = usable_series(series, which)
+            if not use:
+                out[f"{event}_roll_{which}"] = None
+                continue
+            g = np.concatenate([s["lat"][s["keep"]] for s in use])
+            a = np.concatenate([s[which][s["keep"]] for s in use])
+            fit = fit_gradient(g, a)
+            out[f"{event}_roll_{which}"] = abs(fit["slope"]) if fit else None
+
+        # Skidpad's steady-segment fit is the cleanest estimate and the one
+        # the summary table should show.
+        if event == "skidpad":
+            for which in ("front", "rear", "avg"):
+                use = usable_series(series, which)
+                masks = [s["keep"] & steady_mask(s) for s in use]
+                g = np.concatenate([s["lat"][m] for s, m in zip(use, masks)])
+                a = np.concatenate([s[which][m] for s, m in zip(use, masks)])
+                fit = fit_gradient(g, a)
+                out[f"skidpad_steady_roll_{which}"] = abs(fit["slope"]) if fit else None
+
+    for event in PITCH_EVENTS:
+        paths = grouped.get(event, [])
+        if not paths:
+            continue
+
+        series = [s for p in paths
+                  if (s := pitch_series(p, AUTOX_END_CUTOFF_HZ)) is not None]
+        if not series:
+            continue
+
+        use = usable_series(series, "pitch")
+        if not use:
+            out[f"{event}_pitch"] = None
+            continue
+        g = np.concatenate([s["lon"][s["keep"]] for s in use])
+        a = np.concatenate([s["pitch"][s["keep"]] for s in use])
+        fit = fit_gradient(g, a)
+        out[f"{event}_pitch"] = abs(fit["slope"]) if fit else None
+
+    return out
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Roll and pitch gradients (deg/g)."
@@ -335,10 +421,21 @@ def main():
         print(f"\n=== {event.upper()} — ROLL GRADIENT ({cutoff} Hz low-pass) ===")
 
         pooled = {}
+        dropped = {}
         for which in ("front", "rear", "avg"):
-            g = np.concatenate([s["lat"][s["keep"]] for s in series])
-            a = np.concatenate([s[which][s["keep"]] for s in series])
+            use = usable_series(series, which)
+            dropped[which] = len(series) - len(use)
+            if not use:
+                pooled[which] = None
+                continue
+            g = np.concatenate([s["lat"][s["keep"]] for s in use])
+            a = np.concatenate([s[which][s["keep"]] for s in use])
             pooled[which] = fit_gradient(g, a)
+
+        if any(dropped.values()):
+            print(f"    [!] excluded runs with known-bad channels: "
+                  + ", ".join(f"{w} -{n}" for w, n in dropped.items() if n)
+                  + "  (see case_common.SUSPECT_CORNERS)")
 
         for which in ("front", "rear", "avg"):
             summary[f"{event}_roll_{which}"] = report_fit(which, pooled[which])
@@ -443,8 +540,12 @@ def main():
             print(f"\n    STEADY-STATE ONLY (the number to quote):")
             steady = {}
             for which in ("front", "rear", "avg"):
-                g = np.concatenate([s["lat"][s["keep"] & steady_mask(s)] for s in series])
-                a = np.concatenate([s[which][s["keep"] & steady_mask(s)] for s in series])
+                use = usable_series(series, which)
+                if not use:
+                    steady[which] = None
+                    continue
+                g = np.concatenate([s["lat"][s["keep"] & steady_mask(s)] for s in use])
+                a = np.concatenate([s[which][s["keep"] & steady_mask(s)] for s in use])
                 steady[which] = fit_gradient(g, a)
             for which in ("front", "rear", "avg"):
                 summary[f"skidpad_steady_roll_{which}"] = report_fit(which, steady[which])
@@ -467,8 +568,20 @@ def main():
 
         print(f"\n=== {event.upper()} — PITCH GRADIENT ({cutoff} Hz low-pass) ===")
 
-        g = np.concatenate([s["lon"][s["keep"]] for s in series])
-        a = np.concatenate([s["pitch"][s["keep"]] for s in series])
+        # Pitch is front-axle-average minus rear, so it needs all four
+        # corners and a bad front pair disqualifies the run — same exclusion
+        # as whole-car roll.
+        use = usable_series(series, "pitch")
+        if len(use) < len(series):
+            print(f"    [!] excluded {len(series) - len(use)} run(s) with "
+                  f"known-bad channels (see case_common.SUSPECT_CORNERS)")
+
+        if not use:
+            print("    no usable runs")
+            continue
+
+        g = np.concatenate([s["lon"][s["keep"]] for s in use])
+        a = np.concatenate([s["pitch"][s["keep"]] for s in use])
         fit = fit_gradient(g, a)
 
         # Braking is positive lon G and pitches the nose DOWN, which on this
@@ -487,6 +600,11 @@ def main():
     print("linear and lag-free, an open loop means hysteresis through transients.")
     print("-" * 78 + "\n")
 
+    return summary
+
 
 if __name__ == "__main__":
-    main()
+    with report_page("case5_gradients", "Case 5 — Roll and Pitch Gradient",
+                     PLOTS_ROOT) as page:
+        page.summary = main()
+    write_index()

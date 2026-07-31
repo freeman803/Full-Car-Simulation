@@ -63,12 +63,21 @@ ATOL = 1e-12
 
 
 def collect_case_summaries(grouped):
-    """Every case's own summary dicts, via case_summary's collectors."""
+    """Every case's own summary dicts, via case_summary's collectors.
+
+    case5 is included because its gradients are headline numbers — and
+    because it is the only case affected by SUSPECT_CORNERS, so a change to
+    that registry would otherwise move a published figure with nothing
+    watching. (Cases 1-4 are immune: they report peaks, and the suspect
+    channels under-report, so bad data never wins a peak search. Verified —
+    adding the registry moved zero pinned values.)
+    """
     return {
         "case1_max_gs": cs.collect_case1(grouped),
         "case2_max_roll": cs.collect_case2(grouped),
         "case3_max_pitch": cs.collect_case3(grouped),
         "case4_combined_roll_pitch": cs.collect_case4(grouped),
+        "case5_gradients": cs.collect_case5(grouped),
     }
 
 

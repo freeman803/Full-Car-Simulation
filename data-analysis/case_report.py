@@ -138,8 +138,21 @@ def _cards(summary):
     if not summary:
         return ""
 
+    # Two shapes in the wild, and silently rendering nothing for one of them
+    # is worse than either. case1-case4 return {event: {key: value}};
+    # case5 returns a FLAT {key: value} because its keys already carry the
+    # event ("skidpad_roll_front"). Normalise rather than force one shape on
+    # the cases, since the flat form reads better in case5's own report.
+    flat = {k: v for k, v in summary.items()
+            if isinstance(v, (int, float)) and not isinstance(v, bool)}
+
+    grouped = {k: v for k, v in summary.items() if isinstance(v, dict)}
+
+    if flat and not grouped:
+        grouped = {"results": flat}
+
     out = []
-    for event, values in summary.items():
+    for event, values in grouped.items():
         if not isinstance(values, dict):
             continue
 
