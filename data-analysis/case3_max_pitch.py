@@ -42,19 +42,20 @@ used only as a coarse gate — stopped-car detection, and the braking speed
 gate below.
 
 Filtering is IDENTICAL to case1/case2 (imported from case_common, not
-redefined here): 4th-order Butterworth, filtfilt, 2 Hz for skidpad / 5 Hz
-for everything else.
+redefined here): 4th-order Butterworth, filtfilt, 10 Hz for every event
+(3 Hz for front brake pressure, which is sampled at 10 Hz so its Nyquist is
+5 Hz). Retuned 2026-07-31 from cutoff_sweep.py — see the README.
 
 Methodology per event (verified against real data before picking each one
 — see the session this was built in):
-- SKIDPAD (2 Hz low-pass): reuses the exact same lateral-G steady-segment
+- SKIDPAD (10 Hz low-pass): reuses the exact same lateral-G steady-segment
   windows case1/case2 use. Reports MEDIAN pitch over each segment's
   trimmed middle. Expected to be near-zero (skidpad is constant-speed
   cornering, minimal longitudinal load transfer) — reported for
   completeness / as a sanity check, same "one steady number, no separate
   peak" treatment as case2 gives skidpad roll.
 
-- ACCEL (5 Hz low-pass): "quasi-steady" per request — verified this is
+- ACCEL (10 Hz low-pass): "quasi-steady" per request — verified this is
   real: accel files contain one continuous ~4s accelerating pull (not a
   series of short spikes), found via longitudinal-G steady-segment
   detection (same segment-finder as skidpad, applied to lon G instead of
@@ -64,7 +65,7 @@ Methodology per event (verified against real data before picking each one
   being measured). Reports MEDIAN pitch over the trimmed window(s), same
   single-number treatment as skidpad.
 
-- BRAKE (5 Hz low-pass): braking windows come from FRONT BRAKE PRESSURE
+- BRAKE (10 Hz low-pass, brake pressure at 3 Hz): braking windows come from FRONT BRAKE PRESSURE
   (>100 psi) AND vehicle speed (>3 m/s), via
   case_common.find_braking_windows() — not from thresholding longitudinal
   G. Pressure is the driver's actual input; lon G is only the result of it
@@ -88,7 +89,7 @@ Methodology per event (verified against real data before picking each one
   CAUTION: endurance_full.csv saturates its brake-pressure channel at the
   DBC ceiling of 2000 psi, so pressure-derived numbers there are floors.
 
-- AUTOCROSS / ENDURANCE (5 Hz low-pass): continuous mixed driving, no
+- AUTOCROSS / ENDURANCE (10 Hz low-pass): continuous mixed driving, no
   single "the maneuver" to isolate — same blind whole-file peak detection
   on |pitch| as case1/case2 use for G's/roll (prominence + minimum
   spacing), top 5 pooled across files + single highest.

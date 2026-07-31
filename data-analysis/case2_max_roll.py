@@ -43,18 +43,19 @@ against 1.6231 deg exact at the endurance peak). Documented rather than
 "fixed", so published numbers stay comparable.
 
 Filtering is IDENTICAL to case1_max_gs.py (imported from case_common, not
-redefined here): 4th-order Butterworth, filtfilt, 2 Hz for skidpad / 5 Hz
-for autocross+endurance.
+redefined here): 4th-order Butterworth, filtfilt, 10 Hz for every event.
+Retuned 2026-07-31 from cutoff_sweep.py, which showed low cutoffs are the
+UNSTABLE region and the old 5 Hz sat on that slope — see the README.
 
 Methodology (mirrors case1_max_gs.py exactly):
-- SKIDPAD (2 Hz low-pass): same steady-state segment detection as case1
+- SKIDPAD (10 Hz low-pass): same steady-state segment detection as case1
   (using filtered LATERAL G to find the steady-circling windows — roll
   itself is not used to detect the windows, only to report a value once
   the window is known). Reports MEDIAN front/rear/avg roll over each
   segment's trimmed middle, matching the "average over the steady lap"
   approach case1 uses for lateral G.
 
-- AUTOCROSS / ENDURANCE (5 Hz low-pass): peak detection directly on
+- AUTOCROSS / ENDURANCE (10 Hz low-pass): peak detection directly on
   |roll_front|, |roll_rear|, |roll_avg| (prominence + minimum spacing to
   reject noise / avoid double-counting one corner), top 5 pooled across
   all files in that event, plus the single highest peak with its front/

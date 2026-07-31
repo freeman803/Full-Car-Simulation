@@ -58,8 +58,8 @@ relative to its own static baseline:
 Both extremes are reported, since both have a mechanical limit.
 
 Filtering is IDENTICAL to case1/case2/case3 (imported from case_common, not
-redefined): 4th-order Butterworth, filtfilt, 2 Hz for skidpad / 5 Hz for
-everything else.
+redefined): 4th-order Butterworth, filtfilt, 10 Hz for every event.
+Retuned 2026-07-31 from cutoff_sweep.py — see the README.
 
 Methodology per event — all five events are covered, which corrects the
 original scoping assumption. It was assumed skidpad/accel/brake were

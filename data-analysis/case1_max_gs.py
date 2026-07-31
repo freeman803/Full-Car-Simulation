@@ -7,7 +7,7 @@ case1_max_gs.py — Case 1: max lateral G, max longitudinal G, max combined G,
 for SKIDPAD, AUTOCROSS, and ENDURANCE (kept separate).
 
 Methodology:
-- SKIDPAD (2 Hz low-pass): the event is two sustained circles (one per
+- SKIDPAD (10 Hz low-pass): the event is two sustained circles (one per
   direction), so we find the longest steady-state stretch of each
   direction and report the MEDIAN lateral G (+ mean longitudinal G) over
   its trimmed middle — matching how FSAE itself scores skidpad (average
@@ -19,7 +19,7 @@ Methodology:
   which is still meaningful for detecting active correction vs. holding
   a line.
 
-- AUTOCROSS / ENDURANCE (5 Hz low-pass): these are transient corner
+- AUTOCROSS / ENDURANCE (10 Hz low-pass): these are transient corner
   sequences, so instead of one global max we detect real peaks (using
   prominence + minimum spacing to reject noise and avoid double-counting
   one corner) and average the top 5 pooled across all files in that

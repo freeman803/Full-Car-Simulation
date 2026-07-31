@@ -65,11 +65,12 @@ mean anything at all):
     So 2-10 Hz cutoffs are comfortably valid for the shock pots and the
     accelerometers, but at or past Nyquist for steering angle.
 
-    Note the ~1200 Hz "sampling frequency" printed below is the density of
-    the InfluxDB union time grid, not a real sample rate — see
-    case_common.py's module docstring. It is the correct fs to design the
-    filter against, since these arrays really do live on that grid, but it
-    is not evidence that any signal is genuinely sampled that fast.
+    This tool RESAMPLES to a true 100 Hz grid before filtering, so 100 Hz
+    is the fs every filter here is designed against. The union-grid density
+    is still printed alongside for context, but it is NOT a sample rate —
+    it is how often some signal happened to update, it is built by
+    zero-order hold, and designing a filter against it is what this used to
+    do wrongly.
 
     The IMU also applies its own low-pass in firmware (imu.c:47,
     IMU_LPF_CUTOFF_HZ = 100.0 with IMU_LPF_DT_S = 0.01). A 100 Hz cutoff at
@@ -460,12 +461,11 @@ def cutoff_colors(cutoffs):
     }
 
 
-# Target point count per trace in the interactive overlay. The zoom window
-# lives on the ~1200 Hz union grid, so a 10s window is ~12000 samples per
-# trace and 8 traces would ship ~100k points into the browser per chart.
-# The real sample rate is 100 Hz, so anything past ~1000-2000 points in a
-# 10s window is grid density rather than signal — decimating to this is a
-# display cost of nothing and keeps the page responsive.
+# Target point count per trace in the interactive overlay. Data now arrives
+# on the true 100 Hz grid, so a 10s window is ~1000 samples per trace and
+# this ceiling rarely binds — it is kept as a guard for long --zoom-duration
+# values, where 8 traces could otherwise ship a lot of points into the
+# browser for detail below one screen pixel.
 INTERACTIVE_MAX_POINTS = 3000
 
 

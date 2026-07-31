@@ -7,11 +7,17 @@ spectral_analysis.py — where the suspension's energy actually lives, and
 what the modes are.
 
 WHY. Every cutoff decision in this project is a decision about which
-frequencies to keep, and until now nothing here had looked at the frequency
-domain at all. The README records "a real 6-8 Hz mode carrying 5.88mm",
-which if true is decisive: both 5 and 8 Hz sit ON that resonance, the worst
-possible place, because the reported peak then becomes hypersensitive to the
-exact cutoff. This tool checks that claim rather than inheriting it.
+frequencies to keep, and nothing here had ever looked at the frequency
+domain. The README recorded "a real 6-8 Hz mode carrying 5.88mm", which if
+true would have been decisive — both 5 and 8 Hz sit ON that resonance, the
+worst possible place, because the reported peak becomes hypersensitive to
+the exact cutoff.
+
+RESULT: THAT MODE DOES NOT EXIST. No consistent resonance in heave, roll,
+pitch or warp across the 11 files (prominent peaks scatter 1.1-21.9 Hz and
+do not cluster), and inter-corner coherence never exceeds 0.41 in any band.
+The claim is retracted in the README. This tool is what checked it, and is
+what to re-run if the data set changes.
 
 MUST RUN ON A UNIFORM GRID. A Fourier transform of non-uniformly sampled
 data is not defined, and the InfluxDB union grid is emphatically not
@@ -35,8 +41,8 @@ warp decomposition) and computes coherence between corner pairs:
                                               wheel hop (unsprung, local)
 
 Typical FSAE figures for orientation, not as targets to match: sprung-mass
-ride 2.5-4 Hz, wheel hop 12-15 Hz. A peak at 6-8 Hz sits awkwardly between
-them, which is exactly why it needs identifying rather than assuming.
+ride 2.5-4 Hz, wheel hop 12-15 Hz. Nothing in this data lands consistently
+in either band, which is the finding rather than a failure to look.
 
 WHAT THIS DOES NOT DO. It cannot tell you a peak is mechanical rather than
 track input — a repeating kerb or surface texture at constant speed shows up

@@ -65,9 +65,18 @@ uv run case1_max_gs.py --dir comp2026_data
 uv run case2_max_roll.py --dir comp2026_data
 uv run case3_max_pitch.py --dir comp2026_data
 uv run case4_combined_roll_pitch.py --dir comp2026_data
+uv run case5_gradients.py --dir comp2026_data
 ```
 
 Each prints a console report and writes interactive plots under `plots/<case>/<event>/`, plus one headline summary chart per case.
+
+**Each case also writes `plots/<case>/report.html`** — headline numbers as cards, the full console report, and every plot that case generated, on one page. `plots/index.html` links them all. That is the thing to hand to someone; the console is for working. Console output is **tee'd, not replaced**, so piping and grepping still behave exactly as before.
+
+After changing anything that could move a number:
+
+```powershell
+uv run test_regression.py --dir comp2026_data
+```
 
 | file | what it is |
 |---|---|
@@ -178,6 +187,37 @@ It pins the summary dicts from all four cases plus the **12-event step-glitch in
 
 Verified end to end: changing `AUTOX_END_CUTOFF_HZ` from 5.0 to 6.0 was caught across every affected value with exit code 1.
 
+## Union grid vs true 100 Hz — `compare_resampling.py`
+
+Measures what would change if the case scripts filtered on a true 100 Hz grid instead of the InfluxDB union grid, and reports the measured source rates behind that question.
+
+```powershell
+uv run compare_resampling.py --dir comp2026_data
+```
+
+**It decides nothing** — the case scripts still use the union grid. It exists so the decision can be made with the delta visible:
+
+| quantity | mean | range |
+|---|---|---|
+| roll | +0.84% | −2.76% to +5.53% |
+| pitch | +0.88% | −5.77% to +4.60% |
+| lateral G | +1.56% | **−7.51% to +9.60%** |
+
+So **not** the "~1% systematic, one-directional" it was once assumed to be — it is bidirectional and per-file up to ~10%, with `endurance_full`'s headline peak lateral G moving 1.780 → 1.646 g. That is a real decision, not a free accuracy win, which is why it is deferred rather than quietly applied.
+
+It also prints the **residual inflation** the resampling removes — 40% on skidpad to 485% on `autocross_andrew2` — which is why `filter_compare` *does* resample: its residual view is what settles a borderline cutoff, and on the union grid up to five sixths of the "discarded content" it showed was zero-order-hold staircase rather than signal.
+
+Deliberately not applied at the same time as the cutoff retune, so that a regression diff has one cause and stays attributable.
+
+## Case reports — `case_report.py`
+
+Not run directly. Each case imports it and wraps its `main()`, producing `plots/<case>/report.html` and `plots/index.html`.
+
+Two design choices worth knowing if you extend it:
+
+- **Console output is tee'd, not captured.** Everything still prints, so nothing that piped or grepped a case's output breaks. The page is an addition, not a redirection.
+- **Plots are embedded as lazy iframes** pointing at the files each case already writes, not regenerated or inlined. A case can change how it builds a figure without this file knowing, and the individual plot files stay usable on their own.
+
 ## Raw signal survey — `batch_signal_stats.py`
 
 **Start here with a new data set**, before any case script. It answers "what's actually in these files and does it look sane?" — min/max/mean for every signal, pooled per event, plus optional time-series grids.
@@ -275,9 +315,10 @@ Inherited by every case; none of them redefine these.
 
 | | |
 |---|---|
-| **Filter** | 4th-order Butterworth, zero-phase (`filtfilt`). **2.0 Hz** skidpad, **5.0 Hz** everything else |
+| **Filter** | 4th-order Butterworth, zero-phase (`filtfilt`). **10.0 Hz** for every event, **3.0 Hz** for front brake pressure. Chosen 2026-07-31 from `cutoff_sweep.py`, replacing an inherited 2.0/5.0 that nobody had validated — low cutoffs turned out to be the *unstable* region, and 5 Hz sat on the slope. Front brake pressure is Nyquist-forced: it is sampled at 10 Hz |
 | **Units** | `G = 9.80665`. `VCPDU_lat`/`lon` are **m/s²** in the DBC and are divided by G |
-| **Time** | The InfluxDB union grid is **not uniformly sampled**. Every duration is real elapsed `t[e]−t[s]`, never `sample_count × dt` — that errs by 3–5×. Scalar `dt` is used *only* for filter design |
+| **Time** | The InfluxDB union grid is **not uniformly sampled** — median spacing 0.39 ms with gaps from 0.019 to 19.3 ms, a 1030× range within one file, and built by zero-order hold. Every duration is real elapsed `t[e]−t[s]`, never `sample_count × dt`, which errs by 3–5×. Scalar `dt` is used *only* for filter design |
+| **Sample rates** | Measured from raw per-signal timestamps: everything is **100 Hz** except `VCFRONT_brakePressure` at **10 Hz**. `case_common.uniform_resample()` resamples from the RAW samples, never the ZOH union grid — a staircase's step edges carry broadband energy no sensor measured. Used by `filter_compare`, `spectral_analysis` and `lap_detection`; the case scripts still filter on the union grid (see `compare_resampling.py` for the ~1% delta) |
 | **Baselining** | Each corner is zeroed against its own stopped-car window (speed <0.5 m/s, ≥2s real, trimmed 0.5s/end; prefers file start → end → longest anywhere, which catches an endurance driver change). Mandatory: each pot carries its own zero offset, and differencing without removing it counts the offset as suspension movement. Step glitches are excluded from the window, and a **lockup guard** rejects candidate stops whose mean \|lon G\| ≥ 0.15 g |
 | **Glitch rejection** | Per-sensor-update jumps >8mm are masked ±1s — see *Known data problems* |
 | **Peak detection** | `find_peaks` by **prominence only** — no index-based `distance`, because a fixed sample count spans different real time in different parts of a file. Spacing is enforced afterwards against elapsed time: tallest candidate first, reject any peak within 1.0s of an accepted one. Top 5 |
@@ -713,9 +754,44 @@ Leaving a cell at its current value is a valid answer — but the `why` still ge
 | IMU lat/lon (`imu.c`, `periodic100Hz_CLK`) | 100 Hz | 50 Hz |
 | Steering angle (`steeringAngle.c`, `periodic10Hz_CLK`) | 10 Hz | 5 Hz |
 
-The ~1200 Hz "sampling frequency" the tool prints is union-grid density, not a real sample rate. It is the correct `fs` to design the filter against, but it is not evidence any signal is sampled that fast.
+**`filter_compare.py` resamples to a true 100 Hz grid before filtering**, so 100 Hz is the `fs` every filter there is designed against. The union-grid density is still printed for context, but it is *not* a sample rate — it is how often some signal happened to update, it is built by zero-order hold, and designing a filter against it is what this used to do wrongly. A bug during that change had `fs` still taken from the old union timestamps while the data was already resampled, which would have made a nominal 5 Hz cutoff actually 0.57 Hz; the printed rate now names which is which so the two cannot be confused again.
+
+Note the case scripts still filter on the union grid — see `compare_resampling.py`.
 
 Also note the IMU's own firmware low-pass (`imu.c:47`) is set to a 100 Hz cutoff at a 100 Hz sample rate — above Nyquist, so it is effectively a pass-through and the offline filtering does all the real work.
+
+## Lap detection — `lap_detection.py`
+
+Finds laps and aligns runs corner-by-corner, **without any position signal**.
+
+```powershell
+uv run lap_detection.py --dir comp2026_data
+uv run lap_detection.py --dir comp2026_data --file endurance_full
+```
+
+**There is no GPS in this data** — 19 signals across all 11 files, none positional. `VCPDU_yaw` exists, but dead-reckoning a path from it does not close: the integrated autocross course spans ~365 m while start and end land **156–177 m apart**, consistent with the DBC's `IMU_YAW_CALIBRATION_FAILED` warning. So there is no track map and no way to name a corner geometrically.
+
+**Distance works instead.** Speed integrates cleanly even though it cannot be differentiated (the 9–13 g `dv/dt` is a differentiation artefact of the union grid; integrating averages the same quantisation out). Cumulative distance is lap-invariant — the same corner happens at the same distance every lap, whatever the driver did. Laps come from resampling speed onto a uniform **distance** grid and autocorrelating: a repeated course makes `v(d)` periodic with period = lap length.
+
+Working in distance rather than time is what makes the stationary events harmless. **A driver change adds ~170 s and zero metres**, so in the distance domain it collapses to a point instead of looking like a lap boundary — the case a time-based detector gets wrong.
+
+### Validated against official lap times
+
+| | |
+|---|---|
+| laps detected | **22** — exactly the official count |
+| lap length | 970 m (autocorrelation +0.82) |
+| interior laps | median error **0.65 s, 0.9% of lap time**; worst 3.28 s |
+
+Three laps are inaccurate and all three are **edges, not failures**, reported as such:
+
+- **Lap 1** absorbs pre-race running — without a start line there is nothing to anchor it to.
+- **Lap 12** is the driver change. All stopped time lands in whichever lap contains it, by design; the official boundary comes from a timing loop, this one from distance.
+- **The last** is a partial remainder — total distance is not an exact multiple of a lap.
+
+Autocross runs are correctly identified as **single laps** (too short to autocorrelate a repeat) and get distance-aligned overlays instead, under `plots/lap_detection/autocross_*_by_distance.html` for roll, lateral G and speed. Those overlays are what confirmed the front shock-pot deficit is uniform around the course.
+
+**What it cannot do:** name a corner. Without position, "the same distance" is the only handle on "the same corner", so the overlays are read against distance rather than against a track map.
 
 ## Shock-pot displacement vs voltage
 
