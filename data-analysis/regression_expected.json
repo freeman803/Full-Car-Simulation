@@ -2,16 +2,16 @@
   "cases": {
     "case1_max_gs": {
       "autocross": {
-        "peak_combined_g": 1.728533603156801,
-        "peak_lat_g": 1.728475090470086,
-        "peak_lon_g": 1.3443865013063234,
+        "peak_combined_g": 1.7632993266812362,
+        "peak_lat_g": 1.763055500276951,
+        "peak_lon_g": 1.3855442111502367,
         "sustained_lat_g_max": null,
         "sustained_lat_g_min": null
       },
       "endurance": {
-        "peak_combined_g": 1.790687404640919,
-        "peak_lat_g": 1.7798220657898192,
-        "peak_lon_g": 1.6496902826571442,
+        "peak_combined_g": 1.7626379185602716,
+        "peak_lat_g": 1.597711759184101,
+        "peak_lon_g": 1.718177755744535,
         "sustained_lat_g_max": null,
         "sustained_lat_g_min": null
       },
@@ -19,114 +19,114 @@
         "peak_combined_g": null,
         "peak_lat_g": null,
         "peak_lon_g": null,
-        "sustained_lat_g_max": 1.352710152733759,
-        "sustained_lat_g_min": 1.2593207538212978
+        "sustained_lat_g_max": 1.3323275108971646,
+        "sustained_lat_g_min": 1.258299752612676
       }
     },
     "case2_max_roll": {
       "autocross": {
-        "avg_deg": 1.4420740208243095,
-        "front_deg": 1.332897880797979,
-        "rear_deg": 1.573963686127984
+        "avg_deg": 1.4836389660809568,
+        "front_deg": 1.360210417526915,
+        "rear_deg": 1.625739090040814
       },
       "endurance": {
-        "avg_deg": 1.5738112980751917,
-        "front_deg": 1.4832378356261249,
-        "rear_deg": 1.762950245148727
+        "avg_deg": 1.4396611783437925,
+        "front_deg": 1.4589550150750423,
+        "rear_deg": 1.621256033066948
       },
       "skidpad": {
-        "avg_deg": 1.1809632470758575,
-        "front_deg": 1.1017250254531372,
-        "rear_deg": 1.27548177453913
+        "avg_deg": 1.1791615127460966,
+        "front_deg": 1.100333876228728,
+        "rear_deg": 1.2758320667396796
       }
     },
     "case3_max_pitch": {
       "accel": {
-        "typical_deg": 0.3620162312712947,
+        "typical_deg": 0.3584949721494109,
         "worst_deg": null
       },
       "autocross": {
-        "typical_deg": 0.7063502220184505,
-        "worst_deg": 0.9123159566106507
+        "typical_deg": 0.7110965458868858,
+        "worst_deg": 0.9178849579844367
       },
       "brake": {
-        "typical_deg": 0.6371592422415636,
-        "worst_deg": 0.7317411251555525
+        "typical_deg": 0.6722313734570879,
+        "worst_deg": 0.7726852968990425
       },
       "endurance": {
-        "typical_deg": 0.7584424349460747,
-        "worst_deg": 0.8857971474823613
+        "typical_deg": 0.7973935560470536,
+        "worst_deg": 0.9275822187002597
       },
       "skidpad": {
-        "typical_deg": 0.1011768865265291,
+        "typical_deg": 0.09995331567366715,
         "worst_deg": null
       }
     },
     "case4_combined_roll_pitch": {
       "accel": {
-        "top_avg_mm": 13.27655984155723,
+        "top_avg_mm": 13.924822144053715,
         "worst_corner": "RR",
         "worst_modes": {
-          "heave": 1.2840541101163754,
-          "pitch": 5.915368231852412,
-          "roll": 5.586195705262636,
-          "warp": 2.9085628828433188
+          "heave": 1.1392370792349862,
+          "pitch": 5.994063341213886,
+          "roll": 5.8956141424566795,
+          "warp": 2.7662800740593054
         },
-        "worst_pitch_deg": -0.43929875897889176,
-        "worst_roll_deg": 0.536197174801669,
-        "worst_travel_mm": 15.694180930074742
+        "worst_pitch_deg": -0.4451427369928995,
+        "worst_roll_deg": 0.5658951650440269,
+        "worst_travel_mm": 15.795194636964856
       },
       "autocross": {
-        "top_avg_mm": 22.824858133322756,
+        "top_avg_mm": 23.145428846114527,
         "worst_corner": "FR",
         "worst_modes": {
-          "heave": -9.973305474989715,
-          "pitch": -12.244687205952253,
-          "roll": -2.68101730935413,
-          "warp": -2.88923259187968
+          "heave": -9.976867302987856,
+          "pitch": -12.360575909889747,
+          "roll": -2.731167467404886,
+          "warp": -2.911576030563409
         },
-        "worst_pitch_deg": -0.9092806215006086,
-        "worst_roll_deg": -0.25734619475245507,
-        "worst_travel_mm": -27.788242582175776
+        "worst_pitch_deg": -0.9178849579837803,
+        "worst_roll_deg": -0.2621599547457191,
+        "worst_travel_mm": -27.9801867108459
       },
       "brake": {
-        "top_avg_mm": 19.23068656021014,
+        "top_avg_mm": 19.6561643575207,
         "worst_corner": "FR",
         "worst_modes": {
-          "heave": -2.6507499766178255,
-          "pitch": -4.954369511528887,
-          "roll": -12.118171539769945,
-          "warp": -0.7279629717944913
+          "heave": -2.8720309003859117,
+          "pitch": -5.251611845608464,
+          "roll": -12.341085660778848,
+          "warp": -0.9850012042654963
         },
-        "worst_pitch_deg": -0.36793332623284586,
-        "worst_roll_deg": -1.163050287761869,
-        "worst_travel_mm": -20.45125399971115
+        "worst_pitch_deg": -0.39000719008702567,
+        "worst_roll_deg": -1.1844385922733005,
+        "worst_travel_mm": -21.44972961103872
       },
       "endurance": {
-        "top_avg_mm": 22.487629833635452,
+        "top_avg_mm": 22.74120018116172,
         "worst_corner": "FR",
         "worst_modes": {
-          "heave": -2.3132034471529614,
-          "pitch": -5.781020927122297,
-          "roll": -13.096348945790687,
-          "warp": -2.6801507543561445
+          "heave": -2.3806928555676303,
+          "pitch": -5.67681042529545,
+          "roll": -12.371214680366943,
+          "warp": -3.07921662245805
         },
-        "worst_pitch_deg": -0.4293219718765898,
-        "worst_roll_deg": -1.2569025802757943,
-        "worst_travel_mm": -23.87072407442209
+        "worst_pitch_deg": -0.4215831608476245,
+        "worst_roll_deg": -1.1873294052299705,
+        "worst_travel_mm": -23.507934583688076
       },
       "skidpad": {
-        "top_avg_mm": 17.835365521926533,
+        "top_avg_mm": 19.118055937150494,
         "worst_corner": "FR",
         "worst_modes": {
-          "heave": 2.6328793505327845,
-          "pitch": 3.04422061388452,
-          "roll": 13.010599838878656,
-          "warp": -0.5174129932979965
+          "heave": -2.4739216979129766,
+          "pitch": -2.5943774024255952,
+          "roll": -13.645662370238407,
+          "warp": -1.3937219621640158
         },
-        "worst_pitch_deg": 0.22607918063896457,
-        "worst_roll_deg": 1.248675551631409,
-        "worst_travel_mm": 18.170286809997965
+        "worst_pitch_deg": -0.1926718280183086,
+        "worst_roll_deg": -1.309604127336944,
+        "worst_travel_mm": -20.107683432740995
       }
     }
   },
