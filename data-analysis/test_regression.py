@@ -70,7 +70,13 @@ def collect_case_summaries(grouped):
     that registry would otherwise move a published figure with nothing
     watching. (Cases 1-4 are immune: they report peaks, and the suspect
     channels under-report, so bad data never wins a peak search. Verified —
-    adding the registry moved zero pinned values.)
+    adding the registry moved zero pinned values. NOTE that immunity claim
+    is about AMPLITUDE and does not extend to a wrong baseline OFFSET —
+    see the case4 autocross finding in the README.)
+
+    case6 pins the yaw-rate numbers AND, indirectly, the a_lat = v*omega
+    validation behind them: if a future export rescales or breaks the yaw
+    channel, every case6 value here moves at once.
     """
     return {
         "case1_max_gs": cs.collect_case1(grouped),
@@ -78,6 +84,7 @@ def collect_case_summaries(grouped):
         "case3_max_pitch": cs.collect_case3(grouped),
         "case4_combined_roll_pitch": cs.collect_case4(grouped),
         "case5_gradients": cs.collect_case5(grouped),
+        "case6_max_yaw": cs.collect_case6(grouped),
     }
 
 
@@ -178,6 +185,24 @@ def test_lockup_guard():
     return failures
 
 
+def strip_private(obj):
+    """Drop underscore-prefixed keys anywhere in the summary tree.
+
+    This test pins NUMBERS. Cases also hang presentation metadata off their
+    summary dicts — `_instants`, the deep-link targets the report page turns
+    into "jump to 116.59s" links — which carries file paths and prose that
+    would churn the snapshot on every wording change while telling you
+    nothing about whether the analysis regressed. The convention is the
+    leading underscore, same as Python's own.
+    """
+    if isinstance(obj, dict):
+        return {k: strip_private(v) for k, v in obj.items()
+                if not str(k).startswith("_")}
+    if isinstance(obj, list):
+        return [strip_private(v) for v in obj]
+    return obj
+
+
 def build_snapshot(csv_dir):
     paths = sorted(glob.glob(os.path.join(csv_dir, "*.csv")))
     if not paths:
@@ -187,7 +212,7 @@ def build_snapshot(csv_dir):
 
     return {
         "files": [os.path.basename(p) for p in paths],
-        "cases": collect_case_summaries(grouped),
+        "cases": strip_private(collect_case_summaries(grouped)),
         "glitches": collect_glitches(paths),
     }
 

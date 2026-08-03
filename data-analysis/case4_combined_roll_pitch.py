@@ -29,6 +29,31 @@ actually decides whether a spring/damper runs out of travel — which is the
 number you want when setting roll and pitch targets for the next
 suspension.
 
+THE FOUR MODES, in words. Any way four corners can move is exactly one
+combination of these four, and they are mutually independent — that is what
+makes the decomposition an identity rather than a fit.
+
+  HEAVE — all four corners move the SAME way at once. The whole car rising
+    or squatting flat, with no attitude change. Comes from aero load, a
+    crest or a dip, or the car settling. Large heave means the springs are
+    absorbing load evenly; it is the mode a driver feels as the car getting
+    lower, not as it leaning.
+
+  ROLL — left pair and right pair move OPPOSITE ways. Cornering lean.
+
+  PITCH — front pair and rear pair move OPPOSITE ways. Dive under braking,
+    squat under acceleration.
+
+  WARP — the DIAGONALS move opposite ways: FL and RR go one way while FR and
+    RL go the other. This is the chassis being TWISTED along its length,
+    like wringing a towel, rather than leaned or pitched. It is what a
+    single-wheel bump or a one-wheel kerb strike produces, and it is the one
+    mode that shows up in neither case2 nor case3 — both of those average
+    corners in pairs, which cancels warp exactly. Worth watching because
+    warp load goes into chassis torsional stiffness rather than into the
+    springs, and because a car with high warp on a smooth surface is
+    usually telling you something about diagonal weight distribution.
+
 MODAL DECOMPOSITION — the headline number is decomposed exactly (this is an
 algebraic identity, not an approximation or a fit):
 
@@ -126,6 +151,8 @@ from case_common import (
     CORNERS, MOTION_RATIO_FRONT, MOTION_RATIO_REAR,
     TRIM_SECONDS, TOP_K_PEAKS,
     FRONT_TRACK_MM, REAR_TRACK_MM, WHEELBASE_MM, AVG_TRACK_MM, mm_to_deg,
+    PLOT_TEMPLATE, PLOT_STEADY_FILL, decimate_for_plot, thin_scatter, titled,
+    format_peak_shape, DEEP_LINK_SCRIPT,
 )
 
 # Vehicle geometry and the mm -> degree conversion now come from
@@ -133,7 +160,7 @@ from case_common import (
 # the values agreed, but nothing enforced it. See case_common for the note
 # on AVG_TRACK_MM being an approximation for whole-car roll.
 
-# Motion ratio now comes from case_common (measured: 1.15 front, 1.038
+# Motion ratio now comes from case_common (measured: 1.188 front, 1.038
 # rear, wheel/spring displacement) and is applied PER CORNER before any
 # modal arithmetic — see case_common.to_wheel_travel(). Everything below
 # this point works in WHEEL millimetres, not shock-pot millimetres.
@@ -264,7 +291,7 @@ def load_corner_signals(path, cutoff_hz):
               f"excluded — " + ", ".join(f"{c} {j:.1f}mm @{ts:.2f}s"
                                           for c, ts, j in glitch_events))
 
-    # Shock-pot mm -> WHEEL mm, per corner (front 1.15, rear 1.038) BEFORE
+    # Shock-pot mm -> WHEEL mm, per corner (front 1.188, rear 1.038) BEFORE
     # any roll/pitch/modal arithmetic. Everything downstream is wheel travel.
     corners_wheel = to_wheel_travel(corners_raw)
     travel = {c: lowpass(corners_wheel[c], dt, cutoff_hz) for c in CORNERS}
@@ -320,6 +347,9 @@ def load_corner_signals(path, cutoff_hz):
         "roll_deg": roll_deg(roll_avg), "pitch_deg": pitch_deg(pitch_mm),
         "lat_f": lowpass(lat_raw, dt, cutoff_hz),
         "lon_f": lowpass(lon_raw, dt, cutoff_hz),
+        # Kept so describe_instant() can say how fast the car was going.
+        # Coarse gate only — never differentiated (see case3's docstring).
+        "speed": np.asarray(speed, dtype=float),
         "baselines_found": baselines_found, "baselines": baselines,
     }
 
@@ -372,12 +402,45 @@ def analyze_sustained(d, event):
 
 # ── Plotting ─────────────────────────────────────────────────────────────
 
-def build_corner_travel_plot(d, output_path):
+def steady_spans(d, event):
+    """POST-TRIM (start_s, end_s) of the windows the SUSTAINED number came
+    from, for shading. Only skidpad and accel have one — the other three
+    events are worst-case-only, so there is no window to mark."""
+    if event not in STEADY_EVENTS:
+        return []
+    t = d["t"]
+    if event == "skidpad":
+        segments = find_steady_segments(d["lat_f"], t)
+    else:
+        segments = find_steady_segments(d["lon_f"], t, threshold=MIN_LON_G_FOR_MANEUVER)
+        segments = {sg: runs for sg, runs in segments.items() if np.sign(sg) < 0}
+
+    spans = []
+    for runs in segments.values():
+        for s, e, _dur in runs:
+            ts, te = trim_window(t, s, e, TRIM_SECONDS)
+            spans.append((float(t[ts]), float(t[te])))
+    return sorted(spans)
+
+
+def build_corner_travel_plot(d, output_path, event=None):
     fig = go.Figure()
     t = d["t"]
-    for c in CORNERS:
-        fig.add_trace(go.Scatter(x=t, y=d["travel"][c], mode="lines", name=f"{c} travel",
-                                  line=dict(color=CORNER_COLORS[c], width=1.4)))
+
+    # Steady windows go down FIRST and as a layer="below" shape, so the
+    # four traces are never tinted by the fill.
+    spans = steady_spans(d, event) if event else []
+    for start_s, end_s in spans:
+        fig.add_vrect(x0=start_s, x1=end_s, fillcolor=PLOT_STEADY_FILL,
+                      line_width=0, layer="below")
+
+    # Display-only, and the worst-instant marker below is still indexed off
+    # the FULL arrays — decimation cannot move where the peak was found.
+    t_plot, travel_plot = decimate_for_plot(t, [d["travel"][c] for c in CORNERS])
+
+    for c, values in zip(CORNERS, travel_plot):
+        fig.add_trace(go.Scattergl(x=t_plot, y=values, mode="lines", name=f"{c} travel",
+                                    line=dict(color=CORNER_COLORS[c], width=1.4)))
     if d.get("peaks"):
         worst_idx = max(d["peaks"], key=lambda p: p[1])[0]
         fig.add_vline(x=t[worst_idx], line=dict(color="black", width=1, dash="dot"))
@@ -385,14 +448,155 @@ def build_corner_travel_plot(d, output_path):
                            text=f"worst: {d['worst_corner_at'][worst_idx]} "
                                 f"{d['travel'][d['worst_corner_at'][worst_idx]][worst_idx]:+.1f}mm",
                            showarrow=True, arrowhead=2)
+    subtitle = f"{d['cutoff']} Hz low-pass · negative = compression (bump)"
+    if spans:
+        subtitle += (f" · <span style='color:#1baf7a'>green</span> = "
+                     f"steady-state window behind the sustained number "
+                     f"({len(spans)})")
+
     fig.update_layout(
-        title=f"{os.path.basename(d['path'])} — per-corner wheel travel "
-              f"({d['cutoff']} Hz low-pass)",
         xaxis_title="Elapsed time (s)",
-        yaxis_title="Travel vs. static (mm) — negative = compression",
+        yaxis_title="Travel vs. static (mm)",
+        template=PLOT_TEMPLATE,
+        hovermode="x unified",
     )
+    titled(fig, f"{os.path.basename(d['path'])} — per-corner wheel travel",
+           subtitle)
     fig.update_xaxes(rangeslider_visible=True)
+    # post_script makes '#t=116.59' zoom this plot to that instant — the
+    # report page's key-instants table links here that way.
+    fig.write_html(output_path, include_plotlyjs="cdn",
+                   post_script=DEEP_LINK_SCRIPT)
+
+
+# ── Travel limits ────────────────────────────────────────────────────────
+#
+# NOT KNOWN YET — set these and the distribution plot becomes a MARGIN
+# plot, which is the whole point of it. Until then it reports how much
+# travel the car USES, which is still worth having but is only half the
+# question.
+#
+# What is needed is WHEEL travel at the bump stop and at full droop,
+# relative to the static ride height these numbers are already zeroed to.
+# Signs follow the rest of case4: negative = compression (bump), positive =
+# extension (droop). So e.g. BUMP_LIMIT_MM = -35.0, DROOP_LIMIT_MM = +30.0.
+#
+# If they are only known as SHOCK travel, divide by the motion ratio per
+# corner (front 1.188, rear 1.038) before entering them here — everything in
+# this file is wheel millimetres.
+BUMP_LIMIT_MM = None      # most negative wheel travel available
+DROOP_LIMIT_MM = None     # most positive wheel travel available
+
+# Percentiles reported per corner. p1/p99 rather than the raw min/max is
+# what tells you about the working range: an extreme is one instant and can
+# be a kerb strike, while p99 is where the corner actually lives when it is
+# working hard.
+TRAVEL_PERCENTILES = (1, 50, 99)
+
+
+def build_travel_distribution(event, results, output_path):
+    """How much of its available travel each corner actually uses.
+
+    A histogram per corner, on a shared axis so the four are directly
+    comparable. With BUMP/DROOP limits set it also shades the unusable
+    region and the plot answers "how much margin is left"; without them it
+    answers "how much travel is used", which is the same measurement
+    without the reference.
+
+    Glitch-masked and edge-trimmed the same way report_event's per-corner
+    extremes are — otherwise a step glitch or a filtfilt boundary overshoot
+    lands in the histogram as real travel.
+    """
+    fig = go.Figure()
+
+    pooled = {c: [] for c in CORNERS}
+    for r in results:
+        for corner in CORNERS:
+            values = r["travel"][corner]
+            edge = int(EDGE_EXCLUDE_FRACTION * len(values))
+            keep = ~r["glitch_mask"]
+            if edge and len(values) > 2 * edge:
+                keep[:edge] = False
+                keep[len(values) - edge:] = False
+            pooled[corner].append(values[keep])
+
+    stats = {}
+    for corner in CORNERS:
+        values = np.concatenate(pooled[corner]) if pooled[corner] else np.array([])
+        values = values[np.isfinite(values)]
+        if not values.size:
+            continue
+        stats[corner] = {
+            "p": {q: float(np.percentile(values, q)) for q in TRAVEL_PERCENTILES},
+            "min": float(values.min()), "max": float(values.max()),
+        }
+        fig.add_trace(go.Histogram(
+            x=values, name=corner, opacity=0.55, nbinsx=120,
+            marker=dict(color=CORNER_COLORS[corner]),
+            hovertemplate=f"{corner}: %{{x:.1f}}mm<br>%{{y}} samples<extra></extra>",
+        ))
+
+    if not stats:
+        return None
+
+    for limit, label, colour in [(BUMP_LIMIT_MM, "bump stop", "#e34948"),
+                                 (DROOP_LIMIT_MM, "full droop", "#eda100")]:
+        if limit is not None:
+            fig.add_vline(x=limit, line=dict(color=colour, width=2, dash="dash"),
+                          annotation_text=f"{label} ({limit:+.0f}mm)")
+
+    fig.add_vline(x=0, line=dict(color="#888", width=1),
+                  annotation_text="static ride height")
+
+    if BUMP_LIMIT_MM is None and DROOP_LIMIT_MM is None:
+        note = ("Travel USED. Set BUMP_LIMIT_MM / DROOP_LIMIT_MM in "
+                "case4_combined_roll_pitch.py and this becomes a MARGIN plot.")
+    else:
+        note = "Dashed lines are the mechanical limits — the gap to them is your margin."
+
+    fig.update_layout(
+        xaxis_title="Wheel travel vs. static (mm)",
+        yaxis_title="samples",
+        barmode="overlay", template=PLOT_TEMPLATE,
+    )
+    titled(fig, f"{event.upper()} — per-corner wheel travel distribution",
+           f"negative = compression (bump), positive = extension (droop). {note}")
     fig.write_html(output_path, include_plotlyjs="cdn")
+    return stats
+
+
+def report_travel_distribution(event, stats):
+    if not stats:
+        return
+    print(f"\n    Travel distribution across all {event.upper()} files "
+          f"(glitch-masked, outer {EDGE_EXCLUDE_FRACTION:.0%} trimmed):")
+    print(f"      {'corner':6} {'p1':>8} {'median':>8} {'p99':>8} "
+          f"{'min':>8} {'max':>8} {'p1-p99 range':>13}")
+    for corner in CORNERS:
+        if corner not in stats:
+            continue
+        s = stats[corner]
+        span = s["p"][99] - s["p"][1]
+        print(f"      {corner:6} {s['p'][1]:+8.2f} {s['p'][50]:+8.2f} "
+              f"{s['p'][99]:+8.2f} {s['min']:+8.2f} {s['max']:+8.2f} "
+              f"{span:12.2f}mm")
+
+    if BUMP_LIMIT_MM is None and DROOP_LIMIT_MM is None:
+        print(f"      -> This is travel USED. For MARGIN, set BUMP_LIMIT_MM / "
+              f"DROOP_LIMIT_MM in {os.path.basename(__file__)}.")
+        return
+
+    print(f"      Margin to the mechanical limits:")
+    for corner in CORNERS:
+        if corner not in stats:
+            continue
+        s = stats[corner]
+        bits = []
+        if BUMP_LIMIT_MM is not None:
+            bits.append(f"bump {s['min'] - BUMP_LIMIT_MM:+6.2f}mm")
+        if DROOP_LIMIT_MM is not None:
+            bits.append(f"droop {DROOP_LIMIT_MM - s['max']:+6.2f}mm")
+        print(f"        {corner}: " + "   ".join(bits))
 
 
 def build_roll_pitch_envelope(event, results, output_path):
@@ -406,8 +610,10 @@ def build_roll_pitch_envelope(event, results, output_path):
         roll, pitch = r["roll_deg"], r["pitch_deg"]
         all_roll.append(roll)
         all_pitch.append(pitch)
+        roll_thin, pitch_thin = thin_scatter(roll, pitch)
         fig.add_trace(go.Scattergl(
-            x=roll, y=pitch, mode="markers", name=os.path.basename(r["path"]),
+            x=roll_thin, y=pitch_thin, mode="markers",
+            name=os.path.basename(r["path"]),
             marker=dict(size=2, opacity=0.35),
         ))
 
@@ -431,9 +637,14 @@ def build_roll_pitch_envelope(event, results, output_path):
     fig.add_hline(y=0, line=dict(color="grey", width=1))
     fig.add_vline(x=0, line=dict(color="grey", width=1))
     fig.update_layout(
-        title=f"{event.upper()} — roll vs. pitch envelope "
-              f"(every sample; hull = reachable combinations)",
         xaxis_title="Roll angle (deg)", yaxis_title="Pitch angle (deg)",
+        template=PLOT_TEMPLATE,
+    )
+    titled(
+        fig, f"{event.upper()} — roll vs. pitch envelope",
+        "the hull is the useful part: which roll+pitch COMBINATIONS the car "
+        "actually reaches, which case2 and case3 individually cannot show. "
+        "Hull computed from every sample; markers thinned for display.",
     )
     fig.write_html(output_path, include_plotlyjs="cdn")
 
@@ -486,6 +697,117 @@ def report_baselines(event, results):
         print(f"  {fname}: " + "  ".join(f"{c}={b[c]:.3f}mm" for c in CORNERS))
 
 
+# Thresholds for turning the G's at an instant into words. Deliberately the
+# same 0.3 g the segment finders use for "really turning" / "accelerating
+# hard", so the description cannot disagree with the segmentation.
+DESCRIBE_G = 0.3
+DESCRIBE_G_HARD = 0.8
+
+# Below this the car is not meaningfully driving, so a travel peak here is
+# not a driving load. Same threshold case_common.find_braking_windows uses
+# to reject "braking" pulses with the car parked, and for the same reason.
+#
+# THIS IS NOT COSMETIC. autocross_andrew1's worst corner travel — 27.98mm,
+# the largest in the whole dataset and the number the summary table quotes
+# as AUTOCROSS's design case — occurs at 116.59s, at 1.29 m/s, 1.3 seconds
+# AFTER the car stopped moving (it is rolling above 3 m/s only up to
+# 115.24s). The worst peak in that file while genuinely driving is 17.14mm,
+# 39% lower. braketest1 has the same problem at 0.00 m/s.
+#
+# The peak is real in the sense that the corner really did move that far and
+# it is a 0.2s plateau, not a spike — it is just not a driving event, and
+# nothing in the report said so. Flagged rather than filtered, because
+# excluding it would move a published headline number and that is a
+# methodology decision, not a display one.
+ROLLING_MIN_SPEED_MS = 3.0
+
+
+def describe_instant(d, idx):
+    """One plain sentence: what was the car doing at this sample?
+
+    WHY THIS EXISTS. The report has always printed "FR -27.98mm @ 116.59s,
+    lateral G=+0.03g longitudinal G=+0.42g" — correct, complete, and it
+    still takes a reader who knows the sign conventions to work out that
+    this was a braking event and not a corner. The number is the deliverable
+    but the CONTEXT is what makes it actionable: a corner-travel peak that
+    happens under braking is fixed by a different change than one that
+    happens mid-corner.
+
+    Sign conventions are case3's, verified empirically against vehicle
+    speed: lon G POSITIVE = slowing down.
+    """
+    lat = float(d["lat_f"][idx])
+    lon = float(d["lon_f"][idx])
+
+    lateral = abs(lat) >= DESCRIBE_G
+    longitudinal = abs(lon) >= DESCRIBE_G
+
+    if longitudinal:
+        hard = "hard " if abs(lon) >= DESCRIBE_G_HARD else ""
+        long_phrase = f"{hard}braking" if lon > 0 else f"{hard}accelerating"
+    else:
+        long_phrase = ""
+
+    if lateral:
+        hard = "hard " if abs(lat) >= DESCRIBE_G_HARD else ""
+        side = "left" if lat > 0 else "right"
+        lat_phrase = f"cornering {hard}to the {side}"
+    else:
+        lat_phrase = ""
+
+    if lat_phrase and long_phrase:
+        what = f"{long_phrase} while {lat_phrase} — a COMBINED-load instant"
+    elif long_phrase:
+        what = f"{long_phrase} in a straight line"
+    elif lat_phrase:
+        what = f"{lat_phrase} at steady throttle"
+    else:
+        what = "neither cornering nor braking hard — a bump or kerb strike"
+
+    speed = d.get("speed")
+    speed_note, stopped_note = "", ""
+    if speed is not None and idx < len(speed) and np.isfinite(speed[idx]):
+        v = float(speed[idx])
+        speed_note = f", at {v:.1f} m/s"
+        if v < ROLLING_MIN_SPEED_MS:
+            what = "car essentially STOPPED"
+            stopped_note = (
+                f"\n      [!] NOT A DRIVING EVENT — the car is below "
+                f"{ROLLING_MIN_SPEED_MS:.0f} m/s here. This peak is real "
+                f"motion but it is not a load the car saw on track."
+            )
+
+    return (f"{what}{speed_note}\n"
+            f"      ({lat:+.2f} g lateral, {lon:+.2f} g longitudinal; "
+            f"+lon = slowing down, +lat = left)" + stopped_note)
+
+
+def worst_while_rolling(results, min_speed=ROLLING_MIN_SPEED_MS):
+    """The worst peak that happened with the car actually driving.
+
+    Reported ALONGSIDE the headline peak, never instead of it — see the
+    ROLLING_MIN_SPEED_MS note. Returns (value, result, idx) or None.
+    """
+    pool = []
+    for r in results:
+        speed = r.get("speed")
+        if speed is None:
+            continue
+        for idx, val in r["peaks"]:
+            if idx < len(speed) and np.isfinite(speed[idx]) and speed[idx] >= min_speed:
+                pool.append((val, r, idx))
+    return max(pool, key=lambda x: x[0]) if pool else None
+
+
+def dominant_modes(contribs, n=2):
+    """The n modes carrying the most mm, as 'pitch and heave'."""
+    ranked = sorted(contribs, key=lambda m: abs(contribs[m]), reverse=True)
+    picked = ranked[:n]
+    if len(picked) == 1:
+        return picked[0]
+    return " and ".join([", ".join(picked[:-1]), picked[-1]])
+
+
 def report_event(event, results):
     print(f"\n=== {event.upper()} — WORST PER-CORNER TRAVEL "
           f"(peak detection on 4-corner envelope) ===")
@@ -524,7 +846,14 @@ def report_event(event, results):
     direction = "COMPRESSION (bump)" if signed < 0 else "EXTENSION (droop)"
     print(f"\n  SINGLE WORST INSTANT — {os.path.basename(best_r['path'])} "
           f"@ {best_r['t'][best_idx]:.2f}s")
-    print(f"    corner {c}: {signed:+.2f}mm  [{direction}]")
+    print(f"    corner {c}: {signed:+.2f}mm  [{direction}]"
+          # Plateau or spike? The envelope is what the peak search ran on.
+          + format_peak_shape(best_r["envelope"], best_r["t"], best_idx, "mm"))
+
+    # WHAT THE CAR WAS DOING — the context that makes the number
+    # actionable. See describe_instant().
+    print(f"    what the car was doing: {describe_instant(best_r, best_idx)}")
+
     print(f"    exact modal breakdown of that {signed:+.2f}mm:")
     for m in ("roll", "pitch", "heave", "warp"):
         pct = (abs(contribs[m]) / sum(abs(v) for v in contribs.values()) * 100
@@ -534,8 +863,31 @@ def report_event(event, results):
     print(f"    whole-car attitude at that instant: "
           f"roll={best_r['roll_deg'][best_idx]:+.3f}°  "
           f"pitch={best_r['pitch_deg'][best_idx]:+.3f}°")
-    print(f"    lateral G={best_r['lat_f'][best_idx]:+.2f}g  "
-          f"longitudinal G={best_r['lon_f'][best_idx]:+.2f}g")
+
+    # The one-line takeaway, spelling out which knob moves this number.
+    top_modes = dominant_modes(contribs)
+    print(f"    -> this corner was loaded mostly by {top_modes.upper()}. "
+          f"Changing what drives {top_modes.split(' and ')[0]} is what moves "
+          f"this number.")
+
+    # If the headline peak turned out not to be a driving event, give the
+    # worst one that was, so the report carries both numbers rather than
+    # leaving the reader to wonder what the on-track answer is.
+    best_speed = best_r.get("speed")
+    if (best_speed is not None and best_idx < len(best_speed)
+            and best_speed[best_idx] < ROLLING_MIN_SPEED_MS):
+        rolling = worst_while_rolling(results)
+        if rolling:
+            rv, rr, ri = rolling
+            rc = rr["worst_corner_at"][ri]
+            print(f"\n    WORST WHILE ACTUALLY DRIVING (>= "
+                  f"{ROLLING_MIN_SPEED_MS:.0f} m/s): "
+                  f"{rr['travel'][rc][ri]:+.2f}mm at {rc} — "
+                  f"{os.path.basename(rr['path'])} @ {rr['t'][ri]:.2f}s, "
+                  f"{float(rr['speed'][ri]):.1f} m/s "
+                  f"({100 * (best_val - rv) / best_val:.0f}% below the "
+                  f"headline peak above)")
+            print(f"      -> {describe_instant(rr, ri)}")
 
     # Per-corner signed extremes across the whole event — both mechanical
     # limits. Unlike the peak-detection path above, a raw min/max WILL pick
@@ -559,11 +911,30 @@ def report_event(event, results):
         print(f"      {corner}: max compression {min(mins):+7.2f}mm   "
               f"max extension {max(maxs):+7.2f}mm")
 
+    # Deep-linkable instants for the report page. Underscore-prefixed so
+    # case_summary's scalar sweep ignores it — it collects numbers, and this
+    # is navigation metadata riding along with them.
+    instants = [{
+        "event": event, "path": best_r["path"], "t": float(best_r["t"][best_idx]),
+        "label": f"worst corner travel — {c} {signed:+.2f}mm",
+        "detail": describe_instant(best_r, best_idx).split("\n")[0],
+    }]
+    rolling = worst_while_rolling(results)
+    if rolling and rolling[2] != best_idx:
+        rv, rr, ri = rolling
+        rc = rr["worst_corner_at"][ri]
+        instants.append({
+            "event": event, "path": rr["path"], "t": float(rr["t"][ri]),
+            "label": f"worst while driving — {rc} {rr['travel'][rc][ri]:+.2f}mm",
+            "detail": describe_instant(rr, ri).split("\n")[0],
+        })
+
     return {
         "worst_travel_mm": signed, "worst_corner": c,
         "worst_modes": contribs, "top_avg_mm": avg_mm,
         "worst_roll_deg": float(best_r["roll_deg"][best_idx]),
         "worst_pitch_deg": float(best_r["pitch_deg"][best_idx]),
+        "_instants": instants,
     }
 
 
@@ -647,9 +1018,13 @@ def main():
 
         for r in results:
             fname = os.path.splitext(os.path.basename(r["path"]))[0]
-            build_corner_travel_plot(r, os.path.join(out_dir, f"{fname}_corner_travel.html"))
+            build_corner_travel_plot(r, os.path.join(out_dir, f"{fname}_corner_travel.html"),
+                                     event=event)
         build_roll_pitch_envelope(event, results,
                                   os.path.join(out_dir, "roll_pitch_envelope.html"))
+        stats = build_travel_distribution(
+            event, results, os.path.join(out_dir, "travel_distribution.html"))
+        report_travel_distribution(event, stats)
         print(f"\n  Plots saved to: {out_dir}/")
 
     os.makedirs(PLOTS_ROOT, exist_ok=True)
@@ -678,7 +1053,34 @@ def main():
     return summaries_by_event
 
 
+CONVENTIONS = [
+    "<b>Per-corner wheel travel</b>, relative to that corner's own "
+    "stopped-car baseline. <code>negative = COMPRESSION (bump)</code>, "
+    "<code>positive = EXTENSION (droop)</code>. Both have a mechanical "
+    "limit, so both extremes are reported.",
+    "These are <b>wheel</b> millimetres, not shock-pot millimetres — the "
+    "motion ratio (1.188 front, 1.038 rear) is applied per corner "
+    "<i>before</i> any roll/pitch/modal arithmetic.",
+    "<b>heave</b> = all four corners moving together (no attitude change). "
+    "<b>roll</b> = left pair vs right pair. <b>pitch</b> = front pair vs "
+    "rear pair. <b>warp</b> = the diagonals opposing each other — the "
+    "chassis being twisted. Each mode's mm is its contribution to "
+    "<i>one</i> corner, and the four sum exactly to that corner's travel.",
+    "<b>Longitudinal G positive = slowing down</b> (verified empirically "
+    "against vehicle speed, not assumed). Lateral G positive = cornering "
+    "left.",
+    "A peak flagged <b>NOT A DRIVING EVENT</b> happened below 3 m/s. The "
+    "motion is real, but it is not a load the car saw on track.",
+]
+
+
 if __name__ == "__main__":
     with report_page("case4_combined_roll_pitch", "Case 4 — Combined Roll + Pitch", PLOTS_ROOT) as page:
         page.summary = main()
+        for text in CONVENTIONS:
+            page.add_convention(text)
+        for event_summary in (page.summary or {}).values():
+            for item in (event_summary or {}).get("_instants", []):
+                page.add_instant(item["event"], item["path"], item["t"],
+                                 item["label"], item["detail"])
     write_index()

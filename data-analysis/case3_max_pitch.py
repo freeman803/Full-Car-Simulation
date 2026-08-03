@@ -29,7 +29,7 @@ misread later.
 mm -> degrees via atan (EXACT for this geometry — not the small-angle
 approximation this line used to claim; same form as case2's roll conversion). NOTE the
 motion ratio is applied PER CORNER first, because front and rear differ
-(1.15 vs 1.038) — so the axle averages above are already WHEEL travel:
+(1.188 vs 1.038) — so the axle averages above are already WHEEL travel:
     pitch_mm  = avg(wheel FL, wheel FR) - avg(wheel RL, wheel RR)
     pitch_deg = atan(pitch_mm / WHEELBASE_MM) * 180/pi
 
@@ -124,19 +124,20 @@ from case_common import (
     group_by_event,
     lowpass, elapsed_seconds, trim_window,
     find_steady_segments, top_k_peaks,
-    find_static_window, static_baseline, to_wheel_travel,
+    baseline_corner_displacements, to_wheel_travel,
     MOTION_RATIO_FRONT, MOTION_RATIO_REAR,
     find_braking_windows, BRAKE_PRESSURE_SIGNALS, BRAKE_PRESSURE_MAX_PSI,
     BRAKING_PRESSURE_PSI, BRAKE_PRESSURE_CUTOFF_HZ,
     TRIM_SECONDS, TOP_K_PEAKS,
-    WHEELBASE_MM, mm_to_deg,
+    WHEELBASE_MM, mm_to_deg, to_ground_referenced,
+    build_raw_vs_filtered, format_peak_shape,
 )
 
 # Vehicle geometry and the mm -> degree conversion now come from
 # case_common too. They used to be redefined here, in case2 and in case4;
 # the values agreed, but nothing enforced it.
 
-# Motion ratio comes from case_common (measured: 1.15 front, 1.038 rear,
+# Motion ratio comes from case_common (measured: 1.188 front, 1.038 rear,
 # wheel/spring displacement), applied PER CORNER via to_wheel_travel()
 # before front_avg - rear_avg is taken. This ordering matters here more than
 # anywhere else: pitch IS the front-minus-rear difference, so applying a
@@ -212,26 +213,28 @@ def load_pitch_signals(path, cutoff_hz):
     dt = float(np.median(np.diff(t_raw)) / np.timedelta64(1, "s"))
     t = elapsed_seconds(t_raw)
 
-    # Same per-corner static baselining as case2_max_roll.py — zero each
-    # shock pot against its own stopped-car reading before combining, so a
+    # Per-corner static baselining via the SHARED helper — zero each shock
+    # pot against its own stopped-car reading before combining, so a
     # sensor/calibration offset doesn't get counted as pitch.
-    static_window = find_static_window(speed, t, lon_g=lon_raw)
-    baseline_fl = static_baseline(dfl, t, static_window)
-    baseline_fr = static_baseline(dfr, t, static_window)
-    baseline_rl = static_baseline(drl, t, static_window)
-    baseline_rr = static_baseline(drr, t, static_window)
-    baselines_found = all(b is not None for b in (baseline_fl, baseline_fr, baseline_rl, baseline_rr))
+    #
+    # This used to be four inline static_baseline() calls, duplicated
+    # verbatim in case2. That duplication is exactly why both files missed
+    # the piecewise-baseline fix when case4 (which already used the shared
+    # helper) got it for free: this file kept reporting an autocross pitch
+    # of 0.918 deg that was 82% stale-baseline offset. Behaviour is
+    # otherwise identical — the helper does the same thing for every file
+    # whose sensor zero never moves.
+    corners_raw, baselines, baselines_found = baseline_corner_displacements(
+        signals, t, speed)
     if not baselines_found:
         print(f"  [!] {os.path.basename(path)}: no stopped-car window found — "
               f"pitch is NOT baselined for this file (raw values used as-is).")
-        baseline_fl = baseline_fr = baseline_rl = baseline_rr = 0.0
+    baseline_fl, baseline_fr = baselines["FL"], baselines["FR"]
+    baseline_rl, baseline_rr = baselines["RL"], baselines["RR"]
 
-    # Shock-pot mm -> WHEEL mm per corner (front 1.15, rear 1.038) BEFORE
+    # Shock-pot mm -> WHEEL mm per corner (front 1.188, rear 1.038) BEFORE
     # averaging and differencing the axles — see the MOTION_RATIO comment.
-    wheel = to_wheel_travel({
-        "FL": dfl - baseline_fl, "FR": dfr - baseline_fr,
-        "RL": drl - baseline_rl, "RR": drr - baseline_rr,
-    })
+    wheel = to_wheel_travel(corners_raw)
 
     front_avg = (wheel["FL"] + wheel["FR"]) / 2.0
     rear_avg = (wheel["RL"] + wheel["RR"]) / 2.0
@@ -380,19 +383,63 @@ def analyze_transient_file(path, event):
 
 # ── Plotting ─────────────────────────────────────────────────────────────
 
+def measured_spans(result):
+    """The windows this file's number was actually measured over, and what
+    to call them.
+
+    case3 has two kinds, so this returns (spans, label) rather than assuming
+    one: skidpad/accel measure a MEDIAN over steady-state segments, while
+    brake takes a peak local to each real braking pulse. Both are "the part
+    of the file that counted", and both are invisible on an unshaded trace.
+    Autocross/endurance return nothing — a blind whole-file peak search has
+    no window to shade.
+    """
+    runs = result.get("runs")
+    if runs:
+        return (sorted((r["start_s"], r["end_s"]) for r in runs),
+                "steady-state window used for the median")
+
+    windows = result.get("brake_windows")
+    if windows:
+        t = result["t"]
+        return (sorted((float(t[s]), float(t[e])) for s, e, _ in windows),
+                f"braking window ({result.get('window_source', 'detected')})")
+
+    return [], ""
+
+
+def peak_markers(result):
+    """{0: [(t, label, y)]} for the pitch peaks this file reports.
+
+    Two peak shapes exist here: autocross/endurance store (idx, val) from a
+    blind whole-file search, while brake stores (abs_mm, signed_mm, idx,
+    dur) — one window-local peak per braking pulse. Both are "the instants
+    this file's number came from", so both get marked.
+    """
+    peaks = result.get("peaks") or []
+    rows = []
+    for rank, peak in enumerate(peaks, 1):
+        idx = peak[2] if len(peak) == 4 else peak[0]
+        rows.append((float(result["t"][idx]), f"#{rank}",
+                     float(result["pitch_f"][idx])))
+    return {0: rows} if rows else {}
+
+
 def build_before_after_plot(result, cutoff_hz, output_path):
-    fig = go.Figure()
-    t = result["t"]
-    fig.add_trace(go.Scatter(x=t, y=result["pitch_raw"], mode="lines", name="pitch (raw, mm)",
-                              line=dict(color="lightgreen", width=1), opacity=0.6))
-    fig.add_trace(go.Scatter(x=t, y=result["pitch_f"], mode="lines", name="pitch (filtered, mm)",
-                              line=dict(color="darkgreen", width=2)))
-    fig.update_layout(
-        title=f"{os.path.basename(result['path'])} — raw vs. {cutoff_hz} Hz low-pass filtered (pitch)",
-        xaxis_title="Elapsed time (s)", yaxis_title="Front-avg minus rear-avg (mm)",
+    spans, label = measured_spans(result)
+    build_raw_vs_filtered(
+        panels=[
+            ("Pitch (front-avg − rear-avg)", result["pitch_raw"],
+             result["pitch_f"], "Wheel travel difference (mm)"),
+        ],
+        t=result["t"],
+        title=f"{os.path.basename(result['path'])} — pitch",
+        output_path=output_path,
+        cutoff_hz=cutoff_hz,
+        shade=spans,
+        shade_label=label,
+        markers=peak_markers(result),
     )
-    fig.update_xaxes(rangeslider_visible=True)
-    fig.write_html(output_path, include_plotlyjs="cdn")
 
 
 def build_pitch_angle_summary(summaries_by_event, output_path):
@@ -432,6 +479,18 @@ def build_pitch_angle_summary(summaries_by_event, output_path):
 
 # ── Reporting ────────────────────────────────────────────────────────────
 
+
+# Ground-referenced pitch sits ALONGSIDE the measured figure — the shock
+# pots measure suspension-referenced and that stays the primary number.
+# See case_common's suspension-vs-ground note for the conversion and its
+# one caveat (exact for load-transfer-driven pitch, approximate for a peak
+# driven by a kerb strike).
+def _with_ground(summary):
+    for key in ("typical_deg", "worst_deg"):
+        summary[f"{key}_ground"] = to_ground_referenced(summary.get(key), "pitch")
+    return summary
+
+
 def report_baselines(event, results):
     print(f"\n--- {event.upper()} static baselines (stopped-car reference, subtracted before differencing) ---")
     for r in results:
@@ -468,7 +527,8 @@ def report_steady(event, results):
         return None
     typical_mm = float(np.median(all_medians))
     print(f"  Across all files: typical pitch = {typical_mm:+.3f}mm ({pitch_mm_to_deg(typical_mm):+.4f} deg)")
-    return {"typical_deg": pitch_mm_to_deg(abs(typical_mm)), "worst_deg": None}
+    return _with_ground({"typical_deg": pitch_mm_to_deg(abs(typical_mm)),
+                         "worst_deg": None})
 
 
 def report_brake(results):
@@ -500,9 +560,21 @@ def report_brake(results):
     best_abs, best_signed, best_r, best_idx, best_dur = pool[0]
     print(f"  Top {len(top)} braking pulses averaged: {avg_mm:.3f} mm ({pitch_mm_to_deg(avg_mm):.4f} deg)")
     print(f"  Single hardest braking pulse: {best_signed:+.3f} mm ({pitch_mm_to_deg(best_signed):+.4f} deg) "
-          f"— {os.path.basename(best_r['path'])} @ {best_r['t'][best_idx]:.2f}s")
+          f"— {os.path.basename(best_r['path'])} @ {best_r['t'][best_idx]:.2f}s"
+          + format_peak_shape(np.abs(best_r["pitch_f"]), best_r["t"],
+                              best_idx, " mm"))
 
-    return {"typical_deg": pitch_mm_to_deg(avg_mm), "worst_deg": pitch_mm_to_deg(best_abs)}
+    return _with_ground({
+        "typical_deg": pitch_mm_to_deg(avg_mm),
+        "worst_deg": pitch_mm_to_deg(best_abs),
+        "_instants": [{
+            "event": "brake", "path": best_r["path"],
+            "t": float(best_r["t"][best_idx]),
+            "label": f"hardest braking pulse — "
+                     f"{pitch_mm_to_deg(best_signed):+.3f}°",
+            "detail": f"{best_signed:+.2f}mm dive, pulse {best_dur:.2f}s",
+        }],
+    })
 
 
 def report_transient(event, results):
@@ -530,9 +602,23 @@ def report_transient(event, results):
     print(f"    Top {len(top)} peaks averaged: {avg_mm:.3f} mm ({pitch_mm_to_deg(avg_mm):.4f} deg) "
           f"(values: {', '.join(f'{v:.2f}' for v, _, _ in top)})")
     print(f"    Single highest peak: {best_val:.3f} mm ({pitch_mm_to_deg(best_val):.4f} deg) "
-          f"— {best_fname} @ {best_t:.2f}s (signed: {best_signed:+.3f}mm)")
+          f"— {best_fname} @ {best_t:.2f}s (signed: {best_signed:+.3f}mm)"
+          # Peaks were found on np.abs(pitch_f), so the shape check is too.
+          + format_peak_shape(np.abs(best_r["pitch_f"]), best_r["t"],
+                              best_idx, " mm"))
 
-    return {"typical_deg": pitch_mm_to_deg(avg_mm), "worst_deg": pitch_mm_to_deg(best_val)}
+    return _with_ground({
+        "typical_deg": pitch_mm_to_deg(avg_mm),
+        "worst_deg": pitch_mm_to_deg(best_val),
+        # Navigation metadata, not a number — underscore-prefixed so
+        # case_summary's scalar sweep and the regression snapshot skip it.
+        "_instants": [{
+            "event": event, "path": best_r["path"], "t": float(best_t),
+            "label": f"peak pitch — {pitch_mm_to_deg(best_signed):+.3f}°",
+            "detail": f"{best_signed:+.2f}mm "
+                      f"({'dive' if best_signed < 0 else 'squat'})",
+        }],
+    })
 
 
 # ── Main ─────────────────────────────────────────────────────────────────
@@ -603,7 +689,37 @@ def main():
     return summaries_by_event
 
 
+CONVENTIONS = [
+    "<b>Pitch is front-axle average minus rear-axle average.</b> A HIGHER "
+    "mm reading is more EXTENSION on this car, so "
+    "<code>pitch &gt; 0 = the orientation seen under ACCELERATION "
+    "(squat)</code> and <code>pitch &lt; 0 = BRAKING (dive)</code>. This is "
+    "the opposite of a 'positive = nose-down' reading — verified "
+    "empirically against vehicle speed, not assumed.",
+    "These are <b>wheel</b> millimetres. The motion ratio matters more here "
+    "than anywhere else: pitch IS the front-minus-rear difference, so the "
+    "per-corner ratios (1.188 front, 1.038 rear) must be applied before the "
+    "subtraction, not after.",
+    "<b>Braking windows come from front brake pressure</b> (&gt;100 psi) "
+    "AND speed (&gt;3 m/s), not from thresholding longitudinal G. Pressure "
+    "is the driver's input; lon G is only the result, and also responds to "
+    "drivetrain drag and gradient. Green shading on the brake plots marks "
+    "the detected windows.",
+    "<code>VCFRONT_brakePressure</code> is sampled at <b>10 Hz</b>, so its "
+    "Nyquist is 5 Hz — it is filtered at 3 Hz for that reason.",
+    "A peak is <b>one instantaneous sample</b> of the filtered trace. The "
+    "bracketed <code>0.2s mean</code> next to it says whether that instant "
+    "was a sustained plateau or an isolated spike.",
+]
+
+
 if __name__ == "__main__":
     with report_page("case3_max_pitch", "Case 3 — Max Pitch", PLOTS_ROOT) as page:
         page.summary = main()
+        for text in CONVENTIONS:
+            page.add_convention(text)
+        for event_summary in (page.summary or {}).values():
+            for item in (event_summary or {}).get("_instants", []):
+                page.add_instant(item["event"], item["path"], item["t"],
+                                 item["label"], item["detail"])
     write_index()

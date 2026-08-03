@@ -31,7 +31,7 @@ backwards. Magnitudes were never affected, only the interpretation.
 
 mm -> degrees via atan (EXACT for this geometry — not the small-angle
 approximation this line used to claim). NOTE the motion ratio is applied PER CORNER
-upstream (front 1.15, rear 1.038 differ), so the mm below are already WHEEL
+upstream (front 1.188, rear 1.038 differ), so the mm below are already WHEEL
 travel:
     roll_deg = atan(roll_mm / track_width_mm) * 180/pi
 
@@ -100,17 +100,20 @@ from case_common import (
     group_by_event,
     lowpass, elapsed_seconds, trim_window,
     find_steady_segments, top_k_peaks,
-    find_static_window, static_baseline, to_wheel_travel, lon_g_or_none,
+    baseline_corner_displacements, to_wheel_travel,
     MOTION_RATIO_FRONT, MOTION_RATIO_REAR,
     TRIM_SECONDS, TOP_K_PEAKS,
     FRONT_TRACK_MM, REAR_TRACK_MM, mm_to_deg,
+    to_ground_referenced,
+    build_raw_vs_filtered, thin_scatter, PLOT_TEMPLATE, format_peak_shape,
+    titled,
 )
 
 # Vehicle geometry and the mm -> degree conversion now come from
 # case_common too. They used to be redefined here, in case3 and in case4;
 # the values agreed, but nothing enforced it.
 
-# Motion ratio comes from case_common (measured: 1.15 front, 1.038 rear,
+# Motion ratio comes from case_common (measured: 1.188 front, 1.038 rear,
 # wheel/spring displacement) and is applied PER CORNER via
 # to_wheel_travel() before the roll difference is taken — front and rear
 # ratios differ, so it cannot be applied afterwards. Everything below works
@@ -173,24 +176,22 @@ def load_roll_signals(path, cutoff_hz):
     # difference) doesn't get counted as cornering-induced roll. Without
     # this, roll_front = FR - FL would carry whatever offset existed
     # between those two pots even at rest.
-    static_window = find_static_window(speed, t, lon_g=lon_g_or_none(signals))
-    baseline_fl = static_baseline(dfl, t, static_window)
-    baseline_fr = static_baseline(dfr, t, static_window)
-    baseline_rl = static_baseline(drl, t, static_window)
-    baseline_rr = static_baseline(drr, t, static_window)
-    baselines_found = all(b is not None for b in (baseline_fl, baseline_fr, baseline_rl, baseline_rr))
+    # Via the SHARED helper. This used to be four inline static_baseline()
+    # calls, duplicated verbatim in case3 — and that duplication is exactly
+    # why both files missed the piecewise-baseline fix that case4 (already
+    # using the helper) got for free. See segmented_baselines().
+    corners_raw, baselines, baselines_found = baseline_corner_displacements(
+        signals, t, speed)
     if not baselines_found:
         print(f"  [!] {os.path.basename(path)}: no stopped-car window found — "
               f"roll is NOT baselined for this file (raw FR-FL / RR-RL used as-is).")
-        baseline_fl = baseline_fr = baseline_rl = baseline_rr = 0.0
+    baseline_fl, baseline_fr = baselines["FL"], baselines["FR"]
+    baseline_rl, baseline_rr = baselines["RL"], baselines["RR"]
 
-    # Shock-pot mm -> WHEEL mm per corner (front 1.15, rear 1.038) BEFORE
+    # Shock-pot mm -> WHEEL mm per corner (front 1.188, rear 1.038) BEFORE
     # differencing. Front and rear ratios differ, so this cannot be applied
     # to the roll difference afterwards.
-    wheel = to_wheel_travel({
-        "FL": dfl - baseline_fl, "FR": dfr - baseline_fr,
-        "RL": drl - baseline_rl, "RR": drr - baseline_rr,
-    })
+    wheel = to_wheel_travel(corners_raw)
 
     # +ve = right side EXTENDED / left side compressed — higher mm is more
     # extension on this car. See the sign-convention note in the docstring;
@@ -288,31 +289,58 @@ def analyze_transient_file(path, event):
 
 # ── Plotting ─────────────────────────────────────────────────────────────
 
+def steady_spans(result):
+    """POST-TRIM (start_s, end_s) windows the skidpad medians came from.
+
+    Empty for the transient events, which report peaks rather than
+    windows — see case1.steady_spans() for the full note.
+    """
+    spans = []
+    for sign_result in (result.get("segments") or {}).values():
+        for run in sign_result.get("runs", []):
+            spans.append((run["start_s"], run["end_s"]))
+    return sorted(spans)
+
+
+def peak_markers(result):
+    """{panel: [(t, label, y)]} for the front/rear roll peaks this file
+    reports. Panel 0 is front, panel 1 rear; y from the FILTERED trace,
+    which is the one the peak was found in."""
+    markers = {}
+    for panel, (key, sig) in enumerate([("front_peaks", "roll_front_f"),
+                                        ("rear_peaks", "roll_rear_f")]):
+        rows = [(float(result["t"][idx]), f"#{rank}", float(result[sig][idx]))
+                for rank, (idx, _val) in enumerate(result.get(key, []), 1)]
+        if rows:
+            markers[panel] = rows
+    return markers
+
+
 def build_before_after_plot(result, cutoff_hz, output_path):
-    fig = go.Figure()
-    t = result["t"]
-    fig.add_trace(go.Scatter(x=t, y=result["roll_front_raw"], mode="lines", name="front roll (raw, mm)",
-                              line=dict(color="lightblue", width=1), opacity=0.6))
-    fig.add_trace(go.Scatter(x=t, y=result["roll_front_f"], mode="lines", name="front roll (filtered, mm)",
-                              line=dict(color="blue", width=2)))
-    fig.add_trace(go.Scatter(x=t, y=result["roll_rear_raw"], mode="lines", name="rear roll (raw, mm)",
-                              line=dict(color="lightsalmon", width=1), opacity=0.6))
-    fig.add_trace(go.Scatter(x=t, y=result["roll_rear_f"], mode="lines", name="rear roll (filtered, mm)",
-                              line=dict(color="red", width=2)))
-    fig.update_layout(
-        title=f"{os.path.basename(result['path'])} — raw vs. {cutoff_hz} Hz low-pass filtered (roll)",
-        xaxis_title="Elapsed time (s)", yaxis_title="Shock-pot travel difference (mm)",
+    build_raw_vs_filtered(
+        panels=[
+            ("Front roll (FR − FL)", result["roll_front_raw"],
+             result["roll_front_f"], "Wheel travel difference (mm)"),
+            ("Rear roll (RR − RL)", result["roll_rear_raw"],
+             result["roll_rear_f"], "Wheel travel difference (mm)"),
+        ],
+        t=result["t"],
+        title=f"{os.path.basename(result['path'])} — roll",
+        output_path=output_path,
+        cutoff_hz=cutoff_hz,
+        shade=steady_spans(result),
+        shade_label="steady-state window used for the skidpad median",
+        markers=peak_markers(result),
     )
-    fig.update_xaxes(rangeslider_visible=True)
-    fig.write_html(output_path, include_plotlyjs="cdn")
 
 
 def build_roll_diagram(event, background_points, highlighted, output_path):
     fig = go.Figure()
 
     for fname, front, rear in background_points:
-        fig.add_trace(go.Scatter(
-            x=front, y=rear, mode="markers", name=fname,
+        front_thin, rear_thin = thin_scatter(front, rear)
+        fig.add_trace(go.Scattergl(
+            x=front_thin, y=rear_thin, mode="markers", name=fname,
             marker=dict(size=3, opacity=0.25),
             hovertemplate="front=%{x:.2f}mm<br>rear=%{y:.2f}mm<extra>" + fname + "</extra>",
         ))
@@ -332,10 +360,15 @@ def build_roll_diagram(event, background_points, highlighted, output_path):
         ))
 
     fig.update_layout(
-        title=f"{event.upper()} — Front vs. Rear Roll Diagram",
-        xaxis_title="Front roll (FR - FL, mm)",
-        yaxis_title="Rear roll (RR - RL, mm)",
+        xaxis_title="Front roll (FR − FL, mm)",
+        yaxis_title="Rear roll (RR − RL, mm)",
         yaxis=dict(scaleanchor="x", scaleratio=1),
+        template=PLOT_TEMPLATE,
+    )
+    titled(
+        fig, f"{event.upper()} — Front vs. Rear Roll Diagram",
+        "distance from the dashed line is the front/rear roll disagreement. "
+        "Overlapping markers thinned for display — the outer envelope is exact.",
     )
     fig.write_html(output_path, include_plotlyjs="cdn")
 
@@ -374,6 +407,20 @@ def build_roll_angle_summary(summaries_by_event, output_path):
 
 
 # ── Reporting ────────────────────────────────────────────────────────────
+
+
+# Ground-referenced roll sits ALONGSIDE the measured figure, never instead
+# of it — the shock pots measure suspension-referenced and that stays
+# primary. The whole-car "avg" is rebuilt from the two AXLE angles with
+# their own multipliers rather than scaled from the suspension avg, because
+# front and rear differ (1.307 vs 1.357). See case_common.
+def _with_ground(summary):
+    front, rear = summary.get("front_deg"), summary.get("rear_deg")
+    summary["front_deg_ground"] = to_ground_referenced(front, "front")
+    summary["rear_deg_ground"] = to_ground_referenced(rear, "rear")
+    summary["avg_deg_ground"] = to_ground_referenced(summary.get("avg_deg"), "avg")
+    return summary
+
 
 def report_skidpad(results):
     print(f"\n=== SKIDPAD ROLL (steady-state segments, {SKIDPAD_CUTOFF_HZ} Hz low-pass) ===")
@@ -423,11 +470,11 @@ def report_skidpad(results):
             ))
 
     avg_track = (FRONT_TRACK_MM + REAR_TRACK_MM) / 2.0
-    summary = {
+    summary = _with_ground({
         "front_deg": mm_to_deg(max_front_mm, FRONT_TRACK_MM),
         "rear_deg": mm_to_deg(max_rear_mm, REAR_TRACK_MM),
         "avg_deg": mm_to_deg(max_avg_mm, avg_track),
-    }
+    })
     return highlight_points, summary
 
 
@@ -447,11 +494,13 @@ def report_transient(event, results):
 
     highlight_points = []
     summary = {}
+    instants = []        # deep-link targets for the report page
 
-    for label, key, track_mm, color, summary_key in [
-        ("Front roll", "front_peaks", FRONT_TRACK_MM, "red", "front_deg"),
-        ("Rear roll", "rear_peaks", REAR_TRACK_MM, "blue", "rear_deg"),
-        ("Avg roll", "avg_peaks", (FRONT_TRACK_MM + REAR_TRACK_MM) / 2.0, "green", "avg_deg"),
+    for label, key, track_mm, color, summary_key, sig_key in [
+        ("Front roll", "front_peaks", FRONT_TRACK_MM, "red", "front_deg", "roll_front_f"),
+        ("Rear roll", "rear_peaks", REAR_TRACK_MM, "blue", "rear_deg", "roll_rear_f"),
+        ("Avg roll", "avg_peaks", (FRONT_TRACK_MM + REAR_TRACK_MM) / 2.0, "green",
+         "avg_deg", "roll_avg_f"),
     ]:
         pool = pooled(key)
         if not pool:
@@ -470,10 +519,19 @@ def report_transient(event, results):
         print(f"    Top {len(top)} peaks averaged: {avg_mm:.3f} mm ({mm_to_deg(avg_mm, track_mm):.4f} deg) "
               f"(values: {', '.join(f'{v:.2f}' for v, _, _ in top)})")
         print(f"    Single highest peak: {best_val:.3f} mm ({mm_to_deg(best_val, track_mm):.4f} deg) "
-              f"— {best_fname} @ {best_t:.2f}s")
+              f"— {best_fname} @ {best_t:.2f}s"
+              # Peaks were found on np.abs(...), so the shape check is too.
+              + format_peak_shape(np.abs(best_r[sig_key]), best_r["t"],
+                                  best_idx, " mm"))
         print(f"    At that instant: front={best_front:+.3f}mm, rear={best_rear:+.3f}mm")
 
         summary[summary_key] = mm_to_deg(best_val, track_mm)
+        instants.append({
+            "event": event, "path": best_r["path"], "t": float(best_t),
+            "label": f"peak {label.lower()} — "
+                     f"{mm_to_deg(best_val, track_mm):.3f}°",
+            "detail": f"front {best_front:+.2f}mm, rear {best_rear:+.2f}mm",
+        })
 
         highlight_points.append((
             f"{label} — top {len(top)} peaks",
@@ -483,6 +541,11 @@ def report_transient(event, results):
             color,
         ))
 
+    _with_ground(summary)
+
+    # Navigation metadata, not a number — underscore-prefixed so
+    # case_summary's scalar sweep and the regression snapshot skip it.
+    summary["_instants"] = instants
     return highlight_points, summary
 
 
@@ -560,7 +623,36 @@ def main():
     return summaries_by_event
 
 
+CONVENTIONS = [
+    "<b>Roll is right-side travel minus left-side travel</b>, and a HIGHER "
+    "mm reading is more EXTENSION on this car. So "
+    "<code>roll &gt; 0 = right side extended, LEFT side compressed</code> — "
+    "the opposite of what the formula suggests at a glance. Verified on "
+    "skidpad: correlation with lateral G is −0.998.",
+    "These are <b>wheel</b> millimetres — the motion ratio (1.188 front, "
+    "1.038 rear) is applied per corner <i>before</i> the difference is "
+    "taken, because the two ratios differ.",
+    "The whole-car <b>avg</b> angle converts mean-mm over mean-track rather "
+    "than averaging two separately-converted angles. The error is "
+    "0.17–0.19% and is documented rather than fixed, so published numbers "
+    "stay comparable.",
+    "<b>Front and rear roll disagree by 7–27%</b> on this car for reasons "
+    "not yet explained — see the README's known data problems. Two "
+    "autocross runs additionally have unusable front pots and are flagged "
+    "in place below.",
+    "A peak is <b>one instantaneous sample</b> of the filtered trace. The "
+    "bracketed <code>0.2s mean</code> next to it says whether that instant "
+    "was a sustained plateau or an isolated spike.",
+]
+
+
 if __name__ == "__main__":
     with report_page("case2_max_roll", "Case 2 — Max Roll", PLOTS_ROOT) as page:
         page.summary = main()
+        for text in CONVENTIONS:
+            page.add_convention(text)
+        for event_summary in (page.summary or {}).values():
+            for item in (event_summary or {}).get("_instants", []):
+                page.add_instant(item["event"], item["path"], item["t"],
+                                 item["label"], item["detail"])
     write_index()

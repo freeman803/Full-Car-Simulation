@@ -23,8 +23,23 @@ exact same numbers those cases report — same filtering, same baselining,
 same motion-ratio conversion, same sign conventions. If a case changes
 methodology this follows automatically.
 
-Prior estimate to check against: 0.83-0.94 deg/g, derived by hand from four
-independent estimates. That was never computed by any script until now.
+VALIDATED AGAINST THE SPRINGS, which is the only check here that does not
+route through the shock pots. With no ARB the four springs (225 lbf/in
+front, 200 rear) make the entire roll stiffness: wheel rates 27.92 / 32.51
+N/mm give 749 N*m/deg, and the measured 0.898 deg/g implies a sprung-mass x
+CG-height of 68.6 kg*m (CG 0.280 m above the roll axis at 245 kg sprung) —
+a real FSAE number. Note MR enters stiffness as MR^2, so this is twice as
+sensitive to a motion-ratio error as the angles are.
+
+A "should be at least 2x higher" expectation is ruled out by the same
+arithmetic: 1.80 deg/g would need a CG 0.560 m above the roll axis.
+
+An earlier note here cited a "0.83-0.94 deg/g hand-derived estimate from
+four independent estimates" as corroboration. Its derivation appears
+nowhere in this repo or its history, and the other confirmations once
+claimed alongside it (endurance vs skidpad, case2-roll / case1-lat-G) share
+the same shock pots and motion ratio, so they measured repeatability rather
+than calibration. Retracted.
 
 SIGN CONVENTION. A HIGHER shock-pot mm reading is more EXTENSION on this
 car (see case2/case3), so roll_front_mm = FR - FL is POSITIVE when the
@@ -77,6 +92,9 @@ from case_common import (
     baseline_corner_displacements, to_wheel_travel, lowpass,
     mm_to_deg, FRONT_TRACK_MM, REAR_TRACK_MM, AVG_TRACK_MM, WHEELBASE_MM,
     CORNERS, CORNER_SIGNAL_NAMES, TRIM_SECONDS, is_suspect,
+    to_ground_referenced,
+    GROUND_MULT_ROLL_FRONT, GROUND_MULT_ROLL_REAR, GROUND_MULT_PITCH,
+    TYRE_RATE_N_MM,
 )
 from parse_influx import parse_influx
 from case_report import report_page, write_index
@@ -263,7 +281,28 @@ def steady_mask(series):
 
 # ── Reporting ────────────────────────────────────────────────────────────
 
-def report_fit(label, fit, expect_negative=True):
+def fit_magnitude(fit):
+    return abs(fit["slope"]) if fit else None
+
+
+def ground_values(pooled):
+    """{which: ground-referenced gradient} for a {which: fit} dict.
+
+    The whole-car "avg" is built from the two AXLE figures with their own
+    multipliers rather than by scaling the suspension-referenced avg — see
+    case_common.ground_referenced_avg().
+    """
+    out = {}
+    if "pitch" in pooled:
+        out["pitch"] = to_ground_referenced(fit_magnitude(pooled["pitch"]), "pitch")
+    front, rear = fit_magnitude(pooled.get("front")), fit_magnitude(pooled.get("rear"))
+    out["front"] = to_ground_referenced(front, "front")
+    out["rear"] = to_ground_referenced(rear, "rear")
+    out["avg"] = to_ground_referenced(fit_magnitude(pooled.get("avg")), "avg")
+    return out
+
+
+def report_fit(label, fit, expect_negative=True, ground=None):
     if fit is None:
         print(f"    {label:<22}—  (insufficient data or G range)")
         return None
@@ -277,7 +316,11 @@ def report_fit(label, fit, expect_negative=True):
     sign_ok = (slope < 0) if expect_negative else (slope > 0)
     flag = "" if sign_ok else "   [!] SIGN UNEXPECTED — convention may have flipped"
 
-    print(f"    {label:<22}{magnitude:6.3f} deg/g   "
+    # Ground-referenced sits NEXT TO the measured figure, never instead of
+    # it — the sensors measure suspension-referenced and that stays primary.
+    ground_txt = f"  [ground-ref {ground:.3f}]" if ground is not None else ""
+
+    print(f"    {label:<22}{magnitude:6.3f} deg/g{ground_txt}   "
           f"R²={fit['r2']:.3f}  n={fit['n']:,}  "
           f"G range {fit['g_range']:.2f}  "
           f"intercept {fit['intercept']:+.3f} deg{flag}")
@@ -344,26 +387,33 @@ def summary_only(grouped):
         if not series:
             continue
 
+        fits = {}
         for which in ("front", "rear", "avg"):
             use = usable_series(series, which)
             if not use:
+                fits[which] = None
                 out[f"{event}_roll_{which}"] = None
                 continue
             g = np.concatenate([s["lat"][s["keep"]] for s in use])
             a = np.concatenate([s[which][s["keep"]] for s in use])
-            fit = fit_gradient(g, a)
-            out[f"{event}_roll_{which}"] = abs(fit["slope"]) if fit else None
+            fits[which] = fit_gradient(g, a)
+            out[f"{event}_roll_{which}"] = fit_magnitude(fits[which])
+        for which, val in ground_values(fits).items():
+            out[f"{event}_roll_{which}_ground"] = val
 
         # Skidpad's steady-segment fit is the cleanest estimate and the one
         # the summary table should show.
         if event == "skidpad":
+            sfits = {}
             for which in ("front", "rear", "avg"):
                 use = usable_series(series, which)
                 masks = [s["keep"] & steady_mask(s) for s in use]
                 g = np.concatenate([s["lat"][m] for s, m in zip(use, masks)])
                 a = np.concatenate([s[which][m] for s, m in zip(use, masks)])
-                fit = fit_gradient(g, a)
-                out[f"skidpad_steady_roll_{which}"] = abs(fit["slope"]) if fit else None
+                sfits[which] = fit_gradient(g, a)
+                out[f"skidpad_steady_roll_{which}"] = fit_magnitude(sfits[which])
+            for which, val in ground_values(sfits).items():
+                out[f"skidpad_steady_roll_{which}_ground"] = val
 
     for event in PITCH_EVENTS:
         paths = grouped.get(event, [])
@@ -382,7 +432,8 @@ def summary_only(grouped):
         g = np.concatenate([s["lon"][s["keep"]] for s in use])
         a = np.concatenate([s["pitch"][s["keep"]] for s in use])
         fit = fit_gradient(g, a)
-        out[f"{event}_pitch"] = abs(fit["slope"]) if fit else None
+        out[f"{event}_pitch"] = fit_magnitude(fit)
+        out[f"{event}_pitch_ground"] = to_ground_referenced(fit_magnitude(fit), "pitch")
 
     return out
 
@@ -403,7 +454,8 @@ def main():
     print("\n" + "=" * 78)
     print("CASE 5 — ROLL AND PITCH GRADIENTS (deg/g)")
     print("=" * 78)
-    print("Prior hand-derived estimate to check against: 0.83-0.94 deg/g")
+    print("Roll stiffness from the springs (225/200 lbf/in, no ARB): "
+          "749 N*m/deg -> 0.898 deg/g at CG 0.280 m above the roll axis")
 
     summary = {}
 
@@ -437,8 +489,11 @@ def main():
                   + ", ".join(f"{w} -{n}" for w, n in dropped.items() if n)
                   + "  (see case_common.SUSPECT_CORNERS)")
 
+        pooled_ground = ground_values(pooled)
         for which in ("front", "rear", "avg"):
-            summary[f"{event}_roll_{which}"] = report_fit(which, pooled[which])
+            summary[f"{event}_roll_{which}"] = report_fit(
+                which, pooled[which], ground=pooled_ground.get(which))
+            summary[f"{event}_roll_{which}_ground"] = pooled_ground.get(which)
 
         # PER-FILE, ALWAYS. A pooled gradient is only meaningful if every
         # file came off the same car. On autocross they did not: two of the
@@ -547,8 +602,11 @@ def main():
                 g = np.concatenate([s["lat"][s["keep"] & steady_mask(s)] for s in use])
                 a = np.concatenate([s[which][s["keep"] & steady_mask(s)] for s in use])
                 steady[which] = fit_gradient(g, a)
+            steady_ground = ground_values(steady)
             for which in ("front", "rear", "avg"):
-                summary[f"skidpad_steady_roll_{which}"] = report_fit(which, steady[which])
+                summary[f"skidpad_steady_roll_{which}"] = report_fit(
+                    which, steady[which], ground=steady_ground.get(which))
+                summary[f"skidpad_steady_roll_{which}_ground"] = steady_ground.get(which)
 
             build_scatter(
                 steady, "Roll gradient — skidpad, steady segments only",
@@ -588,7 +646,9 @@ def main():
         # car's convention is negative pitch_mm — so the same negative slope
         # as roll. Verified, not assumed: case3 established the convention
         # against vehicle speed.
-        summary[f"{event}_pitch"] = report_fit("pitch", fit)
+        pitch_ground = to_ground_referenced(fit_magnitude(fit), "pitch")
+        summary[f"{event}_pitch"] = report_fit("pitch", fit, ground=pitch_ground)
+        summary[f"{event}_pitch_ground"] = pitch_ground
 
         build_scatter(
             {"pitch": fit}, f"Pitch gradient — {event}", "longitudinal G (g)",

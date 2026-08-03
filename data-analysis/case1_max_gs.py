@@ -58,6 +58,8 @@ from case_common import (
     find_steady_segments, top_k_peaks,
     MIN_LAT_G_FOR_TURN, MIN_RUN_SECONDS, TRIM_SECONDS, MIN_FRACTION_OF_LONGEST,
     TOP_K_PEAKS, PEAK_MIN_DISTANCE_S,
+    build_raw_vs_filtered, thin_scatter, PLOT_TEMPLATE, format_peak_shape,
+    titled,
 )
 
 # ── Tunable constants specific to this case (G-specific peak prominence) ──
@@ -161,34 +163,115 @@ def analyze_transient_file(path, event):
 
 # ── Plotting ─────────────────────────────────────────────────────────────
 
+def steady_spans(result):
+    """The (start_s, end_s) windows this file's numbers were measured over.
+
+    Only skidpad has them — the transient events report peaks, not
+    windows. Returns [] otherwise, which the plot builder reads as "nothing
+    to shade". These are the POST-TRIM bounds (TRIM_SECONDS is already off
+    each end), so what gets shaded is exactly the data that went into the
+    median, not the whole qualifying run.
+    """
+    spans = []
+    for sign_result in (result.get("segments") or {}).values():
+        for run in sign_result.get("runs", []):
+            spans.append((run["start_s"], run["end_s"]))
+    return sorted(spans)
+
+
+def peak_markers(result):
+    """{panel_index: [(t, label, y), ...]} for the peaks this file reports.
+
+    Panel 0 is lateral G, panel 1 longitudinal. y is taken from the FILTERED
+    trace, which is the one the peak was found in — putting the marker on
+    raw would place it slightly off its own reported value.
+    """
+    markers = {}
+    for panel, (key, sig) in enumerate([("lat_peaks", "lat_f"),
+                                        ("lon_peaks", "lon_f")]):
+        rows = []
+        for rank, (idx, val) in enumerate(result.get(key, []), 1):
+            rows.append((float(result["t"][idx]), f"#{rank}",
+                         float(result[sig][idx])))
+        if rows:
+            markers[panel] = rows
+    return markers
+
+
 def build_before_after_plot(result, cutoff_hz, output_path):
-    fig = go.Figure()
-    t = result["t"]
-    fig.add_trace(go.Scatter(x=t, y=result["lat_raw"], mode="lines", name="lateral G (raw)",
-                              line=dict(color="lightblue", width=1), opacity=0.6))
-    fig.add_trace(go.Scatter(x=t, y=result["lat_f"], mode="lines", name="lateral G (filtered)",
-                              line=dict(color="blue", width=2)))
-    fig.add_trace(go.Scatter(x=t, y=result["lon_raw"], mode="lines", name="longitudinal G (raw)",
-                              line=dict(color="lightsalmon", width=1), opacity=0.6))
-    fig.add_trace(go.Scatter(x=t, y=result["lon_f"], mode="lines", name="longitudinal G (filtered)",
-                              line=dict(color="red", width=2)))
-    fig.update_layout(
-        title=f"{os.path.basename(result['path'])} — raw vs. {cutoff_hz} Hz low-pass filtered",
-        xaxis_title="Elapsed time (s)", yaxis_title="G",
+    build_raw_vs_filtered(
+        panels=[
+            ("Lateral G", result["lat_raw"], result["lat_f"], "G"),
+            ("Longitudinal G", result["lon_raw"], result["lon_f"], "G"),
+        ],
+        t=result["t"],
+        title=os.path.basename(result["path"]),
+        output_path=output_path,
+        cutoff_hz=cutoff_hz,
+        shade=steady_spans(result),
+        shade_label="steady-state window used for the skidpad median",
+        markers=peak_markers(result),
     )
-    fig.update_xaxes(rangeslider_visible=True)
-    fig.write_html(output_path, include_plotlyjs="cdn")
 
 
 def build_gg_diagram(event, background_points, highlighted, output_path):
     fig = go.Figure()
 
     for fname, lat, lon in background_points:
-        fig.add_trace(go.Scatter(
-            x=lat, y=lon, mode="markers", name=fname,
+        lat_thin, lon_thin = thin_scatter(lat, lon)
+        fig.add_trace(go.Scattergl(
+            x=lat_thin, y=lon_thin, mode="markers", name=fname,
             marker=dict(size=3, opacity=0.25),
             hovertemplate="lat=%{x:.3f}g<br>lon=%{y:.3f}g<extra>" + fname + "</extra>",
         ))
+
+    # THE FRICTION ENVELOPE. A g-g scatter shows where the car went; the
+    # hull shows what it could REACH, which is the thing you compare against
+    # a tyre model or a target and the only part of this chart that is a
+    # design input. case4 has hulled its roll-vs-pitch cloud since it was
+    # written; this one had none, so the usable friction budget was visible
+    # nowhere in the analysis.
+    #
+    # Computed from the FULL arrays, never the thinned display set — an
+    # extreme point is exactly what thin_scatter is allowed to drop if a
+    # kept point already occupies its cell (see case_common.thin_scatter).
+    hull_area = None
+    if background_points:
+        pts = np.column_stack([
+            np.concatenate([lat for _, lat, _ in background_points]),
+            np.concatenate([lon for _, _, lon in background_points]),
+        ])
+        finite = pts[np.isfinite(pts).all(axis=1)]
+        try:
+            from scipy.spatial import ConvexHull
+            if len(finite) >= 3:
+                hull = ConvexHull(finite)
+                loop = np.append(hull.vertices, hull.vertices[0])
+                hull_area = float(hull.volume)   # 'volume' is area in 2-D
+                fig.add_trace(go.Scatter(
+                    x=finite[loop, 0], y=finite[loop, 1],
+                    mode="lines", name="friction envelope (convex hull)",
+                    line=dict(color="black", width=2),
+                    fill="toself", fillcolor="rgba(42,120,214,0.06)",
+                    hoverinfo="skip",
+                ))
+        except Exception as e:
+            print(f"  [!] {event}: g-g hull skipped ({e})")
+
+    # Reference circles at whole-g radii. A tyre with equal grip in every
+    # direction would fill a circle, so the gap between the hull and these
+    # is the anisotropy — how much more the car does in one axis than
+    # another, read directly off the chart.
+    if background_points:
+        limit = float(np.nanmax(np.abs(finite))) if len(finite) else 1.0
+        theta = np.linspace(0, 2 * np.pi, 181)
+        for radius in range(1, int(np.ceil(limit)) + 1):
+            fig.add_trace(go.Scatter(
+                x=radius * np.cos(theta), y=radius * np.sin(theta),
+                mode="lines", name=f"{radius} g",
+                line=dict(color="#c9c8c3", width=1, dash="dot"),
+                hoverinfo="skip", showlegend=(radius == 1),
+            ))
 
     for label, lat_vals, lon_vals, texts, color in highlighted:
         fig.add_trace(go.Scatter(
@@ -197,13 +280,30 @@ def build_gg_diagram(event, background_points, highlighted, output_path):
             text=texts, hovertemplate="%{text}<br>lat=%{x:.3f}g<br>lon=%{y:.3f}g<extra></extra>",
         ))
 
+    area_note = (f" Envelope area {hull_area:.2f} g²."
+                 if hull_area is not None else "")
     fig.update_layout(
-        title=f"{event.upper()} — G-G Diagram",
         xaxis_title="Lateral G (a_y)",
         yaxis_title="Longitudinal G (a_x)",
         yaxis=dict(scaleanchor="x", scaleratio=1),
+        template=PLOT_TEMPLATE,
+    )
+    titled(
+        fig, f"{event.upper()} — G-G Diagram",
+        f"every sample the car reached; stars mark the reported peaks. The "
+        f"black hull is the <b>usable friction envelope</b> — what the car "
+        f"could reach, not just where it went.{area_note} Dotted circles are "
+        f"whole-g references; a tyre with equal grip every direction would "
+        f"fill one. Markers thinned for display, hull computed from every "
+        f"sample."
+        f"<br><b>alpha</b>, quoted with each peak, says where that point sits "
+        f"on the circle: <b>90° = pure cornering</b> (out along the lateral "
+        f"axis, no braking or acceleration), <b>0° = pure braking or "
+        f"acceleration</b> (along the longitudinal axis), <b>45° = equal "
+        f"parts of both</b> — the combined-load corner you are trying to use.",
     )
     fig.write_html(output_path, include_plotlyjs="cdn")
+    return hull_area
 
 
 # ── Reporting ────────────────────────────────────────────────────────────
@@ -282,6 +382,7 @@ def report_transient(event, results):
 
     highlight_points = []
     peaks_by_axis = {}   # label -> single highest peak, for the summary
+    instants = []        # deep-link targets for the report page
 
     for label, key, color in [
         ("Lateral G", "lat_peaks", "red"),
@@ -301,10 +402,18 @@ def report_transient(event, results):
         best_lon = best_r["lon_f"][best_idx]
         alpha = np.degrees(np.arctan2(abs(best_lat), abs(best_lon))) if best_lon != 0 else 90.0
 
+        # Is the winning peak a sustained plateau or one isolated sample?
+        # The peak search is run on np.abs(...), so the shape check has to
+        # be too — otherwise a negative-lateral-G peak reads as inverted.
+        shape_signal = (best_r["resultant"] if key == "res_peaks"
+                        else np.abs(best_r["lat_f"]) if key == "lat_peaks"
+                        else np.abs(best_r["lon_f"]))
+
         print(f"  {label}:")
         print(f"    Top {len(top)} peaks averaged: {avg:.4f} g "
               f"(values: {', '.join(f'{v:.3f}' for v, _, _ in top)})")
-        print(f"    Single highest peak: {best_val:.4f} g — {best_fname} @ {best_t:.2f}s")
+        print(f"    Single highest peak: {best_val:.4f} g — {best_fname} @ {best_t:.2f}s"
+              + format_peak_shape(shape_signal, best_r["t"], best_idx, " g"))
         print(f"    At that instant: lateral={best_lat:+.3f}g, longitudinal={best_lon:+.3f}g, "
               f"alpha={alpha:.1f}°")
 
@@ -316,6 +425,12 @@ def report_transient(event, results):
             color,
         ))
         peaks_by_axis[label] = best_val
+        instants.append({
+            "event": event, "path": best_r["path"], "t": float(best_t),
+            "label": f"peak {label.lower()} — {best_val:.3f} g",
+            "detail": f"lat {best_lat:+.2f} g, lon {best_lon:+.2f} g, "
+                      f"alpha {alpha:.0f}°",
+        })
 
     # Headline numbers for case_summary.py — same values printed above, so the
     # summary table cannot drift from this report. Transient events have no
@@ -325,6 +440,9 @@ def report_transient(event, results):
         "peak_lat_g": peaks_by_axis.get("Lateral G"),
         "peak_lon_g": peaks_by_axis.get("Longitudinal G"),
         "peak_combined_g": peaks_by_axis.get("Combined G"),
+        # Navigation metadata, not a number — underscore-prefixed so
+        # case_summary's scalar sweep and the regression snapshot skip it.
+        "_instants": instants,
     } if peaks_by_axis else None
 
     return highlight_points, summary
@@ -378,7 +496,18 @@ def main():
         summaries_by_event[event] = summary
 
         if results:
-            build_gg_diagram(event, background, highlight, os.path.join(out_dir, "gg_diagram.html"))
+            area = build_gg_diagram(event, background, highlight,
+                                    os.path.join(out_dir, "gg_diagram.html"))
+            # The envelope AREA, reported rather than left to be eyeballed
+            # off the chart. It is the single number for "how much of the
+            # friction circle this car actually used" — comparable across
+            # events, and the thing a tyre model or a target is checked
+            # against. Units are g^2 because both axes are in g.
+            if area is not None:
+                print(f"\n  Friction envelope (convex hull of the g-g cloud): "
+                      f"{area:.2f} g²")
+                if summary:
+                    summary["gg_envelope_area_g2"] = area
             print(f"\n  Plots saved to: {out_dir}/")
 
     print("\nDone.")
@@ -386,7 +515,38 @@ def main():
     return summaries_by_event
 
 
+CONVENTIONS = [
+    "<b>Lateral G positive = cornering left.</b> "
+    "<b>Longitudinal G positive = slowing down</b> — verified empirically "
+    "against vehicle speed in case3, not assumed from the signal name.",
+    "G's come from <code>VCPDU_lat</code> / <code>VCPDU_lon</code>, which "
+    "are in <b>m/s²</b> in the raw data and divided by 9.80665 here. Any "
+    "number on this page is already in g.",
+    "<b>Skidpad is a sustained measurement</b> — a median over the steady "
+    "circling segments — so it has no separate 'peak' by design. The other "
+    "events report peaks.",
+    "A peak is <b>one instantaneous sample</b> of the filtered trace. The "
+    "bracketed <code>0.2s mean</code> next to it says whether that instant "
+    "was a sustained plateau or an isolated spike.",
+    "<b><code>alpha</code> is the direction of the g-g vector</b> at that "
+    "instant — <code>atan2(|lat|, |lon|)</code> in degrees, i.e. where the "
+    "point sits on the friction circle. <b>90° = pure cornering</b> "
+    "(no braking or acceleration), <b>0° = pure straight-line</b> braking "
+    "or acceleration, <b>45° = equal parts of both</b>, the combined-load "
+    "corner of the circle. So <i>lat −1.60 g, lon +0.14 g, alpha 85°</i> "
+    "was essentially pure lateral grip — cornering, not trail-braking. It "
+    "tells you at a glance whether a peak is a single-axis event or a "
+    "genuine combined-load one.",
+]
+
+
 if __name__ == "__main__":
     with report_page("case1_max_gs", "Case 1 — Max G's", PLOTS_ROOT) as page:
         page.summary = main()
+        for text in CONVENTIONS:
+            page.add_convention(text)
+        for event_summary in (page.summary or {}).values():
+            for item in (event_summary or {}).get("_instants", []):
+                page.add_instant(item["event"], item["path"], item["t"],
+                                 item["label"], item["detail"])
     write_index()
