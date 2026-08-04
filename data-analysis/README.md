@@ -71,7 +71,7 @@ First run is slow; `parse_influx.py` caches a `.parsed.pkl` beside each CSV and 
 
 1. **`sus→gnd`** — the first figure is suspension-referenced (what the shock pots measure); the second is ground-referenced (what a design roll gradient usually means). They are not interchangeable. See [Suspension- vs ground-referenced](#suspension--vs-ground-referenced).
 2. **Every peak figure is filter-dependent.** Across a 2→20 Hz sweep, 35 of 65 headline numbers move more than 10% — `case3.endurance.worst` spans 0.60→0.94° and `case1.endurance.peak_lon_g` spans 1.20→1.72 g. *"Peak longitudinal G was 1.72 g"* is not a fact about the car without **"at 10 Hz"** beside it. Steady-state skidpad numbers are the exception: they move 0.3–0.9%, because a median over a steady window is not something a low-pass touches.
-3. **The columns come from six different methodologies.** A peak, a median over a steady window, and a fitted slope are not the same kind of number — which is why the table carries a case-attribution header row.
+3. **The columns come from six different methodologies.** A peak, a median over a steady window, and a fitted slope are not the same kind of number; `plots/case_summary.html` carries a case-attribution header row for this reason.
 
 `case_summary.py` **recomputes nothing.** It imports the cases and calls their own analyse/report functions with output suppressed, so the table cannot drift from what the individual scripts print.
 
@@ -167,7 +167,9 @@ Sprung mass, CG height and weight distribution all cancel — **tyre rate is the
 
 **Events:** skidpad, autocross, endurance. **Signals:** `VCPDU_lat`, `VCPDU_lon`.
 
-- **Skidpad** — steady segments from the sign and magnitude of filtered lateral G (>0.3 g, ≥2.0 s real), keeping the 2 longest runs per direction, trimmed 0.5 s each end. Reports the **median** over the trimmed middle, matching how FSAE scores skidpad. No peak, by design.
+- **Skidpad** — steady segments from the sign and magnitude of filtered lateral G (>0.3 g, ≥2.0 s real), trimmed 0.5 s each end. Reports the **median** over the trimmed middle, matching how FSAE scores skidpad. No peak, by design.
+
+  Segment selection is **adaptive, not a fixed count**: per direction, keep every qualifying run at least **70%** as long as the longest run of that sign (`MIN_FRACTION_OF_LONGEST`). A hard cap exists (`runs_per_direction`) but only case3's brake path passes one. On the current skidpad file this happens to keep 2 runs per direction — the right answer by coincidence of the data, not because 2 is the rule.
 - **Autocross / endurance** — whole-file peak detection on lateral, longitudinal and combined `√(lat²+lon²)`, prominence **0.3 g**. Each peak reports the *simultaneous* lat/lon pair — the actual g-g point — and its angle, `alpha`.
 
 **`alpha` — where a peak sits on the friction circle.** Reported with every peak as `alpha = atan2(|lat|, |lon|)` in degrees:
@@ -178,9 +180,9 @@ Sprung mass, CG height and weight distribution all cancel — **tyre rate is the
 | **45°** | equal parts of both — the combined-load corner of the circle you are trying to use |
 | **0°** | pure straight-line braking or acceleration |
 
-So `lat −1.60 g, lon +0.14 g, alpha 85°` was essentially pure lateral grip: the car was cornering, not trail-braking. It exists so you can tell at a glance whether a peak is a single-axis event or a genuine combined-load one — the same distinction case4 is built around. Note it is measured from the **longitudinal** axis, so on the g-g plot 90° lies out along the horizontal (lateral) axis, not vertically.
+**Gotcha:** `alpha` is measured from the **longitudinal** axis, so on the g-g plot 90° lies along the horizontal (lateral) axis, not vertically.
 
-**The friction envelope.** The g-g diagram carries a convex hull of the cloud and reports its **area in g²**: AUTOCROSS **6.03**, ENDURANCE 5.63, SKIDPAD 3.56. The scatter shows where the car *went*; the hull shows what it could *reach*. Dotted circles mark whole-g radii — a tyre with equal grip in every direction would fill one, so the gap between hull and circle is the anisotropy. Skidpad is smallest by design: a pure lateral event is a narrow band, not a filled region. The hull is computed from the **full arrays**, never the thinned display set.
+**The friction envelope.** The g-g diagram carries a convex hull of the cloud and reports its **area in g²**, computed from the **full arrays**, never the thinned display set. Dotted circles mark whole-g radii, so the gap between hull and circle is the grip anisotropy.
 
 ### Case 2 — Max Roll
 
@@ -223,12 +225,7 @@ Method differs per event because the data genuinely differs:
 
 **Events:** all five. Reports **worst per-corner wheel travel**, where `travel < 0` = compression (bump), `> 0` = extension (droop). Both extremes are reported; both have a mechanical limit.
 
-**Why not `√(roll² + pitch²)`** — that was the original plan. It was built, measured, and rejected:
-
-1. **Roll and pitch peaks never coincide** — measured gaps between each file's worst-roll and worst-pitch instant: endurance 869 s, autocross 20–53 s. Independent events.
-2. **Roll is 2–4× larger than pitch** on this car, so a root-sum-square is captured almost entirely by roll. On endurance it returned 1.462° at an instant where pitch was +0.034° — identical to case2's answer to three decimals. It measured nothing new.
-
-Per-corner travel is where roll and pitch physically superpose, needs no arbitrary "both axes elevated" threshold, and is what decides whether a spring or damper runs out of travel.
+**Why not `√(roll² + pitch²)`** — it was built, measured and rejected: roll and pitch peaks never coincide, and roll is 2–4× larger, so the root-sum-square just reproduces case2. Per-corner travel is where the two physically superpose, needs no arbitrary "both axes elevated" threshold, and is what decides whether a spring or damper runs out of travel. Evidence in [`docs/case4.md`](docs/case4.md).
 
 **Modal decomposition.** At the worst instant, travel is decomposed **exactly** — an algebraic identity asserted at runtime, not a fit:
 
@@ -248,9 +245,7 @@ Any way four corners can move is exactly one combination of these four, and they
 | **pitch** | front pair vs rear pair, opposite | dive under braking, squat under acceleration |
 | **warp** | the diagonals opposite — FL+RR one way, FR+RL the other | the chassis being **twisted** along its length. A single-wheel bump or one-wheel kerb strike |
 
-**Warp is the one worth watching, and only case4 can see it** — case2 and case3 both average corners in pairs, which cancels warp exactly. Warp load goes into chassis *torsional* stiffness rather than into the springs.
-
-The decomposition earns its place: the two worst instants in the data set have opposite causes. Autocross is roll-dominated (braking while cornering hard left at 1.45 g); endurance is roll-dominated too but with a different pitch/heave split. A roll-stiffness change moves one and barely touches a braking-dominated one.
+**Only case4 can see warp** — case2 and case3 average corners in pairs, which cancels it exactly. Warp is resisted by the springs like any other mode; what makes it worth reading is that chassis torsional compliance writes a warp-pattern signature into these same four channels, since the pots measure chassis-to-upright per corner.
 
 **Other outputs.** Peak detection on the 4-corner envelope `max(|FL|,|FR|,|RL|,|RR|)`, prominence 2.0 mm. Skidpad and accel also get a **sustained** number, being quasi-steady. Per-event roll-vs-pitch scatter with a convex hull. And a **per-corner travel distribution** reporting p1/median/p99 alongside min/max — p1–p99 is where a corner actually *lives* when working hard, while an extreme is one instant and can be a kerb strike. Set `BUMP_LIMIT_MM` / `DROOP_LIMIT_MM` in the script and it becomes a **margin** plot, which is the point of it. (Those limits are *wheel* travel; divide shock travel by the motion ratio first.)
 
@@ -260,7 +255,7 @@ The decomposition earns its place: the two worst instants in the data set have o
 
 **Events:** roll on skidpad/autocross/endurance, pitch on accel/brake/autocross/endurance.
 
-The headline suspension metric, and what the rest of the analysis was building toward. Cases 1–4 answer *"how much did the car roll?"* — a property of the **run**, since a driver who pushed harder gets a bigger number. Gradient answers *"how much does this car roll per g"* — a property of the **car**, and the bridge to a roll stiffness in N·m/deg. Nothing is reimplemented: roll comes from case2's loader and pitch from case3's.
+Cases 1–4 answer *"how much did the car roll?"* — a property of the **run**, since a driver who pushed harder gets a bigger number. Gradient answers *"how much does this car roll per g"* — a property of the **car**, and the bridge to a roll stiffness in N·m/deg. Nothing is reimplemented: roll comes from case2's loader and pitch from case3's.
 
 **Skidpad steady segments are the cleanest estimate and the one to quote:**
 
@@ -270,7 +265,7 @@ The headline suspension metric, and what the rest of the analysis was building t
 | Rear | 0.939 °/g | 1.274 | 0.993 |
 | **Whole car** | **0.898 °/g** | **1.196** | 0.995 |
 
-`endurance_full` gives 0.836 / 0.915 / 0.875 — different event, different driver, 919k samples, agreeing within 3%. Pitch gradient is 0.54 °/g, with accel (0.540) and brake (0.543) agreeing to three decimals despite being squat and dive respectively.
+**Pitch gradient** pools both signs of longitudinal G into a single slope per event, so an event's figure is not separable into squat and dive.
 
 **Validated against the springs — the only check that doesn't route through the shock pots.** With no ARB, the four springs make the entire roll stiffness:
 
@@ -278,33 +273,31 @@ The headline suspension metric, and what the rest of the analysis was building t
 K_roll = (k_wf·T_f² + k_wr·T_r²) / 2 = 749 N·m/deg
 ```
 
-The measured 0.898 °/g then implies a sprung-mass × CG-height of **68.6 kg·m** — CG **0.280 m above the roll axis** at 245 kg sprung, a real FSAE number. This also disposes of a suggestion that the gradient should be *"at least 2× higher"*: 1.80 °/g would require 137.2 kg·m, i.e. a CG **0.560 m** above the roll axis — higher than the driver's shoulders. Note motion ratio enters stiffness as **MR²**, so this test is twice as sensitive to an MR error as the angles are.
-
-> An earlier version of this section claimed *three independent confirmations* of the gradient. That was wrong and is retracted — all three ran through the same shock pots and the same motion ratio, so they tested **repeatability, not calibration**. Until the spring check, nothing here constrained the absolute scale at all.
+The measured 0.898 °/g then implies a sprung-mass × CG-height of **68.6 kg·m** — CG **0.280 m above the roll axis** at 245 kg sprung. Motion ratio enters stiffness as **MR²**, so this check is twice as sensitive to an MR error as the angles are. Every other cross-check available here routes through the same pots and the same motion ratio, so it tests repeatability, not calibration.
 
 **Fitting choices.** Intercept is **fitted, not forced through zero** — the car is physically level at 0 g, so a large intercept is not a free parameter, it is evidence a baseline is off (measured: 0.002–0.101°, which is the baselining checking out). Step glitches and samples below 2 m/s are excluded. **Transients are kept**: roll lags lateral G, so corner entry and exit trace different paths and the cloud opens into a loop — the width is the information, which is why the scatter is a deliverable. Signs are checked rather than absolute-valued; a positive raw slope means a convention flipped upstream and is reported as an error.
 
-**⚠️ Two autocross runs have unusable front data.** `autocross_andrew1` and `autocross_josh2` give a front gradient of 0.302/0.320 °/g against 0.801/0.818 for the other two, while all four rears agree. Both front pots sit at 0.2–0.8 V — the maximum-extension end of their stroke — where travel is clipped to a third. **The pooled autocross figure of 0.560 °/g must not be quoted**; use `josh1`, `andrew2`, skidpad and endurance, which agree at **0.81–0.86 °/g**. The script prints per-file gradients and warns when the front spread exceeds 1.5×. Confirmed independent of position around the lap (the front/rear amplitude ratio is ~0.6 on the bad runs and ~1.5 on the clean ones, constant every 79 m segment), so it is a property of the measurement, not of how the car was driven.
+**⚠️ Two autocross runs have unusable front data.** `autocross_andrew1` and `autocross_josh2` give a front gradient of 0.302/0.320 °/g against 0.801/0.818 for the other two, while all four rears agree. Both front pots sit at 0.2–0.8 V — the maximum-extension end of their stroke — where travel is clipped to a third. Pooling all four gives **0.557 °/g**; the script **excludes them automatically** (`case_common.SUSPECT_CORNERS`) and reports **0.809 °/g**, consistent with skidpad and endurance at **0.81–0.86 °/g**. The per-file table still lists all four, marking the dropped ones; the front-spread warning fires at 1.5× **across the pooled files only**. The deficit is uniform around the lap (front/rear amplitude ratio ~0.6 on the bad runs against ~1.5 on the clean ones, constant every 79 m segment), so it is a property of the measurement, not of how the car was driven.
 
 ### Case 6 — Max yaw rate (°/s)
 
 **Events:** all five. Cases 1–5 measure what the car does to itself under load; none measure **how fast it changes direction**.
 
-| Event | Peak yaw | Radius driven | corner type (FSAE D.11.1.1) |
-|---|---|---|---|
-| **AUTOCROSS** | **−105.1 °/s** | 6.0 m | hairpin |
-| ENDURANCE | +99.3 °/s | 5.0 m | hairpin |
-| BRAKE | −93.3 °/s | 6.2 m | hairpin |
-| SKIDPAD | +78.7 °/s | 7.6 m | — |
-| ACCEL | −52.6 °/s | 9.5 m | tight turn |
+| Event | Peak yaw | Radius driven |
+|---|---|---|
+| **AUTOCROSS** | **−105.1 °/s** | 6.0 m |
+| ENDURANCE | +99.3 °/s | 5.0 m |
+| BRAKE | −93.3 °/s | 6.2 m |
+| SKIDPAD | +78.7 °/s | 7.6 m |
+| ACCEL | −52.6 °/s | 9.5 m |
 
-Skidpad also gets a **sustained** number — 61.1 °/s, from four runs alternating direction.
+Radius is `R = v/ω`, the line the car actually followed — not the painted radius of the corner. Skidpad also gets a **sustained** number, 61.1 °/s, from four runs alternating direction.
 
 **The channel is validated on every run, not trusted from a note.** A car in a corner satisfies `a_lat = v · ω`, an identity sharing **no sensor** with the gyro (lateral G from the IMU accelerometer, speed from the front wheels). Measured per file: r = +0.965…+0.993, slope 1.06–1.18. Slope above 1.0 is expected, not error — the identity assumes zero sideslip and `VCFRONT_vehicleSpeed` is front-wheel-derived, so it under-reads through a corner. Straight-line events report *inconclusive* rather than *fail*.
 
-**Skidpad geometry check.** `R = v/ω` comes from two sensors that know nothing about the course. FSAE 2027 D.10.1.1 puts a legal line between **7.625 and 10.625 m**; measured **9.65 m** — inside the band, slightly outside lane centre. Two independent channels agreeing with a geometry neither knows about. (Side observation: the inner edge is the fastest legal line, so 2.03 m of margin is lap time on the table.)
+**Skidpad geometry check.** `R = v/ω` comes from two sensors that know nothing about the course, so where it lands against the rulebook is a calibration check on both. FSAE 2027 D.10.1.1 puts a legal line between **7.625 and 10.625 m**; measured **9.65 m**, inside the band.
 
-**What it deliberately does not do: dead-reckon a path.** A 7–18% scale error is harmless instantaneously and fatal once integrated — over 60 s it accumulates tens of degrees of heading error, which is why the autocross course integrates to ~365 m while start and end land 156–177 m apart. Every quantity in case6 is instantaneous or a ratio of two instantaneous values, **never an integral**. That restriction is why these numbers are trustworthy when a track map is not.
+**What it deliberately does not do: dead-reckon a path.** A 7–18% scale error is harmless instantaneously and fatal once integrated — over 60 s it accumulates tens of degrees of heading error, which is why the autocross course integrates to ~365 m while start and end land 156–177 m apart. Every quantity in case6 is instantaneous or a ratio of two instantaneous values, **never an integral**.
 
 ---
 
@@ -335,7 +328,7 @@ They are larger than any real event, so an unprotected peak search reports them 
 
 **4–5. Front pots.** See case 5 above. On skidpad, FL sweeps 18.4 mm while FR sweeps 34.3 mm, and FL's static baseline ranges 42.4–66.9 mm across sessions. Likely the "one of the sensors might be broken" from the original brief. **What to check on the car:** stroke range and mount security on both front pots, and whether the pot bodies move by hand relative to their brackets.
 
-**6. Front vs rear roll.** A rigid chassis has exactly *one* roll angle, so the two should match; rear reads 4–23% more, same sign every event. The rear also shows 16–22% left/right asymmetry the front does not — on skidpad, which is symmetric by construction. A pure *gain* error cannot cause that (in roll one pot compresses while the other extends, so `RR − RL` sums the gains either direction); it needs genuinely asymmetric rear roll stiffness or a **non-linearity** — a pot near its stroke limit, or something binding. A motion-ratio error is ruled out (both are validated measurements) and so is tyre deflection, which pushes the wrong way. **Currently unresolved, so the rear roll number is the less trustworthy of the two.** Related: **FR is the worst-loaded corner in 8 of 11 files**, too consistent to be noise.
+**6. Front vs rear roll.** A rigid chassis has exactly *one* roll angle, so the two should match; rear reads 4–23% more, same sign every event. The rear also shows 16–22% left/right asymmetry the front does not — on skidpad, which is symmetric by construction. A pure *gain* error cannot cause that (in roll one pot compresses while the other extends, so `RR − RL` sums the gains either direction); it needs genuinely asymmetric rear roll stiffness or a **non-linearity** — a pot near its stroke limit, or something binding. A motion-ratio error is ruled out (both are validated measurements) and so is tyre deflection, which pushes the wrong way. **Currently unresolved, so the rear roll number is the less trustworthy of the two.**
 
 **7. IMU spikes.** `VCPDU_lat`/`lon` carry isolated 2.1–2.8 g excursions that are **always exactly two consecutive samples holding a bit-identical value** — a real accelerometer does not produce the same float twice. They do not affect any reported number (endurance's filtered max is 1.7798 g with and without its spike); they bite only the peak-attenuation table, whose denominator is the raw max, which `filter_compare.py` flags as `spike_dominated`.
 
@@ -359,11 +352,11 @@ From the [FSAE Electric 2026 official results](https://www.fsaeonline.com/CompRe
 | **Endurance** | `endurance_full` — Andrew, then Josh | 1483.688 s, **21 scored laps, DNF on the last**. Lap 12 (168.9 s) is the driver change; lap 13 (121.9 s) is a separate momentary stop. Best 63.363 s at lap 21. The file spans 1740 s, ~4 min beyond the scored run |
 | **Skidpad** | `skidpad_austin_both` | 15th, best 5.178 s. Austin's two runs only; the second driver's data was deliberately not exported |
 | **Brake** | `braketest1`, `braketest2` | Both achieved **full four-wheel lockup**. `braketest2` is the valid run; `braketest1` is invalid **on procedure only** (braked before the mandated point) and is still real max-braking data |
-| **Accel** | `accel_jamie_both`, `accel_corinne1`, `accel_corinne2` | 20th, best 4.521 s. Remarkably consistent across drivers, 4.52–4.60 s |
+| **Accel** | `accel_jamie_both`, `accel_corinne1`, `accel_corinne2` | 20th, best 4.521 s, spread 4.52–4.60 s |
 
-**Peak brake pressure is a poor proxy for braking performance:** the *invalid* run used 1830 psi against the valid run's 1112 for the same outcome. Past lockup, extra pressure does nothing — it only records how hard the driver pushed.
+**Do not use peak brake pressure as a performance metric.** Past lockup, extra pressure only records how hard the driver pushed — the invalid run used 1830 psi against the valid run's 1112 for the same outcome.
 
-The endurance lap times give **lap detection a millisecond-accurate ground truth**, including two stationary events a detector must handle rather than trip over.
+The endurance lap times give lap detection a millisecond-accurate ground truth, including two stationary events a detector must handle rather than trip over.
 
 ---
 
@@ -387,7 +380,7 @@ The endurance lap times give **lap detection a millisecond-accurate ground truth
 ## Open questions
 
 - **A cutoff for accel and brake was never explicitly chosen** — they inherit the autocross/endurance constant. Peak pitch moves ~12% across 2→10 Hz.
-- **Winter's residual fit window.** The ~13 Hz figure that informed the cutoff used a 15–45 Hz linear-fit window — conventional, but a judgement call that was never swept.
+- **The cutoff was selected visually**, from `filter_compare.py`'s residual view across 2–20 Hz, with `cutoff_sweep.py` quantifying how far each headline number moved. No automated criterion was applied. That is defensible — it reports the sensitivity rather than asserting optimality — but it is a judgement call, and re-running the sweep is the way to revisit it.
 - **Motion ratio is a single value per axle.** If it varies meaningfully with travel, a curve would be more accurate.
 - **Why measured pitch sits 1.34× below the design sheet.** `CFR26.xlsx` D145/D146 (anti-squat/anti-lift, anti-dive) are **0 — typed constants, not formulas**, so the sheet derives them from no geometry and cannot confirm its own assumption. Team recollection is that 0 was the design intent, which is a normal FSAE choice. They are still *live* inputs: they feed the elastic load transfer and so the predicted pitch (0.963 °/g at 0% anti, reproduced exactly from the sheet's own cells). Two readings fit the telemetry, and the sheet cannot distinguish them:
   - **Roll shows a 1.167× gap where no anti term exists anywhere in the chain**, so ~17% of the discrepancy is common to both axes and is *not* about anti geometry. Removing it leaves pitch-specific **1.147×**, which **~14% real anti-dive/anti-lift** would account for — plausible as as-built geometry even when 0 was drawn.

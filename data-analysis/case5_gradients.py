@@ -497,10 +497,16 @@ def main():
 
         # PER-FILE, ALWAYS. A pooled gradient is only meaningful if every
         # file came off the same car. On autocross they did not: two of the
-        # four sessions show a front gradient of 0.29-0.31 deg/g against
-        # 0.78-0.79 for the other two, so pooling them produced a 0.542 that
-        # describes no session that was actually run. Printing the spread
-        # makes a split population impossible to miss.
+        # four sessions show a front gradient of 0.30-0.32 deg/g against
+        # 0.80-0.82 for the other two, so pooling all four produces a 0.557
+        # that describes no session that was actually run. Printing the
+        # spread makes a split population impossible to miss.
+        #
+        # The table lists EVERY file, including any dropped from the pooled
+        # fit — seeing the bad runs next to the good ones is the point. The
+        # warning below is scoped to the POOLED files only, because it talks
+        # about the pooled number.
+        front_pooled = {s["path"] for s in usable_series(series, "front")}
         per_file = []
         for s in series:
             f = fit_gradient(s["lat"][s["keep"]], s["front"][s["keep"]])
@@ -508,26 +514,34 @@ def main():
             if f and r:
                 per_file.append((os.path.basename(s["path"]),
                                  abs(f["slope"]), f["r2"],
-                                 abs(r["slope"]), r["r2"]))
+                                 abs(r["slope"]), r["r2"],
+                                 s["path"] in front_pooled))
 
         if len(per_file) > 1:
             print(f"\n    per file:")
             print(f"      {'file':<26}{'front':>9}{'R²':>7}{'rear':>9}{'R²':>7}"
                   f"{'rear/front':>12}")
-            for name, fs, fr2, rs, rr2 in per_file:
+            for name, fs, fr2, rs, rr2, pooled_in in per_file:
+                flag = "" if pooled_in else "   [dropped from front fit]"
                 print(f"      {name[:25]:<26}{fs:>9.3f}{fr2:>7.3f}"
-                      f"{rs:>9.3f}{rr2:>7.3f}{rs / fs:>11.2f}x")
+                      f"{rs:>9.3f}{rr2:>7.3f}{rs / fs:>11.2f}x{flag}")
 
-            fronts = [p[1] for p in per_file]
-            spread = max(fronts) / min(fronts)
-            if spread > 1.5:
-                print(f"\n      [!] FRONT GRADIENT VARIES {spread:.1f}x ACROSS FILES "
-                      f"({min(fronts):.3f} to {max(fronts):.3f} deg/g).")
-                print(f"          The pooled figure above averages what look like "
-                      f"different car")
-                print(f"          configurations and should NOT be quoted. See the "
-                      f"README on the")
-                print(f"          front roll-stiffness split.")
+            # Scoped to the files the pooled fit ACTUALLY used. Measuring the
+            # spread over every file instead told you not to quote a number
+            # the known-bad runs were already excluded from — i.e. it
+            # condemned the clean 0.809 autocross figure that the README
+            # tells you to use.
+            fronts = [p[1] for p in per_file if p[5]]
+            if len(fronts) > 1:
+                spread = max(fronts) / min(fronts)
+                if spread > 1.5:
+                    print(f"\n      [!] FRONT GRADIENT VARIES {spread:.1f}x ACROSS THE "
+                          f"POOLED FILES ({min(fronts):.3f} to {max(fronts):.3f} deg/g).")
+                    print(f"          The pooled figure above averages what look like "
+                          f"different car")
+                    print(f"          configurations and should NOT be quoted. See the "
+                          f"README on the")
+                    print(f"          front roll-stiffness split.")
 
         # PER-CORNER response, which is what isolates a front/rear split to
         # its cause. On autocross both front corners drop ~2.6x while both

@@ -18,9 +18,10 @@ a couple of minutes.
 
 BOTH constants are set to the same value at each step, so every event is
 filtered at the swept frequency and each row shows that event's own
-sensitivity. This is deliberately NOT how production runs (skidpad uses 2 Hz
-and everything else 5 Hz) — the point is to isolate the effect of the cutoff
-itself, not to reproduce the current configuration.
+sensitivity. The point is to isolate the effect of the cutoff itself. Note
+production now runs 10 Hz for BOTH constants (it was 2 Hz skidpad / 5 Hz
+elsewhere when this was written), so the 10 Hz step of the sweep does
+reproduce the current configuration — the others deliberately do not.
 
 READ THE SENSITIVITY COLUMN FIRST. It is the spread across the whole sweep
 as a percentage of the value at the current production cutoff:

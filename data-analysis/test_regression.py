@@ -282,7 +282,7 @@ def main():
         return 1
     print("Lockup guard self-test: PASS")
 
-    print(f"Running all four cases over {args.dir!r}...")
+    print(f"Running all six cases over {args.dir!r}...")
     snapshot = build_snapshot(args.dir)
 
     n_glitches = sum(len(v) for v in snapshot["glitches"].values())

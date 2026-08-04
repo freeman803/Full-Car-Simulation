@@ -49,10 +49,20 @@ makes the decomposition an identity rather than a fit.
     like wringing a towel, rather than leaned or pitched. It is what a
     single-wheel bump or a one-wheel kerb strike produces, and it is the one
     mode that shows up in neither case2 nor case3 — both of those average
-    corners in pairs, which cancels warp exactly. Worth watching because
-    warp load goes into chassis torsional stiffness rather than into the
-    springs, and because a car with high warp on a smooth surface is
-    usually telling you something about diagonal weight distribution.
+    corners in pairs, which cancels warp exactly.
+
+    Worth watching because chassis torsional compliance writes a WARP-
+    PATTERN signature into exactly these four channels: the pots read
+    chassis-to-upright per corner, so a twisting chassis moves the
+    diagonals oppositely. High warp on a smooth surface is a candidate
+    indicator of chassis compliance or of diagonal weight distribution.
+
+    NOT because the springs are bypassed — an earlier version of this
+    comment claimed warp load goes into chassis torsional stiffness
+    "rather than into the springs", which is wrong. The springs and any
+    ARB resist a warp displacement like any other mode; warp stiffness is
+    a spring-side quantity you design deliberately (Rouelle, Racecar
+    Engineering June 2020: "you decide to minimise the warp stiffness").
 
 MODAL DECOMPOSITION — the headline number is decomposed exactly (this is an
 algebraic identity, not an approximation or a fit):
@@ -86,14 +96,27 @@ Filtering is IDENTICAL to case1/case2/case3 (imported from case_common, not
 redefined): 4th-order Butterworth, filtfilt, 10 Hz for every event.
 Retuned 2026-07-31 from cutoff_sweep.py — see the README.
 
-Methodology per event — all five events are covered, which corrects the
-original scoping assumption. It was assumed skidpad/accel/brake were
-effectively single-axis and could be skipped; measuring the fraction of
-samples with BOTH |latG| and |lonG| above 0.3 g showed otherwise:
-endurance 75.9%, autocross 44-75%, SKIDPAD 59.0%, BRAKE 19-40%,
-accel 15-22%. Skidpad in particular is a two-run file including entry, exit
-and the transit between circles, so it is not the pure steady-state case
-its name suggests.
+Methodology per event — all five events are covered, but NOT because all
+five are combined-load events. Fraction of samples with BOTH |latG| and
+|lonG| above 0.3 g, measured at the production 10 Hz cutoff:
+
+    autocross   16.9-30.3%      braketest2   14.2%
+    endurance        20.2%      braketest1    0.0%
+    skidpad           3.4%      accel     0.0-0.9%
+
+So the original scoping assumption WAS right: skidpad, accel and
+braketest1 really are effectively single-axis, and only autocross,
+endurance and braketest2 load both axes appreciably. They are covered
+anyway because worst case is the question case4 asks and switching
+methodology per event would make the events incomparable — the three
+low-fraction events are sanity checks, not real combined cases.
+
+CORRECTED 2026-08-04. This docstring previously read endurance 75.9%,
+autocross 44-75%, skidpad 59.0%, brake 19-40%, accel 15-22%, and drew the
+OPPOSITE conclusion from them. Those figures predate the m/s^2-vs-g fix:
+VCPDU_lat/lon are m/s^2 in the DBC, so reading them as g inflated every
+fraction ~9.8x and put the 0.3 g gate at an effective 0.031 g. The README
+had already been corrected; this docstring had not.
 
 - ALL EVENTS: worst-case per-corner travel via peak detection on the
   4-corner envelope max(|FL|,|FR|,|RL|,|RR|) (prominence + minimum

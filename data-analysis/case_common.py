@@ -573,7 +573,9 @@ CORNER_SIGNAL_NAMES = {
 # re-running case2 without these files, which changes its autocross roll by
 # exactly 0.0%. A gradient is a fit over every sample, so bad data does not
 # have to win anything, it just drags the slope: excluding these moves the
-# autocross front gradient 0.540 -> 0.784 and its R^2 0.770 -> 0.930.
+# autocross front gradient 0.557 -> 0.809 and its R^2 0.775 -> 0.931.
+# (Was quoted as 0.540 -> 0.784 before the front motion ratio was corrected
+# 1.15 -> 1.188; the +3.3% applies to both ends, the conclusion is the same.)
 #
 # The R^2 improvement is the tell that this is removing genuinely bad data
 # rather than inconvenient data.

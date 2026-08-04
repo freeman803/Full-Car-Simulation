@@ -1,11 +1,12 @@
 """
 build_cutoff_review.py — generate the cutoff-selection worksheet.
 
-Why this exists: `case_common.py` currently carries exactly TWO cutoff
-constants, `SKIDPAD_CUTOFF_HZ = 2.0` and `AUTOX_END_CUTOFF_HZ = 5.0`, and
-applies them to every signal regardless of that signal's actual content.
-Accel and brake events have no chosen cutoff at all — they silently
-inherit the 5 Hz autocross value. This tool lays out every decision that
+Why this exists: `case_common.py` carries TWO cutoff constants,
+`SKIDPAD_CUTOFF_HZ` and `AUTOX_END_CUTOFF_HZ`, and applies them to every
+signal regardless of that signal's actual content. Accel and brake events
+have no chosen cutoff of their own — they inherit the autocross value.
+(When this tool was written both constants were 2.0 and 5.0 Hz; the
+decision it supported set both to 10.0.) It lays out every decision that
 actually needs making, puts the relevant plots next to each one, and gives
 you somewhere to record the answer.
 
