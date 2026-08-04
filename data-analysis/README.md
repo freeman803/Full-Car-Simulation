@@ -384,7 +384,24 @@ The endurance lap times give **lap detection a millisecond-accurate ground truth
 - **A cutoff for accel and brake was never explicitly chosen** — they inherit the autocross/endurance constant. Peak pitch moves ~12% across 2→10 Hz.
 - **Winter's residual fit window.** The ~13 Hz figure that informed the cutoff used a 15–45 Hz linear-fit window — conventional, but a judgement call that was never swept.
 - **Motion ratio is a single value per axle.** If it varies meaningfully with travel, a curve would be more accurate.
-- **Anti-squat / anti-dive are 0 in `CFR26.xlsx`**, almost certainly placeholders. Likely why measured pitch sits ~1.34× below prediction while roll is only ~1.17× below.
+- **Why measured pitch sits 1.34× below the design sheet.** `CFR26.xlsx` D145/D146 (anti-squat/anti-lift, anti-dive) are **0 — typed constants, not formulas**, so the sheet derives them from no geometry and cannot confirm its own assumption. Team recollection is that 0 was the design intent, which is a normal FSAE choice. They are still *live* inputs: they feed the elastic load transfer and so the predicted pitch (0.963 °/g at 0% anti, reproduced exactly from the sheet's own cells). Two readings fit the telemetry, and the sheet cannot distinguish them:
+  - **Roll shows a 1.167× gap where no anti term exists anywhere in the chain**, so ~17% of the discrepancy is common to both axes and is *not* about anti geometry. Removing it leaves pitch-specific **1.147×**, which **~14% real anti-dive/anti-lift** would account for — plausible as as-built geometry even when 0 was drawn.
+  - If the car genuinely has 0% anti, that 1.147× needs another cause.
+
+  **The likely mechanism for a non-zero as-built anti is weld tab placement** (team, 2026-08-03): 0 was drawn, but the tabs went on by hand and are off by some amount. The sensitivity makes that easy to believe — anti is a ratio amplified by `L/h = 1543/325 = 4.75`, so:
+
+  | anti | side-view angle | height error across a wishbone's two chassis pickups, 200 mm apart |
+  |---|---|---|
+  | 5% | 0.60° | 2.1 mm |
+  | 10% | 1.21° | 4.2 mm |
+  | **14.3%** | **1.73°** | **6.0 mm** |
+  | 20% | 2.41° | 8.4 mm |
+
+  So ~6 mm of *relative* height error between the front and rear pickup of one wishbone produces the 14% in question — ordinary for hand-welded tabs and invisible by eye. Two caveats: this is the same lumped model the sheet uses (`LLT × (1 − anti)`) with **no brake-bias term**, and a proper front anti-dive formula includes front bias, which would require a *larger* angle for the same effective anti — so 6 mm is a **lower bound**, not an estimate. And it assumes the error is in the height *difference* across a wishbone; an error moving both pickups together changes roll centre, not anti.
+
+  **Worth measuring all four corners, not just the fronts.** Hand-placed tabs are unlikely to be off symmetrically, and there are two unexplained left/right observations already on record — the rear's 16–22% roll asymmetry that the front does not show (problem 6), and `FR` being worst-loaded in 8 of 11 files. Different mechanism (anti is side-view, roll asymmetry is front-view), so this is a hypothesis rather than a finding, but one measurement session tests both.
+
+  **Settling it needs as-built pickup coordinates measured against CAD**, not more telemetry. The common 1.167× factor across both axes is the bigger question and is unexplained — tyre rate is the only input to the suspension→ground conversion and also feeds the sheet's own ride rate, so it is the first thing to check.
 - **Why the front pots sat at their extension limit** on two autocross runs and not the neighbouring ones — telemetry can localise it but not diagnose the hardware.
 - **Front vs rear roll disagreement** (problem 6) — chassis torsional flex or front pot calibration, unresolved.
 - **Data in the repo** is deferred, not refused. Telemetry compresses ~10× (405 MB → ~40 MB), so Git LFS is viable; the `.csv.gz` route needs a ~3-line change in `parse_influx.py`, which is Andrew's file — ask, don't edit.
