@@ -79,6 +79,11 @@ First run is slow; `parse_influx.py` caches a `.parsed.pkl` beside each CSV and 
 
 ## How the numbers are made
 
+> **Sources.** [`REFERENCES.md`](REFERENCES.md) is the bibliography, including
+> what is *not* sourced and must not be presented as if it were. Per-case
+> derivations with citations are in [`docs/case2.md`](docs/case2.md) and
+> [`docs/case4.md`](docs/case4.md), and are linked from each report page.
+
 Every case follows the same pipeline, all of it in `case_common.py`:
 
 ```
