@@ -65,6 +65,19 @@ h2 {
 }
 .sub { color: var(--muted); margin: 0 0 2rem; font-size: .9rem; }
 .cards { display: flex; flex-wrap: wrap; gap: .75rem; margin: 1.5rem 0; }
+/* Each event's headline numbers as one labelled band. A bare <h2> over a
+   loose flex row held up at three events and fell apart at five: case5's
+   32 cards and case6's 17 read as one undifferentiated wall of numbers.
+   The rule under the event name is what makes the boundary survive a group
+   whose cards wrap onto several lines. */
+section.cardgroup { margin: 1.75rem 0 0; }
+section.cardgroup > h2 {
+  font-size: .78rem; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--muted); font-weight: 600;
+  margin: 0; padding: 0 0 .45rem;
+  border-top: none; border-bottom: 1px solid var(--border);
+}
+section.cardgroup > .cards { margin: .75rem 0 0; }
 .card {
   background: var(--card); border: 1px solid var(--border);
   border-radius: 10px; padding: .85rem 1.1rem; min-width: 150px;
@@ -256,10 +269,33 @@ class _Page:
         trace is genuinely tedious. These become a table of deep links that
         open the relevant plot already zoomed to that instant (see
         case_common's _DEEP_LINK_SCRIPT).
+
+        DEDUPLICATED on (event, file, time-as-displayed). Different measures
+        legitimately peak at the SAME sample — case1's autocross combined-G
+        peak is its lateral-G peak, because lon was +0.03 g there — and that
+        rendered as two table rows with the same time, same file and the
+        same 1.763 g, which reads as a bug in the table. It is not: it is
+        one instant that is the answer to two questions, so it becomes one
+        row carrying both labels. The key rounds to the 0.01s the table
+        prints, so rows a reader cannot tell apart never appear twice; a
+        genuinely different instant one sample away (case2's 46.56 vs 46.57s
+        avg/rear roll) still gets its own row.
         """
+        stem = os.path.splitext(os.path.basename(csv_path))[0]
+        key = (event, stem, round(float(t_s), 2))
+        for existing in self.instants:
+            if (existing["event"], existing["stem"],
+                    round(existing["t"], 2)) == key:
+                if label not in existing["label"].split(" · "):
+                    existing["label"] += f" · {label}"
+                # Same sample, so the context is the same reading; keep
+                # whichever arrived with one rather than appending twice.
+                if detail and not existing["detail"]:
+                    existing["detail"] = detail
+                return
         self.instants.append({
             "event": event,
-            "stem": os.path.splitext(os.path.basename(csv_path))[0],
+            "stem": stem,
             "t": float(t_s),
             "label": label,
             "detail": detail,
@@ -270,6 +306,67 @@ class _Page:
         fixed block on the page, because 'negative = compression' currently
         lives in one axis title on one plot."""
         self.conventions.append(text)
+
+
+# Unit carried by a summary key's suffix. Longest match wins, so
+# "peak_yaw_deg_s" reads °/s rather than seconds and "worst_travel_mm"
+# reads mm rather than metres — case6's keys ALL missed the old three-way
+# check, so every card on that page rendered as a bare number.
+_UNIT_SUFFIXES = sorted(
+    [("_deg_s", "°/s"), ("_deg", "°"), ("_mm", "mm"), ("_ms", "m/s"),
+     ("_m", "m"), ("_g2", "g²"), ("_g", "g"), ("_s", "s"),
+     ("_hz", "Hz"), ("_pct", "%")],
+    key=lambda kv: -len(kv[0]),
+)
+
+# Stripped BEFORE the unit match and re-appended to the label, so
+# "sustained_lat_g_min" is a g and not a unitless "sustained lat g min".
+_QUALIFIER_SUFFIXES = ("_min", "_max", "_avg", "_median")
+
+
+def _label_and_unit(key):
+    """Display label and unit for a summary key.
+
+    The unit token comes OUT of the label — "peak yaw 78.7 °/s" reads as a
+    measurement, "peak yaw deg s 78.7" reads as a wall of words.
+    """
+    qualifier = ""
+    for suffix in _QUALIFIER_SUFFIXES:
+        if key.endswith(suffix):
+            key, qualifier = key[:-len(suffix)], suffix[1:]
+            break
+
+    unit = ""
+    for suffix, symbol in _UNIT_SUFFIXES:
+        if key.endswith(suffix):
+            key, unit = key[:-len(suffix)], symbol
+            break
+
+    label = " ".join(p for p in (key.replace("_", " "), qualifier) if p)
+    return label, unit
+
+
+def _group_flat_summary(flat):
+    """Split a FLAT {key: value} summary into {event: {metric: value}}.
+
+    case5 returns its numbers flat because the keys already carry the event
+    ("skidpad_roll_front"), which meant the whole page rendered as ONE
+    undivided block of 32 cards under a "RESULTS" heading — the same
+    numbers the other case pages break out per event. The prefix is right
+    there in every key, so split on it and the page groups like the rest.
+    Anything without a recognised event prefix stays together at the end.
+    """
+    grouped, leftover = {}, {}
+    for key, value in flat.items():
+        for event in EVENT_DISPLAY_ORDER:
+            if key.startswith(f"{event}_"):
+                grouped.setdefault(event, {})[key[len(event) + 1:]] = value
+                break
+        else:
+            leftover[key] = value
+    if leftover:
+        grouped["results"] = leftover
+    return grouped
 
 
 def _cards(summary):
@@ -284,19 +381,22 @@ def _cards(summary):
 
     # Two shapes in the wild, and silently rendering nothing for one of them
     # is worse than either. case1-case4 return {event: {key: value}};
-    # case5 returns a FLAT {key: value} because its keys already carry the
-    # event ("skidpad_roll_front"). Normalise rather than force one shape on
-    # the cases, since the flat form reads better in case5's own report.
+    # case5 returns a FLAT {key: value} whose keys carry the event.
     flat = {k: v for k, v in summary.items()
             if isinstance(v, (int, float)) and not isinstance(v, bool)}
 
     grouped = {k: v for k, v in summary.items() if isinstance(v, dict)}
 
     if flat and not grouped:
-        grouped = {"results": flat}
+        grouped = _group_flat_summary(flat)
 
     out = []
-    for event, values in grouped.items():
+    # Same order as the plot sections and the results text — the cards used
+    # to follow whatever order the case happened to build its dict in, so
+    # case6 led with SKIDPAD, ACCEL, BRAKE while its plots below led with
+    # SKIDPAD, AUTOCROSS, ENDURANCE.
+    for event in sorted(grouped, key=_event_sort_key):
+        values = grouped[event]
         if not isinstance(values, dict):
             continue
 
@@ -305,18 +405,17 @@ def _cards(summary):
         if not scalars:
             continue
 
-        out.append(f"<h2>{html.escape(event.upper())}</h2><div class='cards'>")
+        out.append(f"<section class='cardgroup'>"
+                   f"<h2>{html.escape(event.upper())}</h2><div class='cards'>")
         for key, value in scalars:
-            unit = ("deg" if key.endswith("_deg")
-                    else "mm" if key.endswith("_mm")
-                    else "g" if key.endswith("_g") else "")
+            label, unit = _label_and_unit(key)
             out.append(
                 f"<div class='card'><div class='label'>"
-                f"{html.escape(key.replace('_', ' '))}</div>"
+                f"{html.escape(label)}</div>"
                 f"<div class='value'>{value:.4g} "
-                f"<span class='unit'>{unit}</span></div></div>"
+                f"<span class='unit'>{html.escape(unit)}</span></div></div>"
             )
-        out.append("</div>")
+        out.append("</div></section>")
 
     return "".join(out)
 
@@ -473,6 +572,28 @@ def _conventions_block(conventions):
     )
 
 
+# ── Event display order ──────────────────────────────────────────────────
+#
+# Plot sections were ordered alphabetically, which buried SKIDPAD under
+# ACCEL/AUTOCROSS/BRAKE/ENDURANCE even though it is the event these reports
+# exist to answer. This is the same order as case_common.EVENT_KEYWORDS and
+# CASE_EVENTS, so the plot sections now match the order the results text is
+# already printed in. Duplicated rather than imported on purpose:
+# case_report is stdlib-only and importing case_common would drag
+# numpy/scipy into the reporting layer.
+EVENT_DISPLAY_ORDER = ["skidpad", "autocross", "endurance", "brake", "accel"]
+
+
+def _event_sort_key(group):
+    """Sort key putting 'summary' first, then EVENT_DISPLAY_ORDER, then any
+    unrecognised group alphabetically after those."""
+    if group == "summary":
+        return (0, 0, "")
+    if group in EVENT_DISPLAY_ORDER:
+        return (1, EVENT_DISPLAY_ORDER.index(group), "")
+    return (2, 0, group)
+
+
 def _plots(plots_root):
     """Every plot the case wrote, grouped by its event subdirectory.
 
@@ -534,7 +655,7 @@ def _plots(plots_root):
                 f"{'s' if flagged != 1 else ''} flagged</span>"
                 if flagged else "")
 
-    ordered = sorted(groups, key=lambda g: (g != "summary", g))
+    ordered = sorted(groups, key=_event_sort_key)
 
     out, anchors = [], []
     for group in ordered:
@@ -567,7 +688,7 @@ def _plots(plots_root):
     diag_html = ""
     if diagnostics:
         inner = []
-        for group in sorted(diagnostics, key=lambda g: (g != "summary", g)):
+        for group in sorted(diagnostics, key=_event_sort_key):
             inner.append(f"<h2>{html.escape(group.upper())}"
                          f"{_flag_badge(group)}</h2>")
             inner.append(_warnings_block(sorted(stems_by_event.get(group, ()))))
@@ -644,11 +765,25 @@ def report_page(case, title, plots_root):
         if diagnostics_html:
             jump += "<a href='#filtering'>filtering</a>"
 
+        # Per-case method notes (docs/case2.md, docs/case4.md, …), linked from
+        # the results rather than left in a file a reader may never open — the
+        # same reason FILE_WARNINGS renders next to the plots. Keyed on the
+        # "caseN" prefix, and only linked when the file actually exists, so
+        # cases without notes are unaffected.
+        doc_link = ""
+        doc_name = f"{case.split('_')[0]}.md"
+        doc_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                "docs", doc_name)
+        if os.path.exists(doc_path):
+            doc_link = (f"<a href='../../docs/{html.escape(doc_name)}'>"
+                        f"calculations &amp; sources</a>")
+
         bar = (
             "<div class='bar'>"
             "<a class='home' href='../index.html'>&#8962; all reports</a>"
             "<a href='../case_summary.html'>summary table</a>"
             + "".join(siblings)
+            + doc_link
             + "<span class='spacer'></span>"
             + jump
             + "</div>"
