@@ -70,7 +70,7 @@ First run is slow; `parse_influx.py` caches a `.parsed.pkl` beside each CSV and 
 **Three things to know before quoting any of these:**
 
 1. **`sus→gnd`** — the first figure is suspension-referenced (what the shock pots measure); the second is ground-referenced (what a design roll gradient usually means). They are not interchangeable. See [Suspension- vs ground-referenced](#suspension--vs-ground-referenced).
-2. **Every peak figure is filter-dependent.** Across a 2→20 Hz sweep, 35 of 65 headline numbers move more than 10% — `case3.endurance.worst` spans 0.60→0.94° and `case1.endurance.peak_lon_g` spans 1.20→1.72 g. *"Peak longitudinal G was 1.72 g"* is not a fact about the car without **"at 10 Hz"** beside it. Steady-state skidpad numbers are the exception: they move 0.3–0.9%, because a median over a steady window is not something a low-pass touches.
+2. **Every peak figure is filter-dependent.** Across the 2→20 Hz sweep (`cutoff_sweep.py`, re-run 2026-08-05), **46 of 82 headline numbers move more than 10%** and only 10 move less than 2%. `case3.endurance.worst_deg` spans 0.613→0.963° (37.0%) and `case1.endurance.peak_lon_g` spans 1.196→1.744 g (31.9%). *"Peak longitudinal G was 1.72 g"* is not a fact about the car without **"at 10 Hz"** beside it. A further **7 numbers change sign** across the sweep — near-equal candidates whose tie the filter breaks, not a magnitude change. Steady-state skidpad numbers are the exception: they move 0.3–0.9%, because a median over a steady window is not something a low-pass touches.
 3. **The columns come from six different methodologies.** A peak, a median over a steady window, and a fitted slope are not the same kind of number; `plots/case_summary.html` carries a case-attribution header row for this reason.
 
 `case_summary.py` **recomputes nothing.** It imports the cases and calls their own analyse/report functions with output suppressed, so the table cannot drift from what the individual scripts print.
@@ -199,7 +199,7 @@ roll_avg   = (front + rear) / 2    → atan(mm / avg track)
 - **Skidpad** — reuses case1's exact lateral-G segments; median front/rear/avg per run.
 - **Autocross / endurance** — whole-file peaks on `|roll_front|`, `|roll_rear|`, `|roll_avg|` separately, prominence **2.0 mm**, reporting front *and* rear at the same instant.
 
-Prominence justification: roll noise std is ~0.12 mm in stopped windows, and sweeping 0.5→10 mm left the top-5 and the single peak unchanged.
+Prominence justification: roll noise std in stopped windows is **0.021–0.126 mm, median 0.049** (22 measurements, 11 files × front/rear), so 2.0 mm is 16× the worst and 41× the median. Sweeping the prominence 0.5→10 mm leaves the top-5 and the single peak **identical to four decimals**.
 
 ### Case 3 — Max Pitch
 
@@ -295,7 +295,7 @@ Radius is `R = v/ω`, the line the car actually followed — not the painted rad
 
 **The channel is validated on every run, not trusted from a note.** A car in a corner satisfies `a_lat = v · ω`, an identity sharing **no sensor** with the gyro (lateral G from the IMU accelerometer, speed from the front wheels). Measured per file: r = +0.965…+0.993, slope 1.06–1.18. Slope above 1.0 is expected, not error — the identity assumes zero sideslip and `VCFRONT_vehicleSpeed` is front-wheel-derived, so it under-reads through a corner. Straight-line events report *inconclusive* rather than *fail*.
 
-**Skidpad geometry check.** `R = v/ω` comes from two sensors that know nothing about the course, so where it lands against the rulebook is a calibration check on both. FSAE 2027 D.10.1.1 puts a legal line between **7.625 and 10.625 m**; measured **9.65 m**, inside the band.
+**Skidpad geometry check.** `R = v/ω` comes from two sensors that know nothing about the course, so where it lands against the rulebook is a calibration check on both. FSAE 2026 v1.0 **D.10.1.1** specifies inner circles 15.25 m diameter and outer circles 21.25 m, i.e. a legal driven line between **7.625 and 10.625 m** (lane centre 9.125 m); measured **9.65 m**, inside the band. Identical in the 2027 draft, but cite the 2026 rulebook — it is the authoritative one.
 
 **What it deliberately does not do: dead-reckon a path.** A 7–18% scale error is harmless instantaneously and fatal once integrated — over 60 s it accumulates tens of degrees of heading error, which is why the autocross course integrates to ~365 m while start and end land 156–177 m apart. Every quantity in case6 is instantaneous or a ratio of two instantaneous values, **never an integral**.
 

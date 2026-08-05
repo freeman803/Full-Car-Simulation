@@ -121,13 +121,21 @@ from case_common import (
 # understated front roll by 15% and rear roll by ~4%.
 
 # Peak-detection prominence for roll, in mm. Checked against real data:
-# measuring the filtered roll signal's own noise during each file's
-# stopped-car window (car isn't rolling, so any wiggle there is pure
-# sensor noise) gave std ~0.12mm / peak-to-peak ~1.3-2.7mm on the files
-# tested — comfortably below 2mm. A sweep from 0.5mm to 10mm also left the
-# reported top-5 peaks and single highest peak completely unchanged (only
-# the *total* peak count moved, which isn't reported) — so the numbers
-# this script prints aren't sensitive to the exact value here.
+# measuring the roll signal's own noise during each file's stopped-car
+# window (car isn't rolling, so any wiggle there is pure sensor noise).
+#
+# RE-MEASURED 2026-08-05, all 11 files x front and rear (n=22): std is
+# 0.021-0.126mm with a MEDIAN of 0.049mm. An earlier note here said
+# "~0.12mm", which is the worst clean file (endurance_full front), not the
+# typical one — 2mm is 16x the worst and 41x the median.
+# The one outlier is braketest2 front at 0.469mm, and that is the known
+# step glitch sitting inside its baseline window, not noise.
+#
+# A sweep from 0.5mm to 10mm leaves the reported top-5 peaks and the single
+# highest peak EXACTLY unchanged — re-verified 2026-08-05 at 0.5/1/2/3/5/8/
+# 10mm on autocross (31.395mm top peak) and endurance (30.448mm), identical
+# to four decimals at every step. Only the *total* peak count moves, which
+# isn't reported.
 PEAK_PROMINENCE_MM = 2.0
 
 # Plots go under their own case-named subtree (plots/case2_max_roll/<event>/...)

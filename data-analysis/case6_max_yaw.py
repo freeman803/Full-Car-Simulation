@@ -141,7 +141,10 @@ VALIDATION_MIN_LAT_MS2 = 3.0
 
 # ── Course geometry, from the rulebook ───────────────────────────────────
 #
-# FSAE Rules 2027 DRAFT (V0.0, 21 July 2026), D.10.1.1 Course Design:
+# FSAE Rules 2026 V1.0 (10 Sept 2025), D.10.1.1 Course Design — verified
+# against the rulebook text 2026-08-05. The 2027 draft is identical here,
+# but cite 2026: it is the authoritative book, and draft article numbers
+# can still move.
 #     Inner circles   15.25 m in diameter
 #     Outer circles   21.25 m in diameter
 #     Driving path    the 3.0 m wide path between the inner and outer circles
@@ -227,7 +230,12 @@ def validate_yaw(d):
 
 
 def classify_corner(radius_m):
-    """Name the corner type from its radius, per FSAE 2027 D.11.1.1.
+    """Name the corner type from its radius, against FSAE 2026 D.11.1.1.
+
+    NOTE the rules give course-design specs, not a classification scheme:
+    D.11.1.1 says hairpins have a 9 m minimum OUTSIDE diameter and constant
+    turns are 23-45 m diameter. The 1.6x band below is a local heuristic for
+    mapping a DRIVEN radius onto those specs, not a rulebook figure.
 
     Turns the abstract "R = 6.0 m" into "this was a hairpin", which is what
     makes the number mean something without a track map — and a track map
@@ -569,7 +577,7 @@ def report_sustained(event, results, summary):
         # rulebook's fixed circles is independent evidence about the
         # calibration of both. Rulebook figures: D.10.1.1.
         print(f"    Median radius followed: {median_radius:.2f} m")
-        print(f"    FSAE 2027 D.10.1.1 — legal band "
+        print(f"    FSAE 2026 D.10.1.1 — legal band "
               f"{SKIDPAD_INNER_RADIUS_M:.3f} m (inner cones) to "
               f"{SKIDPAD_OUTER_RADIUS_M:.3f} m (outer edge), "
               f"lane centre {SKIDPAD_CENTRE_RADIUS_M:.3f} m")
