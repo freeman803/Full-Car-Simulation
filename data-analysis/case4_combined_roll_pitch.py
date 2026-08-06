@@ -172,6 +172,7 @@ from case_common import (
     find_steady_segments, top_k_peaks,
     baseline_corner_displacements, to_wheel_travel, find_step_glitches,
     CORNERS, MOTION_RATIO_FRONT, MOTION_RATIO_REAR,
+    WHEEL_RATE_FRONT_N_MM, WHEEL_RATE_REAR_N_MM,
     TRIM_SECONDS, TOP_K_PEAKS,
     FRONT_TRACK_MM, REAR_TRACK_MM, WHEELBASE_MM, AVG_TRACK_MM, mm_to_deg,
     PLOT_TEMPLATE, PLOT_STEADY_FILL, decimate_for_plot, thin_scatter, titled,
@@ -805,6 +806,33 @@ def describe_instant(d, idx):
             f"+lon = slowing down, +lat = left)" + stopped_note)
 
 
+CORNER_WHEEL_RATE_N_MM = {
+    "FL": WHEEL_RATE_FRONT_N_MM, "FR": WHEEL_RATE_FRONT_N_MM,
+    "RL": WHEEL_RATE_REAR_N_MM, "RR": WHEEL_RATE_REAR_N_MM,
+}
+
+
+def corner_load_change_n(corner, travel_mm):
+    """Vertical load change at one corner, in N, from its WHEEL travel.
+
+    The spring carries the whole suspension load path, so the load change
+    is simply the wheel rate times the wheel travel. No tyre term enters:
+    the pots measure chassis-to-upright, which IS the spring's deflection
+    once motion ratio is applied, and the tyre deflects in series UNDER
+    that same load rather than adding to it. (Same premise the
+    ground-referencing multiplier is derived from — see case_common.)
+
+    SIGN. travel < 0 is compression, and compressing a spring RAISES the
+    load it carries, so the returned load is the negative of the travel:
+    -21.52 mm of travel at a front corner is +601 N ONTO that corner.
+
+    This is the one number here that is directly comparable to a design
+    load-transfer prediction, which is quoted in newtons per corner and
+    never in millimetres.
+    """
+    return -travel_mm * CORNER_WHEEL_RATE_N_MM[corner]
+
+
 def worst_while_rolling(results, min_speed=ROLLING_MIN_SPEED_MS):
     """The worst peak that happened with the car actually driving.
 
@@ -872,6 +900,12 @@ def report_event(event, results):
     print(f"    corner {c}: {signed:+.2f}mm  [{direction}]"
           # Plateau or spike? The envelope is what the peak search ran on.
           + format_peak_shape(best_r["envelope"], best_r["t"], best_idx, "mm"))
+    # Same instant expressed as a load, which is the unit a design
+    # load-transfer prediction is quoted in. See corner_load_change_n().
+    load_n = corner_load_change_n(c, signed)
+    print(f"    as a load: {load_n:+.0f} N at {c} "
+          f"({'onto' if load_n > 0 else 'off'} the corner, vs its stopped-car "
+          f"static load), at {CORNER_WHEEL_RATE_N_MM[c]:.2f} N/mm wheel rate")
 
     # WHAT THE CAR WAS DOING — the context that makes the number
     # actionable. See describe_instant().
@@ -932,7 +966,9 @@ def report_event(event, results):
             mins.append(float(np.min(interior)))
             maxs.append(float(np.max(interior)))
         print(f"      {corner}: max compression {min(mins):+7.2f}mm   "
-              f"max extension {max(maxs):+7.2f}mm")
+              f"max extension {max(maxs):+7.2f}mm"
+              f"   |  as load: {corner_load_change_n(corner, min(mins)):+6.0f} N"
+              f" / {corner_load_change_n(corner, max(maxs)):+6.0f} N")
 
     # Deep-linkable instants for the report page. Underscore-prefixed so
     # case_summary's scalar sweep ignores it — it collects numbers, and this
@@ -1084,6 +1120,16 @@ CONVENTIONS = [
     "These are <b>wheel</b> millimetres, not shock-pot millimetres — the "
     "motion ratio (1.188 front, 1.038 rear) is applied per corner "
     "<i>before</i> any roll/pitch/modal arithmetic.",
+    "<b>Travel is also reported as a load change in newtons</b>, "
+    "<code>&Delta;F = &minus;travel &times; wheel rate</code> (27.92 N/mm "
+    "front, 32.51 N/mm rear). Compression raises the load a spring "
+    "carries, hence the minus sign: &minus;21.5 mm at a front corner is "
+    "<b>+601 N onto</b> that corner, relative to its stopped-car static "
+    "load. No tyre term enters — the pots measure the spring's own "
+    "deflection, and the tyre deflects in series <i>under</i> that same "
+    "load rather than adding to it. This is the one figure here directly "
+    "comparable to a design load-transfer prediction, which is always "
+    "quoted per corner in newtons and never in millimetres.",
     "<b>heave</b> = all four corners moving together (no attitude change). "
     "<b>roll</b> = left pair vs right pair. <b>pitch</b> = front pair vs "
     "rear pair. <b>warp</b> = the diagonals opposing each other — the "

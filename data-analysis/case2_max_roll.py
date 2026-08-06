@@ -650,7 +650,8 @@ CONVENTIONS = [
     "<b>Every roll angle here is GROUND-REFERENCED</b> — chassis roll "
     "relative to the road, tyre deflection included. That is the reference "
     "design targets and published FSAE gradients use, so these numbers are "
-    "directly comparable to <code>CFR26.xlsx</code> D83. "
+    "directly comparable to the Simplified Steady State Suspension Spreadsheet's "
+    "predicted roll gradient of 1.307 &deg;/g. "
     "<b>Millimetres are not converted</b>: mm is real suspension travel and "
     "has no reference ambiguity.",
     "<b>Previously these reports led with the suspension-referenced angle</b> "
@@ -673,10 +674,13 @@ CONVENTIONS = [
     "than averaging two separately-converted angles. The error is "
     "0.17–0.19% and is documented rather than fixed, so published numbers "
     "stay comparable.",
-    "<b>Front and rear roll disagree by 7–27%</b> on this car for reasons "
-    "not yet explained — see the README's known data problems. Two "
-    "autocross runs additionally have unusable front pots and are flagged "
-    "in place below.",
+    "<b>Front and rear roll disagree — the rear reads ~9.5% high</b> on "
+    "this car for reasons not yet explained. Quote that figure (the "
+    "skidpad roll gradient, suspension-referenced) rather than a ratio of "
+    "the peaks below: front and rear peaks land at different instants, so "
+    "comparing them is not like-for-like. See the README's known data "
+    "problems. Two autocross runs additionally have unusable front pots "
+    "and are flagged in place below.",
     "A peak is <b>one instantaneous sample</b> of the filtered trace. The "
     "bracketed <code>0.2s mean</code> next to it says whether that instant "
     "was a sustained plateau or an isolated spike.",

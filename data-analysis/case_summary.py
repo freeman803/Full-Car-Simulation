@@ -355,8 +355,8 @@ def write_markdown(rows, path):
 FOOTNOTES_MD = """
 **All roll and pitch figures here are GROUND-REFERENCED** — chassis attitude
 relative to the ROAD, with tyre deflection included. That is the reference a
-design roll gradient means, the one `CFR26.xlsx` predicts in (D83 1.307 °/g
-roll, D153 0.901 °/g pitch), and the one published FSAE gradients are quoted
+design roll gradient means, the one the Simplified Steady State Suspension Spreadsheet
+predicts in (roll 1.307 °/g, pitch 0.901 °/g), and the one published FSAE gradients are quoted
 in, so these numbers can be compared against a target directly.
 
 *Side note on the change.* Until 2026-08-06 this table led with the
@@ -382,8 +382,10 @@ displacement, negative = compression.
 All angles scale linearly with the motion ratio (1.188 front / 1.038 rear).
 See `data-analysis/README.md` for full methodology and for the known data problems
 that qualify these numbers — in particular that the `FL` shock pot is
-suspect, that two autocross runs have unusable FRONT shock-pot data, and
-that front and rear roll disagree by 4–23% for reasons not yet explained.
+suspect, that two autocross runs have unusable FRONT shock-pot data (which
+affects case5's fits only — the fault under-reads, so it cannot win a peak
+search), and that front and rear roll disagree, the rear reading ~9.5% high
+on the skidpad gradient, for reasons not yet explained.
 (An earlier version of this note called `braketest2.csv` unreliable. That
 verdict was wrong and is retracted — see the README.)
 """

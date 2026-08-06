@@ -67,9 +67,9 @@ Checked against first principles (deflection per unit `ΔF`, suspension vs groun
 | roll rear | 1.265178 | 1.265178 |
 | pitch | 1.245041 | 1.245041 |
 
-At `k_tyre` = 700 lbf/in (`CFR26.xlsx` D54/E54, corrected from 520 on 2026-08-06 —
-520 was a rate for the wrong compound). Tyre rate is the only extra input, so
-these multipliers move with it: they were 1.306582 / 1.356970 / 1.329863 at 520.
+At `k_tyre` = 700 lbf/in (tyre vertical rate, from the Simplified Steady
+State Suspension Spreadsheet). Tyre rate is the only extra input, so these
+multipliers move with it.
 
 **Exact for load-transfer-driven roll and pitch**, since the same load increment
 deflects spring and tyre. Approximate for transient peaks — a kerb strike does

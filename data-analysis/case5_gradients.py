@@ -25,23 +25,32 @@ methodology this follows automatically.
 
 REFERENCE. Gradients are reported GROUND-referenced — chassis attitude
 against the ROAD, tyre deflection included — because that is what a design
-gradient means and what CFR26.xlsx D83/D153 predict. The raw fitted slope
+gradient means and what the Simplified Steady State Suspension Spreadsheet
+predicts (roll 1.307 deg/g, pitch 0.901 deg/g). The raw fitted slope
 is suspension-referenced (all a shock pot can see) and is carried beside
 each headline as [susp-ref ...]. See case_common's reference note.
 
-VALIDATED AGAINST THE SPRINGS, which is the only check here that does not
-route through the shock pots. It validates the SUSPENSION-referenced slope,
-since springs alone set that one and no tyre term enters. With no ARB the
-four springs (225 lbf/in front, 200 rear) make the entire roll stiffness:
-wheel rates 27.92 / 32.51 N/mm give 749 N*m/deg, and the measured 0.898
-deg/g suspension-referenced implies a sprung-mass x CG-height of 68.6 kg*m
-(CG 0.280 m above the roll axis at 245 kg sprung) — a real FSAE number.
-Note MR enters stiffness as MR^2, so this is twice as sensitive to a
-motion-ratio error as the angles are.
+CROSS-CHECKED AGAINST THE SPRINGS, which is the only check here that does
+not route through the shock pots. It checks the SUSPENSION-referenced
+slope, since springs alone set that one and no tyre term enters. With no
+ARB the four springs (225 lbf/in front, 200 rear) make the entire roll
+stiffness: wheel rates 27.92 / 32.51 N/mm give 749 N*m/deg (mind the units
+— see the derivation in case_common). Against the measured 0.898 deg/g
+that is a roll moment of ~673 N*m per g. Note MR enters stiffness as MR^2,
+so this is twice as sensitive to a motion-ratio error as the angles are.
 
-A "should be at least 2x higher" expectation is ruled out by the same
-arithmetic: 1.80 deg/g suspension-referenced would need a CG 0.560 m above
-the roll axis.
+WHAT IT DOES NOT ESTABLISH: an absolute scale. Turning 673 N*m/g into a CG
+height needs a sprung mass and a roll-axis height, neither of which has
+been measured on this car, so that step is not taken here. (An earlier
+version of this note asserted "CG 0.280 m above the roll axis at 245 kg
+sprung"; the 245 kg was never sourced and conflicts with the 215.5 kg
+competition mass without driver. Retracted.)
+
+A "should be at least 2x higher" expectation is still ruled out, and the
+argument needs no absolute CG: roll moment per g is proportional to sprung
+mass x CG-height, so 1.80 deg/g suspension-referenced against a fixed
+749 N*m/deg would need DOUBLE the sprung-mass x CG-height this car can
+plausibly have. Nothing else in the chain can supply that factor.
 
 An earlier note here cited a "0.83-0.94 deg/g hand-derived estimate from
 four independent estimates" as corroboration. Its derivation appears
@@ -299,7 +308,8 @@ def ground_values(pooled):
 
     These are the headline numbers of this case — deg/g of chassis attitude
     against the ROAD, which is what a design roll or pitch gradient means and
-    what CFR26.xlsx D83/D153 predict. The suspension-referenced slope the fit
+    what the Simplified Steady State Suspension Spreadsheet predicts
+    (roll 1.307 deg/g, pitch 0.901 deg/g). The suspension-referenced slope the fit
     actually produced is reported beside each as a labelled secondary.
 
     Each axle carries its own multiplier; the whole-car "avg" carries one
@@ -495,8 +505,9 @@ def main():
     print("design targets use. [susp-ref ...] is the raw fitted slope the "
           "shock pots see.")
     print("Roll stiffness from the springs (225/200 lbf/in, no ARB): "
-          "749 N*m/deg -> 0.898 deg/g susp-ref at CG 0.280 m above the roll "
-          "axis")
+          "749 N*m/deg, i.e. ~673 N*m per g")
+    print("at the measured 0.898 deg/g susp-ref. Not an absolute scale "
+          "check — see the module docstring.")
 
     summary = {}
 
@@ -723,7 +734,8 @@ CONVENTIONS = [
     "<b>Every gradient here is GROUND-REFERENCED</b> — deg of chassis "
     "attitude per g, measured against the ROAD with tyre deflection "
     "included. That is what a design gradient means, so these compare "
-    "directly against <code>CFR26.xlsx</code> D83 (1.307 °/g roll) and D153 "
+    "directly against the Simplified Steady State Suspension Spreadsheet's predicted "
+    "roll gradient (1.307 °/g) and predicted pitch gradient "
     "(0.901 °/g pitch).",
     "<b>Previously this page led with the raw fitted slope</b>, which is "
     "suspension-referenced — chassis against the wheel-centre line, all a "

@@ -685,17 +685,13 @@ SIGNAL_WARNINGS = {
 # roughly the 14% spread between them. Use to_wheel_travel() and do all
 # subsequent maths on its output.
 #
-# These replace the earlier MOTION_RATIO = 1.0 placeholder that every case
-# script carried, so all previously reported angles were understated:
-# front by 19%, rear by ~4%.
+# BOTH RATIOS ARE A TEAM DESIGN CHOICE, MEASURED AND VALIDATED ON THE
+# CFR26 CAR (Bianca, 2026-08-01). Treat them as inputs, not as free
+# parameters to tune until something else agrees.
 #
-# FRONT CORRECTED 1.15 -> 1.188 (2026-08-01, supplied by Bianca). Every
-# front and whole-car angle, and every front and whole-car gradient, scales
-# with it linearly: +3.3%. Rear and rear-only figures are untouched.
-#
-# BOTH RATIOS ARE VALIDATED MEASUREMENTS ON THE CAR (Bianca, 2026-08-01).
-# Treat them as inputs, not as free parameters to tune until something else
-# agrees. In particular, DO NOT "solve" the front/rear roll disagreement by
+# FRONT CORRECTED 1.15 -> 1.188 (2026-08-01). Every front and whole-car
+# angle, and every front and whole-car gradient, scales with it linearly:
+# +3.3%. Rear and rear-only figures are untouched. In particular, DO NOT "solve" the front/rear roll disagreement by
 # adjusting one of them: that inference was tried and is retracted. It reads
 # a front ratio of ~1.30 out of the rigid-chassis constraint, but it only
 # gets there by assuming the chassis is rigid AND all four pots are
@@ -718,14 +714,26 @@ SIGNAL_WARNINGS = {
 # So chassis torsional flex and front pot calibration are what is left. See
 # the README, and the FL entry under Known data problems.
 #
-# THE ABSOLUTE SCALE IS NOW CONFIRMED, which it was not before. With no ARB
-# the four springs (225 lbf/in front, 200 rear = 39.40 / 35.03 N/mm) make
-# the entire roll stiffness: wheel rates 27.92 / 32.51 N/mm give 749 N*m/deg,
-# and the measured 0.898 deg/g implies a sprung-mass x CG-height of 68.6
-# kg*m — i.e. CG 0.280 m above the roll axis at 245 kg sprung, which is a
-# real FSAE number. This is the first check on this analysis that does not
-# route through the shock pots, so it is the first that could have caught a
-# scale error.
+# CROSS-CHECKED AGAINST THE SPRINGS, which is the first check on this
+# analysis that does not route through the shock pots, so the first that
+# could have caught a scale error. With no ARB the four springs (225 lbf/in
+# front, 200 rear = 39.40 / 35.03 N/mm) make the entire roll stiffness:
+# wheel rates 27.92 / 32.51 N/mm give
+#     K_roll = (k_wf*T_f^2 + k_wr*T_r^2) / 2
+#            = 4.294e7 N*mm/rad = 42940 N*m/rad = 749 N*m/deg
+# (mind the units — k is N/mm and track is mm, so the bracket is N*mm/rad).
+# Against the measured 0.898 deg/g suspension-referenced that is a roll
+# moment of ~673 N*m per g.
+#
+# WHAT IT DOES NOT ESTABLISH: an absolute scale. Going from 673 N*m/g to a
+# CG height needs a sprung mass and a roll-axis height, and NEITHER HAS
+# BEEN MEASURED ON THIS CAR. Nothing in this repo consumes a mass, a CG
+# height or a roll-axis height, so that step is deliberately not taken.
+# (An earlier version of this comment asserted "CG 0.280 m above the roll
+# axis at 245 kg sprung"; the 245 kg was never sourced and conflicts with
+# the 215.5 kg competition mass without driver. Retracted.) The check is
+# still worth having as a consistency test: MR enters stiffness as MR^2,
+# so it is twice as sensitive to a motion-ratio error as the angles are.
 MOTION_RATIO_FRONT = 1.188
 MOTION_RATIO_REAR = 1.038
 
@@ -911,8 +919,9 @@ def mm_to_deg(wheel_mm, span_mm):
 # wheel-centre line itself tilts against the road. Camber relative to the
 # ROAD is what sets grip, so that is the reference the design side works
 # in, the reference every published FSAE roll gradient is quoted in, and
-# the reference CFR26.xlsx itself uses (row 76 builds roll stiffness from
-# `riderate`, row 55, "wheel rate and tire rate in series").
+# the reference the Simplified Steady State Suspension Spreadsheet itself
+# uses (it builds roll stiffness from the RIDE RATE, i.e. "wheel rate and
+# tire rate in series").
 #
 # SO GROUND-REFERENCED IS THE PRIMARY NUMBER EVERYWHERE IN THIS ANALYSIS —
 # every headline angle, every gradient, every summary table cell. The
@@ -948,29 +957,30 @@ def mm_to_deg(wheel_mm, span_mm):
 # ground-referencing it would be meaningless. case4 therefore stays in the
 # suspension reference throughout and says so on its own page.
 #
-# Inputs from CFR26.xlsx (the team's suspension sheet), rows 34/54.
+# Inputs from the Simplified Steady State Suspension Spreadsheet.
 LBF_IN_TO_N_MM = 0.1751268
 
-SPRING_RATE_FRONT_LBF_IN = 225.0   # CFR26.xlsx D34
-SPRING_RATE_REAR_LBF_IN = 200.0    # CFR26.xlsx E34
+# Spring rates the team chose and ran at competition.
+SPRING_RATE_FRONT_LBF_IN = 225.0
+SPRING_RATE_REAR_LBF_IN = 200.0
 
-# CFR26.xlsx D54/E54 — same front and rear.
+# Tyre vertical rate, same front and rear, from the Simplified Steady State
+# Suspension Spreadsheet.
 #
-# 700, not the 520 this used until 2026-08-06: 520 was a rate for the wrong
-# COMPOUND. Corrected in the sheet by Bianca and mirrored here. It matters
-# twice over and the two effects do NOT cancel in the same direction:
+# THIS VALUE CANNOT SETTLE THE DESIGN-VS-MEASURED GAP, so do not reach for
+# it when that gap comes up. It matters twice over, in the same direction
+# on both sides:
 #
-#   - Ground-referencing multipliers fall (~1.33x -> ~1.25x), because a
-#     stiffer tyre deflects less, so less of the chassis's motion against
-#     the road is tyre. Every ground-referenced angle here drops ~6.5%.
-#   - The SHEET's own predictions fall too, since row 55's ride rate is
-#     wheel-in-series-with-tyre: D83 1.396 -> 1.3066 deg/g, D153 0.963 ->
-#     0.9015 deg/g (read back from the recalculated workbook, not assumed).
+#   - Ground-referencing multipliers fall as it rises, because a stiffer
+#     tyre deflects less, so less of the chassis's motion against the road
+#     is tyre. Every ground-referenced angle here falls with them.
+#   - The SPREADSHEET's own predicted gradients fall too, since its ride
+#     rate is wheel-in-series-with-tyre.
 #
-# The sheet-vs-measured RATIO is untouched — 1.167x on roll at any tyre
-# rate, verified at 520/652/700/724/774/859 lbf/in. The tyre term cancels
-# exactly between the two sides, so this changes the absolute numbers and
-# settles nothing about the open 1.167x design-vs-measured gap.
+# So the predicted-vs-measured RATIO is untouched — 1.167x on roll at any
+# tyre rate, checked across a 520-859 lbf/in sweep. The tyre term cancels
+# exactly between the two sides: it moves the absolute numbers and settles
+# nothing about the open 1.167x gap.
 TYRE_RATE_LBF_IN = 700.0
 
 TYRE_RATE_N_MM = TYRE_RATE_LBF_IN * LBF_IN_TO_N_MM              # 122.59

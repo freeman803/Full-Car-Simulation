@@ -180,7 +180,8 @@ def pitch_mm_to_deg_susp(wheel_mm):
 def pitch_mm_to_deg(wheel_mm):
     """GROUND-referenced pitch (deg) — the number this case reports.
 
-    Tyre deflection included, so it is comparable with CFR26.xlsx D153 and
+    Tyre deflection included, so it is comparable with the Simplified Steady State Suspension Spreadsheet's
+    predicted pitch gradient (0.901 deg/g) and
     with any published pitch gradient. Every degree figure printed by this
     script goes through here; millimetres stay as measured, since mm is real
     suspension travel and carries no reference ambiguity.
@@ -711,7 +712,8 @@ def main():
 CONVENTIONS = [
     "<b>Every pitch angle here is GROUND-REFERENCED</b> — chassis pitch "
     "relative to the road, tyre deflection included, directly comparable to "
-    "<code>CFR26.xlsx</code> D153. <b>Millimetres are not converted</b>: mm "
+    "the Simplified Steady State Suspension Spreadsheet's predicted pitch "
+    "gradient (0.901 &deg;/g). <b>Millimetres are not converted</b>: mm "
     "is real suspension travel and has no reference ambiguity.",
     "<b>Previously these reports led with the suspension-referenced angle</b> "
     "(chassis relative to the wheel-centre line — what a shock pot spans). "
