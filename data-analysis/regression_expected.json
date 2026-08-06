@@ -25,60 +25,60 @@
     },
     "case2_max_roll": {
       "autocross": {
-        "avg_deg": 1.5064375621725958,
-        "avg_deg_ground": 2.00679158385596,
-        "front_deg": 1.4051387703153349,
-        "front_deg_ground": 1.835928667856738,
-        "rear_deg": 1.6220995796018698,
-        "rear_deg_ground": 2.2011407675364882
+        "avg_deg": 1.8782391555329063,
+        "avg_deg_susp": 1.5064375621725958,
+        "front_deg": 1.7251541227746625,
+        "front_deg_susp": 1.4051387703153349,
+        "rear_deg": 2.052244462067586,
+        "rear_deg_susp": 1.6220995796018698
       },
       "endurance": {
-        "avg_deg": 1.4610085785015976,
-        "avg_deg_ground": 1.9462736411390984,
-        "front_deg": 1.5071420835872547,
-        "front_deg_ground": 1.9692043350068675,
-        "rear_deg": 1.621256033066948,
-        "rear_deg_ground": 2.199996100038463
+        "avg_deg": 1.821597912596906,
+        "avg_deg_susp": 1.4610085785015976,
+        "front_deg": 1.850388327498967,
+        "front_deg_susp": 1.5071420835872547,
+        "rear_deg": 2.0511772256743592,
+        "rear_deg_susp": 1.621256033066948
       },
       "skidpad": {
-        "avg_deg": 1.1975486078647364,
-        "avg_deg_ground": 1.5953070527897728,
-        "front_deg": 1.1366833479144638,
-        "front_deg_ground": 1.4851697133395676,
-        "rear_deg": 1.2758320667396796,
-        "rear_deg_ground": 1.7312660763529153
+        "avg_deg": 1.4931137820949825,
+        "avg_deg_susp": 1.1975486078647364,
+        "front_deg": 1.3955589336588263,
+        "front_deg_susp": 1.1366833479144638,
+        "rear_deg": 1.6141544738809401,
+        "rear_deg_susp": 1.2758320667396796
       }
     },
     "case3_max_pitch": {
       "accel": {
-        "typical_deg": 0.3648334753303586,
-        "typical_deg_ground": 0.4851784601198443,
+        "typical_deg": 0.4542326068882623,
+        "typical_deg_susp": 0.3648334753303586,
         "worst_deg": null,
-        "worst_deg_ground": null
+        "worst_deg_susp": null
       },
       "autocross": {
-        "typical_deg": 0.6064354174990381,
-        "typical_deg_ground": 0.8064758908372975,
-        "worst_deg": 0.6412075172159708,
-        "worst_deg_ground": 0.852718012069508
+        "typical_deg": 0.755036911978888,
+        "typical_deg_susp": 0.6064354174990381,
+        "worst_deg": 0.7983295991071699,
+        "worst_deg_susp": 0.6412075172159708
       },
       "brake": {
-        "typical_deg": 0.6709414876264599,
-        "typical_deg_ground": 0.8922601126510049,
-        "worst_deg": 0.7846864516926622,
-        "worst_deg_ground": 1.0435253068935433
+        "typical_deg": 0.8353496090732648,
+        "typical_deg_susp": 0.6709414876264599,
+        "worst_deg": 0.9769667441276025,
+        "worst_deg_susp": 0.7846864516926622
       },
       "endurance": {
-        "typical_deg": 0.8118621460023994,
-        "typical_deg_ground": 1.0796652513050224,
-        "worst_deg": 0.9443852192806491,
-        "worst_deg_ground": 1.2559027540869943
+        "typical_deg": 1.0108015956557765,
+        "typical_deg_susp": 0.8118621460023994,
+        "worst_deg": 1.1757982451367912,
+        "worst_deg_susp": 0.9443852192806491
       },
       "skidpad": {
-        "typical_deg": 0.1024970560611732,
-        "typical_deg_ground": 0.13630702002207218,
+        "typical_deg": 0.1276130292892696,
+        "typical_deg_susp": 0.1024970560611732,
         "worst_deg": null,
-        "worst_deg_ground": null
+        "worst_deg_susp": null
       }
     },
     "case4_combined_roll_pitch": {
@@ -150,40 +150,40 @@
     },
     "case5_gradients": {
       "accel": {
-        "pitch": 0.5399891884416466,
-        "pitch_ground": 0.7181115238733183
+        "pitch": 0.6723086376194599,
+        "pitch_susp": 0.5399891884416466
       },
       "autocross": {
-        "avg": 0.8465863834832662,
-        "avg_ground": 1.127774872349222,
-        "front": 0.8094035768934087,
-        "front_ground": 1.057551938696355,
-        "pitch": 0.5466153547187118,
-        "pitch_ground": 0.7269234157861794,
-        "rear": 0.8854589016366713,
-        "rear_ground": 1.2015413300636748
+        "avg": 1.055531097954053,
+        "avg_susp": 0.8465863834832662,
+        "front": 0.9937423599470258,
+        "front_susp": 0.8094035768934087,
+        "pitch": 0.680558485797402,
+        "pitch_susp": 0.5466153547187118,
+        "rear": 1.1202629913253024,
+        "rear_susp": 0.8854589016366713
       },
       "brake": {
-        "pitch": 0.542560525174963,
-        "pitch_ground": 0.7215310488924805
+        "pitch": 0.6755100570794047,
+        "pitch_susp": 0.542560525174963
       },
       "endurance": {
-        "avg": 0.8749249759521313,
-        "avg_ground": 1.1655259549648365,
-        "front": 0.8360578776859291,
-        "front_ground": 1.0923779615636073,
-        "pitch": 0.5837617546665957,
-        "pitch_ground": 0.7763230305265498,
-        "rear": 0.9154768586263099,
-        "rear_ground": 1.2422748027301727
+        "avg": 1.0908638958902306,
+        "avg_susp": 0.8749249759521313,
+        "front": 1.0264670828522042,
+        "front_susp": 0.8360578776859291,
+        "pitch": 0.7268072738768474,
+        "pitch_susp": 0.5837617546665957,
+        "rear": 1.1582410456748935,
+        "rear_susp": 0.9154768586263099
       },
       "skidpad": {
-        "avg": 0.8976280428485607,
-        "avg_ground": 1.1957697066605695,
-        "front": 0.8578063023953311,
-        "front_ground": 1.1207940562926384,
-        "rear": 0.9391776735935098,
-        "rear_ground": 1.2744361020142443
+        "avg": 1.1191702726470996,
+        "avg_susp": 0.8976280428485607,
+        "front": 1.0531686338619022,
+        "front_susp": 0.8578063023953311,
+        "rear": 1.1882267918489124,
+        "rear_susp": 0.9391776735935098
       }
     },
     "case6_max_yaw": {

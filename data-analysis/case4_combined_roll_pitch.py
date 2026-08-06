@@ -1094,6 +1094,15 @@ CONVENTIONS = [
     "left.",
     "A peak flagged <b>NOT A DRIVING EVENT</b> happened below 3 m/s. The "
     "motion is real, but it is not a load the car saw on track.",
+    "<b>This is the one case whose angles stay SUSPENSION-referenced</b>, "
+    "and deliberately so. Cases 2, 3 and 5 report chassis attitude against "
+    "the ROAD, because that is what a design gradient means. Here the whole "
+    "question is how much of the available wheel travel got used — bump-stop "
+    "and droop margin are measured in suspension travel, and tyre deflection "
+    "consumes none of it. The <code>roll</code> and <code>pitch</code> "
+    "degrees quoted on this page are the modal decomposition of that same "
+    "travel, so they stay in its reference; multiply by 1.247 roll / 1.245 "
+    "pitch to compare them against case2/case3.",
 ]
 
 

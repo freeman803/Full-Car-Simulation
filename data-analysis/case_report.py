@@ -88,6 +88,14 @@ section.cardgroup > .cards { margin: .75rem 0 0; }
 }
 .card .value { font-size: 1.45rem; font-weight: 600; margin-top: .2rem; }
 .card .unit { font-size: .85rem; color: var(--muted); font-weight: 400; }
+/* The suspension-referenced figure, under the ground-referenced headline.
+   Deliberately not a card of its own: two same-sized cards reading "1.73°"
+   and "1.41°" for the same quantity is exactly the ambiguity that got the
+   wrong number quoted for months. */
+.card .alt {
+  color: var(--muted); font-size: .72rem; margin-top: .3rem;
+  border-top: 1px solid var(--border); padding-top: .3rem;
+}
 pre.console {
   background: var(--card); border: 1px solid var(--border);
   border-radius: 10px; padding: 1.1rem 1.3rem; overflow-x: auto;
@@ -257,6 +265,10 @@ class _Page:
         self.title = title
         self.plots_root = plots_root
         self.summary = None
+        # Unit for summary keys that don't carry one in their name. Left ""
+        # for the cases whose keys end in _deg / _mm / _g and so speak for
+        # themselves; see _label_and_unit.
+        self.default_unit = ""
         self.buffer = io.StringIO()
         self.instants = []
         self.conventions = []
@@ -323,12 +335,25 @@ _UNIT_SUFFIXES = sorted(
 # "sustained_lat_g_min" is a g and not a unitless "sustained lat g min".
 _QUALIFIER_SUFFIXES = ("_min", "_max", "_avg", "_median")
 
+# Mirrors case_common.SUSP_SUFFIX. Duplicated for the same reason
+# EVENT_DISPLAY_ORDER below is: this layer is stdlib-only at import time and
+# does not drag numpy/scipy in for a five-character string.
+SUSP_SUFFIX = "_susp"
 
-def _label_and_unit(key):
+
+def _label_and_unit(key, default_unit=""):
     """Display label and unit for a summary key.
 
     The unit token comes OUT of the label — "peak yaw 78.7 °/s" reads as a
     measurement, "peak yaw deg s 78.7" reads as a wall of words.
+
+    `default_unit` covers a case whose keys do not carry their unit in the
+    name. case5's are "roll_avg" / "pitch" / "steady_roll_front" — the event
+    and the quantity, no unit token — so every card on that page rendered as
+    a bare number. Renaming the keys was the alternative and is worse: they
+    are parsed by case_summary.collect_case5 and pinned in the regression
+    snapshot, so the whole page's unit would ride on a string nothing else
+    should depend on.
     """
     qualifier = ""
     for suffix in _QUALIFIER_SUFFIXES:
@@ -336,7 +361,7 @@ def _label_and_unit(key):
             key, qualifier = key[:-len(suffix)], suffix[1:]
             break
 
-    unit = ""
+    unit = default_unit
     for suffix, symbol in _UNIT_SUFFIXES:
         if key.endswith(suffix):
             key, unit = key[:-len(suffix)], symbol
@@ -369,7 +394,7 @@ def _group_flat_summary(flat):
     return grouped
 
 
-def _cards(summary):
+def _cards(summary, default_unit=""):
     """Headline numbers, if the case handed us its summary dicts.
 
     Deliberately shallow: only scalar values one level under each event, so
@@ -405,15 +430,30 @@ def _cards(summary):
         if not scalars:
             continue
 
+        # A "<key>_susp" scalar is the suspension-referenced twin of "<key>",
+        # not a measurement in its own right, so it is folded into that
+        # card's sub-line instead of getting a card. See SUSP_SUFFIX in
+        # case_common for why ground-referenced is the headline.
+        susp = {k[:-len(SUSP_SUFFIX)]: v for k, v in scalars
+                if k.endswith(SUSP_SUFFIX)}
+
         out.append(f"<section class='cardgroup'>"
                    f"<h2>{html.escape(event.upper())}</h2><div class='cards'>")
         for key, value in scalars:
-            label, unit = _label_and_unit(key)
+            if key.endswith(SUSP_SUFFIX):
+                continue
+            label, unit = _label_and_unit(key, default_unit)
+            alt = ""
+            if key in susp:
+                shown = " ".join(x for x in (f"{susp[key]:.4g}",
+                                             html.escape(unit)) if x)
+                alt = f"<div class='alt'>{shown} suspension-ref</div>"
             out.append(
                 f"<div class='card'><div class='label'>"
                 f"{html.escape(label)}</div>"
                 f"<div class='value'>{value:.4g} "
-                f"<span class='unit'>{html.escape(unit)}</span></div></div>"
+                f"<span class='unit'>{html.escape(unit)}</span></div>"
+                f"{alt}</div>"
             )
         out.append("</div></section>")
 
@@ -799,7 +839,7 @@ def report_page(case, title, plots_root):
             + f"<h1>{html.escape(title)}</h1>"
             + f"<p class='sub'>{html.escape(case)} &middot; generated {stamp}</p>"
             + _conventions_block(page.conventions)
-            + _cards(page.summary)
+            + _cards(page.summary, page.default_unit)
             + f"<div id='instants'>{_instants_block(page.instants, plots_root)}</div>"
             + console
             + results_html

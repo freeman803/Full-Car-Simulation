@@ -896,28 +896,36 @@ def mm_to_deg(wheel_mm, span_mm):
 # and mm_to_deg(rear_mm, REAR_TRACK_MM) instead.
 
 
-# ── Suspension-referenced vs ground-referenced angles ────────────────────
+# ── Ground-referenced angles (the published reference) ───────────────────
 #
 # WHICH LINE THE ANGLE IS MEASURED AGAINST. A shock pot is bolted between
 # the chassis and the upright, so both its ends sit ABOVE the tyre. What it
 # measures is therefore chassis roll relative to the line joining the two
 # WHEEL CENTRES — call that SUSPENSION-REFERENCED. It is the only thing
-# these sensors can see, and it is what every case script reports.
+# these sensors can see directly, and it is the RAW measurement here.
 #
-# A design roll gradient almost always means something else: chassis roll
-# relative to the GROUND, which additionally contains the tyre's own
-# deflection. Under lateral load transfer the outside tyre squashes and the
-# inside one extends, so the wheel-centre line itself tilts against the
-# road. Camber relative to the road is what sets grip, which is why the
-# design side works in this reference.
+# It is not, however, the quantity anyone wants to be handed. A roll or
+# pitch gradient means chassis attitude relative to the GROUND, which
+# additionally contains the tyre's own deflection: under lateral load
+# transfer the outside tyre squashes and the inside one extends, so the
+# wheel-centre line itself tilts against the road. Camber relative to the
+# ROAD is what sets grip, so that is the reference the design side works
+# in, the reference every published FSAE roll gradient is quoted in, and
+# the reference CFR26.xlsx itself uses (row 76 builds roll stiffness from
+# `riderate`, row 55, "wheel rate and tire rate in series").
 #
-# The two are NOT interchangeable, and comparing one to the other is how a
-# measurement that is entirely correct comes to look ~33% too small. That
-# happened here: CFR26.xlsx row 76 builds roll stiffness from `riderate`
-# (row 55, "wheel rate and tire rate in series"), so the sheet's 1.396
-# deg/g is ground-referenced, against 0.898 deg/g suspension-referenced
-# measured. Reference difference 1.33x; the residual 1.17x is genuine
-# design-vs-measured.
+# SO GROUND-REFERENCED IS THE PRIMARY NUMBER EVERYWHERE IN THIS ANALYSIS —
+# every headline angle, every gradient, every summary table cell. The
+# suspension-referenced figure is carried alongside as a secondary,
+# clearly-labelled value, because it is what the sensors saw and you need
+# it to audit the conversion. It is NOT the number to quote.
+#
+# This is a reversal. Until 2026-08-06 these scripts led with the
+# suspension-referenced figure, which made every published angle ~25%
+# smaller than the thing it was being compared against and is exactly how
+# a measurement that is entirely correct came to look "at least 2x too
+# low" to the suspension team. Nothing about the measurement changed; the
+# reference the reports lead with did.
 #
 # THE CONVERSION IS EXACT for load-transfer-driven roll and pitch, because
 # the same load increment deflects spring and tyre in series:
@@ -937,16 +945,35 @@ def mm_to_deg(wheel_mm, span_mm):
 #
 # NOT APPLICABLE TO case4's per-corner wheel travel. That is real
 # suspension travel and is what bump-stop and droop margin are measured in;
-# ground-referencing it would be meaningless.
+# ground-referencing it would be meaningless. case4 therefore stays in the
+# suspension reference throughout and says so on its own page.
 #
 # Inputs from CFR26.xlsx (the team's suspension sheet), rows 34/54.
 LBF_IN_TO_N_MM = 0.1751268
 
 SPRING_RATE_FRONT_LBF_IN = 225.0   # CFR26.xlsx D34
 SPRING_RATE_REAR_LBF_IN = 200.0    # CFR26.xlsx E34
-TYRE_RATE_LBF_IN = 520.0           # CFR26.xlsx D54/E54 — same front and rear
 
-TYRE_RATE_N_MM = TYRE_RATE_LBF_IN * LBF_IN_TO_N_MM              # 91.07
+# CFR26.xlsx D54/E54 — same front and rear.
+#
+# 700, not the 520 this used until 2026-08-06: 520 was a rate for the wrong
+# COMPOUND. Corrected in the sheet by Bianca and mirrored here. It matters
+# twice over and the two effects do NOT cancel in the same direction:
+#
+#   - Ground-referencing multipliers fall (~1.33x -> ~1.25x), because a
+#     stiffer tyre deflects less, so less of the chassis's motion against
+#     the road is tyre. Every ground-referenced angle here drops ~6.5%.
+#   - The SHEET's own predictions fall too, since row 55's ride rate is
+#     wheel-in-series-with-tyre: D83 1.396 -> 1.3066 deg/g, D153 0.963 ->
+#     0.9015 deg/g (read back from the recalculated workbook, not assumed).
+#
+# The sheet-vs-measured RATIO is untouched — 1.167x on roll at any tyre
+# rate, verified at 520/652/700/724/774/859 lbf/in. The tyre term cancels
+# exactly between the two sides, so this changes the absolute numbers and
+# settles nothing about the open 1.167x design-vs-measured gap.
+TYRE_RATE_LBF_IN = 700.0
+
+TYRE_RATE_N_MM = TYRE_RATE_LBF_IN * LBF_IN_TO_N_MM              # 122.59
 
 # Wheel rate = spring rate / MR^2 (motion ratio enters stiffness squared).
 WHEEL_RATE_FRONT_N_MM = (SPRING_RATE_FRONT_LBF_IN * LBF_IN_TO_N_MM
@@ -954,27 +981,27 @@ WHEEL_RATE_FRONT_N_MM = (SPRING_RATE_FRONT_LBF_IN * LBF_IN_TO_N_MM
 WHEEL_RATE_REAR_N_MM = (SPRING_RATE_REAR_LBF_IN * LBF_IN_TO_N_MM
                         / MOTION_RATIO_REAR ** 2)                # 32.51
 
-GROUND_MULT_ROLL_FRONT = 1.0 + WHEEL_RATE_FRONT_N_MM / TYRE_RATE_N_MM   # 1.307
-GROUND_MULT_ROLL_REAR = 1.0 + WHEEL_RATE_REAR_N_MM / TYRE_RATE_N_MM     # 1.357
+GROUND_MULT_ROLL_FRONT = 1.0 + WHEEL_RATE_FRONT_N_MM / TYRE_RATE_N_MM   # 1.228
+GROUND_MULT_ROLL_REAR = 1.0 + WHEEL_RATE_REAR_N_MM / TYRE_RATE_N_MM     # 1.265
 
 # Pitch sums the two axles' compliances, so it gets ONE multiplier rather
 # than a per-axle pair.
 GROUND_MULT_PITCH = 1.0 + (2.0 / TYRE_RATE_N_MM) / (
-    1.0 / WHEEL_RATE_FRONT_N_MM + 1.0 / WHEEL_RATE_REAR_N_MM)           # 1.330
+    1.0 / WHEEL_RATE_FRONT_N_MM + 1.0 / WHEEL_RATE_REAR_N_MM)           # 1.245
 
 # The whole-car "avg" gets ONE stiffness-weighted multiplier rather than
 # being rebuilt from the two axle figures.
 #
 # Rebuilding was tried first and is wrong here, for a reason specific to how
-# these numbers are produced: case2's front_deg, rear_deg and avg_deg each
+# these numbers are produced: case2's front, rear and avg roll peaks each
 # come from their OWN peak search, so they land at three different instants.
 # Averaging the converted front and rear peaks therefore combines two
 # moments that never coexisted, and on endurance it inflated the whole-car
-# figure to 2.08 deg against 1.95 the consistent way.
+# figure by ~7% over the consistent route.
 #
 # The cost of one multiplier is negligible: on the skidpad steady gradient,
 # where front/rear/avg ARE fitted over the same samples and rebuilding is
-# legitimate, the two routes give 1.198 and 1.196 deg/g — 0.2% apart.
+# legitimate, the two routes agree to 0.2%.
 _RIDE_FRONT = (WHEEL_RATE_FRONT_N_MM * TYRE_RATE_N_MM
                / (WHEEL_RATE_FRONT_N_MM + TYRE_RATE_N_MM))
 _RIDE_REAR = (WHEEL_RATE_REAR_N_MM * TYRE_RATE_N_MM
@@ -985,7 +1012,7 @@ GROUND_MULT_ROLL_AVG = (
      + WHEEL_RATE_REAR_N_MM * REAR_TRACK_MM ** 2)
     / (_RIDE_FRONT * FRONT_TRACK_MM ** 2
        + _RIDE_REAR * REAR_TRACK_MM ** 2)
-)                                                                       # 1.332
+)                                                                       # 1.247
 
 GROUND_MULT = {
     "front": GROUND_MULT_ROLL_FRONT,
@@ -1006,6 +1033,48 @@ def to_ground_referenced(angle_deg, which):
     if angle_deg is None:
         return None
     return angle_deg * GROUND_MULT[which]
+
+
+# Suffix marking the secondary, suspension-referenced copy of an angle.
+# Spelled out in one place so the report layer can recognise these keys and
+# render them as a sub-line under the primary card rather than as a card of
+# their own — see case_report._cards.
+SUSP_SUFFIX = "_susp"
+
+
+def promote_ground(summary, which_by_key):
+    """Make the GROUND-referenced angle the primary value in a summary.
+
+    `which_by_key` maps a summary key holding a SUSPENSION-referenced angle
+    (what mm_to_deg returns straight off the shock pots) to its GROUND_MULT
+    entry: {"front_deg": "front", "avg_deg": "avg", ...}.
+
+    Each key is rewritten in place to the ground-referenced figure, and the
+    original is preserved at "<key>_susp".
+
+    Done as a rewrite rather than by adding a "<key>_ground" sibling — which
+    is how this worked until 2026-08-06 — so that everything downstream
+    (the summary table, the headline charts, the report cards, the
+    regression snapshot) leads with the ground-referenced number without
+    each consumer having to remember to ask for it. Forgetting was the
+    normal case, and the reports shipped ~25%-low angles for months.
+    """
+    for key, which in which_by_key.items():
+        susp = summary.get(key)
+        summary[key + SUSP_SUFFIX] = susp
+        summary[key] = to_ground_referenced(susp, which)
+    return summary
+
+
+def susp_note(susp_value, spec=".4f", unit=" deg"):
+    """Console annotation carrying the suspension-referenced figure.
+
+    Always bracketed and always labelled, so a number lifted out of the
+    console text by eye cannot be mistaken for the headline one.
+    """
+    if susp_value is None:
+        return ""
+    return f"  [susp-ref {format(susp_value, spec)}{unit}]"
 
 
 # ── Brake pressure: detecting when the car is actually braking ───────────

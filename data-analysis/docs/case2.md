@@ -32,10 +32,12 @@ Track 1219.2 mm front, 1168.4 mm rear. Wheelbase 1543 mm.
 differ by 14%, so a single ratio applied after mixing axles is only valid if
 they are equal. Follows directly from the per-corner definition in `OG-TT1`.
 
-## Suspension- vs ground-referenced
+## Ground-referenced roll (what case2 reports)
 
 Shock pots span chassis-to-upright, so they measure roll about the **wheel-centre
-line**, not the ground. A design roll gradient normally includes tyre deflection.
+line**, not the ground. A design roll gradient normally includes tyre deflection,
+so case2 converts and reports the **ground-referenced** angle, carrying the raw
+suspension-referenced one beside it as a labelled secondary.
 
 - `OG-TT2` states the exclusion explicitly, right after its roll equations:
   *"The following equations do not take into account roll due to the tires."*
@@ -61,15 +63,19 @@ Checked against first principles (deflection per unit `ΔF`, suspension vs groun
 
 | | first principles | `case_common.py` |
 |---|---|---|
-| roll front | 1.306582 | 1.306582 |
-| roll rear | 1.356970 | 1.356970 |
-| pitch | 1.329863 | 1.329863 |
+| roll front | 1.227746 | 1.227746 |
+| roll rear | 1.265178 | 1.265178 |
+| pitch | 1.245041 | 1.245041 |
+
+At `k_tyre` = 700 lbf/in (`CFR26.xlsx` D54/E54, corrected from 520 on 2026-08-06 —
+520 was a rate for the wrong compound). Tyre rate is the only extra input, so
+these multipliers move with it: they were 1.306582 / 1.356970 / 1.329863 at 520.
 
 **Exact for load-transfer-driven roll and pitch**, since the same load increment
 deflects spring and tyre. Approximate for transient peaks — a kerb strike does
 not deflect the tyre proportionally. Gradients carry no such caveat.
 
-The whole-car `avg` (1.332144) has one modelling choice on top: it is the ratio
+The whole-car `avg` (1.246808) has one modelling choice on top: it is the ratio
 of roll stiffness built on wheel rates to roll stiffness built on ride rates. The
 `k·t²` weighting is `OG-TT2`'s `K_φ` formula; what is local is using one blended
 multiplier instead of rebuilding from the two axles, because front/rear/avg peaks
@@ -79,10 +85,10 @@ coexisted (see the comment in `case_common.py`).
 Say **"derived from"**, not "per Milliken".
 
 Sanity check against published ranges (`OG-TT2`: 0.2–0.7 °/g stiff high-downforce,
-1.0–1.8 °/g low-downforce): steady skidpad measures **0.898 °/g suspension-referenced,
-1.196 °/g ground-referenced**. The ground-referenced figure lands in the published
-band; the suspension-referenced one falls below it. Quote the ground-referenced
-number to a judge, and say which reference it is in.
+1.0–1.8 °/g low-downforce): steady skidpad measures **1.119 °/g ground-referenced**,
+from 0.898 °/g suspension-referenced. The ground-referenced figure lands in the
+published band; the suspension-referenced one falls below it. That is a second
+reason it is the headline — and say which reference it is in when you quote it.
 
 ## The front/rear disagreement
 

@@ -57,20 +57,20 @@ First run is slow; `parse_influx.py` caches a `.parsed.pkl` beside each CSV and 
 
 ## Results — the measured envelope
 
-| Event | Sustained lat G | Peak lat G | Peak lon G | Roll ° sus→gnd | Pitch ° sus→gnd | Worst corner travel | Roll grad sus→gnd | Pitch grad sus→gnd | Peak yaw °/s |
+| Event | Sustained lat G | Peak lat G | Peak lon G | Roll ° | Pitch ° | Worst corner travel | Roll grad °/g | Pitch grad °/g | Peak yaw °/s |
 |---|---|---|---|---|---|---|---|---|---|
-| SKIDPAD | 1.26–1.33 g | — | — | 1.20→1.60 | 0.10→0.14* | −20.8 mm (FR) | **0.898→1.196** | — | 78.7 |
-| ACCEL | — | — | — | — | 0.36→0.49* | +15.8 mm (RR) | — | 0.540→0.718 | 52.6 |
-| BRAKE | — | — | — | — | 0.78→1.04 | −22.2 mm (FR) | — | 0.543→0.722 | 93.3 |
-| AUTOCROSS | — | **1.76** | 1.39 | **1.51→2.01** | 0.64→0.85 | −21.5 mm (FR) | 0.847→1.128 | 0.547→0.727 | **105.1** |
-| ENDURANCE | — | 1.60 | **1.72** | 1.46→1.95 | **0.94→1.26** | **−24.3 mm (FR)** | 0.875→1.166 | 0.584→0.776 | 99.3 |
+| SKIDPAD | 1.26–1.33 g | — | — | 1.49 | 0.13* | −20.8 mm (FR) | **1.119** | — | 78.7 |
+| ACCEL | — | — | — | — | 0.45* | +15.8 mm (RR) | — | 0.672 | 52.6 |
+| BRAKE | — | — | — | — | 0.98 | −22.2 mm (FR) | — | 0.676 | 93.3 |
+| AUTOCROSS | — | **1.76** | 1.39 | **1.88** | 0.80 | −21.5 mm (FR) | 1.056 | 0.681 | **105.1** |
+| ENDURANCE | — | 1.60 | **1.72** | 1.82 | **1.18** | **−24.3 mm (FR)** | 1.091 | 0.727 | 99.3 |
 
 `*` sustained (median over the steady window); that event has no separate peak by design. `—` not covered by that case.
 
 **Three things to know before quoting any of these:**
 
-1. **`sus→gnd`** — the first figure is suspension-referenced (what the shock pots measure); the second is ground-referenced (what a design roll gradient usually means). They are not interchangeable. See [Suspension- vs ground-referenced](#suspension--vs-ground-referenced).
-2. **Every peak figure is filter-dependent.** Across the 2→20 Hz sweep (`cutoff_sweep.py`, re-run 2026-08-05), **46 of 82 headline numbers move more than 10%** and only 10 move less than 2%. `case3.endurance.worst_deg` spans 0.613→0.963° (37.0%) and `case1.endurance.peak_lon_g` spans 1.196→1.744 g (31.9%). *"Peak longitudinal G was 1.72 g"* is not a fact about the car without **"at 10 Hz"** beside it. A further **7 numbers change sign** across the sweep — near-equal candidates whose tie the filter breaks, not a magnitude change. Steady-state skidpad numbers are the exception: they move 0.3–0.9%, because a median over a steady window is not something a low-pass touches.
+1. **Every angle and gradient here is ground-referenced** — chassis attitude relative to the *road*, tyre deflection included. That is the reference `CFR26.xlsx` predicts in and that published FSAE gradients use, so these compare against a target directly. The suspension-referenced figure the shock pots see is ~19–20% lower and sits beside each headline on the case report pages. See [Ground-referenced angles](#ground-referenced-angles).
+2. **Every peak figure is filter-dependent.** Across the 2→20 Hz sweep (`cutoff_sweep.py`, re-run 2026-08-06), **46 of 82 headline numbers move more than 10%** and only 10 move less than 2%. `case3.endurance.worst_deg` spans 0.763→1.198° (37.0%) and `case1.endurance.peak_lon_g` spans 1.196→1.744 g (31.9%). (The percentages are reference-independent — a constant multiplier cannot change a spread — so the reference switch left every sensitivity figure here untouched.) *"Peak longitudinal G was 1.72 g"* is not a fact about the car without **"at 10 Hz"** beside it. A further **7 numbers change sign** across the sweep — near-equal candidates whose tie the filter breaks, not a magnitude change. Steady-state skidpad numbers are the exception: they move 0.3–0.9%, because a median over a steady window is not something a low-pass touches.
 3. **The columns come from six different methodologies.** A peak, a median over a steady window, and a fitted slope are not the same kind of number; `plots/case_summary.html` carries a case-attribution header row for this reason.
 
 `case_summary.py` **recomputes nothing.** It imports the cases and calls their own analyse/report functions with output suppressed, so the table cannot drift from what the individual scripts print.
@@ -101,7 +101,7 @@ parse → union time grid → per-corner static baseline → shock mm → WHEEL 
 | Motion ratio, rear | **1.038** |
 | Springs | 225 / 200 lbf/in front / rear = 39.40 / 35.03 N/mm |
 | Wheel rates (`k_spring / MR²`) | 27.92 / 32.51 N/mm |
-| Tyre vertical rate | 91.07 N/mm (520 lbf/in), same front and rear |
+| Tyre vertical rate | 122.59 N/mm (**700 lbf/in**), same front and rear — corrected from 520 on 2026-08-06; 520 was a rate for the wrong compound |
 | Anti-roll bar | **none on the 2026 car** — the four springs are the entire roll stiffness |
 
 **Front and rear motion ratios differ, which dictates where the conversion happens:** every corner is converted to wheel travel *before* any roll, pitch or modal arithmetic. Differencing axles on raw shock-pot mm and applying one ratio afterwards is only valid when the ratios match, and they don't. All angles scale linearly with motion ratio.
@@ -116,11 +116,13 @@ angle = atan(wheel_travel_mm / span_mm)      span = track for roll, wheelbase fo
 
 *The one real approximation:* whole-car "avg roll" converts a mean-mm over a mean-track rather than averaging two separately-converted angles. Because `atan` is non-linear and the tracks differ by 50.8 mm, these differ by **0.17–0.19%**. Kept deliberately, so published numbers stay comparable with what has already been shared. Front and rear roll, reported separately, are each exact.
 
-### Suspension- vs ground-referenced
+### Ground-referenced angles
 
-**Every angle these scripts report is suspension-referenced.** A shock pot is bolted between chassis and upright, so both its ends sit *above* the tyre — it can only see chassis roll relative to the line joining the two **wheel centres**.
+**Every angle these scripts report is ground-referenced** — chassis attitude relative to the **road**, with the tyre's own deflection included. Under load transfer the outside tyre squashes and the inside extends, tilting the wheel-centre line against the road, and camber relative to the road is what sets grip. That is why the design side works in this reference: `CFR26.xlsx` row 76 builds roll stiffness from `riderate` (row 55, wheel and tyre in series), so D83 and D153 are ground-referenced, and so is essentially every published FSAE roll gradient.
 
-A design roll gradient normally means chassis roll relative to the **ground**, which also contains the tyre's own deflection: under load transfer the outside tyre squashes and the inside extends, tilting the wheel-centre line against the road. Comparing one against the other is how a completely correct measurement comes to look ~33% too small — which is exactly what happened here.
+**The raw measurement is not.** A shock pot is bolted between chassis and upright, so both its ends sit *above* the tyre — it can only see chassis roll relative to the line joining the two **wheel centres**. Call that suspension-referenced. It is carried beside every headline number (`[susp-ref …]` in the console, a sub-line under each report card) because the spring cross-check below validates *that* figure and you need it to audit the conversion. It is **not** the number to quote.
+
+> **This reversed on 2026-08-06.** These reports used to lead with the suspension-referenced figure, which is how a completely correct measurement came to look ~20% too small against a ground-referenced design target — and, compounded with a stale motion ratio, is what produced the suspension team's *"at least 2× low"* report. Nothing about the measurement changed; the reference the reports lead with did. To convert an older number quoted from this repo, multiply by the table below.
 
 The conversion is **exact** for load-transfer-driven roll and pitch, because the same load increment deflects spring and tyre in series:
 
@@ -134,12 +136,14 @@ Sprung mass, CG height and weight distribution all cancel — **tyre rate is the
 
 | multiplier | value |
 |---|---|
-| Front roll | ×1.307 |
-| Rear roll | ×1.357 |
-| Whole-car roll | ×1.332 (stiffness-weighted) |
-| Pitch | ×1.330 |
+| Front roll | ×1.228 |
+| Rear roll | ×1.265 |
+| Whole-car roll | ×1.247 (stiffness-weighted) |
+| Pitch | ×1.245 |
 
-**Two caveats.** Whole-car roll uses **one stiffness-weighted multiplier** rather than being rebuilt from the two axles — case2's front/rear/avg each come from their own peak search at different instants, so averaging converted peaks combines moments that never coexisted (2.08° against 1.95° the consistent way). And the conversion holds for a peak driven by **load transfer**; a peak driven by a kerb strike is not deflecting the tyre proportionally.
+Since tyre rate is the only input, **the 520 → 700 lbf/in correction moved every one of these**: they were ×1.307 / ×1.357 / ×1.332 / ×1.330 at 520. A stiffer tyre deflects less, so less of the chassis's motion against the road is tyre, so every ground-referenced angle here dropped **6.0–6.8%** on 2026-08-06. The sheet's own predictions dropped with them (D83 1.396 → 1.307 °/g, D153 0.963 → 0.901 °/g), because row 55's ride rate is wheel-in-series-with-tyre — so the **sheet-vs-measured gap is unchanged**. See [the open questions](#open-questions).
+
+**Two caveats.** Whole-car roll uses **one stiffness-weighted multiplier** rather than being rebuilt from the two axles — case2's front/rear/avg each come from their own peak search at different instants, so averaging converted peaks combines moments that never coexisted (~7% high on endurance). And the conversion holds for a peak driven by **load transfer**; a peak driven by a kerb strike is not deflecting the tyre proportionally.
 
 **`case4` per-corner travel is deliberately not converted** — that is real suspension travel, and it is what bump-stop and droop margin are measured in.
 
@@ -259,11 +263,11 @@ Cases 1–4 answer *"how much did the car roll?"* — a property of the **run**,
 
 **Skidpad steady segments are the cleanest estimate and the one to quote:**
 
-| | suspension-ref | ground-ref | R² |
+| | ground-ref (quote this) | suspension-ref | R² |
 |---|---|---|---|
-| Front | 0.858 °/g | 1.121 | 0.992 |
-| Rear | 0.939 °/g | 1.274 | 0.993 |
-| **Whole car** | **0.898 °/g** | **1.196** | 0.995 |
+| Front | 1.053 °/g | 0.858 | 0.992 |
+| Rear | 1.188 °/g | 0.939 | 0.993 |
+| **Whole car** | **1.119 °/g** | **0.898** | 0.995 |
 
 **Pitch gradient** pools both signs of longitudinal G into a single slope per event, so an event's figure is not separable into squat and dive.
 
@@ -273,7 +277,7 @@ Cases 1–4 answer *"how much did the car roll?"* — a property of the **run**,
 K_roll = (k_wf·T_f² + k_wr·T_r²) / 2 = 749 N·m/deg
 ```
 
-The measured 0.898 °/g then implies a sprung-mass × CG-height of **68.6 kg·m** — CG **0.280 m above the roll axis** at 245 kg sprung. Motion ratio enters stiffness as **MR²**, so this check is twice as sensitive to an MR error as the angles are. Every other cross-check available here routes through the same pots and the same motion ratio, so it tests repeatability, not calibration.
+This check validates the **suspension-referenced** slope, since springs alone set that one and no tyre term enters it. The measured 0.898 °/g suspension-referenced then implies a sprung-mass × CG-height of **68.6 kg·m** — CG **0.280 m above the roll axis** at 245 kg sprung. Motion ratio enters stiffness as **MR²**, so this check is twice as sensitive to an MR error as the angles are. Every other cross-check available here routes through the same pots and the same motion ratio, so it tests repeatability, not calibration.
 
 **Fitting choices.** Intercept is **fitted, not forced through zero** — the car is physically level at 0 g, so a large intercept is not a free parameter, it is evidence a baseline is off (measured: 0.002–0.101°, which is the baselining checking out). Step glitches and samples below 2 m/s are excluded. **Transients are kept**: roll lags lateral G, so corner entry and exit trace different paths and the cloud opens into a loop — the width is the information, which is why the scatter is a deliverable. Signs are checked rather than absolute-valued; a positive raw slope means a convention flipped upstream and is reported as an error.
 
@@ -382,7 +386,7 @@ The endurance lap times give lap detection a millisecond-accurate ground truth, 
 - **A cutoff for accel and brake was never explicitly chosen** — they inherit the autocross/endurance constant. Peak pitch moves ~12% across 2→10 Hz.
 - **The cutoff was selected visually**, from `filter_compare.py`'s residual view across 2–20 Hz, with `cutoff_sweep.py` quantifying how far each headline number moved. No automated criterion was applied. That is defensible — it reports the sensitivity rather than asserting optimality — but it is a judgement call, and re-running the sweep is the way to revisit it.
 - **Motion ratio is a single value per axle.** If it varies meaningfully with travel, a curve would be more accurate.
-- **Why measured pitch sits 1.34× below the design sheet.** `CFR26.xlsx` D145/D146 (anti-squat/anti-lift, anti-dive) are **0 — typed constants, not formulas**, so the sheet derives them from no geometry and cannot confirm its own assumption. Team recollection is that 0 was the design intent, which is a normal FSAE choice. They are still *live* inputs: they feed the elastic load transfer and so the predicted pitch (0.963 °/g at 0% anti, reproduced exactly from the sheet's own cells). Two readings fit the telemetry, and the sheet cannot distinguish them:
+- **Why measured pitch sits 1.34× below the design sheet.** `CFR26.xlsx` D145/D146 (anti-squat/anti-lift, anti-dive) are **0 — typed constants, not formulas**, so the sheet derives them from no geometry and cannot confirm its own assumption. Team recollection is that 0 was the design intent, which is a normal FSAE choice. They are still *live* inputs: they feed the elastic load transfer and so the predicted pitch (**0.901 °/g** at 0% anti, D153 after the tyre-rate correction; reproduced exactly from the sheet's own cells). Two readings fit the telemetry, and the sheet cannot distinguish them:
   - **Roll shows a 1.167× gap where no anti term exists anywhere in the chain**, so ~17% of the discrepancy is common to both axes and is *not* about anti geometry. Removing it leaves pitch-specific **1.147×**, which **~14% real anti-dive/anti-lift** would account for — plausible as as-built geometry even when 0 was drawn.
   - If the car genuinely has 0% anti, that 1.147× needs another cause.
 
@@ -399,7 +403,9 @@ The endurance lap times give lap detection a millisecond-accurate ground truth, 
 
   **Worth measuring all four corners, not just the fronts.** Hand-placed tabs are unlikely to be off symmetrically, and there are two unexplained left/right observations already on record — the rear's 16–22% roll asymmetry that the front does not show (problem 6), and `FR` being worst-loaded in 8 of 11 files. Different mechanism (anti is side-view, roll asymmetry is front-view), so this is a hypothesis rather than a finding, but one measurement session tests both.
 
-  **Settling it needs as-built pickup coordinates measured against CAD**, not more telemetry. The common 1.167× factor across both axes is the bigger question and is unexplained — tyre rate is the only input to the suspension→ground conversion and also feeds the sheet's own ride rate, so it is the first thing to check.
+  **Settling it needs as-built pickup coordinates measured against CAD**, not more telemetry. The common 1.167× factor across both axes is the bigger question and is unexplained.
+
+  **Tyre rate is not the explanation, and this has now been tested in anger.** The 520 → 700 lbf/in correction on 2026-08-06 moved every ground-referenced number by ~6.4% and moved the sheet's own D83/D153 by the same amount in the same direction — leaving both ratios *identical to four decimals* (roll 1.167×, pitch 1.338×). The tyre term cancels exactly: the sheet builds roll stiffness from **ride** rates while the measurement's ground-referencing multiplies by wheel/ride. Look at wheel rates (spring rate or motion ratio), track, or the measured suspension-referenced slope instead.
 - **Why the front pots sat at their extension limit** on two autocross runs and not the neighbouring ones — telemetry can localise it but not diagnose the hardware.
 - **Front vs rear roll disagreement** (problem 6) — chassis torsional flex or front pot calibration, unresolved.
 - **Data in the repo** is deferred, not refused. Telemetry compresses ~10× (405 MB → ~40 MB), so Git LFS is viable; the `.csv.gz` route needs a ~3-line change in `parse_influx.py`, which is Andrew's file — ask, don't edit.

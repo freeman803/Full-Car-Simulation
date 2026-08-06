@@ -129,7 +129,7 @@ from case_common import (
     find_braking_windows, BRAKE_PRESSURE_SIGNALS, BRAKE_PRESSURE_MAX_PSI,
     BRAKING_PRESSURE_PSI, BRAKE_PRESSURE_CUTOFF_HZ,
     TRIM_SECONDS, TOP_K_PEAKS,
-    WHEELBASE_MM, mm_to_deg, to_ground_referenced,
+    WHEELBASE_MM, mm_to_deg, to_ground_referenced, promote_ground, susp_note,
     build_raw_vs_filtered, format_peak_shape,
 )
 
@@ -170,10 +170,22 @@ CASE3_EVENTS = ["accel", "brake", "skidpad", "autocross", "endurance"]
 PLOTS_ROOT = os.path.join("plots", "case3_max_pitch")
 
 
-def pitch_mm_to_deg(wheel_mm):
-    """Pitch angle (deg) from a front-minus-rear WHEEL-travel mm difference.
-    Thin wrapper so callers don't repeat the wheelbase."""
+def pitch_mm_to_deg_susp(wheel_mm):
+    """SUSPENSION-referenced pitch (deg) from a front-minus-rear WHEEL-travel
+    mm difference — chassis relative to the wheel-centre line, which is all a
+    shock pot can see. Thin wrapper so callers don't repeat the wheelbase."""
     return mm_to_deg(wheel_mm, WHEELBASE_MM)
+
+
+def pitch_mm_to_deg(wheel_mm):
+    """GROUND-referenced pitch (deg) — the number this case reports.
+
+    Tyre deflection included, so it is comparable with CFR26.xlsx D153 and
+    with any published pitch gradient. Every degree figure printed by this
+    script goes through here; millimetres stay as measured, since mm is real
+    suspension travel and carries no reference ambiguity.
+    """
+    return to_ground_referenced(pitch_mm_to_deg_susp(wheel_mm), "pitch")
 
 
 # ── Parsing / derived signals ────────────────────────────────────────────
@@ -470,8 +482,8 @@ def build_pitch_angle_summary(summaries_by_event, output_path):
     ))
 
     fig.update_layout(
-        title="Max Pitch Angle by Event (deg)",
-        yaxis_title="Pitch angle (deg, magnitude)",
+        title="Max Pitch Angle by Event (deg, ground-referenced)",
+        yaxis_title="Pitch angle vs. ground (deg, magnitude)",
         barmode="group",
     )
     fig.write_html(output_path, include_plotlyjs="cdn")
@@ -480,15 +492,18 @@ def build_pitch_angle_summary(summaries_by_event, output_path):
 # ── Reporting ────────────────────────────────────────────────────────────
 
 
-# Ground-referenced pitch sits ALONGSIDE the measured figure — the shock
-# pots measure suspension-referenced and that stays the primary number.
-# See case_common's suspension-vs-ground note for the conversion and its
-# one caveat (exact for load-transfer-driven pitch, approximate for a peak
-# driven by a kerb strike).
+# GROUND-REFERENCED IS THE HEADLINE: typical_deg/worst_deg hold chassis
+# pitch relative to the ROAD, with the raw suspension-referenced figure kept
+# beside each as "<key>_susp". Callers hand this SUSPENSION-referenced
+# degrees (pitch_mm_to_deg_susp) and it does the promotion — see
+# case_common.promote_ground.
+#
+# One caveat, unchanged: the conversion is exact for load-transfer-driven
+# pitch and only approximate for a peak driven by a kerb strike, which is
+# not deflecting the tyre proportionally.
 def _with_ground(summary):
-    for key in ("typical_deg", "worst_deg"):
-        summary[f"{key}_ground"] = to_ground_referenced(summary.get(key), "pitch")
-    return summary
+    return promote_ground(summary, {"typical_deg": "pitch",
+                                    "worst_deg": "pitch"})
 
 
 def report_baselines(event, results):
@@ -526,8 +541,10 @@ def report_steady(event, results):
     if not all_medians:
         return None
     typical_mm = float(np.median(all_medians))
-    print(f"  Across all files: typical pitch = {typical_mm:+.3f}mm ({pitch_mm_to_deg(typical_mm):+.4f} deg)")
-    return _with_ground({"typical_deg": pitch_mm_to_deg(abs(typical_mm)),
+    print(f"  Across all files: typical pitch = {typical_mm:+.3f}mm "
+          f"({pitch_mm_to_deg(typical_mm):+.4f} deg)"
+          + susp_note(pitch_mm_to_deg_susp(typical_mm), "+.4f"))
+    return _with_ground({"typical_deg": pitch_mm_to_deg_susp(abs(typical_mm)),
                          "worst_deg": None})
 
 
@@ -562,11 +579,12 @@ def report_brake(results):
     print(f"  Single hardest braking pulse: {best_signed:+.3f} mm ({pitch_mm_to_deg(best_signed):+.4f} deg) "
           f"— {os.path.basename(best_r['path'])} @ {best_r['t'][best_idx]:.2f}s"
           + format_peak_shape(np.abs(best_r["pitch_f"]), best_r["t"],
-                              best_idx, " mm"))
+                              best_idx, " mm")
+          + susp_note(pitch_mm_to_deg_susp(best_signed), "+.4f"))
 
     return _with_ground({
-        "typical_deg": pitch_mm_to_deg(avg_mm),
-        "worst_deg": pitch_mm_to_deg(best_abs),
+        "typical_deg": pitch_mm_to_deg_susp(avg_mm),
+        "worst_deg": pitch_mm_to_deg_susp(best_abs),
         "_instants": [{
             "event": "brake", "path": best_r["path"],
             "t": float(best_r["t"][best_idx]),
@@ -605,11 +623,12 @@ def report_transient(event, results):
           f"— {best_fname} @ {best_t:.2f}s (signed: {best_signed:+.3f}mm)"
           # Peaks were found on np.abs(pitch_f), so the shape check is too.
           + format_peak_shape(np.abs(best_r["pitch_f"]), best_r["t"],
-                              best_idx, " mm"))
+                              best_idx, " mm")
+          + susp_note(pitch_mm_to_deg_susp(best_val)))
 
     return _with_ground({
-        "typical_deg": pitch_mm_to_deg(avg_mm),
-        "worst_deg": pitch_mm_to_deg(best_val),
+        "typical_deg": pitch_mm_to_deg_susp(avg_mm),
+        "worst_deg": pitch_mm_to_deg_susp(best_val),
         # Navigation metadata, not a number — underscore-prefixed so
         # case_summary's scalar sweep and the regression snapshot skip it.
         "_instants": [{
@@ -690,6 +709,18 @@ def main():
 
 
 CONVENTIONS = [
+    "<b>Every pitch angle here is GROUND-REFERENCED</b> — chassis pitch "
+    "relative to the road, tyre deflection included, directly comparable to "
+    "<code>CFR26.xlsx</code> D153. <b>Millimetres are not converted</b>: mm "
+    "is real suspension travel and has no reference ambiguity.",
+    "<b>Previously these reports led with the suspension-referenced angle</b> "
+    "(chassis relative to the wheel-centre line — what a shock pot spans). "
+    "Those figures were ~20% <i>lower</i> and were being compared against "
+    "ground-referenced design targets, which made a correct measurement look "
+    "far too small. The raw figure still prints in the console beside each "
+    "headline as <code>[susp-ref …]</code>; the multiplier is 1.245. "
+    "Exact for load-transfer-driven pitch; approximate for a peak driven by "
+    "a kerb strike, which does not deflect the tyre proportionally.",
     "<b>Pitch is front-axle average minus rear-axle average.</b> A HIGHER "
     "mm reading is more EXTENSION on this car, so "
     "<code>pitch &gt; 0 = the orientation seen under ACCELERATION "

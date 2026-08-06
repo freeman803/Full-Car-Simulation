@@ -32,8 +32,10 @@ known data problems that qualify them.
 
 import os
 import io
+import re
 import sys
 import glob
+import html
 import argparse
 import contextlib
 
@@ -143,16 +145,20 @@ def collect_case5(grouped):
         if value is None:
             continue
         # rsplit("_", 1) was correct while every key ended in front/rear/avg;
-        # the "_ground" variants broke it, since all three then collapsed
-        # onto the single key "ground". Strip the known prefix instead.
+        # the reference-variant suffixes broke it, since all three then
+        # collapsed onto one key. Strip the known prefix instead.
+        #
+        # "<which>_susp" keys ride through untouched — they land as
+        # "avg_susp"/"pitch_susp" and nothing in the table reads them, which
+        # is intentional: the table shows the ground-referenced figure only.
         if key.startswith("skidpad_steady_roll_"):
             which = key[len("skidpad_steady_roll_"):]
             out.setdefault("skidpad", {})[which] = value
         elif "_roll_" in key:
             event, which = key.split("_roll_")
             out.setdefault(event, {}).setdefault(which, value)
-        elif key.endswith("_pitch_ground"):
-            out.setdefault(key[:-len("_pitch_ground")], {})["pitch_ground"] = value
+        elif key.endswith("_pitch_susp"):
+            out.setdefault(key[:-len("_pitch_susp")], {})["pitch_susp"] = value
         elif key.endswith("_pitch"):
             out.setdefault(key[:-6], {})["pitch"] = value
     return out
@@ -189,11 +195,11 @@ HEADERS = [
     "Sustained lat G",
     "Peak lat G",
     "Peak lon G",
-    "Roll (deg) sus→gnd",
-    "Pitch (deg) sus→gnd",
+    "Roll (deg)",
+    "Pitch (deg)",
     "Worst corner travel",
-    "Roll grad sus→gnd",
-    "Pitch grad sus→gnd",
+    "Roll grad (deg/g)",
+    "Pitch grad (deg/g)",
     "Peak yaw (deg/s)",
 ]
 
@@ -241,14 +247,17 @@ def build_rows(s1, s2, s3, s4, s5=None, s6=None):
                 sustained = f"{lo:.2f}–{hi:.2f} g" if abs(hi - lo) > 5e-3 else f"{lo:.2f} g"
             peak_lat, peak_lon = a.get("peak_lat_g"), a.get("peak_lon_g")
 
+        # Angles are GROUND-referenced throughout — the cases put that figure
+        # in the primary key, so this table gets it without asking. The
+        # suspension-referenced twin lives at "<key>_susp" and is deliberately
+        # NOT shown here: this table's job is the one number to quote, and
+        # printing both side by side in a nine-column grid is how the wrong
+        # one got quoted. Each case's own report page carries both.
+
         # case2 reports front/rear/avg; the avg is the whole-car headline.
         roll = None
-        if b:
-            roll_val, roll_gnd = b.get("avg_deg"), b.get("avg_deg_ground")
-            if roll_val is not None:
-                roll = f"{abs(roll_val):.2f}"
-                if roll_gnd is not None:
-                    roll += f"→{abs(roll_gnd):.2f}"
+        if b and b.get("avg_deg") is not None:
+            roll = f"{abs(b['avg_deg']):.2f}"
 
         # case3 reports typical (sustained or top-5 avg) and worst.
         pitch = None
@@ -256,13 +265,8 @@ def build_rows(s1, s2, s3, s4, s5=None, s6=None):
             typ, worst = c.get("typical_deg"), c.get("worst_deg")
             if worst is not None:
                 pitch = f"{worst:.2f}"
-                if c.get("worst_deg_ground") is not None:
-                    pitch += f"→{c['worst_deg_ground']:.2f}"
             elif typ is not None:
-                pitch = f"{typ:.2f}"        # * = sustained, no separate peak
-                if c.get("typical_deg_ground") is not None:
-                    pitch += f"→{c['typical_deg_ground']:.2f}"
-                pitch += "*"
+                pitch = f"{typ:.2f}*"       # * = sustained, no separate peak
 
         travel = None
         if d:
@@ -281,14 +285,10 @@ def build_rows(s1, s2, s3, s4, s5=None, s6=None):
         gradient = None
         if e and e.get("avg") is not None:
             gradient = f"{abs(e['avg']):.3f}"
-            if e.get("avg_ground") is not None:
-                gradient += f"→{abs(e['avg_ground']):.3f}"
 
         pitch_gradient = None
         if e and e.get("pitch") is not None:
             pitch_gradient = f"{abs(e['pitch']):.3f}"
-            if e.get("pitch_ground") is not None:
-                pitch_gradient += f"→{abs(e['pitch_ground']):.3f}"
 
         rows.append([
             event.upper(),
@@ -353,10 +353,21 @@ def write_markdown(rows, path):
 
 
 FOOTNOTES_MD = """
-→ = ground-referenced (chassis roll/pitch relative to the ROAD, i.e. with
-tyre deflection added). The first figure is suspension-referenced — what the
-shock pots actually measure, and the primary number. Design targets are
-usually ground-referenced; see the README before comparing against one.
+**All roll and pitch figures here are GROUND-REFERENCED** — chassis attitude
+relative to the ROAD, with tyre deflection included. That is the reference a
+design roll gradient means, the one `CFR26.xlsx` predicts in (D83 1.307 °/g
+roll, D153 0.901 °/g pitch), and the one published FSAE gradients are quoted
+in, so these numbers can be compared against a target directly.
+
+*Side note on the change.* Until 2026-08-06 this table led with the
+**suspension-referenced** figure — chassis relative to the wheel-centre line,
+which is literally what a shock pot spans, since both its ends sit above the
+tyre. Those numbers were ~19% lower on roll and ~20% on pitch, purely because
+they left the tyre's own deflection out; nothing about the measurement has
+changed. Leading with them meant every published angle was being compared
+against a ground-referenced target, which is how a completely correct
+measurement came to look far too small. The suspension-referenced figure is
+still carried on each case's own report page, under the headline number.
 
 `*` = sustained value (median over the steady window); that event has no
 separate peak by design.
@@ -413,6 +424,37 @@ HTML_HEAD = """<style>
 """
 
 
+# FOOTNOTES_MD is authored as Markdown because write_markdown emits it
+# verbatim. The HTML page was dropping it into <p> unconverted, so readers of
+# case_summary.html saw literal "**...**" and backticks. Only the three inline
+# forms the footnotes actually use are handled — this is a formatter for one
+# known string, not a Markdown implementation.
+#
+# Code spans are extracted FIRST and restored last, so a `*` inside backticks
+# (the sustained-value marker, which is exactly that) is never mistaken for an
+# emphasis delimiter. Bold before italic, since ** would otherwise match as
+# two nested *.
+_MD_CODE = re.compile(r"`([^`]+)`")
+_MD_BOLD = re.compile(r"\*\*([^*]+)\*\*")
+_MD_ITALIC = re.compile(r"(?<!\*)\*([^*]+)\*(?!\*)")
+
+
+def _inline_md(text):
+    spans = []
+
+    def stash(match):
+        spans.append(match.group(1))
+        return f"\x00{len(spans) - 1}\x00"
+
+    text = _MD_CODE.sub(stash, text)
+    text = html.escape(text)
+    text = _MD_BOLD.sub(r"<strong>\1</strong>", text)
+    text = _MD_ITALIC.sub(r"<em>\1</em>", text)
+    for i, code in enumerate(spans):
+        text = text.replace(f"\x00{i}\x00", f"<code>{html.escape(code)}</code>")
+    return text
+
+
 def write_html(rows, path):
     with open(path, "w", encoding="utf-8") as fh:
         fh.write("<!doctype html><meta charset='utf-8'>"
@@ -444,7 +486,7 @@ def write_html(rows, path):
         fh.write("</table></div>")
         fh.write("<div class='notes'>")
         for para in FOOTNOTES_MD.strip().split("\n\n"):
-            fh.write(f"<p>{para}</p>")
+            fh.write(f"<p>{_inline_md(para)}</p>")
         fh.write("</div>")
 
 
@@ -487,8 +529,12 @@ def main():
     write_html(rows, html_path)
 
     print(f"\n  * = sustained value (no separate peak by design)")
-    print(f"  → = ground-referenced (tyre deflection added); the first "
-          f"figure is suspension-referenced and is the primary one")
+    print(f"  Roll/pitch angles and gradients are GROUND-referenced (tyre "
+          f"deflection included),")
+    print(f"  which is the reference design targets use. The "
+          f"suspension-referenced figure the")
+    print(f"  shock pots see is ~19-20% lower and is on each case's own "
+          f"report page.")
     print(f"  Saved: {md_path}")
     print(f"  Saved: {html_path}")
     print("\nSee data-analysis/README.md for methodology and known data problems.")

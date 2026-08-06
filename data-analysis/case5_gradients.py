@@ -23,16 +23,25 @@ exact same numbers those cases report — same filtering, same baselining,
 same motion-ratio conversion, same sign conventions. If a case changes
 methodology this follows automatically.
 
+REFERENCE. Gradients are reported GROUND-referenced — chassis attitude
+against the ROAD, tyre deflection included — because that is what a design
+gradient means and what CFR26.xlsx D83/D153 predict. The raw fitted slope
+is suspension-referenced (all a shock pot can see) and is carried beside
+each headline as [susp-ref ...]. See case_common's reference note.
+
 VALIDATED AGAINST THE SPRINGS, which is the only check here that does not
-route through the shock pots. With no ARB the four springs (225 lbf/in
-front, 200 rear) make the entire roll stiffness: wheel rates 27.92 / 32.51
-N/mm give 749 N*m/deg, and the measured 0.898 deg/g implies a sprung-mass x
-CG-height of 68.6 kg*m (CG 0.280 m above the roll axis at 245 kg sprung) —
-a real FSAE number. Note MR enters stiffness as MR^2, so this is twice as
-sensitive to a motion-ratio error as the angles are.
+route through the shock pots. It validates the SUSPENSION-referenced slope,
+since springs alone set that one and no tyre term enters. With no ARB the
+four springs (225 lbf/in front, 200 rear) make the entire roll stiffness:
+wheel rates 27.92 / 32.51 N/mm give 749 N*m/deg, and the measured 0.898
+deg/g suspension-referenced implies a sprung-mass x CG-height of 68.6 kg*m
+(CG 0.280 m above the roll axis at 245 kg sprung) — a real FSAE number.
+Note MR enters stiffness as MR^2, so this is twice as sensitive to a
+motion-ratio error as the angles are.
 
 A "should be at least 2x higher" expectation is ruled out by the same
-arithmetic: 1.80 deg/g would need a CG 0.560 m above the roll axis.
+arithmetic: 1.80 deg/g suspension-referenced would need a CG 0.560 m above
+the roll axis.
 
 An earlier note here cited a "0.83-0.94 deg/g hand-derived estimate from
 four independent estimates" as corroboration. Its derivation appears
@@ -92,7 +101,7 @@ from case_common import (
     baseline_corner_displacements, to_wheel_travel, lowpass,
     mm_to_deg, FRONT_TRACK_MM, REAR_TRACK_MM, AVG_TRACK_MM, WHEELBASE_MM,
     CORNERS, CORNER_SIGNAL_NAMES, TRIM_SECONDS, is_suspect,
-    to_ground_referenced,
+    to_ground_referenced, susp_note, SUSP_SUFFIX, GROUND_MULT,
     GROUND_MULT_ROLL_FRONT, GROUND_MULT_ROLL_REAR, GROUND_MULT_PITCH,
     TYRE_RATE_N_MM,
 )
@@ -286,11 +295,16 @@ def fit_magnitude(fit):
 
 
 def ground_values(pooled):
-    """{which: ground-referenced gradient} for a {which: fit} dict.
+    """{which: GROUND-referenced gradient} for a {which: fit} dict.
 
-    The whole-car "avg" is built from the two AXLE figures with their own
-    multipliers rather than by scaling the suspension-referenced avg — see
-    case_common.ground_referenced_avg().
+    These are the headline numbers of this case — deg/g of chassis attitude
+    against the ROAD, which is what a design roll or pitch gradient means and
+    what CFR26.xlsx D83/D153 predict. The suspension-referenced slope the fit
+    actually produced is reported beside each as a labelled secondary.
+
+    Each axle carries its own multiplier; the whole-car "avg" carries one
+    stiffness-weighted multiplier rather than being rebuilt from the axles —
+    see case_common's reference note for why.
     """
     out = {}
     if "pitch" in pooled:
@@ -300,6 +314,19 @@ def ground_values(pooled):
     out["rear"] = to_ground_referenced(rear, "rear")
     out["avg"] = to_ground_referenced(fit_magnitude(pooled.get("avg")), "avg")
     return out
+
+
+def emit_gradient(out, key, fit, which):
+    """Write one gradient into the flat summary, GROUND-referenced first.
+
+    `key` holds the ground-referenced figure — the headline — and
+    `key + "_susp"` the raw fitted slope. Both are written even when the fit
+    is None, so a missing gradient stays a visible None rather than a key
+    that silently isn't there.
+    """
+    susp = fit_magnitude(fit)
+    out[key] = to_ground_referenced(susp, which)
+    out[key + SUSP_SUFFIX] = susp
 
 
 def report_fit(label, fit, expect_negative=True, ground=None):
@@ -316,11 +343,14 @@ def report_fit(label, fit, expect_negative=True, ground=None):
     sign_ok = (slope < 0) if expect_negative else (slope > 0)
     flag = "" if sign_ok else "   [!] SIGN UNEXPECTED — convention may have flipped"
 
-    # Ground-referenced sits NEXT TO the measured figure, never instead of
-    # it — the sensors measure suspension-referenced and that stays primary.
-    ground_txt = f"  [ground-ref {ground:.3f}]" if ground is not None else ""
+    # The GROUND-referenced gradient leads; the raw slope the fit produced
+    # follows as a labelled secondary. R², n, G range and intercept all
+    # belong to the fit and are reference-independent — the conversion is a
+    # constant multiplier, so it cannot change the quality of the fit.
+    headline = ground if ground is not None else magnitude
+    susp_txt = susp_note(magnitude, ".3f", " deg/g") if ground is not None else ""
 
-    print(f"    {label:<22}{magnitude:6.3f} deg/g{ground_txt}   "
+    print(f"    {label:<22}{headline:6.3f} deg/g{susp_txt}   "
           f"R²={fit['r2']:.3f}  n={fit['n']:,}  "
           f"G range {fit['g_range']:.2f}  "
           f"intercept {fit['intercept']:+.3f} deg{flag}")
@@ -331,33 +361,44 @@ def report_fit(label, fit, expect_negative=True, ground=None):
 def build_scatter(fits, title, xlabel, output_path):
     """Roll/pitch against G, with the fitted line. The CLOUD is the point:
     a tight line means the relationship is linear and lag-free; an open
-    loop is hysteresis through transients."""
+    loop is hysteresis through transients.
+
+    Angles are plotted GROUND-referenced, so the slope in the legend is the
+    same number the console and the summary table quote. The fits are keyed
+    "front"/"rear"/"avg"/"pitch", which are exactly GROUND_MULT's keys.
+    Scaling is a constant per trace, so the shape of the cloud, the R² and
+    the hysteresis loop are all untouched — only the y axis changes.
+    """
     fig = go.Figure()
 
     for label, fit in fits.items():
         if fit is None:
             continue
 
+        mult = GROUND_MULT.get(label, 1.0)
+
         # Thin dense clouds so the plot stays interactive; the fit itself
         # always uses every sample.
         stride = max(1, fit["n"] // 4000)
 
         fig.add_trace(go.Scattergl(
-            x=fit["g"][::stride], y=fit["angle"][::stride],
+            x=fit["g"][::stride], y=fit["angle"][::stride] * mult,
             mode="markers", name=f"{label} (data)",
             marker=dict(size=3, opacity=0.25, color=COLORS.get(label, "#888")),
         ))
 
         xs = np.array([fit["g"].min(), fit["g"].max()])
         fig.add_trace(go.Scatter(
-            x=xs, y=fit["slope"] * xs + fit["intercept"],
+            x=xs, y=(fit["slope"] * xs + fit["intercept"]) * mult,
             mode="lines",
-            name=f"{label}: {abs(fit['slope']):.3f} deg/g (R²={fit['r2']:.2f})",
+            name=f"{label}: {abs(fit['slope']) * mult:.3f} deg/g "
+                 f"(R²={fit['r2']:.2f})",
             line=dict(color=COLORS.get(label, "#888"), width=2.5),
         ))
 
     fig.update_layout(
-        title=title, xaxis_title=xlabel, yaxis_title="angle (deg)",
+        title=title, xaxis_title=xlabel,
+        yaxis_title="angle vs. ground (deg)",
         template="plotly_white", hovermode="closest",
     )
 
@@ -392,14 +433,12 @@ def summary_only(grouped):
             use = usable_series(series, which)
             if not use:
                 fits[which] = None
-                out[f"{event}_roll_{which}"] = None
+                emit_gradient(out, f"{event}_roll_{which}", None, which)
                 continue
             g = np.concatenate([s["lat"][s["keep"]] for s in use])
             a = np.concatenate([s[which][s["keep"]] for s in use])
             fits[which] = fit_gradient(g, a)
-            out[f"{event}_roll_{which}"] = fit_magnitude(fits[which])
-        for which, val in ground_values(fits).items():
-            out[f"{event}_roll_{which}_ground"] = val
+            emit_gradient(out, f"{event}_roll_{which}", fits[which], which)
 
         # Skidpad's steady-segment fit is the cleanest estimate and the one
         # the summary table should show.
@@ -411,9 +450,8 @@ def summary_only(grouped):
                 g = np.concatenate([s["lat"][m] for s, m in zip(use, masks)])
                 a = np.concatenate([s[which][m] for s, m in zip(use, masks)])
                 sfits[which] = fit_gradient(g, a)
-                out[f"skidpad_steady_roll_{which}"] = fit_magnitude(sfits[which])
-            for which, val in ground_values(sfits).items():
-                out[f"skidpad_steady_roll_{which}_ground"] = val
+                emit_gradient(out, f"skidpad_steady_roll_{which}",
+                              sfits[which], which)
 
     for event in PITCH_EVENTS:
         paths = grouped.get(event, [])
@@ -427,13 +465,11 @@ def summary_only(grouped):
 
         use = usable_series(series, "pitch")
         if not use:
-            out[f"{event}_pitch"] = None
+            emit_gradient(out, f"{event}_pitch", None, "pitch")
             continue
         g = np.concatenate([s["lon"][s["keep"]] for s in use])
         a = np.concatenate([s["pitch"][s["keep"]] for s in use])
-        fit = fit_gradient(g, a)
-        out[f"{event}_pitch"] = fit_magnitude(fit)
-        out[f"{event}_pitch_ground"] = to_ground_referenced(fit_magnitude(fit), "pitch")
+        emit_gradient(out, f"{event}_pitch", fit_gradient(g, a), "pitch")
 
     return out
 
@@ -452,10 +488,15 @@ def main():
     grouped = group_by_event(paths)
 
     print("\n" + "=" * 78)
-    print("CASE 5 — ROLL AND PITCH GRADIENTS (deg/g)")
+    print("CASE 5 — ROLL AND PITCH GRADIENTS (deg/g, GROUND-REFERENCED)")
     print("=" * 78)
+    print("Headline figures include tyre deflection (chassis vs. ROAD), which "
+          "is the reference")
+    print("design targets use. [susp-ref ...] is the raw fitted slope the "
+          "shock pots see.")
     print("Roll stiffness from the springs (225/200 lbf/in, no ARB): "
-          "749 N*m/deg -> 0.898 deg/g at CG 0.280 m above the roll axis")
+          "749 N*m/deg -> 0.898 deg/g susp-ref at CG 0.280 m above the roll "
+          "axis")
 
     summary = {}
 
@@ -491,9 +532,9 @@ def main():
 
         pooled_ground = ground_values(pooled)
         for which in ("front", "rear", "avg"):
-            summary[f"{event}_roll_{which}"] = report_fit(
-                which, pooled[which], ground=pooled_ground.get(which))
-            summary[f"{event}_roll_{which}_ground"] = pooled_ground.get(which)
+            report_fit(which, pooled[which], ground=pooled_ground.get(which))
+            emit_gradient(summary, f"{event}_roll_{which}",
+                          pooled[which], which)
 
         # PER-FILE, ALWAYS. A pooled gradient is only meaningful if every
         # file came off the same car. On autocross they did not: two of the
@@ -618,9 +659,10 @@ def main():
                 steady[which] = fit_gradient(g, a)
             steady_ground = ground_values(steady)
             for which in ("front", "rear", "avg"):
-                summary[f"skidpad_steady_roll_{which}"] = report_fit(
-                    which, steady[which], ground=steady_ground.get(which))
-                summary[f"skidpad_steady_roll_{which}_ground"] = steady_ground.get(which)
+                report_fit(which, steady[which],
+                           ground=steady_ground.get(which))
+                emit_gradient(summary, f"skidpad_steady_roll_{which}",
+                              steady[which], which)
 
             build_scatter(
                 steady, "Roll gradient — skidpad, steady segments only",
@@ -660,9 +702,9 @@ def main():
         # car's convention is negative pitch_mm — so the same negative slope
         # as roll. Verified, not assumed: case3 established the convention
         # against vehicle speed.
-        pitch_ground = to_ground_referenced(fit_magnitude(fit), "pitch")
-        summary[f"{event}_pitch"] = report_fit("pitch", fit, ground=pitch_ground)
-        summary[f"{event}_pitch_ground"] = pitch_ground
+        report_fit("pitch", fit,
+                   ground=to_ground_referenced(fit_magnitude(fit), "pitch"))
+        emit_gradient(summary, f"{event}_pitch", fit, "pitch")
 
         build_scatter(
             {"pitch": fit}, f"Pitch gradient — {event}", "longitudinal G (g)",
@@ -677,8 +719,37 @@ def main():
     return summary
 
 
+CONVENTIONS = [
+    "<b>Every gradient here is GROUND-REFERENCED</b> — deg of chassis "
+    "attitude per g, measured against the ROAD with tyre deflection "
+    "included. That is what a design gradient means, so these compare "
+    "directly against <code>CFR26.xlsx</code> D83 (1.307 °/g roll) and D153 "
+    "(0.901 °/g pitch).",
+    "<b>Previously this page led with the raw fitted slope</b>, which is "
+    "suspension-referenced — chassis against the wheel-centre line, all a "
+    "shock pot spans. It is ~19% lower on roll and ~20% on pitch, and "
+    "comparing it against a ground-referenced target is what made the "
+    "measurement look far too small. It is still printed beside each "
+    "headline as <code>[susp-ref …]</code>, because the spring check below "
+    "validates <i>that</i> figure and you need it to audit the conversion.",
+    "<b>R², n, G range and intercept belong to the fit and are "
+    "reference-independent</b> — the conversion is a constant multiplier, so "
+    "it cannot change how good the fit is. The scatter plots are drawn in "
+    "the same ground reference as the slope.",
+    "The <b>scatter is as much the result as the slope</b>. A tight line "
+    "means the relationship is linear and lag-free; an open loop is "
+    "hysteresis through transients, which is kept rather than filtered out.",
+]
+
+
 if __name__ == "__main__":
     with report_page("case5_gradients", "Case 5 — Roll and Pitch Gradient",
                      PLOTS_ROOT) as page:
+        # Every number this case produces is a gradient, and none of its
+        # summary keys carry a unit token ("roll_avg", "pitch"), so the
+        # cards need telling.
+        page.default_unit = "°/g"
         page.summary = main()
+        for text in CONVENTIONS:
+            page.add_convention(text)
     write_index()

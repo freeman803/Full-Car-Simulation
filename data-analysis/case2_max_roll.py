@@ -104,7 +104,7 @@ from case_common import (
     MOTION_RATIO_FRONT, MOTION_RATIO_REAR,
     TRIM_SECONDS, TOP_K_PEAKS,
     FRONT_TRACK_MM, REAR_TRACK_MM, mm_to_deg,
-    to_ground_referenced,
+    to_ground_referenced, promote_ground, susp_note,
     build_raw_vs_filtered, thin_scatter, PLOT_TEMPLATE, format_peak_shape,
     titled,
 )
@@ -407,8 +407,8 @@ def build_roll_angle_summary(summaries_by_event, output_path):
         ))
 
     fig.update_layout(
-        title="Max Roll Angle by Event (deg)",
-        yaxis_title="Roll angle (deg)",
+        title="Max Roll Angle by Event (deg, ground-referenced)",
+        yaxis_title="Roll angle vs. ground (deg)",
         barmode="group",
     )
     fig.write_html(output_path, include_plotlyjs="cdn")
@@ -417,17 +417,25 @@ def build_roll_angle_summary(summaries_by_event, output_path):
 # ── Reporting ────────────────────────────────────────────────────────────
 
 
-# Ground-referenced roll sits ALONGSIDE the measured figure, never instead
-# of it — the shock pots measure suspension-referenced and that stays
-# primary. The whole-car "avg" is rebuilt from the two AXLE angles with
-# their own multipliers rather than scaled from the suspension avg, because
-# front and rear differ (1.307 vs 1.357). See case_common.
+# GROUND-REFERENCED IS THE HEADLINE. front_deg/rear_deg/avg_deg hold chassis
+# roll relative to the ROAD; the raw suspension-referenced figure the shock
+# pots see is kept beside each one as "<key>_susp". Front and rear carry
+# their own multipliers (1.228 vs 1.265) and the whole-car avg a
+# stiffness-weighted one — see case_common's reference note.
 def _with_ground(summary):
-    front, rear = summary.get("front_deg"), summary.get("rear_deg")
-    summary["front_deg_ground"] = to_ground_referenced(front, "front")
-    summary["rear_deg_ground"] = to_ground_referenced(rear, "rear")
-    summary["avg_deg_ground"] = to_ground_referenced(summary.get("avg_deg"), "avg")
-    return summary
+    return promote_ground(summary, {"front_deg": "front",
+                                    "rear_deg": "rear",
+                                    "avg_deg": "avg"})
+
+
+def roll_deg(wheel_mm, track_mm, which):
+    """Roll travel (mm) -> GROUND-referenced roll angle (deg).
+
+    Every degree figure this script prints goes through here, so the console
+    and the headline cards are in one reference. Millimetres are left alone:
+    mm is real suspension travel and has no reference ambiguity.
+    """
+    return to_ground_referenced(mm_to_deg(wheel_mm, track_mm), which)
 
 
 def report_skidpad(results):
@@ -447,8 +455,8 @@ def report_skidpad(results):
             print(f"  {fname} — {direction} ({len(info['runs'])} run(s) found):")
             run_fronts, run_rears, run_texts = [], [], []
             for i, run in enumerate(info["runs"], 1):
-                front_deg = mm_to_deg(run["median_front_mm"], FRONT_TRACK_MM)
-                rear_deg = mm_to_deg(run["median_rear_mm"], REAR_TRACK_MM)
+                front_deg = roll_deg(run["median_front_mm"], FRONT_TRACK_MM, "front")
+                rear_deg = roll_deg(run["median_rear_mm"], REAR_TRACK_MM, "rear")
                 print(f"    Run {i}: front={run['median_front_mm']:+.3f}mm ({front_deg:+.4f} deg), "
                       f"rear={run['median_rear_mm']:+.3f}mm ({rear_deg:+.4f} deg) "
                       f"({run['start_s']:.1f}s-{run['end_s']:.1f}s, dur={run['duration_s']:.1f}s after trimming)")
@@ -456,12 +464,14 @@ def report_skidpad(results):
                 run_rears.append(run["median_rear_mm"])
                 run_texts.append(f"{fname} {direction} run {i}")
             avg_track = (FRONT_TRACK_MM + REAR_TRACK_MM) / 2.0
-            avg_deg = mm_to_deg(info["combined_median_avg_mm"], avg_track)
+            avg_deg = roll_deg(info["combined_median_avg_mm"], avg_track, "avg")
             print(f"    Combined (all runs pooled): front={info['combined_median_front_mm']:+.3f}mm "
-                  f"({mm_to_deg(info['combined_median_front_mm'], FRONT_TRACK_MM):+.4f} deg), "
+                  f"({roll_deg(info['combined_median_front_mm'], FRONT_TRACK_MM, 'front'):+.4f} deg), "
                   f"rear={info['combined_median_rear_mm']:+.3f}mm "
-                  f"({mm_to_deg(info['combined_median_rear_mm'], REAR_TRACK_MM):+.4f} deg), "
-                  f"avg={info['combined_median_avg_mm']:+.3f}mm ({avg_deg:+.4f} deg)")
+                  f"({roll_deg(info['combined_median_rear_mm'], REAR_TRACK_MM, 'rear'):+.4f} deg), "
+                  f"avg={info['combined_median_avg_mm']:+.3f}mm ({avg_deg:+.4f} deg)"
+                  + susp_note(mm_to_deg(info["combined_median_avg_mm"], avg_track),
+                              "+.4f"))
 
             max_front_mm = max(max_front_mm, abs(info["combined_median_front_mm"]))
             max_rear_mm = max(max_rear_mm, abs(info["combined_median_rear_mm"]))
@@ -504,11 +514,13 @@ def report_transient(event, results):
     summary = {}
     instants = []        # deep-link targets for the report page
 
-    for label, key, track_mm, color, summary_key, sig_key in [
-        ("Front roll", "front_peaks", FRONT_TRACK_MM, "red", "front_deg", "roll_front_f"),
-        ("Rear roll", "rear_peaks", REAR_TRACK_MM, "blue", "rear_deg", "roll_rear_f"),
+    for label, key, track_mm, color, summary_key, sig_key, which in [
+        ("Front roll", "front_peaks", FRONT_TRACK_MM, "red", "front_deg",
+         "roll_front_f", "front"),
+        ("Rear roll", "rear_peaks", REAR_TRACK_MM, "blue", "rear_deg",
+         "roll_rear_f", "rear"),
         ("Avg roll", "avg_peaks", (FRONT_TRACK_MM + REAR_TRACK_MM) / 2.0, "green",
-         "avg_deg", "roll_avg_f"),
+         "avg_deg", "roll_avg_f", "avg"),
     ]:
         pool = pooled(key)
         if not pool:
@@ -524,20 +536,23 @@ def report_transient(event, results):
         best_rear = best_r["roll_rear_f"][best_idx]
 
         print(f"  {label}:")
-        print(f"    Top {len(top)} peaks averaged: {avg_mm:.3f} mm ({mm_to_deg(avg_mm, track_mm):.4f} deg) "
+        print(f"    Top {len(top)} peaks averaged: {avg_mm:.3f} mm "
+              f"({roll_deg(avg_mm, track_mm, which):.4f} deg) "
               f"(values: {', '.join(f'{v:.2f}' for v, _, _ in top)})")
-        print(f"    Single highest peak: {best_val:.3f} mm ({mm_to_deg(best_val, track_mm):.4f} deg) "
+        print(f"    Single highest peak: {best_val:.3f} mm "
+              f"({roll_deg(best_val, track_mm, which):.4f} deg) "
               f"— {best_fname} @ {best_t:.2f}s"
               # Peaks were found on np.abs(...), so the shape check is too.
               + format_peak_shape(np.abs(best_r[sig_key]), best_r["t"],
-                                  best_idx, " mm"))
+                                  best_idx, " mm")
+              + susp_note(mm_to_deg(best_val, track_mm)))
         print(f"    At that instant: front={best_front:+.3f}mm, rear={best_rear:+.3f}mm")
 
         summary[summary_key] = mm_to_deg(best_val, track_mm)
         instants.append({
             "event": event, "path": best_r["path"], "t": float(best_t),
             "label": f"peak {label.lower()} — "
-                     f"{mm_to_deg(best_val, track_mm):.3f}°",
+                     f"{roll_deg(best_val, track_mm, which):.3f}°",
             "detail": f"front {best_front:+.2f}mm, rear {best_rear:+.2f}mm",
         })
 
@@ -632,6 +647,20 @@ def main():
 
 
 CONVENTIONS = [
+    "<b>Every roll angle here is GROUND-REFERENCED</b> — chassis roll "
+    "relative to the road, tyre deflection included. That is the reference "
+    "design targets and published FSAE gradients use, so these numbers are "
+    "directly comparable to <code>CFR26.xlsx</code> D83. "
+    "<b>Millimetres are not converted</b>: mm is real suspension travel and "
+    "has no reference ambiguity.",
+    "<b>Previously these reports led with the suspension-referenced angle</b> "
+    "(chassis relative to the wheel-centre line — literally what a shock pot "
+    "spans, since both its ends sit above the tyre). Those figures were "
+    "~19% <i>lower</i>, and comparing them against a ground-referenced design "
+    "target is how a correct measurement came to look far too small. The raw "
+    "figure is still printed in the console beside each headline as "
+    "<code>[susp-ref …]</code>; multiply by 1.228 front / 1.265 rear / 1.247 "
+    "whole-car to get back to what is shown here.",
     "<b>Roll is right-side travel minus left-side travel</b>, and a HIGHER "
     "mm reading is more EXTENSION on this car. So "
     "<code>roll &gt; 0 = right side extended, LEFT side compressed</code> — "
