@@ -1,0 +1,2075 @@
+
+
+=========================================
+=        VI-Driver/MaxPerformance       =
+=========================================
+  VERSION : 2025.2
+  REVISION: 9b78eed1c5/release/2025.2
+  BUILT ON: lupus/28-May-25
+=========================================
+
+
+
+Initializing VI-CRT Pre Event Simulation...
+
+Event data is being read from input XML file...
+
+Aerodynamic force inactive or non-existent. Skipped.Running CRT Simulation...
+
+Initializing powertrain / driveline...
+Done.
+
+Initializing tires...
+FLAT road model has been initialized...
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+Done.
+
+Solving for static equilibrium...
+
+
+Performing Vehicle Setup...
+ -- WARNING -- One or more setup targets are close to 0: 
+ -- WARNING -- the computed relative setup error could be inaccurate.
+ -- WARNING -- Please check the report file.
+ -- WARNING -- 
+ -- WARNING -- 
+ -- WARNING -- Setup targets have not been achieved 
+ -- WARNING -- within the maximum allowed tolerance:
+ -- WARNING -- ride height   -  (1.00%).
+ -- WARNING -- Maximum error:  (0.00%).
+ -- WARNING -- cross weigth  -  (1.00%).
+ -- WARNING -- Maximum error:  (0.00%).
+ -- WARNING --          pin height    -  (1.00%).
+ -- WARNING --          Maximum error:  (100.00%).
+
+
+
+Setup Completed.
+
+Initializing tires...
+FLAT road model has been initialized...
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+Done.
+
+
+Solving for static equilibrium for data point 1 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.219 (sec).
+Elapsed Clock Time:  0.014 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 2 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 3 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 4 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 5 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 6 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 7 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 8 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 9 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 10 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 11 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 12 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 13 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 14 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 15 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 16 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 17 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 18 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 19 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 20 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.010 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 21 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 22 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 23 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 24 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.010 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 25 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.010 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 26 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 27 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 28 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 29 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.010 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 30 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.010 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 31 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 32 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 33 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.010 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 34 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.010 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 35 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 36 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 37 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 38 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 39 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 40 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 41 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 42 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 43 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 44 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 45 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 46 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 47 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 48 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.014 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 49 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 50 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 51 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 52 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 53 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 54 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 55 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 56 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 57 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 58 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 59 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 60 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 61 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 62 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 63 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 64 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 65 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 66 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 67 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.010 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 68 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.010 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 69 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 70 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 71 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 72 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 73 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 74 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.010 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 75 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.010 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 76 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 77 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 78 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.200 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 79 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.200 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 80 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.200 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 81 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.200 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 82 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.200 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 83 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.200 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 84 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.200 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 85 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.200 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 86 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.201 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 87 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.201 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 88 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.201 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 89 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.201 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 90 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.201 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 91 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.201 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 92 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.201 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 93 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.201 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 94 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.201 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 95 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.200 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 96 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.200 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 97 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.200 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 98 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.200 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 99 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.200 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 100 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.200 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 101 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.200 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 102 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.200 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 103 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.200 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 104 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 105 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 106 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 107 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 108 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.010 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 109 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.010 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 110 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 111 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 112 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 113 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 114 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 115 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 116 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 117 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 118 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 119 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 120 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 121 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 122 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 123 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 124 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 125 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 126 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 127 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 128 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 129 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 130 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 131 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 132 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 133 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 134 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 135 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 136 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 137 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 138 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 139 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 140 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 141 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 142 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 143 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.013 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 144 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 145 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 146 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.010 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 147 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.010 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 148 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 149 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.012 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 150 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 151 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 152 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 153 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 154 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.011 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Writing output to file. Please Wait ...
+
+
+Simulation is complete.
+ -- WARNING -- Aerodynamic Ride Height Maps missing --> switch to coefficients.
+
+
+VI-SpeedGen Model correctly created.
+
+Initialize Simulation
+FLAT road model has been initialized...
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+  Predicted Laptime=64.065
+Initializing CRT Simulation...
+
+Event data is being read from input XML file...
+
+Aerodynamic force inactive or non-existent. Skipped.
+Initializing powertrain / driveline...
+Done.
+
+Initializing tires...
+Loading road data file... (file=C:/Users/amp20/Desktop/Formula/CFR27/22/VIRTUA~1/VI_Racer.cdb/roads.tbl/RaceTrack.rdf)
+
+road file total reading time = 0.316s
+
+ZERO hashing cell size detected => automatically setting to 0.5
+
+ -- WARNING -- road hashing: 115884 elements in 17850 buckets
+ -- WARNING -- road hashmap 0-483 x 263-136 
+ -- WARNING -- road hashmap collision count = 0
+ -- WARNING -- road hashmap max collision count on cell = 0
+ -- WARNING -- road hashing: 420273 element pointers (max: 60 avg: 23.544706)
+ -- WARNING -- 172 buckets have 1 elements
+ -- WARNING -- 18 buckets have 2 elements
+ -- WARNING -- 158 buckets have 3 elements
+ -- WARNING -- 5 buckets have 4 elements
+ -- WARNING -- 182 buckets have 5 elements
+ -- WARNING -- 11 buckets have 6 elements
+ -- WARNING -- 145 buckets have 7 elements
+ -- WARNING -- 13 buckets have 8 elements
+ -- WARNING -- 186 buckets have 9 elements
+ -- WARNING -- 81 buckets have 10 elements
+ -- WARNING -- 272 buckets have 11 elements
+ -- WARNING -- 2967 buckets have 12 elements
+ -- WARNING -- 251 buckets have 13 elements
+ -- WARNING -- 1029 buckets have 14 elements
+ -- WARNING -- 136 buckets have 15 elements
+ -- WARNING -- 1266 buckets have 16 elements
+ -- WARNING -- 123 buckets have 17 elements
+ -- WARNING -- 622 buckets have 18 elements
+ -- WARNING -- 141 buckets have 19 elements
+ -- WARNING -- 467 buckets have 20 elements
+ -- WARNING -- 163 buckets have 21 elements
+ -- WARNING -- 383 buckets have 22 elements
+ -- WARNING -- 184 buckets have 23 elements
+ -- WARNING -- 1090 buckets have 24 elements
+ -- WARNING -- 205 buckets have 25 elements
+ -- WARNING -- 632 buckets have 26 elements
+ -- WARNING -- 230 buckets have 27 elements
+ -- WARNING -- 341 buckets have 28 elements
+ -- WARNING -- 299 buckets have 29 elements
+ -- WARNING -- 602 buckets have 30 elements
+ -- WARNING -- 322 buckets have 31 elements
+ -- WARNING -- 583 buckets have 32 elements
+ -- WARNING -- 342 buckets have 33 elements
+ -- WARNING -- 410 buckets have 34 elements
+ -- WARNING -- 333 buckets have 35 elements
+ -- WARNING -- 985 buckets have 36 elements
+ -- WARNING -- 328 buckets have 37 elements
+ -- WARNING -- 351 buckets have 38 elements
+ -- WARNING -- 230 buckets have 39 elements
+ -- WARNING -- 372 buckets have 40 elements
+ -- WARNING -- 201 buckets have 41 elements
+ -- WARNING -- 242 buckets have 42 elements
+ -- WARNING -- 152 buckets have 43 elements
+ -- WARNING -- 146 buckets have 44 elements
+ -- WARNING -- 106 buckets have 45 elements
+ -- WARNING -- 70 buckets have 46 elements
+ -- WARNING -- 60 buckets have 47 elements
+ -- WARNING -- 41 buckets have 48 elements
+ -- WARNING -- 48 buckets have 49 elements
+ -- WARNING -- 43 buckets have 50 elements
+ -- WARNING -- 34 buckets have 51 elements
+ -- WARNING -- 20 buckets have 52 elements
+ -- WARNING -- 17 buckets have 53 elements
+ -- WARNING -- 15 buckets have 54 elements
+ -- WARNING -- 9 buckets have 55 elements
+ -- WARNING -- 9 buckets have 56 elements
+ -- WARNING -- 4 buckets have 57 elements
+ -- WARNING -- 2 buckets have 59 elements
+ -- WARNING -- 1 bucket has 60 elements
+MESH road total building time = 0.0982945s
+
+hash table memory size = 4.02354MB
+
+EXTRUSION road model has been initialized...
+
+Done.
+
+Initializing driver...
+
+Done.
+
+Initialize CRT Simulation...
+
+Solving for static equilibrium...
+VI-TIRE INFO: one or more tire#3 contact points fall out of road boundaries
+
+VI-TIRE INFO: one or more tire#4 contact points fall out of road boundaries
+
+
+
+Performing Vehicle Setup...
+ -- WARNING -- One or more setup targets are close to 0: 
+ -- WARNING -- the computed relative setup error could be inaccurate.
+ -- WARNING -- Please check the report file.
+ -- WARNING -- 
+ -- WARNING -- 
+ -- WARNING -- Setup targets have not been achieved 
+ -- WARNING -- within the maximum allowed tolerance:
+ -- WARNING -- ride height   -  (1.00%).
+ -- WARNING -- Maximum error:  (0.00%).
+ -- WARNING -- cross weigth  -  (1.00%).
+ -- WARNING -- Maximum error:  (0.00%).
+ -- WARNING --          pin height    -  (1.00%).
+ -- WARNING --          Maximum error:  (100.00%).
+
+
+
+Solving for static equilibrium...
+
+Static equilibrium has been achieved.
+Elapsed Simulation Time:  2.653 (sec).
+Elapsed Clock Time:  0.006 (sec).
+
+
+Setup Completed.
+
+
+
+    *** ************ ***
+    *** Iteration  1 ***
+    *** ************ ***
+
+Calc Speed Profile
+  Predicted Laptime=64.065
+
+
+Solving for static equilibrium...
+
+Static equilibrium has been achieved.
+Elapsed Simulation Time:  2.653 (sec).
+Elapsed Clock Time:  0.007 (sec).
+Running CRT Simulation...
+
+
+Performing dynamic simulation...
+
+Simulation Progress (percent complete):
+0                      50                      100
+---
+ --- Found unfeasibility evaluating condition 'Condition_Path_Distance' ---
+
+ --- Found unfeasibility evaluating condition 'Condition_Slip' ---
+     Unfeasibility at s=33.078300
+     --> Adding 'CustomCommand' on segment  0 [   0.000 -   94.496]
+     --> Scalings: Acc performance=  0.000
+                   Dec performance= -0.011
+                   Lat performance= -0.039
+Applying Corrections.
+
+
+
+
+    *** ************ ***
+    *** Iteration  2 ***
+    *** ************ ***
+
+Calc Speed Profile
+  Predicted Laptime=64.077
+Running CRT Simulation...
+
+
+Performing dynamic simulation...
+
+Simulation Progress (percent complete):
+0                      50                      100
+.--
+ --- Found unfeasibility evaluating condition 'Condition_Path_Distance' ---
+
+ --- Found unfeasibility evaluating condition 'Condition_Slip' ---
+     Unfeasibility at s=33.181842
+     --> Adding 'CustomCommand' on segment  0 [   0.000 -   94.496]
+     --> Scalings: Acc performance=  0.000
+                   Dec performance= -0.011
+                   Lat performance= -0.039
+Applying Corrections.
+
+
+
+
+    *** ************ ***
+    *** Iteration  3 ***
+    *** ************ ***
+
+Calc Speed Profile
+  Predicted Laptime=64.093
+Running CRT Simulation...
+
+
+Performing dynamic simulation...
+
+Simulation Progress (percent complete):
+0                      50                      100
+.--
+ --- Found unfeasibility evaluating condition 'Condition_Path_Distance' ---
+
+ --- Found unfeasibility evaluating condition 'Condition_Slip' ---
+     Unfeasibility at s=33.509384
+     --> Adding 'CustomCommand' on segment  0 [   0.000 -   94.496]
+     --> Scalings: Acc performance=  0.000
+                   Dec performance= -0.010
+                   Lat performance= -0.040
+Applying Corrections.
+
+
+
+
+    *** ************ ***
+    *** Iteration  4 ***
+    *** ************ ***
+
+Calc Speed Profile
+  Predicted Laptime=64.113
+Running CRT Simulation...
+
+
+Performing dynamic simulation...
+
+Simulation Progress (percent complete):
+0                      50                      100
+.--
+ --- Found unfeasibility evaluating condition 'Condition_Path_Distance' ---
+
+ --- Found unfeasibility evaluating condition 'Condition_Slip' ---
+     Unfeasibility at s=46.199674
+     --> Adding 'CustomCommand' on segment  0 [   0.000 -   94.496]
+     --> Scalings: Acc performance= -0.010
+                   Dec performance=  0.000
+                   Lat performance= -0.040
+Applying Corrections.
+
+
+
+
+    *** ************ ***
+    *** Iteration  5 ***
+    *** ************ ***
+
+Calc Speed Profile
+  Predicted Laptime=64.162
+Running CRT Simulation...
+
+
+Performing dynamic simulation...
+
+Simulation Progress (percent complete):
+0                      50                      100
+.--
+ --- Found unfeasibility evaluating condition 'Condition_Path_Distance' ---
+
+ --- Found unfeasibility evaluating condition 'Condition_Slip' ---
+     Unfeasibility at s=46.901094
+     --> Adding 'CustomCommand' on segment  0 [   0.000 -   94.496]
+     --> Scalings: Acc performance= -0.015
+                   Dec performance=  0.000
+                   Lat performance= -0.035
+Applying Corrections.
+
+
+
+
+    *** ************ ***
+    *** Iteration  6 ***
+    *** ************ ***
+
+Calc Speed Profile
+  Predicted Laptime=64.221
+Running CRT Simulation...
+
+
+Performing dynamic simulation...
+
+Simulation Progress (percent complete):
+0                      50                      100
+.---
+ --- Found unfeasibility evaluating condition 'Condition_Path_Distance' ---
+
+ --- Found unfeasibility evaluating condition 'Condition_Slip' ---
+     Unfeasibility at s=64.124061
+     --> Adding 'CustomCommand' on segment  0 [   0.000 -   94.496]
+     --> Scalings: Acc performance=  0.000
+                   Dec performance= -0.007
+                   Lat performance= -0.043
+Applying Corrections.
+
+
+
+
+    *** ************ ***
+    *** Iteration  7 ***
+    *** ************ ***
+
+Calc Speed Profile
+  Predicted Laptime=64.301
+Running CRT Simulation...
+
+
+Performing dynamic simulation...
+
+Simulation Progress (percent complete):
+0                      50                      100
+.---------------------------------
+ --- Found unfeasibility evaluating condition 'Condition_Path_Distance' ---
+
+ --- Found unfeasibility evaluating condition 'Condition_Slip' ---
+     Unfeasibility at s=782.681407
+     --> Adding 'CustomCommand' on segment  7 [ 707.490 -  830.379]
+     --> Scalings: Acc performance=  0.000
+                   Dec performance= -0.010
+                   Lat performance= -0.040
+Applying Corrections.
+
+
+
+
+    *** ************ ***
+    *** Iteration  8 ***
+    *** ************ ***
+
+Calc Speed Profile
+  Predicted Laptime=64.319
+Running CRT Simulation...
+
+
+Performing dynamic simulation...
+
+Simulation Progress (percent complete):
+0                      50                      100
+...............................---
+ --- Found unfeasibility evaluating condition 'Condition_Path_Distance' ---
+
+ --- Found unfeasibility evaluating condition 'Condition_Slip' ---
+     Unfeasibility at s=797.919366
+     --> Adding 'CustomCommand' on segment  7 [ 707.490 -  830.379]
+     --> Scalings: Acc performance= -0.017
+                   Dec performance=  0.000
+                   Lat performance= -0.033
+Applying Corrections.
+
+
+
+
+    *** ************ ***
+    *** Iteration  9 ***
+    *** ************ ***
+
+Calc Speed Profile
+  Predicted Laptime=64.363
+Running CRT Simulation...
+
+
+Performing dynamic simulation...
+
+Simulation Progress (percent complete):
+0                      50                      100
+...............................---
+ --- Found unfeasibility evaluating condition 'Condition_Path_Distance' ---
+
+ --- Found unfeasibility evaluating condition 'Condition_Slip' ---
+     Unfeasibility at s=798.821444
+     --> Adding 'CustomCommand' on segment  7 [ 707.490 -  830.379]
+     --> Scalings: Acc performance= -0.022
+                   Dec performance=  0.000
+                   Lat performance= -0.028
+Applying Corrections.
+
+
+
+
+    *** ************ ***
+    *** Iteration 10 ***
+    *** ************ ***
+
+Calc Speed Profile
+  Predicted Laptime=64.417
+Running CRT Simulation...
+
+
+Performing dynamic simulation...
+
+Simulation Progress (percent complete):
+0                      50                      100
+.............................-----
+ --- Found unfeasibility evaluating condition 'Condition_Path_Distance' ---
+
+ --- Found unfeasibility evaluating condition 'Condition_Slip' ---
+     Unfeasibility at s=799.008290
+     --> Adding 'CustomCommand' on segment  7 [ 707.490 -  830.379]
+     --> Scalings: Acc performance= -0.024
+                   Dec performance=  0.000
+                   Lat performance= -0.026
+Applying Corrections.
+
+
+
+
+    *** ************ ***
+    *** Iteration 11 ***
+    *** ************ ***
+
+Calc Speed Profile
+  Predicted Laptime=64.483
+Running CRT Simulation...
+
+
+Performing dynamic simulation...
+
+Simulation Progress (percent complete):
+0                      50                      100
+.............................-----
+ --- Found unfeasibility evaluating condition 'Condition_Path_Distance' ---
+
+ --- Found unfeasibility evaluating condition 'Condition_Slip' ---
+     Unfeasibility at s=783.005488
+     --> Adding 'CustomCommand' on segment  7 [ 707.490 -  830.379]
+     --> Scalings: Acc performance=  0.000
+                   Dec performance= -0.010
+                   Lat performance= -0.040
+Applying Corrections.
+
+
+
+
+    *** ************ ***
+    *** Iteration 12 ***
+    *** ************ ***
+
+Calc Speed Profile
+  Predicted Laptime=64.588
+Running CRT Simulation...
+
+
+Performing dynamic simulation...
+
+Simulation Progress (percent complete):
+0                      50                      100
+...............................-----------
+Multilap Simulation end-condition triggered
+     --> max number of laps reached.
+
+LAP 1 Summary:
+   initial speed = 3.602612
+     final speed = 44.166102
+        lap time = 65.810000
+
+ --- Found unfeasibility evaluating condition 'Condition_Path_Distance' ---
+
+ --- Found unfeasibility evaluating condition 'Condition_Slip' ---
+     Unfeasibility at s=935.488582
+     --> Adding 'CustomCommand' on segment  9 [ 893.577 -  961.179]
+     --> Scalings: Acc performance=  0.000
+                   Dec performance= -0.019
+                   Lat performance= -0.031
+Applying Corrections.
+
+
+
+
+    *** ************ ***
+    *** Iteration 13 ***
+    *** ************ ***
+
+Calc Speed Profile
+  Predicted Laptime=64.599
+Running CRT Simulation...
+
+
+Performing dynamic simulation...
+
+Simulation Progress (percent complete):
+0                      50                      100
+.......................................---
+Multilap Simulation end-condition triggered
+     --> max number of laps reached.
+
+LAP 1 Summary:
+   initial speed = 3.602612
+     final speed = 44.482740
+        lap time = 65.770000
+
+ --- Found unfeasibility evaluating condition 'Condition_Path_Distance' ---
+
+ --- Found unfeasibility evaluating condition 'Condition_Slip' ---
+     Unfeasibility at s=935.525399
+     --> Adding 'CustomCommand' on segment  9 [ 893.577 -  961.179]
+     --> Scalings: Acc performance=  0.000
+                   Dec performance= -0.019
+                   Lat performance= -0.031
+Applying Corrections.
+
+
+
+
+    *** ************ ***
+    *** Iteration 14 ***
+    *** ************ ***
+
+Calc Speed Profile
+  Predicted Laptime=64.613
+Running CRT Simulation...
+
+
+Performing dynamic simulation...
+
+Simulation Progress (percent complete):
+0                      50                      100
+.......................................---
+Multilap Simulation end-condition triggered
+     --> max number of laps reached.
+
+LAP 1 Summary:
+   initial speed = 3.602612
+     final speed = 44.966527
+        lap time = 65.730000
+
+ --- Found unfeasibility evaluating condition 'Condition_Path_Distance' ---
+
+ --- Found unfeasibility evaluating condition 'Condition_Slip' ---
+     Unfeasibility at s=935.528811
+     --> Adding 'CustomCommand' on segment  9 [ 893.577 -  961.179]
+     --> Scalings: Acc performance=  0.000
+                   Dec performance= -0.019
+                   Lat performance= -0.031
+Applying Corrections.
+
+
+
+
+    *** ************ ***
+    *** Iteration 15 ***
+    *** ************ ***
+
+Calc Speed Profile
+  Predicted Laptime=64.628
+Running CRT Simulation...
+
+
+Performing dynamic simulation...
+
+Simulation Progress (percent complete):
+0                      50                      100
+.......................................---
+Multilap Simulation end-condition triggered
+     --> max number of laps reached.
+
+LAP 1 Summary:
+   initial speed = 3.602612
+     final speed = 45.801120
+        lap time = 65.680000
+
+ --- Found unfeasibility evaluating condition 'Condition_Path_Distance' ---
+
+ --- Found unfeasibility evaluating condition 'Condition_Slip' ---
+     Unfeasibility at s=935.657512
+     --> Adding 'CustomCommand' on segment  9 [ 893.577 -  961.179]
+     --> Scalings: Acc performance=  0.000
+                   Dec performance= -0.019
+                   Lat performance= -0.031
+Applying Corrections.
+
+
+
+
+    *** ************ ***
+    *** Iteration 16 ***
+    *** ************ ***
+
+Calc Speed Profile
+  Predicted Laptime=64.646
+Running CRT Simulation...
+
+
+Performing dynamic simulation...
+
+Simulation Progress (percent complete):
+0                      50                      100
+.......................................---
+Multilap Simulation end-condition triggered
+     --> max number of laps reached.
+
+LAP 1 Summary:
+   initial speed = 3.602612
+     final speed = 46.600776
+        lap time = 65.630000
+
+ --- Found unfeasibility evaluating condition 'Condition_Path_Distance' ---
+
+ --- Found unfeasibility evaluating condition 'Condition_Slip' ---
+     Unfeasibility at s=935.738105
+     --> Adding 'CustomCommand' on segment  9 [ 893.577 -  961.179]
+     --> Scalings: Acc performance=  0.000
+                   Dec performance= -0.019
+                   Lat performance= -0.031
+Applying Corrections.
+
+
+
+
+    *** ************ ***
+    *** Iteration 17 ***
+    *** ************ ***
+
+Calc Speed Profile
+  Predicted Laptime=64.667
+Running CRT Simulation...
+
+
+Performing dynamic simulation...
+
+Simulation Progress (percent complete):
+0                      50                      100
+.......................................---
+Multilap Simulation end-condition triggered
+     --> max number of laps reached.
+
+LAP 1 Summary:
+   initial speed = 3.602612
+     final speed = 48.674658
+        lap time = 65.530000
+
+ --- Found unfeasibility evaluating condition 'Condition_Path_Distance' ---
+
+ --- Found unfeasibility evaluating condition 'Condition_Slip' ---
+     Unfeasibility at s=948.999284
+     --> Adding 'CustomCommand' on segment  9 [ 893.577 -  961.179]
+     --> Scalings: Acc performance= -0.010
+                   Dec performance=  0.000
+                   Lat performance= -0.040
+Applying Corrections.
+
+
+
+
+    *** ************ ***
+    *** Iteration 18 ***
+    *** ************ ***
+
+Calc Speed Profile
+  Predicted Laptime=64.716
+Running CRT Simulation...
+
+
+Performing dynamic simulation...
+
+Simulation Progress (percent complete):
+0                      50                      100
+.......................................---
+Multilap Simulation end-condition triggered
+     --> max number of laps reached.
+
+LAP 1 Summary:
+   initial speed = 3.602612
+     final speed = 47.549975
+        lap time = 65.580000
+
+ --- Found unfeasibility evaluating condition 'Condition_Path_Distance' ---
+
+ --- Found unfeasibility evaluating condition 'Condition_Slip' ---
+     Unfeasibility at s=935.816312
+     --> Adding 'CustomCommand' on segment  9 [ 893.577 -  961.179]
+     --> Scalings: Acc performance=  0.000
+                   Dec performance= -0.020
+                   Lat performance= -0.030
+Applying Corrections.
+
+
+
+
+    *** ************ ***
+    *** Iteration 19 ***
+    *** ************ ***
+
+Calc Speed Profile
+  Predicted Laptime=64.766
+Running CRT Simulation...
+
+
+Performing dynamic simulation...
+
+Simulation Progress (percent complete):
+0                      50                      100
+.......................................---
+Multilap Simulation end-condition triggered
+     --> max number of laps reached.
+
+LAP 1 Summary:
+   initial speed = 3.602612
+     final speed = 60.589235
+        lap time = 65.330000
+
+
+======================================
+=           VI-CarRealTime           =
+=    VEHICLE SIMULATION STATISTICS   =
+======================================
+
+ --- Simulation Statistics ---
+>> LAP TIME           = 65.340000 sec
+>> LAT ACCEL MAX      = 2.240007 G
+>> LAT ACCEL MIN      = -3.296467 G
+>> LON ACCEL MAX      = 2.638442 G
+>> LON ACCEL MIN      = -2.303121 G
+>> LON SPEED MAX      = 104.817137 km/h
+>> LON SPEED MIN      = 3.600000 km/h
+>> LON SPEED AVG      = 52.378616 km/h
+>> STEERING MAX       = 224.681977 deg
+>> STEERING MIN       = -207.952807 deg
+
+
+Writing output to file. Please Wait ...
+
+
+Elapsed Simulation Time:  65.340 (sec).
+Elapsed Clock Time:  43.829 (sec).
+Computational Efficiency:  1.491 (sim. sec)/(sec).
+
+
+Simulation is complete.
+ -- WARNING -- During analysis some spline extrapolations occur.
+ -- WARNING -- Check log file for further details after enabling verbose flag on system_tree->solver_executive_control.
+
+    *** ******************* ***
+    *** Finalize Simulation ***
+    *** ******************* ***
+
+  Predicted Laptime=64.766
+
+
+Final scaling values:
+
+           Segment        Acc    Dec    Lat   Iterations
+   0 [   0.00-  94.50]:  0.975  0.961  0.763       6
+   1 [  94.50- 248.23]:  1.000  1.000  1.000       0
+   2 [ 248.23- 329.13]:  1.000  1.000  1.000       0
+   3 [ 329.13- 403.16]:  1.000  1.000  1.000       0
+   4 [ 403.16- 500.86]:  1.000  1.000  1.000       0
+   5 [ 500.86- 581.60]:  1.000  1.000  1.000       0
+   6 [ 581.60- 707.49]:  1.000  1.000  1.000       0
+   7 [ 707.49- 830.38]:  0.937  0.980  0.833       5
+   8 [ 830.38- 893.58]:  1.000  1.000  1.000       0
+   9 [ 893.58- 961.18]:  0.990  0.885  0.775       7
+Done
+

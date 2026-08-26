@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<afc xmlns="http://www.mscsoftware.com/:vfc" xmlns:afc="http://www.mscsoftware.com/:afc">
+     <afc:Bibliography>
+          <File schema="afc" version="2.0.0.0" URI="mdids://VI_Racer/subsystems.tbl/RT_CFR22 Try 2_front_wheels.xml" publicationDate="2023-09-08 03:46:47-04:00"/>
+          <Revision version="2022.2"/>
+          <Corporation author="VI-grade" URI="http://www.vi-grade.com"/>
+          <Author user="Leand" name="-unknown name-"/>
+          <Environment hostName="KENOBI" operatingSystem="MS Windows NT 10.0"/>
+          <Application name="VI-CarRealTime" version="2022.2"/>
+     </afc:Bibliography>
+     <afc:Units>
+          <afc:UnitSetting name="angle" current="deg"/>
+          <afc:UnitSetting name="current" current="ampere"/>
+          <afc:UnitSetting name="force" current="newton"/>
+          <afc:UnitSetting name="length" current="mm"/>
+          <afc:UnitSetting name="luminosity" current="candela"/>
+          <afc:UnitSetting name="mass" current="kg"/>
+          <afc:UnitSetting name="quantity" current="mole"/>
+          <afc:UnitSetting name="solidAngle" current="steradian"/>
+          <afc:UnitSetting name="temperature" current="kelvin"/>
+          <afc:UnitSetting name="time" current="sec"/>
+          <afc:UnitSetting name="frequency" current="Hz"/>
+     </afc:Units>
+     <Subsystem name="RT_CFR22 Try 2_front_wheels" active="true" userDefined="false">
+          <CRTWheelPair name="front_wheels" active="true" userDefined="false" symmetry="left_right">
+               <CRTWheel name="left" active="true" userDefined="false" spinInertia="10000000.0" unsprungMass="13.0" wheelCenterHeight="329.0" ixx="20000000.0" iyy="10000000.0" izz="20000000.0" longitudinalDynamicsFlag="false" longitudinalDynamicsMass="25.0" longitudinalDynamicsCutoffFrequency="500.0" longitudinalDynamicsDamping="0.01" Mode="1">
+                    <Tire name="tire_data" active="true" userDefined="false">
+                         <TireContext active="true" propertyURI="mdids://carrealtime_shared/tires.tbl/p96f.tir" userDefined="false" context="default" offset="(0 0 0)" lateralForceScale="1" overturningMomentScale="1" aligningTorqueScale="1" slipAngleSurfCorrFactor="1" forceSurfCorrFactor="1" frictionCoeff="1" rollingRadiusOffset="0" plysteerLateralForce="0" conicityLateralForce="0" plysteerAligningTorque="0" conicityAligningTorque="0" cmOffset="0" wheelCenterOffset="0" contactType="handling" useMode="900" highPerformance="false" staticMode="false"/>
+                    </Tire>
+                    <Part name="part_data" active="true" userDefined="false" location="(0 0 0)" cm_location="(0 0 0)" im_location="(0 0 0)" part_num="-1" mass="0" ixx="0" iyy="0" izz="0" ixy="0" ixz="0" iyz="0" use_offdiagonal_terms="false" default_cg="false" global_cg="false" user_sprung="false" percent_sprung="100"/>
+                    <WheelGraphics name="graphics_parameters" active="true" userDefined="false" bulgeRatio="0" wheelWidth="0"/>
+               </CRTWheel>
+          </CRTWheelPair>
+     </Subsystem>
+</afc>

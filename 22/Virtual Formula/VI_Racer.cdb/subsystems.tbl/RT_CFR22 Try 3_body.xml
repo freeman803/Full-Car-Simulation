@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<afc xmlns="http://www.mscsoftware.com/:vfc" xmlns:afc="http://www.mscsoftware.com/:afc">
+     <afc:Bibliography>
+          <File schema="afc" version="2.0.0.0" URI="mdids://VI_Racer/subsystems.tbl/RT_CFR22 Try 3_body.xml" publicationDate="2023-09-09 18:37:03-04:00"/>
+          <Revision version="2022.2"/>
+          <Corporation author="VI-grade" URI="http://www.vi-grade.com"/>
+          <Author user="Leand" name="-unknown name-"/>
+          <Environment hostName="KENOBI" operatingSystem="MS Windows NT 10.0"/>
+          <Application name="VI-CarRealTime" version="2022.2"/>
+     </afc:Bibliography>
+     <afc:Units>
+          <afc:UnitSetting name="angle" current="deg"/>
+          <afc:UnitSetting name="current" current="ampere"/>
+          <afc:UnitSetting name="force" current="newton"/>
+          <afc:UnitSetting name="length" current="mm"/>
+          <afc:UnitSetting name="luminosity" current="candela"/>
+          <afc:UnitSetting name="mass" current="kg"/>
+          <afc:UnitSetting name="quantity" current="mole"/>
+          <afc:UnitSetting name="solidAngle" current="steradian"/>
+          <afc:UnitSetting name="temperature" current="kelvin"/>
+          <afc:UnitSetting name="time" current="sec"/>
+          <afc:UnitSetting name="frequency" current="Hz"/>
+     </afc:Units>
+     <Subsystem active="true" userDefined="false">
+          <CRTSprungMass name="body" active="true" userDefined="false" cgHeight="390.0" cgX="638.8909090909091" cgY="0" ixx="37950000.0" ixz="-7084000.0" iyy="177100000.0" izz="194810000.0" ixy="404800.0" iyz="101200.0" mass="253.0" front_cgX="638.8909090909091" front_cgY="0" front_cgZ="390.0" front_ixx="18975000.0" front_ixz="-3542000.0" front_iyy="88550000.0" front_izz="97405000.0" front_ixy="202400.0" front_iyz="50600.0" front_mass="126.5" rear_cgX="638.8909090909091" rear_cgY="0" rear_cgZ="390.0" rear_ixx="18975000.0" rear_ixz="-3542000.0" rear_iyy="88550000.0" rear_izz="97405000.0" rear_ixy="202400.0" rear_iyz="50600.0" rear_mass="126.5" wheelbase="1219.0" graphicsCmdFile="mdids://VI_Racer/graphic_models.tbl/CFR22 Try 3_RT.cmd" complianceLocation="(-638.8909090909091 0 390.0)" torsionalStiffness="1.0" verticalBendingStiffness="1.0" lateralBendingStiffness="1.0" verticalStiffness="1.0" lateralStiffness="1.0" axialStiffness="1.0" torsionalDamping="0" verticalBendingDamping="0" lateralBendingDamping="0" verticalDamping="0" lateralDamping="0" axialDamping="0" torsionalStiffnessActiveFlag="false" verticalBendingStiffnessActiveFlag="false" lateralBendingStiffnessActiveFlag="false" verticalStiffnessActiveFlag="false" lateralStiffnessActiveFlag="false" axialStiffnessActiveFlag="false"/>
+          <SensorPoint name="sensor_point" active="true" userDefined="false" location="(-638.8909090909091 0 390)" yaw="0" pitch="0" roll="0"/>
+          <cgReferencePoint name="cg_reference_point" active="true" userDefined="false" location="(-638.8909090909091 0 390)"/>
+          <Spline name="front_ride_height_map" id="0" active="true" userDefined="false" interpolation_method="akima" xUnit="velocity" yUnit="length">
+            <![CDATA[
+              0               0
+             10               0
+            100               0
+           1000               0
+         100000               0
+]]>
+          </Spline>
+          <Spline name="rear_ride_height_map" id="0" active="true" userDefined="false" interpolation_method="akima" xUnit="velocity" yUnit="length">
+            <![CDATA[
+              0               0
+             10               0
+            100               0
+           1000               0
+         100000               0
+]]>
+          </Spline>
+          <CRTSensor name="lap_sensor" active="true" userDefined="false" activeFlag="true" type="Lap" drdFile="mdids://carrealtime_shared/driver_roads.tbl/VI_Track_drv.drd" triggerS="1.0" typeOfFreedom="Translational" angleMethod="AX_AY_AZ" iBody="undefined" iLoc="(0 0 0)" iOri="(0 0 0)" jBody="undefined" jLoc="(0 0 0)" jOri="(0 0 0)" refBody="undefined" refLoc="(0 0 0)" refOri="(0 0 0)">
+               <OutputChannel name="outputChannel_1" active="true" userDefined="false" activeFlag="true" resultSet="path_sensor" component="total_lap_time" scale="1.0" offset="0" isLive="false"/>
+               <OutputChannel name="outputChannel_2" active="true" userDefined="false" activeFlag="true" resultSet="path_sensor" component="total_lap_count" scale="1.0" offset="0" isLive="false"/>
+               <OutputChannel name="outputChannel_3" active="true" userDefined="false" activeFlag="true" resultSet="path_sensor" component="last_sector_time" scale="1.0" offset="0" isLive="false"/>
+               <OutputChannel name="outputChannel_4" active="true" userDefined="false" activeFlag="true" resultSet="path_sensor" component="progressive_time" scale="1.0" offset="0" isLive="false"/>
+               <OutputChannel name="outputChannel_5" active="true" userDefined="false" activeFlag="true" resultSet="path_sensor" component="path_s" scale="1.0" offset="0" isLive="false"/>
+               <OutputChannel name="outputChannel_6" active="true" userDefined="false" activeFlag="true" resultSet="path_sensor" component="path_distance" scale="1.0" offset="0" isLive="false"/>
+          </CRTSensor>
+          <CRTSensor name="beacon_1" active="true" userDefined="false" activeFlag="false" type="Beacon" triggerS="0" typeOfFreedom="Translational" angleMethod="AX_AY_AZ" iBody="undefined" iLoc="(0 0 0)" iOri="(0 0 0)" jBody="undefined" jLoc="(0 0 0)" jOri="(0 0 0)" refBody="undefined" refLoc="(0 0 0)" refOri="(0 0 0)">
+               <OutputChannel name="outputChannel_1" active="true" userDefined="false" activeFlag="true" resultSet="path_sensor" component="beacon_1_time" scale="1.0" offset="0" isLive="false"/>
+               <OutputChannel name="outputChannel_2" active="true" userDefined="false" activeFlag="true" resultSet="path_sensor" component="beacon_1_lap" scale="1.0" offset="0" isLive="false"/>
+               <OutputChannel name="outputChannel_3" active="true" userDefined="false" activeFlag="true" resultSet="path_sensor" component="beacon_1_sector_time" scale="1.0" offset="0" isLive="false"/>
+               <OutputChannel name="outputChannel_4" active="true" userDefined="false" activeFlag="true" resultSet="path_sensor" component="beacon_1_progressive_time" scale="1.0" offset="0" isLive="false"/>
+               <OutputChannel name="outputChannel_5" active="true" userDefined="false" activeFlag="true" resultSet="path_sensor" component="path_s" scale="1.0" offset="0" isLive="false"/>
+               <OutputChannel name="outputChannel_6" active="true" userDefined="false" activeFlag="true" resultSet="path_sensor" component="path_distance" scale="1.0" offset="0" isLive="false"/>
+          </CRTSensor>
+          <CRTSensor name="driverEYE" active="true" userDefined="false" activeFlag="false" type="Acceleration" triggerS="1.0" typeOfFreedom="Translational" angleMethod="AX_AY_AZ" iBody="undefined" iBodyName="front_chassis" iLoc="(0 0 0)" iOri="(0 0 0)" jBody="undefined" jBodyName="ground" jLoc="(0 0 0)" jOri="(0 0 0)" refBody="undefined" refBodyName="front_chassis" refLoc="(0 0 0)" refOri="(0 0 0)">
+               <OutputChannel name="outputChannel_1" active="true" userDefined="false" activeFlag="true" resultSet="driverEYE_sensor" component="ACCX" scale="1.0" offset="0" isLive="false"/>
+               <OutputChannel name="outputChannel_2" active="true" userDefined="false" activeFlag="true" resultSet="driverEYE_sensor" component="ACCY" scale="1.0" offset="0" isLive="false"/>
+               <OutputChannel name="outputChannel_3" active="true" userDefined="false" activeFlag="true" resultSet="driverEYE_sensor" component="ACCZ" scale="1.0" offset="0" isLive="false"/>
+               <OutputChannel name="outputChannel_4" active="true" userDefined="false" activeFlag="true" scale="1.0" offset="0" isLive="false"/>
+               <OutputChannel name="outputChannel_5" active="true" userDefined="false" activeFlag="true" scale="1.0" offset="0" isLive="false"/>
+               <OutputChannel name="outputChannel_6" active="true" userDefined="false" activeFlag="true" scale="1.0" offset="0" isLive="false"/>
+          </CRTSensor>
+          <CRTBodySetupData name="bodySetupData" active="true" userDefined="false" massSetupMethod="racing">
+               <CRTFuelConfiguration name="fuelConfiguration" active="true" userDefined="false" setupActiveFlag="false" runningActiveFlag="false" location="(0 0 0)" setupMass="0" runningMass="0"/>
+               <CRTDriverConfiguration name="driverConfiguration" active="true" userDefined="false" setupActiveFlag="false" runningActiveFlag="false" location="(0 0 0)" mass="0"/>
+               <CRTBallast name="ballast1" active="true" userDefined="false" setupActiveFlag="false" runningActiveFlag="false" location="(0 0 0)" mass="0"/>
+               <CRTBallast name="ballast2" active="true" userDefined="false" setupActiveFlag="false" runningActiveFlag="false" location="(0 0 0)" mass="0"/>
+               <CRTBallast name="ballast3" active="true" userDefined="false" setupActiveFlag="false" runningActiveFlag="false" location="(0 0 0)" mass="0"/>
+               <CRTBallast name="ballast4" active="true" userDefined="false" setupActiveFlag="false" runningActiveFlag="false" location="(0 0 0)" mass="0"/>
+               <CRTBallast name="ballast5" active="true" userDefined="false" setupActiveFlag="false" runningActiveFlag="false" location="(0 0 0)" mass="0"/>
+               <CRTBallast name="ballast6" active="true" userDefined="false" setupActiveFlag="false" runningActiveFlag="false" location="(0 0 0)" mass="0"/>
+               <CRTBodyAuxiliaryMass name="driver" active="true" userDefined="false" activeFlag="false" location="(0 0 0)" mass="0"/>
+               <CRTBodyAuxiliaryMass name="passenger1" active="true" userDefined="false" activeFlag="false" location="(0 0 0)" mass="0"/>
+               <CRTBodyAuxiliaryMass name="passenger2" active="true" userDefined="false" activeFlag="false" location="(0 0 0)" mass="0"/>
+               <CRTBodyAuxiliaryMass name="passenger3" active="true" userDefined="false" activeFlag="false" location="(0 0 0)" mass="0"/>
+               <CRTBodyAuxiliaryMass name="passenger4" active="true" userDefined="false" activeFlag="false" location="(0 0 0)" mass="0"/>
+               <CRTBodyAuxiliaryMass name="passenger5" active="true" userDefined="false" activeFlag="false" location="(0 0 0)" mass="0"/>
+               <CRTBodyAuxiliaryMass name="fuel" active="true" userDefined="false" activeFlag="false" location="(0 0 0)" mass="0"/>
+               <CRTBodyAuxiliaryMass name="luggage" active="true" userDefined="false" activeFlag="false" location="(0 0 0)" mass="0"/>
+               <CRTBodyAuxiliaryMass name="hitch" active="true" userDefined="false" activeFlag="false" location="(0 0 0)" mass="0"/>
+          </CRTBodySetupData>
+          <CRTCrossWeightAdjustment name="cross_weight_adjustment" active="true" userDefined="false" crossWeightActiveFlag="false" crossWeightMethod="front_force" crossWeightForce="0" crossWeightRatio="0.5" unhookedForce="0" unhookedRatio="0.5"/>
+          <CRTVehicleGraphics name="vehicle_graphics" active="true" userDefined="false" graphicsCmdFile="mdids://VI_Racer/graphic_models.tbl/CFR22 Try 3_RT.cmd" xgrActiveFlag="false" bodyFile="mdids://VI_Racer/shell_graphics.tbl/CFR22 Try 3_RT_ges_chassis.obj" graphicsType="full_vehicle" leftFrontWheelFile="mdids://VI_Racer/shell_graphics.tbl/CFR22 Try 3_RT_whl_front_wheel.obj" leftRearWheelFile="mdids://VI_Racer/shell_graphics.tbl/CFR22 Try 3_RT_whl_rear_wheel.obj" rightFrontWheelFile="mdids://VI_Racer/shell_graphics.tbl/CFR22 Try 3_RT_whr_front_wheel.obj" rightRearWheelFile="mdids://VI_Racer/shell_graphics.tbl/CFR22 Try 3_RT_whr_rear_wheel.obj" engineGraphicsActiveFlag="false" auxGraphicsActiveFlag="false" frontTwinWheelsActiveFlag="false" middleTwinWheelsActiveFlag="false" rearTwinWheelsActiveFlag="false"/>
+          <CRTSkidplatePoint name="SkidPlate_FL" active="true" userDefined="true" activeFlag="false" actionBody="front_chassis" actionLoc="(0 365.7 146.28)" contactForceLimitFlag="false" contactForceLimit="1000000.0" contactStiffness="100000.0" contactDamping="100.0" contactExponent="1.0" contactFrictionCoefficient="0.1"/>
+          <CRTSkidplatePoint name="SkidPlate_FR" active="true" userDefined="true" activeFlag="false" actionBody="front_chassis" actionLoc="(0 -365.7 146.28)" contactForceLimitFlag="false" contactForceLimit="1000000.0" contactStiffness="100000.0" contactDamping="100.0" contactExponent="1.0" contactFrictionCoefficient="0.1"/>
+          <CRTSkidplatePoint name="SkidPlate_RL" active="true" userDefined="true" activeFlag="false" actionBody="front_chassis" actionLoc="(-1219.0 365.7 146.28)" contactForceLimitFlag="false" contactForceLimit="1000000.0" contactStiffness="100000.0" contactDamping="100.0" contactExponent="1.0" contactFrictionCoefficient="0.1"/>
+          <CRTSkidplatePoint name="SkidPlate_RR" active="true" userDefined="true" activeFlag="false" actionBody="front_chassis" actionLoc="(-1219.0 365.7 146.28)" contactForceLimitFlag="false" contactForceLimit="1000000.0" contactStiffness="100000.0" contactDamping="100.0" contactExponent="1.0" contactFrictionCoefficient="0.1"/>
+          <CRTAerodynamicForces name="aero_forces" active="false" userDefined="false" activeFlag="true" frontDownForceLocation="(0 0 329.0)" rearDownForceLocation="(-1219.0 0 360.0)" dragForceLocation="(-638.8909090909091 0 390.0)" frontDownForceSensor="(0 0 329.0)" frontAuxDownForceSensorActiveFlag="false" frontAuxDownForceSensor="(0 0 0)" rearDownForceSensor="(-1219.0 0 360.0)" dragForceSensor="(-638.8909090909091 0 390.0)" frontDownForceShift="0" frontDownForceScale="1.0" frontDownForceSmoothingTime="0" rearDownForceShift="0" rearDownForceScale="1.0" rearDownForceSmoothingTime="0" centerDownForceShift="0" centerDownForceScale="1.0" centerDownForceSmoothingTime="0" dragForceShift="0" dragForceScale="1.0" dragForceSmoothingTime="0.5" frontDragForceShift="0" frontDragForceScale="0" frontDragForceSmoothingTime="0" rearDragForceShift="0" rearDragForceScale="0" rearDragForceSmoothingTime="0" frontSideForceShift="0" frontSideForceScale="1.0" frontSideForceSmoothingTime="0" rearSideForceShift="0" rearSideForceScale="1.0" rearSideForceSmoothingTime="0" centerSideForceShift="0" centerSideForceScale="1.0" centerSideForceSmoothingTime="0" rollMomentShift="0" rollMomentScale="1.0" rollMomentSmoothingTime="0.5" pitchMomentShift="0" pitchMomentScale="1.0" pitchMomentSmoothingTime="0.5" yawMomentShift="0" yawMomentScale="1.0" yawMomentSmoothingTime="0" compensationTorqueActiveFlag="true" compensationTorqueShift="0" compensationTorqueScale="1.0" propertyFile="mdids://VI_Racer/aero_forces.tbl/CFR22 Try 3_aero.aer"/>
+     </Subsystem>
+</afc>

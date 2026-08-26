@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<afc
+ xmlns="http://www.mscsoftware.com/:chassis"
+ xmlns:afc="http://www.mscsoftware.com/:afc"
+>
+     <afc:Bibliography>
+          <File schema="afc" version="2.0.0.0" URI="file://C:/VI/22/Virtual Formula/VI Racer Template.xml" publicationDate="2023-09-29 03:09:11-04:00"/>
+          <Revision version="2022.2"/>
+          <Corporation author="VI-grade" URI="http://www.vi-grade.com"/>
+          <Author user="Leand" name="-unknown name-"/>
+          <Environment hostName="KENOBI" operatingSystem="MS Windows NT 10.0"/>
+          <Application name="VI-CarRealTime" version="2022.2"/>
+     </afc:Bibliography>
+     <AChassisPreferences active="true" userDefined="false" workingDirectory="C:\Users\Leand" textEditor="notepad" webBrowser="netscape" tempDir="C:\Users\Leand" animationTool="other" plottingTool="other" solverPreference="none" solverCommandPreference="default" solverCommand="achassis -custadams" matlabCommand="matlab" eventNumbering="true" postToggle="true" stripLeading="true" searchCurrentDirectory="true" searchSpecifiedPath="false" useHumanGraphics="false" useRoadGraphics="false" useCustomHome="true" useCustomOther="false" createBackup="false" useSmartDriver="true" useATire="true" realTimeSolver="C:\PROGRA~1\VI-grade\VI-CAR~1\acarrt\win64\vicrt.exe" maxPerformanceSolver="C:\PROGRA~1\VI-grade\VI-CAR~1\acarrt\win64\vimaxperf.exe" quasiStaticSolver="C:\PROGRA~1\VI-grade\VI-CAR~1\acarrt\win64\vispeedgen.exe" bufferOutputs="true" singlePrecisionOutputs="true" trailerModel="false" viAnimatorUdpPort="30001" viAnimatorUdpAddress="239.255.0.1" vicrt_launch_script="C:\PROGRA~1\VI-grade\VI-CAR~1\common\vig">
+          <RegisteredDatabase name="carrealtime_shared" active="true" userDefined="false" path="C:/PROGRA~1/VI-grade/VI-CAR~1/acarrt/carrealtime_shared.cdb/"/>
+          <RegisteredDatabase name="visafety_shared" active="true" userDefined="false" path="C:/PROGRA~1/VI-grade/VI-CAR~1/acarrt/visafety_shared.cdb/"/>
+          <RegisteredDatabase name="CityCar" active="true" userDefined="false" path="C:/PROGRA~1/VI-grade/VI-CAR~1/acarrt/examples/SharedModels/CityCar.cdb/"/>
+          <RegisteredDatabase name="CompactCar" active="true" userDefined="false" path="C:/PROGRA~1/VI-grade/VI-CAR~1/acarrt/examples/SharedModels/CompactCar.cdb/"/>
+          <RegisteredDatabase name="Crossover" active="true" userDefined="false" path="C:/PROGRA~1/VI-grade/VI-CAR~1/acarrt/examples/SharedModels/Crossover.cdb/"/>
+          <RegisteredDatabase name="Pickup" active="true" userDefined="false" path="C:/PROGRA~1/VI-grade/VI-CAR~1/acarrt/examples/SharedModels/Pickup.cdb/"/>
+          <RegisteredDatabase name="RaceCar" active="true" userDefined="false" path="C:/PROGRA~1/VI-grade/VI-CAR~1/acarrt/examples/SharedModels/RaceCar.cdb/"/>
+          <RegisteredDatabase name="SedanCar" active="true" userDefined="false" path="C:/PROGRA~1/VI-grade/VI-CAR~1/acarrt/examples/SharedModels/SedanCar.cdb/"/>
+          <RegisteredDatabase name="SportCar" active="true" userDefined="false" path="C:/PROGRA~1/VI-grade/VI-CAR~1/acarrt/examples/SharedModels/SportCar.cdb/"/>
+          <RegisteredDatabase name="SUV" active="true" userDefined="false" path="C:/PROGRA~1/VI-grade/VI-CAR~1/acarrt/examples/SharedModels/SUV.cdb/"/>
+          <RegisteredDatabase name="VI_Racer" active="true" userDefined="false" path="C:/VI/22/Virtual Formula/VI_Racer.cdb/"/>
+     </AChassisPreferences>
+</afc>

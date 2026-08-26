@@ -1,0 +1,1973 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<afc xmlns="http://www.mscsoftware.com/:vfc" xmlns:afc="http://www.mscsoftware.com/:afc">
+     <afc:Bibliography>
+          <File schema="afc" version="2.0.0.0" URI="mdids://VI_Racer/subsystems.tbl/24 front try 3_steering.xml" publicationDate="2023-10-09 14:08:58-04:00"/>
+          <Revision version="2022.2"/>
+          <Corporation author="VI-grade" URI="http://www.vi-grade.com"/>
+          <Author user="Leand" name="-unknown name-"/>
+          <Environment hostName="KENOBI" operatingSystem="MS Windows NT 10.0"/>
+          <Application name="VI-CarRealTime" version="2022.2"/>
+     </afc:Bibliography>
+     <afc:Units>
+          <afc:UnitSetting name="angle" current="deg"/>
+          <afc:UnitSetting name="current" current="ampere"/>
+          <afc:UnitSetting name="force" current="newton"/>
+          <afc:UnitSetting name="length" current="mm"/>
+          <afc:UnitSetting name="luminosity" current="candela"/>
+          <afc:UnitSetting name="mass" current="kg"/>
+          <afc:UnitSetting name="quantity" current="mole"/>
+          <afc:UnitSetting name="solidAngle" current="steradian"/>
+          <afc:UnitSetting name="temperature" current="kelvin"/>
+          <afc:UnitSetting name="time" current="sec"/>
+          <afc:UnitSetting name="frequency" current="Hz"/>
+     </afc:Units>
+     <Subsystem name="24 front try 3_steering" active="true" userDefined="false">
+          <CRTSteeringSystem name="steering_gear" active="true" userDefined="false" nominalSteeringGearRatio="1.0" kingpinLeftFront="2.73061" kingpinRightFront="2.73061" arbitraryLeftPoint="(11.0421 -45.5001 -203.2)" arbitraryRightPoint="(11.0421 45.5001 -203.2)" casterAngleLeftFront="1.36457" casterAngleRightFront="1.36457" complianceCutOff="556.0" method="use_jounce" steeringInertia="1.0" steeringDamping="0" steeringEspFrictionLimitMax="0" steeringColumnMethod="rigid" tierodOuterLeftPoint="(87.839 -59.796 -67.61)" tierodInnerLeftPoint="(129.08 -414.59 -49.51)" tierodOuterRightPoint="(87.839 59.796 -67.61)" tierodInnerRightPoint="(129.08 414.59 -49.51)" draglinkTierod="(0 0 0)" steeringWheelInputActive="true" variableSteerAxisActive="true" wheelLocSteerDepActive="true" tierodKinematicsActive="true" steeringFeedbackMapsActive="false" steeringFeedbackMethod="Tierod Kinematics Computation" steeringWheelAngleLimitsUpdate="false" steeringWheelAngleMax="720.0" steeringWheelAngleMin="-720.0">
+               <Spline2d name="draglinkArm_x_swa_spline" id="0" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="x location" xUnit="angle" yUnit="length" datablock="Draglink to Arm X location vs Steering Wheel Angle">
+                 <![CDATA[
+            -15               0
+            -10               0
+             -5               0
+              0               0
+              5               0
+             10               0
+             15               0
+]]>
+               </Spline2d>
+               <Spline2d name="draglinkArm_y_swa_spline" id="0" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="y location" xUnit="angle" yUnit="length" datablock="Draglink to Arm Y location vs Steering Wheel Angle">
+                 <![CDATA[
+            -15               0
+            -10               0
+             -5               0
+              0               0
+              5               0
+             10               0
+             15               0
+]]>
+               </Spline2d>
+               <Spline2d name="draglinkArm_z_swa_spline" id="0" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="z location" xUnit="angle" yUnit="length" datablock="Draglink to Arm Z location vs Steering Wheel Angle">
+                 <![CDATA[
+            -15               0
+            -10               0
+             -5               0
+              0               0
+              5               0
+             10               0
+             15               0
+]]>
+               </Spline2d>
+               <Spline2d name="draglinkArm_x_rack_spline" id="0" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="x location" xUnit="length" yUnit="length" datablock="Draglink to Arm X location vs Rack Travel">
+                 <![CDATA[
+            -15               0
+            -10               0
+             -5               0
+              0               0
+              5               0
+             10               0
+             15               0
+]]>
+               </Spline2d>
+               <Spline2d name="draglinkArm_y_rack_spline" id="0" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="y location" xUnit="length" yUnit="length" datablock="Draglink to Arm Y location vs Rack Travel">
+                 <![CDATA[
+            -15               0
+            -10               0
+             -5               0
+              0               0
+              5               0
+             10               0
+             15               0
+]]>
+               </Spline2d>
+               <Spline2d name="draglinkArm_z_rack_spline" id="0" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="z location" xUnit="length" yUnit="length" datablock="Draglink to Arm Z location vs Rack Travel">
+                 <![CDATA[
+            -15               0
+            -10               0
+             -5               0
+              0               0
+              5               0
+             10               0
+             15               0
+]]>
+               </Spline2d>
+               <CRTSuspensionData name="compliance" active="true" userDefined="false" method="table" constant="0" unit="angle/torque" mirror="none" scaleFactor="1.0">
+                    <Spline3d name="table" active="true" userDefined="false" interpolation_method="akima" xLabel="Kingpin Moment" yLabel="Steer Angle" xUnit="torque" yUnit="angle" datablock="Steer Via Str_Sys_Comp. vs. Kingpin Moment">
+                         <afc:VectorAttribute name="x_data">
+                           -18000000 -14400000 -10800000 -7200000 -3600000 0 3600000 7200000 10800000 14400000 18000000
+                         </afc:VectorAttribute>
+                         <afc:VectorAttribute name="y_data">
+                           0 0 0 0 0 0 0 0 0 0 0
+                         </afc:VectorAttribute>
+                         <afc:VectorAttribute name="z_data">
+                           0
+                         </afc:VectorAttribute>
+                    </Spline3d>
+               </CRTSuspensionData>
+               <Spline3d name="steering_wheel_torque" active="true" userDefined="false" interpolation_method="akima" xLabel="Total Kingpin Moment" yLabel="Steering Wheel Torque" xUnit="torque" yUnit="torque" datablock="Steering Wheel Torque Feedback: T(TotalKingPin Moment, SWA)" zLabel="Steering Wheel Angle" zUnit="angle">
+                    <afc:VectorAttribute name="x_data">
+                      -394475 -315580 -236685 -157790 -78895 0 78895 157790 236685 315580 394475
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -180 -90 0 90 180
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="left_front_steer" active="true" userDefined="false" interpolation_method="akima" xLabel="Geared-Down Input Steer" yLabel="Steer At Ground" xUnit="angle" yUnit="angle" datablock="Left-Front Steering Kinematics" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      -41.8499 -28.6147 -18.0802 -8.7181 0.0419088 8.505789999999999 16.8797 25.3316 34.0253 -41.8184 -28.6071 -18.082 -8.7254 0.0306842 8.491400000000001 16.8625 25.3121 34.0036 -41.7834 -28.597 -18.0821 -8.73161 0.0199266 8.47682 16.8445 25.2907 33.9791 -41.7444 -28.5841 -18.0803 -8.73664 0.009682329999999999 8.462059999999999 16.8255 25.2674 33.9514 -41.7008 -28.5682 -18.0763 -8.74037 0 8.44711 16.8054 25.2421 33.9206 -41.6521 -28.5489 -18.0702 -8.742699999999999 -0.00906878 8.43197 16.7843 25.2147 33.8863 -41.5975 -28.526 -18.0615 -8.743510000000001 -0.0174692 8.416650000000001 16.7621 25.1851 33.8485 -41.5367 -28.499 -18.0502 -8.74269 -0.0251427 8.401149999999999 16.7387 25.1532 33.807 -41.4688 -28.4677 -18.036 -8.74009 -0.0320266 8.38547 16.714 25.1189 33.7615
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="right_front_steer" active="true" userDefined="false" interpolation_method="akima" xLabel="Geared-Down Input Steer" yLabel="Steer At Ground" xUnit="angle" yUnit="angle" datablock="Right-Front Steering Kinematics" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      -34.0253 -25.3316 -16.8797 -8.505789999999999 -0.0419088 8.7181 18.0802 28.6147 41.8499 -34.0036 -25.3121 -16.8625 -8.491400000000001 -0.0306842 8.7254 18.082 28.6071 41.8184 -33.9791 -25.2907 -16.8445 -8.47682 -0.0199266 8.73161 18.0821 28.597 41.7834 -33.9514 -25.2674 -16.8255 -8.462059999999999 -0.009682329999999999 8.73664 18.0803 28.5841 41.7444 -33.9206 -25.2421 -16.8054 -8.44711 0 8.74037 18.0763 28.5682 41.7008 -33.8863 -25.2147 -16.7843 -8.43197 0.00906878 8.742699999999999 18.0702 28.5489 41.6521 -33.8485 -25.1851 -16.7621 -8.416650000000001 0.0174692 8.743510000000001 18.0615 28.526 41.5975 -33.807 -25.1532 -16.7387 -8.401149999999999 0.0251427 8.74269 18.0502 28.499 41.5367 -33.7615 -25.1189 -16.714 -8.38547 0.0320266 8.74009 18.036 28.4677 41.4688
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="left_front_camber" active="true" userDefined="false" interpolation_method="akima" xLabel="Geared-Down Input Steer" yLabel="Camber" xUnit="angle" yUnit="angle" datablock="Left-Front Camber" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0.301449 0.286138 0.365132 0.500932 0.680759 0.899208 1.1542 1.44563 1.77491 0.183797 0.148065 0.215611 0.345232 0.52286 0.742549 1.00203 1.30123 1.64178 0.0598599 0.00279689 0.0583635 0.181511 0.356827 0.5778 0.841961 1.14927 1.50159 -0.0704655 -0.149753 -0.106692 0.0096887 0.182577 0.404875 0.673905 0.98966 1.35425 -0.20731 -0.309698 -0.279665 -0.170345 0 0.22366 0.497741 0.822273 1.19961 -0.350833 -0.477182 -0.460695 -0.358728 -0.191044 0.0340126 0.313323 0.646953 1.03752 -0.5012259999999999 -0.652376 -0.6499470000000001 -0.555627 -0.390723 -0.164238 0.120476 0.463521 0.867778 -0.65871 -0.8354819999999999 -0.847618 -0.761235 -0.599232 -0.37129 -0.08100350000000001 0.271766 0.690173 -0.823539 -1.02673 -1.05393 -0.975777 -0.816797 -0.587373 -0.291349 0.07144880000000001 0.504455
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="right_front_camber" active="true" userDefined="false" interpolation_method="akima" xLabel="Geared-Down Input Steer" yLabel="Camber" xUnit="angle" yUnit="angle" datablock="Right-Front Camber" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      1.77491 1.44563 1.1542 0.899208 0.680759 0.500932 0.365132 0.286138 0.301449 1.64178 1.30123 1.00203 0.742549 0.52286 0.345232 0.215611 0.148065 0.183797 1.50159 1.14927 0.841961 0.5778 0.356827 0.181511 0.0583635 0.00279689 0.0598599 1.35425 0.98966 0.673905 0.404875 0.182577 0.0096887 -0.106692 -0.149753 -0.0704655 1.19961 0.822273 0.497741 0.22366 0 -0.170345 -0.279665 -0.309698 -0.20731 1.03752 0.646953 0.313323 0.0340126 -0.191044 -0.358728 -0.460695 -0.477182 -0.350833 0.867778 0.463521 0.120476 -0.164238 -0.390723 -0.555627 -0.6499470000000001 -0.652376 -0.5012259999999999 0.690173 0.271766 -0.08100350000000001 -0.37129 -0.599232 -0.761235 -0.847618 -0.8354819999999999 -0.65871 0.504455 0.07144880000000001 -0.291349 -0.587373 -0.816797 -0.975777 -1.05393 -1.02673 -0.823539
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="left_front_sva" active="true" userDefined="false" interpolation_method="akima" xLabel="Geared-Down Input Steer" yLabel="Side View Angle" xUnit="angle" yUnit="angle" datablock="Left-Front Side View Angle" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      -2.29499 -1.30381 -0.73837 -0.330033 0.001501 0.29256 0.564685 0.834651 1.12039 -2.43292 -1.38912 -0.789816 -0.354495 0.00118354 0.315693 0.612221 0.909332 1.22755 -2.57746 -1.47864 -0.84383 -0.380194 0.000826337 0.339952 0.662095 0.987696 1.33999 -2.72854 -1.57235 -0.900406 -0.40713 0.000430954 0.36534 0.7143119999999999 1.06975 1.45772 -2.88608 -1.67023 -0.959545 -0.435303 0 0.391864 0.768881 1.1555 1.58073 -3.05 -1.77228 -1.02125 -0.464714 -0.000462746 0.419534 0.825821 1.24496 1.70905 -3.22024 -1.87851 -1.08553 -0.495367 -0.000952206 0.448364 0.885154 1.33818 1.84271 -3.3967 -1.98891 -1.1524 -0.527265 -0.00146184 0.478372 0.946909 1.43519 1.98175 -3.57933 -2.10348 -1.22186 -0.560413 -0.00198347 0.509581 1.01112 1.53603 2.1262
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="right_front_sva" active="true" userDefined="false" interpolation_method="akima" xLabel="Geared-Down Input Steer" yLabel="Side View Angle" xUnit="angle" yUnit="angle" datablock="Right-Front Side View Angle" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      1.12039 0.834651 0.564685 0.29256 0.001501 -0.330033 -0.73837 -1.30381 -2.29499 1.22755 0.909332 0.612221 0.315693 0.00118354 -0.354495 -0.789816 -1.38912 -2.43292 1.33999 0.987696 0.662095 0.339952 0.000826337 -0.380194 -0.84383 -1.47864 -2.57746 1.45772 1.06975 0.7143119999999999 0.36534 0.000430954 -0.40713 -0.900406 -1.57235 -2.72854 1.58073 1.1555 0.768881 0.391864 0 -0.435303 -0.959545 -1.67023 -2.88608 1.70905 1.24496 0.825821 0.419534 -0.000462746 -0.464714 -1.02125 -1.77228 -3.05 1.84271 1.33818 0.885154 0.448364 -0.000952206 -0.495367 -1.08553 -1.87851 -3.22024 1.98175 1.43519 0.946909 0.478372 -0.00146184 -0.527265 -1.1524 -1.98891 -3.3967 2.1262 1.53603 1.01112 0.509581 -0.00198347 -0.560413 -1.22186 -2.10348 -3.57933
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="left_front_track" active="true" userDefined="false" interpolation_method="akima" xLabel="Geared-Down Input Steer" yLabel="Track Variation" xUnit="angle" yUnit="length" datablock="Left-Front Track variation" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      -11.9744 -5.79713 -2.81272 -1.6916 -1.97719 -3.47337 -6.102 -9.85613 -14.7854 -11.203 -5.04292 -2.06481 -0.947273 -1.23542 -2.73374 -5.36441 -9.12073 -14.0527 -10.5964 -4.45404 -1.48248 -0.368664 -0.659429 -2.15986 -4.79242 -8.550649999999999 -13.4848 -10.1533 -4.02912 -1.06442 0.0454996 -0.247954 -1.75047 -4.38479 -8.144629999999999 -13.0804 -9.872199999999999 -3.76704 -0.809586 0.296232 0 -1.50458 -4.14052 -7.90169 -12.8386 -9.75212 -3.66693 -0.71717 0.384305 0.0851861 -1.42145 -4.05887 -7.82105 -12.7586 -9.79224 -3.72816 -0.786608 0.310249 0.008117930000000001 -1.50058 -4.13934 -7.90223 -12.8398 -9.99198 -3.95034 -1.01757 0.0743644 -0.230924 -1.74169 -4.38166 -8.14493 -13.082 -10.351 -4.33329 -1.40995 -0.323281 -0.631889 -2.14473 -4.78578 -8.54912 -13.4851
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="right_front_track" active="true" userDefined="false" interpolation_method="akima" xLabel="Geared-Down Input Steer" yLabel="Track Variation" xUnit="angle" yUnit="length" datablock="Right-Front Track variation" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      14.7854 9.85613 6.102 3.47337 1.97719 1.6916 2.81272 5.79713 11.9744 14.0527 9.12073 5.36441 2.73374 1.23542 0.947273 2.06481 5.04292 11.203 13.4848 8.550649999999999 4.79242 2.15986 0.659429 0.368664 1.48248 4.45404 10.5964 13.0804 8.144629999999999 4.38479 1.75047 0.247954 -0.0454996 1.06442 4.02912 10.1533 12.8386 7.90169 4.14052 1.50458 0 -0.296232 0.809586 3.76704 9.872199999999999 12.7586 7.82105 4.05887 1.42145 -0.0851861 -0.384305 0.71717 3.66693 9.75212 12.8398 7.90223 4.13934 1.50058 -0.008117930000000001 -0.310249 0.786608 3.72816 9.79224 13.082 8.14493 4.38166 1.74169 0.230924 -0.0743644 1.01757 3.95034 9.99198 13.4851 8.54912 4.78578 2.14473 0.631889 0.323281 1.40995 4.33329 10.351
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="left_front_base" active="true" userDefined="false" interpolation_method="akima" xLabel="Geared-Down Input Steer" yLabel="Base Variation" xUnit="angle" yUnit="length" datablock="Left-Front Base variation" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      38.4071 27.1907 17.4351 8.437049999999999 -0.0403652 -8.09399 -15.7546 -23.0089 -29.8039 38.3825 27.1841 17.437 8.444279999999999 -0.0295552 -8.080819999999999 -15.7401 -22.9941 -29.7899 38.3551 27.1752 17.4372 8.45041 -0.0191941 -8.06743 -15.7247 -22.9778 -29.7737 38.3243 27.1635 17.4355 8.45533 -0.009326610000000001 -8.05381 -15.7083 -22.9597 -29.7552 38.2896 27.1489 17.4316 8.458909999999999 0 -8.039949999999999 -15.691 -22.9399 -29.7341 38.2505 27.1311 17.4253 8.461029999999999 0.00873577 -8.02582 -15.6725 -22.9182 -29.7104 38.2065 27.1096 17.4165 8.46158 0.0168275 -8.011430000000001 -15.6529 -22.8945 -29.6838 38.1571 27.0842 17.405 8.460430000000001 0.0242186 -7.99677 -15.6321 -22.8686 -29.6543 38.1018 27.0546 17.3905 8.45743 0.0308483 -7.98183 -15.6099 -22.8405 -29.6216
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="right_front_base" active="true" userDefined="false" interpolation_method="akima" xLabel="Geared-Down Input Steer" yLabel="Base Variation" xUnit="angle" yUnit="length" datablock="Right-Front Base variation" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      -29.8039 -23.0089 -15.7546 -8.09399 -0.0403652 8.437049999999999 17.4351 27.1907 38.4071 -29.7899 -22.9941 -15.7401 -8.080819999999999 -0.0295552 8.444279999999999 17.437 27.1841 38.3825 -29.7737 -22.9778 -15.7247 -8.06743 -0.0191941 8.45041 17.4372 27.1752 38.3551 -29.7552 -22.9597 -15.7083 -8.05381 -0.009326610000000001 8.45533 17.4355 27.1635 38.3243 -29.7341 -22.9399 -15.691 -8.039949999999999 0 8.458909999999999 17.4316 27.1489 38.2896 -29.7104 -22.9182 -15.6725 -8.02582 0.00873577 8.461029999999999 17.4253 27.1311 38.2505 -29.6838 -22.8945 -15.6529 -8.011430000000001 0.0168275 8.46158 17.4165 27.1096 38.2065 -29.6543 -22.8686 -15.6321 -7.99677 0.0242186 8.460430000000001 17.405 27.0842 38.1571 -29.6216 -22.8405 -15.6099 -7.98183 0.0308483 8.45743 17.3905 27.0546 38.1018
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="left_caster_angle" active="true" userDefined="false" interpolation_method="akima" xLabel="Geared-Down Input Steer Angle" yLabel="Caster angle" xUnit="angle" yUnit="angle" datablock="Left-Front Caster" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      1.36389 1.36389 1.36389 1.3639 1.3639 1.3639 1.36391 1.36391 1.36392 1.36403 1.36403 1.36403 1.36403 1.36404 1.36404 1.36405 1.36406 1.36406 1.36418 1.36419 1.36419 1.36419 1.3642 1.3642 1.36421 1.36422 1.36422 1.36436 1.36436 1.36436 1.36437 1.36437 1.36438 1.36439 1.3644 1.36441 1.36456 1.36456 1.36456 1.36457 1.36457 1.36458 1.36459 1.3646 1.36461 1.36479 1.36478 1.36479 1.36479 1.3648 1.36481 1.36482 1.36483 1.36484 1.36504 1.36503 1.36504 1.36504 1.36505 1.36506 1.36507 1.36508 1.3651 1.36532 1.36531 1.36531 1.36532 1.36533 1.36534 1.36535 1.36537 1.36539 1.36563 1.36562 1.36562 1.36563 1.36564 1.36565 1.36567 1.36569 1.36571
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="right_caster_angle" active="true" userDefined="false" interpolation_method="akima" xLabel="Geared-Down Input Steer" yLabel="Caster angle" xUnit="angle" yUnit="angle" datablock="Right-Front Caster Angle" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      1.36392 1.36391 1.36391 1.3639 1.3639 1.3639 1.36389 1.36389 1.36389 1.36406 1.36406 1.36405 1.36404 1.36404 1.36403 1.36403 1.36403 1.36403 1.36422 1.36422 1.36421 1.3642 1.3642 1.36419 1.36419 1.36419 1.36418 1.36441 1.3644 1.36439 1.36438 1.36437 1.36437 1.36436 1.36436 1.36436 1.36461 1.3646 1.36459 1.36458 1.36457 1.36457 1.36456 1.36456 1.36456 1.36484 1.36483 1.36482 1.36481 1.3648 1.36479 1.36479 1.36478 1.36479 1.3651 1.36508 1.36507 1.36506 1.36505 1.36504 1.36504 1.36503 1.36504 1.36539 1.36537 1.36535 1.36534 1.36533 1.36532 1.36531 1.36531 1.36532 1.36571 1.36569 1.36567 1.36565 1.36564 1.36563 1.36562 1.36562 1.36563
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="left_kingpin_angle" active="true" userDefined="false" interpolation_method="akima" xLabel="Geared-Down Input Steer Angle" yLabel="Kingpin angle" xUnit="angle" yUnit="angle" datablock="Left-Front kingpin" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      2.03938 2.04034 2.04292 2.0465 2.05086 2.05591 2.06162 2.068 2.07506 2.19699 2.19765 2.20019 2.20388 2.20849 2.21389 2.22006 2.227 2.23474 2.36284 2.36313 2.3656 2.36941 2.37426 2.38004 2.38669 2.39423 2.40269 2.537 2.53687 2.53925 2.54316 2.54827 2.55443 2.5616 2.56977 2.57901 2.71959 2.71898 2.72124 2.72525 2.73061 2.73718 2.74489 2.75375 2.76382 2.91076 2.90961 2.91172 2.91581 2.92144 2.92843 2.93672 2.94631 2.95727 3.11069 3.10892 3.11085 3.11502 3.12092 3.12836 3.13726 3.14763 3.15955 3.31956 3.31711 3.31882 3.32306 3.32925 3.33716 3.34671 3.35792 3.37086 3.53761 3.53441 3.53588 3.54017 3.54665 3.55506 3.56531 3.57741 3.59146
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="right_kingpin_angle" active="true" userDefined="false" interpolation_method="akima" xLabel="Geared-Down Input Steer" yLabel="Kingpin angle" xUnit="angle" yUnit="angle" datablock="Right-Front kingpin Angle" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      2.07506 2.068 2.06162 2.05591 2.05086 2.0465 2.04292 2.04034 2.03938 2.23474 2.227 2.22006 2.21389 2.20849 2.20388 2.20019 2.19765 2.19699 2.40269 2.39423 2.38669 2.38004 2.37426 2.36941 2.3656 2.36313 2.36284 2.57901 2.56977 2.5616 2.55443 2.54827 2.54316 2.53925 2.53687 2.537 2.76382 2.75375 2.74489 2.73718 2.73061 2.72525 2.72124 2.71898 2.71959 2.95727 2.94631 2.93672 2.92843 2.92144 2.91581 2.91172 2.90961 2.91076 3.15955 3.14763 3.13726 3.12836 3.12092 3.11502 3.11085 3.10892 3.11069 3.37086 3.35792 3.34671 3.33716 3.32925 3.32306 3.31882 3.31711 3.31956 3.59146 3.57741 3.56531 3.55506 3.54665 3.54017 3.53588 3.53441 3.53761
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="left_steering_axis_X" active="true" userDefined="false" interpolation_method="akima" xLabel="Geared-Down Input Steer Angle" yLabel="Point on kingpin axis X" xUnit="angle" yUnit="length" datablock="Left-Front kingpin axis X" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      11.0422 11.0433 11.0462 11.0502 11.055 11.0605 11.0667 11.0734 11.0806 11.0397 11.0404 11.0432 11.0472 11.052 11.0577 11.064 11.071 11.0786 11.0372 11.0375 11.04 11.044 11.0489 11.0547 11.0613 11.0686 11.0766 11.0345 11.0344 11.0367 11.0406 11.0456 11.0516 11.0584 11.066 11.0744 11.0318 11.0311 11.0333 11.0371 11.0421 11.0483 11.0553 11.0633 11.0721 11.0289 11.0278 11.0297 11.0334 11.0385 11.0448 11.0522 11.0605 11.0698 11.0259 11.0242 11.0259 11.0296 11.0347 11.0412 11.0488 11.0576 11.0673 11.0228 11.0206 11.022 11.0255 11.0308 11.0375 11.0454 11.0545 11.0648 11.0195 11.0167 11.0179 11.0214 11.0267 11.0335 11.0418 11.0513 11.0621
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="right_steering_axis_X" active="true" userDefined="false" interpolation_method="akima" xLabel="Geared-Down Input Steer" yLabel="Point on kingpin axis X" xUnit="angle" yUnit="length" datablock="Right-Front kingpin axis X" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      11.0806 11.0734 11.0667 11.0605 11.055 11.0502 11.0462 11.0433 11.0422 11.0786 11.071 11.064 11.0577 11.052 11.0472 11.0432 11.0404 11.0397 11.0766 11.0686 11.0613 11.0547 11.0489 11.044 11.04 11.0375 11.0372 11.0744 11.066 11.0584 11.0516 11.0456 11.0406 11.0367 11.0344 11.0345 11.0721 11.0633 11.0553 11.0483 11.0421 11.0371 11.0333 11.0311 11.0318 11.0698 11.0605 11.0522 11.0448 11.0385 11.0334 11.0297 11.0278 11.0289 11.0673 11.0576 11.0488 11.0412 11.0347 11.0296 11.0259 11.0242 11.0259 11.0648 11.0545 11.0454 11.0375 11.0308 11.0255 11.022 11.0206 11.0228 11.0621 11.0513 11.0418 11.0335 11.0267 11.0214 11.0179 11.0167 11.0195
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="left_steering_axis_Y" active="true" userDefined="false" interpolation_method="akima" xLabel="Geared-Down Input Steer Angle" yLabel="Point on kingpin axis Y" xUnit="angle" yUnit="length" datablock="Left-Front kingpin axis Y" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      -49.983 -49.9726 -49.9451 -49.907 -49.8609 -49.8077 -49.7479 -49.6816 -49.6088 -48.6738 -48.6676 -48.6437 -48.609 -48.566 -48.5158 -48.4589 -48.3954 -48.3252 -47.5029 -47.5005 -47.48 -47.4485 -47.4086 -47.3613 -47.3073 -47.2466 -47.1792 -46.4687 -46.4697 -46.4524 -46.424 -46.387 -46.3428 -46.2917 -46.234 -46.1695 -45.57 -45.574 -45.5596 -45.5341 -45.5001 -45.4588 -45.4108 -45.3561 -45.2948 -44.8055 -44.8121 -44.8004 -44.7777 -44.7466 -44.7083 -44.6634 -44.6119 -44.554 -44.1743 -44.183 -44.1738 -44.1538 -44.1255 -44.0902 -44.0484 -44.0003 -43.946 -43.6754 -43.6858 -43.6789 -43.6614 -43.6359 -43.6036 -43.565 -43.5205 -43.4699 -43.3081 -43.3198 -43.3149 -43.2998 -43.2771 -43.2478 -43.2125 -43.1716 -43.1251
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="right_steering_axis_Y" active="true" userDefined="false" interpolation_method="akima" xLabel="Geared-Down Input Steer" yLabel="Point on kingpin axis Y" xUnit="angle" yUnit="length" datablock="Right-Front kingpin axis Y" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      49.6088 49.6816 49.7479 49.8077 49.8609 49.907 49.9451 49.9726 49.983 48.3252 48.3954 48.4589 48.5158 48.566 48.609 48.6437 48.6676 48.6738 47.1792 47.2466 47.3073 47.3613 47.4086 47.4485 47.48 47.5005 47.5029 46.1695 46.234 46.2917 46.3428 46.387 46.424 46.4524 46.4697 46.4687 45.2948 45.3561 45.4108 45.4588 45.5001 45.5341 45.5596 45.574 45.57 44.554 44.6119 44.6634 44.7083 44.7466 44.7777 44.8004 44.8121 44.8055 43.946 44.0003 44.0484 44.0902 44.1255 44.1538 44.1738 44.183 44.1743 43.4699 43.5205 43.565 43.6036 43.6359 43.6614 43.6789 43.6858 43.6754 43.1251 43.1716 43.2125 43.2478 43.2771 43.2998 43.3149 43.3198 43.3081
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="left_steering_axis_Z" active="true" userDefined="false" interpolation_method="akima" xLabel="Geared-Down Input Steer Angle" yLabel="Point on kingpin axis Z" xUnit="angle" yUnit="length" datablock="Left-Front kingpin axis Z" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      -233.107 -233.157 -233.181 -233.189 -233.186 -233.172 -233.15 -233.118 -233.076 -225.597 -225.653 -225.681 -225.693 -225.692 -225.68 -225.658 -225.627 -225.585 -218.086 -218.148 -218.18 -218.195 -218.196 -218.186 -218.166 -218.134 -218.092 -210.571 -210.64 -210.677 -210.695 -210.699 -210.691 -210.671 -210.641 -210.598 -203.055 -203.13 -203.172 -203.193 -203.2 -203.194 -203.176 -203.145 -203.102 -195.535 -195.618 -195.664 -195.689 -195.699 -195.695 -195.678 -195.648 -195.604 -188.012 -188.102 -188.154 -188.183 -188.195 -188.193 -188.177 -188.148 -188.104 -180.486 -180.584 -180.641 -180.674 -180.689 -180.689 -180.674 -180.645 -180.601 -172.956 -173.061 -173.124 -173.161 -173.179 -173.181 -173.168 -173.14 -173.095
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="right_steering_axis_Z" active="true" userDefined="false" interpolation_method="akima" xLabel="Geared-Down Input Steer" yLabel="Point on kingpin axis Z" xUnit="angle" yUnit="length" datablock="Right-Front kingpin axis Z" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      -233.076 -233.118 -233.15 -233.172 -233.186 -233.189 -233.181 -233.157 -233.107 -225.585 -225.627 -225.658 -225.68 -225.692 -225.693 -225.681 -225.653 -225.597 -218.092 -218.134 -218.166 -218.186 -218.196 -218.195 -218.18 -218.148 -218.086 -210.598 -210.641 -210.671 -210.691 -210.699 -210.695 -210.677 -210.64 -210.571 -203.102 -203.145 -203.176 -203.194 -203.2 -203.193 -203.172 -203.13 -203.055 -195.604 -195.648 -195.678 -195.695 -195.699 -195.689 -195.664 -195.618 -195.535 -188.104 -188.148 -188.177 -188.193 -188.195 -188.183 -188.154 -188.102 -188.012 -180.601 -180.645 -180.674 -180.689 -180.689 -180.674 -180.641 -180.584 -180.486 -173.095 -173.14 -173.168 -173.181 -173.179 -173.161 -173.124 -173.061 -172.956
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline2d name="left_front_steer_1d" id="0" active="true" userDefined="false" interpolation_method="akima" xLabel="Geared-Down Input Steer" yLabel="Steer At Ground" xUnit="angle" yUnit="angle" datablock="Left-Front Steering Kinematics">
+                 <![CDATA[
+           -180        -41.7008
+           -135        -28.5682
+            -90        -18.0763
+            -45        -8.74037
+              0               0
+             45         8.44711
+             90         16.8054
+            135         25.2421
+            180         33.9206
+]]>
+               </Spline2d>
+               <Spline2d name="right_front_steer_1d" id="0" active="true" userDefined="false" interpolation_method="akima" xLabel="Geared-Down Input Steer" yLabel="Steer At Ground" xUnit="angle" yUnit="angle" datablock="Right-Front Steering Kinematics">
+                 <![CDATA[
+           -180        -33.9206
+           -135        -25.2421
+            -90        -16.8054
+            -45        -8.44711
+              0               0
+             45         8.74037
+             90         18.0763
+            135         28.5682
+            180         41.7008
+]]>
+               </Spline2d>
+               <Spline2d name="rack_travel_vs_SWA" id="0" active="true" userDefined="false" interpolation_method="akima" xUnit="angle" yUnit="length">
+                 <![CDATA[
+           -180        -47.1286
+           -135        -35.3465
+            -90        -23.5643
+            -45        -11.7822
+              0               0
+             45         11.7822
+             90         23.5643
+            135         35.3465
+            180         47.1286
+]]>
+               </Spline2d>
+               <Spline3d name="rack_force" active="true" userDefined="false" interpolation_method="akima">
+                    <afc:VectorAttribute name="x_data">
+                      -50000 -20000 0 20000 50000
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -1 0 1
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="left_front_rack_steer" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack travel" yLabel="Steer At Ground" xUnit="length" yUnit="angle" datablock="Left-Front Steering Kinematics" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      -41.8499 -28.6147 -18.0802 -8.7181 0.0419088 8.505789999999999 16.8797 25.3316 34.0253 -41.8184 -28.6071 -18.082 -8.7254 0.0306842 8.491400000000001 16.8625 25.3121 34.0036 -41.7834 -28.597 -18.0821 -8.73161 0.0199266 8.47682 16.8445 25.2907 33.9791 -41.7444 -28.5841 -18.0803 -8.73664 0.009682329999999999 8.462059999999999 16.8255 25.2674 33.9514 -41.7008 -28.5682 -18.0763 -8.74037 0 8.44711 16.8054 25.2421 33.9206 -41.6521 -28.5489 -18.0702 -8.742699999999999 -0.00906878 8.43197 16.7843 25.2147 33.8863 -41.5975 -28.526 -18.0615 -8.743510000000001 -0.0174692 8.416650000000001 16.7621 25.1851 33.8485 -41.5367 -28.499 -18.0502 -8.74269 -0.0251427 8.401149999999999 16.7387 25.1532 33.807 -41.4688 -28.4677 -18.036 -8.74009 -0.0320266 8.38547 16.714 25.1189 33.7615
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="right_front_rack_steer" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack travel" yLabel="Steer At Ground" xUnit="length" yUnit="angle" datablock="Right-Front Steering Kinematics" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      -34.0253 -25.3316 -16.8797 -8.505789999999999 -0.0419088 8.7181 18.0802 28.6147 41.8499 -34.0036 -25.3121 -16.8625 -8.491400000000001 -0.0306842 8.7254 18.082 28.6071 41.8184 -33.9791 -25.2907 -16.8445 -8.47682 -0.0199266 8.73161 18.0821 28.597 41.7834 -33.9514 -25.2674 -16.8255 -8.462059999999999 -0.009682329999999999 8.73664 18.0803 28.5841 41.7444 -33.9206 -25.2421 -16.8054 -8.44711 0 8.74037 18.0763 28.5682 41.7008 -33.8863 -25.2147 -16.7843 -8.43197 0.00906878 8.742699999999999 18.0702 28.5489 41.6521 -33.8485 -25.1851 -16.7621 -8.416650000000001 0.0174692 8.743510000000001 18.0615 28.526 41.5975 -33.807 -25.1532 -16.7387 -8.401149999999999 0.0251427 8.74269 18.0502 28.499 41.5367 -33.7615 -25.1189 -16.714 -8.38547 0.0320266 8.74009 18.036 28.4677 41.4688
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="left_front_rack_camber" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack travel" yLabel="Camber" xUnit="length" yUnit="angle" datablock="Left-Front Camber" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0.301449 0.286138 0.365132 0.500932 0.680759 0.899208 1.1542 1.44563 1.77491 0.183797 0.148065 0.215611 0.345232 0.52286 0.742549 1.00203 1.30123 1.64178 0.0598599 0.00279689 0.0583635 0.181511 0.356827 0.5778 0.841961 1.14927 1.50159 -0.0704655 -0.149753 -0.106692 0.0096887 0.182577 0.404875 0.673905 0.98966 1.35425 -0.20731 -0.309698 -0.279665 -0.170345 0 0.22366 0.497741 0.822273 1.19961 -0.350833 -0.477182 -0.460695 -0.358728 -0.191044 0.0340126 0.313323 0.646953 1.03752 -0.5012259999999999 -0.652376 -0.6499470000000001 -0.555627 -0.390723 -0.164238 0.120476 0.463521 0.867778 -0.65871 -0.8354819999999999 -0.847618 -0.761235 -0.599232 -0.37129 -0.08100350000000001 0.271766 0.690173 -0.823539 -1.02673 -1.05393 -0.975777 -0.816797 -0.587373 -0.291349 0.07144880000000001 0.504455
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="right_front_rack_camber" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack travel" yLabel="Camber" xUnit="length" yUnit="angle" datablock="Right-Front Camber" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      1.77491 1.44563 1.1542 0.899208 0.680759 0.500932 0.365132 0.286138 0.301449 1.64178 1.30123 1.00203 0.742549 0.52286 0.345232 0.215611 0.148065 0.183797 1.50159 1.14927 0.841961 0.5778 0.356827 0.181511 0.0583635 0.00279689 0.0598599 1.35425 0.98966 0.673905 0.404875 0.182577 0.0096887 -0.106692 -0.149753 -0.0704655 1.19961 0.822273 0.497741 0.22366 0 -0.170345 -0.279665 -0.309698 -0.20731 1.03752 0.646953 0.313323 0.0340126 -0.191044 -0.358728 -0.460695 -0.477182 -0.350833 0.867778 0.463521 0.120476 -0.164238 -0.390723 -0.555627 -0.6499470000000001 -0.652376 -0.5012259999999999 0.690173 0.271766 -0.08100350000000001 -0.37129 -0.599232 -0.761235 -0.847618 -0.8354819999999999 -0.65871 0.504455 0.07144880000000001 -0.291349 -0.587373 -0.816797 -0.975777 -1.05393 -1.02673 -0.823539
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="left_front_rack_sva" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack travel" yLabel="Side View Angle" xUnit="length" yUnit="angle" datablock="Left-Front Side View Angle" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      -2.29499 -1.30381 -0.73837 -0.330033 0.001501 0.29256 0.564685 0.834651 1.12039 -2.43292 -1.38912 -0.789816 -0.354495 0.00118354 0.315693 0.612221 0.909332 1.22755 -2.57746 -1.47864 -0.84383 -0.380194 0.000826337 0.339952 0.662095 0.987696 1.33999 -2.72854 -1.57235 -0.900406 -0.40713 0.000430954 0.36534 0.7143119999999999 1.06975 1.45772 -2.88608 -1.67023 -0.959545 -0.435303 0 0.391864 0.768881 1.1555 1.58073 -3.05 -1.77228 -1.02125 -0.464714 -0.000462746 0.419534 0.825821 1.24496 1.70905 -3.22024 -1.87851 -1.08553 -0.495367 -0.000952206 0.448364 0.885154 1.33818 1.84271 -3.3967 -1.98891 -1.1524 -0.527265 -0.00146184 0.478372 0.946909 1.43519 1.98175 -3.57933 -2.10348 -1.22186 -0.560413 -0.00198347 0.509581 1.01112 1.53603 2.1262
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="right_front_rack_sva" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack travel" yLabel="Side View Angle" xUnit="length" yUnit="angle" datablock="Right-Front Side View Angle" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      1.12039 0.834651 0.564685 0.29256 0.001501 -0.330033 -0.73837 -1.30381 -2.29499 1.22755 0.909332 0.612221 0.315693 0.00118354 -0.354495 -0.789816 -1.38912 -2.43292 1.33999 0.987696 0.662095 0.339952 0.000826337 -0.380194 -0.84383 -1.47864 -2.57746 1.45772 1.06975 0.7143119999999999 0.36534 0.000430954 -0.40713 -0.900406 -1.57235 -2.72854 1.58073 1.1555 0.768881 0.391864 0 -0.435303 -0.959545 -1.67023 -2.88608 1.70905 1.24496 0.825821 0.419534 -0.000462746 -0.464714 -1.02125 -1.77228 -3.05 1.84271 1.33818 0.885154 0.448364 -0.000952206 -0.495367 -1.08553 -1.87851 -3.22024 1.98175 1.43519 0.946909 0.478372 -0.00146184 -0.527265 -1.1524 -1.98891 -3.3967 2.1262 1.53603 1.01112 0.509581 -0.00198347 -0.560413 -1.22186 -2.10348 -3.57933
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="left_front_rack_track" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack travel" yLabel="Track Variation" xUnit="length" yUnit="length" datablock="Left-Front Track variation" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      -11.9744 -5.79713 -2.81272 -1.6916 -1.97719 -3.47337 -6.102 -9.85613 -14.7854 -11.203 -5.04292 -2.06481 -0.947273 -1.23542 -2.73374 -5.36441 -9.12073 -14.0527 -10.5964 -4.45404 -1.48248 -0.368664 -0.659429 -2.15986 -4.79242 -8.550649999999999 -13.4848 -10.1533 -4.02912 -1.06442 0.0454996 -0.247954 -1.75047 -4.38479 -8.144629999999999 -13.0804 -9.872199999999999 -3.76704 -0.809586 0.296232 0 -1.50458 -4.14052 -7.90169 -12.8386 -9.75212 -3.66693 -0.71717 0.384305 0.0851861 -1.42145 -4.05887 -7.82105 -12.7586 -9.79224 -3.72816 -0.786608 0.310249 0.008117930000000001 -1.50058 -4.13934 -7.90223 -12.8398 -9.99198 -3.95034 -1.01757 0.0743644 -0.230924 -1.74169 -4.38166 -8.14493 -13.082 -10.351 -4.33329 -1.40995 -0.323281 -0.631889 -2.14473 -4.78578 -8.54912 -13.4851
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="right_front_rack_track" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack travel" yLabel="Track Variation" xUnit="length" yUnit="length" datablock="Right-Front Track variation" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      14.7854 9.85613 6.102 3.47337 1.97719 1.6916 2.81272 5.79713 11.9744 14.0527 9.12073 5.36441 2.73374 1.23542 0.947273 2.06481 5.04292 11.203 13.4848 8.550649999999999 4.79242 2.15986 0.659429 0.368664 1.48248 4.45404 10.5964 13.0804 8.144629999999999 4.38479 1.75047 0.247954 -0.0454996 1.06442 4.02912 10.1533 12.8386 7.90169 4.14052 1.50458 0 -0.296232 0.809586 3.76704 9.872199999999999 12.7586 7.82105 4.05887 1.42145 -0.0851861 -0.384305 0.71717 3.66693 9.75212 12.8398 7.90223 4.13934 1.50058 -0.008117930000000001 -0.310249 0.786608 3.72816 9.79224 13.082 8.14493 4.38166 1.74169 0.230924 -0.0743644 1.01757 3.95034 9.99198 13.4851 8.54912 4.78578 2.14473 0.631889 0.323281 1.40995 4.33329 10.351
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="left_front_rack_base" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack travel" yLabel="Base Variation" xUnit="length" yUnit="length" datablock="Left-Front Base variation" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      38.4071 27.1907 17.4351 8.437049999999999 -0.0403652 -8.09399 -15.7546 -23.0089 -29.8039 38.3825 27.1841 17.437 8.444279999999999 -0.0295552 -8.080819999999999 -15.7401 -22.9941 -29.7899 38.3551 27.1752 17.4372 8.45041 -0.0191941 -8.06743 -15.7247 -22.9778 -29.7737 38.3243 27.1635 17.4355 8.45533 -0.009326610000000001 -8.05381 -15.7083 -22.9597 -29.7552 38.2896 27.1489 17.4316 8.458909999999999 0 -8.039949999999999 -15.691 -22.9399 -29.7341 38.2505 27.1311 17.4253 8.461029999999999 0.00873577 -8.02582 -15.6725 -22.9182 -29.7104 38.2065 27.1096 17.4165 8.46158 0.0168275 -8.011430000000001 -15.6529 -22.8945 -29.6838 38.1571 27.0842 17.405 8.460430000000001 0.0242186 -7.99677 -15.6321 -22.8686 -29.6543 38.1018 27.0546 17.3905 8.45743 0.0308483 -7.98183 -15.6099 -22.8405 -29.6216
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="right_front_rack_base" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack travel" yLabel="Base Variation" xUnit="length" yUnit="length" datablock="Right-Front Base variation" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      -29.8039 -23.0089 -15.7546 -8.09399 -0.0403652 8.437049999999999 17.4351 27.1907 38.4071 -29.7899 -22.9941 -15.7401 -8.080819999999999 -0.0295552 8.444279999999999 17.437 27.1841 38.3825 -29.7737 -22.9778 -15.7247 -8.06743 -0.0191941 8.45041 17.4372 27.1752 38.3551 -29.7552 -22.9597 -15.7083 -8.05381 -0.009326610000000001 8.45533 17.4355 27.1635 38.3243 -29.7341 -22.9399 -15.691 -8.039949999999999 0 8.458909999999999 17.4316 27.1489 38.2896 -29.7104 -22.9182 -15.6725 -8.02582 0.00873577 8.461029999999999 17.4253 27.1311 38.2505 -29.6838 -22.8945 -15.6529 -8.011430000000001 0.0168275 8.46158 17.4165 27.1096 38.2065 -29.6543 -22.8686 -15.6321 -7.99677 0.0242186 8.460430000000001 17.405 27.0842 38.1571 -29.6216 -22.8405 -15.6099 -7.98183 0.0308483 8.45743 17.3905 27.0546 38.1018
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="left_caster_rack_angle" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack travel" yLabel="Caster angle" xUnit="length" yUnit="angle" datablock="Left-Front Caster" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      1.36389 1.36389 1.36389 1.3639 1.3639 1.3639 1.36391 1.36391 1.36392 1.36403 1.36403 1.36403 1.36403 1.36404 1.36404 1.36405 1.36406 1.36406 1.36418 1.36419 1.36419 1.36419 1.3642 1.3642 1.36421 1.36422 1.36422 1.36436 1.36436 1.36436 1.36437 1.36437 1.36438 1.36439 1.3644 1.36441 1.36456 1.36456 1.36456 1.36457 1.36457 1.36458 1.36459 1.3646 1.36461 1.36479 1.36478 1.36479 1.36479 1.3648 1.36481 1.36482 1.36483 1.36484 1.36504 1.36503 1.36504 1.36504 1.36505 1.36506 1.36507 1.36508 1.3651 1.36532 1.36531 1.36531 1.36532 1.36533 1.36534 1.36535 1.36537 1.36539 1.36563 1.36562 1.36562 1.36563 1.36564 1.36565 1.36567 1.36569 1.36571
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="right_caster_rack_angle" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack travel" yLabel="Caster angle" xUnit="length" yUnit="angle" datablock="Right-Front Caster Angle" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      1.36392 1.36391 1.36391 1.3639 1.3639 1.3639 1.36389 1.36389 1.36389 1.36406 1.36406 1.36405 1.36404 1.36404 1.36403 1.36403 1.36403 1.36403 1.36422 1.36422 1.36421 1.3642 1.3642 1.36419 1.36419 1.36419 1.36418 1.36441 1.3644 1.36439 1.36438 1.36437 1.36437 1.36436 1.36436 1.36436 1.36461 1.3646 1.36459 1.36458 1.36457 1.36457 1.36456 1.36456 1.36456 1.36484 1.36483 1.36482 1.36481 1.3648 1.36479 1.36479 1.36478 1.36479 1.3651 1.36508 1.36507 1.36506 1.36505 1.36504 1.36504 1.36503 1.36504 1.36539 1.36537 1.36535 1.36534 1.36533 1.36532 1.36531 1.36531 1.36532 1.36571 1.36569 1.36567 1.36565 1.36564 1.36563 1.36562 1.36562 1.36563
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="left_kingpin_rack_angle" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack travel" yLabel="Kingpin angle" xUnit="length" yUnit="angle" datablock="Left-Front kingpin" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      2.03938 2.04034 2.04292 2.0465 2.05086 2.05591 2.06162 2.068 2.07506 2.19699 2.19765 2.20019 2.20388 2.20849 2.21389 2.22006 2.227 2.23474 2.36284 2.36313 2.3656 2.36941 2.37426 2.38004 2.38669 2.39423 2.40269 2.537 2.53687 2.53925 2.54316 2.54827 2.55443 2.5616 2.56977 2.57901 2.71959 2.71898 2.72124 2.72525 2.73061 2.73718 2.74489 2.75375 2.76382 2.91076 2.90961 2.91172 2.91581 2.92144 2.92843 2.93672 2.94631 2.95727 3.11069 3.10892 3.11085 3.11502 3.12092 3.12836 3.13726 3.14763 3.15955 3.31956 3.31711 3.31882 3.32306 3.32925 3.33716 3.34671 3.35792 3.37086 3.53761 3.53441 3.53588 3.54017 3.54665 3.55506 3.56531 3.57741 3.59146
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="right_kingpin_rack_angle" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack travel" yLabel="Kingpin angle" xUnit="length" yUnit="angle" datablock="Right-Front kingpin Angle" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      2.07506 2.068 2.06162 2.05591 2.05086 2.0465 2.04292 2.04034 2.03938 2.23474 2.227 2.22006 2.21389 2.20849 2.20388 2.20019 2.19765 2.19699 2.40269 2.39423 2.38669 2.38004 2.37426 2.36941 2.3656 2.36313 2.36284 2.57901 2.56977 2.5616 2.55443 2.54827 2.54316 2.53925 2.53687 2.537 2.76382 2.75375 2.74489 2.73718 2.73061 2.72525 2.72124 2.71898 2.71959 2.95727 2.94631 2.93672 2.92843 2.92144 2.91581 2.91172 2.90961 2.91076 3.15955 3.14763 3.13726 3.12836 3.12092 3.11502 3.11085 3.10892 3.11069 3.37086 3.35792 3.34671 3.33716 3.32925 3.32306 3.31882 3.31711 3.31956 3.59146 3.57741 3.56531 3.55506 3.54665 3.54017 3.53588 3.53441 3.53761
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="left_rack_steering_axis_X" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack travel" yLabel="Point on kingpin axis X" xUnit="length" yUnit="length" datablock="Left-Front kingpin axis X" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      11.0422 11.0433 11.0462 11.0502 11.055 11.0605 11.0667 11.0734 11.0806 11.0397 11.0404 11.0432 11.0472 11.052 11.0577 11.064 11.071 11.0786 11.0372 11.0375 11.04 11.044 11.0489 11.0547 11.0613 11.0686 11.0766 11.0345 11.0344 11.0367 11.0406 11.0456 11.0516 11.0584 11.066 11.0744 11.0318 11.0311 11.0333 11.0371 11.0421 11.0483 11.0553 11.0633 11.0721 11.0289 11.0278 11.0297 11.0334 11.0385 11.0448 11.0522 11.0605 11.0698 11.0259 11.0242 11.0259 11.0296 11.0347 11.0412 11.0488 11.0576 11.0673 11.0228 11.0206 11.022 11.0255 11.0308 11.0375 11.0454 11.0545 11.0648 11.0195 11.0167 11.0179 11.0214 11.0267 11.0335 11.0418 11.0513 11.0621
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="right_rack_steering_axis_X" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack travel" yLabel="Point on kingpin axis X" xUnit="length" yUnit="length" datablock="Right-Front kingpin axis X" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      11.0806 11.0734 11.0667 11.0605 11.055 11.0502 11.0462 11.0433 11.0422 11.0786 11.071 11.064 11.0577 11.052 11.0472 11.0432 11.0404 11.0397 11.0766 11.0686 11.0613 11.0547 11.0489 11.044 11.04 11.0375 11.0372 11.0744 11.066 11.0584 11.0516 11.0456 11.0406 11.0367 11.0344 11.0345 11.0721 11.0633 11.0553 11.0483 11.0421 11.0371 11.0333 11.0311 11.0318 11.0698 11.0605 11.0522 11.0448 11.0385 11.0334 11.0297 11.0278 11.0289 11.0673 11.0576 11.0488 11.0412 11.0347 11.0296 11.0259 11.0242 11.0259 11.0648 11.0545 11.0454 11.0375 11.0308 11.0255 11.022 11.0206 11.0228 11.0621 11.0513 11.0418 11.0335 11.0267 11.0214 11.0179 11.0167 11.0195
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="left_rack_steering_axis_Y" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack travel" yLabel="Point on kingpin axis Y" xUnit="length" yUnit="length" datablock="Left-Front kingpin axis Y" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      -49.983 -49.9726 -49.9451 -49.907 -49.8609 -49.8077 -49.7479 -49.6816 -49.6088 -48.6738 -48.6676 -48.6437 -48.609 -48.566 -48.5158 -48.4589 -48.3954 -48.3252 -47.5029 -47.5005 -47.48 -47.4485 -47.4086 -47.3613 -47.3073 -47.2466 -47.1792 -46.4687 -46.4697 -46.4524 -46.424 -46.387 -46.3428 -46.2917 -46.234 -46.1695 -45.57 -45.574 -45.5596 -45.5341 -45.5001 -45.4588 -45.4108 -45.3561 -45.2948 -44.8055 -44.8121 -44.8004 -44.7777 -44.7466 -44.7083 -44.6634 -44.6119 -44.554 -44.1743 -44.183 -44.1738 -44.1538 -44.1255 -44.0902 -44.0484 -44.0003 -43.946 -43.6754 -43.6858 -43.6789 -43.6614 -43.6359 -43.6036 -43.565 -43.5205 -43.4699 -43.3081 -43.3198 -43.3149 -43.2998 -43.2771 -43.2478 -43.2125 -43.1716 -43.1251
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="right_rack_steering_axis_Y" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack travel" yLabel="Point on kingpin axis Y" xUnit="length" yUnit="length" datablock="Right-Front kingpin axis Y" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      49.6088 49.6816 49.7479 49.8077 49.8609 49.907 49.9451 49.9726 49.983 48.3252 48.3954 48.4589 48.5158 48.566 48.609 48.6437 48.6676 48.6738 47.1792 47.2466 47.3073 47.3613 47.4086 47.4485 47.48 47.5005 47.5029 46.1695 46.234 46.2917 46.3428 46.387 46.424 46.4524 46.4697 46.4687 45.2948 45.3561 45.4108 45.4588 45.5001 45.5341 45.5596 45.574 45.57 44.554 44.6119 44.6634 44.7083 44.7466 44.7777 44.8004 44.8121 44.8055 43.946 44.0003 44.0484 44.0902 44.1255 44.1538 44.1738 44.183 44.1743 43.4699 43.5205 43.565 43.6036 43.6359 43.6614 43.6789 43.6858 43.6754 43.1251 43.1716 43.2125 43.2478 43.2771 43.2998 43.3149 43.3198 43.3081
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="left_rack_steering_axis_Z" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack travel" yLabel="Point on kingpin axis Z" xUnit="length" yUnit="length" datablock="Left-Front kingpin axis Z" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      -233.107 -233.157 -233.181 -233.189 -233.186 -233.172 -233.15 -233.118 -233.076 -225.597 -225.653 -225.681 -225.693 -225.692 -225.68 -225.658 -225.627 -225.585 -218.086 -218.148 -218.18 -218.195 -218.196 -218.186 -218.166 -218.134 -218.092 -210.571 -210.64 -210.677 -210.695 -210.699 -210.691 -210.671 -210.641 -210.598 -203.055 -203.13 -203.172 -203.193 -203.2 -203.194 -203.176 -203.145 -203.102 -195.535 -195.618 -195.664 -195.689 -195.699 -195.695 -195.678 -195.648 -195.604 -188.012 -188.102 -188.154 -188.183 -188.195 -188.193 -188.177 -188.148 -188.104 -180.486 -180.584 -180.641 -180.674 -180.689 -180.689 -180.674 -180.645 -180.601 -172.956 -173.061 -173.124 -173.161 -173.179 -173.181 -173.168 -173.14 -173.095
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="right_rack_steering_axis_Z" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack travel" yLabel="Point on kingpin axis Z" xUnit="length" yUnit="length" datablock="Right-Front kingpin axis Z" zLabel="Jounce" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      -233.076 -233.118 -233.15 -233.172 -233.186 -233.189 -233.181 -233.157 -233.107 -225.585 -225.627 -225.658 -225.68 -225.692 -225.693 -225.681 -225.653 -225.597 -218.092 -218.134 -218.166 -218.186 -218.196 -218.195 -218.18 -218.148 -218.086 -210.598 -210.641 -210.671 -210.691 -210.699 -210.695 -210.677 -210.64 -210.571 -203.102 -203.145 -203.176 -203.194 -203.2 -203.193 -203.172 -203.13 -203.055 -195.604 -195.648 -195.678 -195.695 -195.699 -195.689 -195.664 -195.618 -195.535 -188.104 -188.148 -188.177 -188.193 -188.195 -188.183 -188.154 -188.102 -188.012 -180.601 -180.645 -180.674 -180.689 -180.689 -180.674 -180.641 -180.584 -180.486 -173.095 -173.14 -173.168 -173.181 -173.179 -173.161 -173.124 -173.061 -172.956
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline2d name="left_rack_front_steer_1d" id="0" active="true" userDefined="false" interpolation_method="akima">
+                 <![CDATA[
+         -50000               0
+         -20000               0
+              0               0
+          20000               0
+          50000               0
+]]>
+               </Spline2d>
+               <Spline2d name="right_rack_front_steer_1d" id="0" active="true" userDefined="false" interpolation_method="akima">
+                 <![CDATA[
+         -50000               0
+         -20000               0
+              0               0
+          20000               0
+          50000               0
+]]>
+               </Spline2d>
+               <CRTSteeringDamper name="steeringDamper" active="true" userDefined="false" attach_part_1="0" attach_part_2="0" attach_location_1="(0 0 0)" attach_location_2="(0 0 0)" activeFlag="true">
+                    <CRTSteeringDamperContext name="context" active="true" userDefined="false" context="default" offset="(0 0 0)">
+                         <CRTMarker name="to_steer" active="true" userDefined="false" location="(0 0 0)" body="tierod">
+                              <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                         </CRTMarker>
+                         <CRTMarker name="to_axle" active="true" userDefined="false" location="(0 0 0)" body="solid_axle">
+                              <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                         </CRTMarker>
+                    </CRTSteeringDamperContext>
+               </CRTSteeringDamper>
+               <Spline2d name="left_front_rack_steer_1d" id="0" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack travel" yLabel="Steer At Ground" xUnit="length" yUnit="angle" datablock="Left-Front Steering Kinematics">
+                 <![CDATA[
+       -47.1286        -41.7008
+       -35.3465        -28.5682
+       -23.5643        -18.0763
+       -11.7822        -8.74037
+              0               0
+        11.7822         8.44711
+        23.5643         16.8054
+        35.3465         25.2421
+        47.1286         33.9206
+]]>
+               </Spline2d>
+               <Spline2d name="right_front_rack_steer_1d" id="0" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack travel" yLabel="Steer At Ground" xUnit="length" yUnit="angle" datablock="Right-Front Steering Kinematics">
+                 <![CDATA[
+       -47.1286        -33.9206
+       -35.3465        -25.2421
+       -23.5643        -16.8054
+       -11.7822        -8.44711
+              0               0
+        11.7822         8.74037
+        23.5643         18.0763
+        35.3465         28.5682
+        47.1286         41.7008
+]]>
+               </Spline2d>
+          </CRTSteeringSystem>
+          <CRTKinematicsData name="front_left_main_spring" active="true" userDefined="false" kingpinMomentActiveFlag="false" useWheelCenterAsRefSys="true" useOutboundPointSpline="false" pointOnUpright="(8.52 -414.78 503.57)" pointOnChassis="(8.52 -574.81 440.51)">
+               <Spline3d name="swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="Component Displacement" xUnit="angle" yUnit="length" datablock="Component Displacement vs Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      -0.434179 -0.397609 -0.299868 -0.164651 0 0.190709 0.406199 0.646417 0.912239 -0.421235 -0.397215 -0.303997 -0.168537 0 0.197778 0.42336 0.676731 0.95896 -0.407029 -0.396691 -0.308431 -0.17274 0 0.205446 0.441993 0.709663 1.00974 -0.391345 -0.395916 -0.31311 -0.177237 0 0.213711 0.462104 0.745247 1.06466 -0.373965 -0.394769 -0.317974 -0.182006 0 0.222564 0.483693 0.7835029999999999 1.12377 -0.354667 -0.393111 -0.322948 -0.187019 0 0.231987 0.506734 0.824407 1.18706 -0.333214 -0.390775 -0.327926 -0.192224 0 0.241936 0.531141 0.8678360000000001 1.25437 -0.309343 -0.387538 -0.33275 -0.197539 0 0.252317 0.556718 0.913476 1.32525 -0.28277 -0.383085 -0.337165 -0.202816 0 0.26295 0.583064 0.960667 1.39874
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Displacement" yLabel="Component Displacement" xUnit="length" yUnit="length" datablock="Component Displacement vs Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      -0.434179 -0.397609 -0.299868 -0.164651 0 0.190709 0.406199 0.646417 0.912239 -0.421235 -0.397215 -0.303997 -0.168537 0 0.197778 0.42336 0.676731 0.95896 -0.407029 -0.396691 -0.308431 -0.17274 0 0.205446 0.441993 0.709663 1.00974 -0.391345 -0.395916 -0.31311 -0.177237 0 0.213711 0.462104 0.745247 1.06466 -0.373965 -0.394769 -0.317974 -0.182006 0 0.222564 0.483693 0.7835029999999999 1.12377 -0.354667 -0.393111 -0.322948 -0.187019 0 0.231987 0.506734 0.824407 1.18706 -0.333214 -0.390775 -0.327926 -0.192224 0 0.241936 0.531141 0.8678360000000001 1.25437 -0.309343 -0.387538 -0.33275 -0.197539 0 0.252317 0.556718 0.913476 1.32525 -0.28277 -0.383085 -0.337165 -0.202816 0 0.26295 0.583064 0.960667 1.39874
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="x_j1_j2_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Wheel Travel" yLabel="x location" xUnit="length" yUnit="length" datablock="X location vs. WheelTravel vs Opposite WheelTravel" zLabel="Opposite Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      0
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="y_j1_j2_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Wheel Travel" yLabel="y location" xUnit="length" yUnit="length" datablock="Y location vs. WheelTravel vs Opposite WheelTravel" zLabel="Opposite Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      0
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="z_j1_j2_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Wheel Travel" yLabel="z location" xUnit="length" yUnit="length" datablock="Z location vs. WheelTravel vs Opposite WheelTravel" zLabel="Opposite Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      0
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="x_swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="x location" xUnit="angle" yUnit="length" datablock="X location vs. Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="y_swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="y location" xUnit="angle" yUnit="length" datablock="Y location vs. Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="z_swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="z location" xUnit="angle" yUnit="length" datablock="Z location vs. Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="x_rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="x location" xUnit="length" yUnit="length" datablock="X location vs. Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="y_rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="y location" xUnit="length" yUnit="length" datablock="Y location vs. Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="z_rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="z location" xUnit="length" yUnit="length" datablock="Z location vs. Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+          </CRTKinematicsData>
+          <CRTKinematicsData name="front_left_main_damper" active="true" userDefined="false" kingpinMomentActiveFlag="false" useWheelCenterAsRefSys="true" useOutboundPointSpline="false" pointOnUpright="(8.52 -414.78 503.57)" pointOnChassis="(8.52 -574.81 440.51)">
+               <Spline3d name="swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="Component Displacement" xUnit="angle" yUnit="length" datablock="Component Displacement vs Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      -0.434179 -0.397609 -0.299868 -0.164651 0 0.190709 0.406199 0.646417 0.912239 -0.421235 -0.397215 -0.303997 -0.168537 0 0.197778 0.42336 0.676731 0.95896 -0.407029 -0.396691 -0.308431 -0.17274 0 0.205446 0.441993 0.709663 1.00974 -0.391345 -0.395916 -0.31311 -0.177237 0 0.213711 0.462104 0.745247 1.06466 -0.373965 -0.394769 -0.317974 -0.182006 0 0.222564 0.483693 0.7835029999999999 1.12377 -0.354667 -0.393111 -0.322948 -0.187019 0 0.231987 0.506734 0.824407 1.18706 -0.333214 -0.390775 -0.327926 -0.192224 0 0.241936 0.531141 0.8678360000000001 1.25437 -0.309343 -0.387538 -0.33275 -0.197539 0 0.252317 0.556718 0.913476 1.32525 -0.28277 -0.383085 -0.337165 -0.202816 0 0.26295 0.583064 0.960667 1.39874
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Displacement" yLabel="Component Displacement" xUnit="length" yUnit="length" datablock="Component Displacement vs Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      -0.434179 -0.397609 -0.299868 -0.164651 0 0.190709 0.406199 0.646417 0.912239 -0.421235 -0.397215 -0.303997 -0.168537 0 0.197778 0.42336 0.676731 0.95896 -0.407029 -0.396691 -0.308431 -0.17274 0 0.205446 0.441993 0.709663 1.00974 -0.391345 -0.395916 -0.31311 -0.177237 0 0.213711 0.462104 0.745247 1.06466 -0.373965 -0.394769 -0.317974 -0.182006 0 0.222564 0.483693 0.7835029999999999 1.12377 -0.354667 -0.393111 -0.322948 -0.187019 0 0.231987 0.506734 0.824407 1.18706 -0.333214 -0.390775 -0.327926 -0.192224 0 0.241936 0.531141 0.8678360000000001 1.25437 -0.309343 -0.387538 -0.33275 -0.197539 0 0.252317 0.556718 0.913476 1.32525 -0.28277 -0.383085 -0.337165 -0.202816 0 0.26295 0.583064 0.960667 1.39874
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="x_j1_j2_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Wheel Travel" yLabel="x location" xUnit="length" yUnit="length" datablock="X location vs. WheelTravel vs Opposite WheelTravel" zLabel="Opposite Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      0
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="y_j1_j2_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Wheel Travel" yLabel="y location" xUnit="length" yUnit="length" datablock="Y location vs. WheelTravel vs Opposite WheelTravel" zLabel="Opposite Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      0
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="z_j1_j2_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Wheel Travel" yLabel="z location" xUnit="length" yUnit="length" datablock="Z location vs. WheelTravel vs Opposite WheelTravel" zLabel="Opposite Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      0
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="x_swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="x location" xUnit="angle" yUnit="length" datablock="X location vs. Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="y_swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="y location" xUnit="angle" yUnit="length" datablock="Y location vs. Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="z_swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="z location" xUnit="angle" yUnit="length" datablock="Z location vs. Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="x_rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="x location" xUnit="length" yUnit="length" datablock="X location vs. Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="y_rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="y location" xUnit="length" yUnit="length" datablock="Y location vs. Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="z_rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="z location" xUnit="length" yUnit="length" datablock="Z location vs. Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+          </CRTKinematicsData>
+          <CRTKinematicsData name="front_left_main_bumpstop" active="true" userDefined="false" kingpinMomentActiveFlag="false" useWheelCenterAsRefSys="true" useOutboundPointSpline="false" pointOnUpright="(8.52 -414.78 503.57)" pointOnChassis="(8.52 -574.81 440.51)">
+               <Spline3d name="swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="Component Displacement" xUnit="angle" yUnit="length" datablock="Component Displacement vs Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      1.8948 1.73949 1.32037 0.731251 0 -0.86492 -1.86379 -3.00217 -4.28979 2.41451 2.27715 1.74368 0.967424 0 -1.13743 -2.43741 -3.9006 -5.53391 2.38696 2.32633 1.80872 1.01297 0 -1.20466 -2.5915 -4.16053 -5.91909 2.27179 2.29834 1.81746 1.0286 0 -1.23968 -2.67971 -4.32008 -6.16914 2.1345 2.25331 1.81478 1.03857 0 -1.26928 -2.7575 -4.46483 -6.40081 1.98946 2.20521 1.81146 1.04883 0 -1.30032 -2.83932 -4.61744 -6.64557 1.8404 2.15845 1.81118 1.06153 0 -1.33545 -2.93094 -4.78723 -6.91672 1.68801 2.11483 1.81577 1.07784 0 -1.37628 -3.036 -4.98031 -7.22331 1.53193 2.07545 1.82664 1.09874 0 -1.42432 -3.15801 -5.20271 -7.57444
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Displacement" yLabel="Component Displacement" xUnit="length" yUnit="length" datablock="Component Displacement vs Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      1.8948 1.73949 1.32037 0.731251 0 -0.86492 -1.86379 -3.00217 -4.28979 2.41451 2.27715 1.74368 0.967424 0 -1.13743 -2.43741 -3.9006 -5.53391 2.38696 2.32633 1.80872 1.01297 0 -1.20466 -2.5915 -4.16053 -5.91909 2.27179 2.29834 1.81746 1.0286 0 -1.23968 -2.67971 -4.32008 -6.16914 2.1345 2.25331 1.81478 1.03857 0 -1.26928 -2.7575 -4.46483 -6.40081 1.98946 2.20521 1.81146 1.04883 0 -1.30032 -2.83932 -4.61744 -6.64557 1.8404 2.15845 1.81118 1.06153 0 -1.33545 -2.93094 -4.78723 -6.91672 1.68801 2.11483 1.81577 1.07784 0 -1.37628 -3.036 -4.98031 -7.22331 1.53193 2.07545 1.82664 1.09874 0 -1.42432 -3.15801 -5.20271 -7.57444
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="x_j1_j2_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Wheel Travel" yLabel="x location" xUnit="length" yUnit="length" datablock="X location vs. WheelTravel vs Opposite WheelTravel" zLabel="Opposite Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      0
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="y_j1_j2_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Wheel Travel" yLabel="y location" xUnit="length" yUnit="length" datablock="Y location vs. WheelTravel vs Opposite WheelTravel" zLabel="Opposite Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      0
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="z_j1_j2_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Wheel Travel" yLabel="z location" xUnit="length" yUnit="length" datablock="Z location vs. WheelTravel vs Opposite WheelTravel" zLabel="Opposite Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      0
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="x_swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="x location" xUnit="angle" yUnit="length" datablock="X location vs. Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="y_swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="y location" xUnit="angle" yUnit="length" datablock="Y location vs. Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="z_swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="z location" xUnit="angle" yUnit="length" datablock="Z location vs. Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="x_rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="x location" xUnit="length" yUnit="length" datablock="X location vs. Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="y_rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="y location" xUnit="length" yUnit="length" datablock="Y location vs. Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="z_rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="z location" xUnit="length" yUnit="length" datablock="Z location vs. Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+          </CRTKinematicsData>
+          <CRTKinematicsData name="front_left_main_reboundstop" active="true" userDefined="false" kingpinMomentActiveFlag="false" useWheelCenterAsRefSys="true" useOutboundPointSpline="false" pointOnUpright="(8.52 -414.78 503.57)" pointOnChassis="(8.52 -574.81 440.51)">
+               <Spline3d name="swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="Component Displacement" xUnit="angle" yUnit="length" datablock="Component Displacement vs Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      1.8948 1.73949 1.32037 0.731251 0 -0.86492 -1.86379 -3.00217 -4.28979 2.41451 2.27715 1.74368 0.967424 0 -1.13743 -2.43741 -3.9006 -5.53391 2.38696 2.32633 1.80872 1.01297 0 -1.20466 -2.5915 -4.16053 -5.91909 2.27179 2.29834 1.81746 1.0286 0 -1.23968 -2.67971 -4.32008 -6.16914 2.1345 2.25331 1.81478 1.03857 0 -1.26928 -2.7575 -4.46483 -6.40081 1.98946 2.20521 1.81146 1.04883 0 -1.30032 -2.83932 -4.61744 -6.64557 1.8404 2.15845 1.81118 1.06153 0 -1.33545 -2.93094 -4.78723 -6.91672 1.68801 2.11483 1.81577 1.07784 0 -1.37628 -3.036 -4.98031 -7.22331 1.53193 2.07545 1.82664 1.09874 0 -1.42432 -3.15801 -5.20271 -7.57444
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Displacement" yLabel="Component Displacement" xUnit="length" yUnit="length" datablock="Component Displacement vs Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      1.8948 1.73949 1.32037 0.731251 0 -0.86492 -1.86379 -3.00217 -4.28979 2.41451 2.27715 1.74368 0.967424 0 -1.13743 -2.43741 -3.9006 -5.53391 2.38696 2.32633 1.80872 1.01297 0 -1.20466 -2.5915 -4.16053 -5.91909 2.27179 2.29834 1.81746 1.0286 0 -1.23968 -2.67971 -4.32008 -6.16914 2.1345 2.25331 1.81478 1.03857 0 -1.26928 -2.7575 -4.46483 -6.40081 1.98946 2.20521 1.81146 1.04883 0 -1.30032 -2.83932 -4.61744 -6.64557 1.8404 2.15845 1.81118 1.06153 0 -1.33545 -2.93094 -4.78723 -6.91672 1.68801 2.11483 1.81577 1.07784 0 -1.37628 -3.036 -4.98031 -7.22331 1.53193 2.07545 1.82664 1.09874 0 -1.42432 -3.15801 -5.20271 -7.57444
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="x_j1_j2_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Wheel Travel" yLabel="x location" xUnit="length" yUnit="length" datablock="X location vs. WheelTravel vs Opposite WheelTravel" zLabel="Opposite Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      0
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="y_j1_j2_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Wheel Travel" yLabel="y location" xUnit="length" yUnit="length" datablock="Y location vs. WheelTravel vs Opposite WheelTravel" zLabel="Opposite Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      0
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="z_j1_j2_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Wheel Travel" yLabel="z location" xUnit="length" yUnit="length" datablock="Z location vs. WheelTravel vs Opposite WheelTravel" zLabel="Opposite Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      0
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="x_swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="x location" xUnit="angle" yUnit="length" datablock="X location vs. Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="y_swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="y location" xUnit="angle" yUnit="length" datablock="Y location vs. Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="z_swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="z location" xUnit="angle" yUnit="length" datablock="Z location vs. Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="x_rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="x location" xUnit="length" yUnit="length" datablock="X location vs. Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="y_rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="y location" xUnit="length" yUnit="length" datablock="Y location vs. Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="z_rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="z location" xUnit="length" yUnit="length" datablock="Z location vs. Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+          </CRTKinematicsData>
+          <CRTKinematicsData name="front_left_anti_roll_force" active="true" userDefined="false" kingpinMomentActiveFlag="false" useWheelCenterAsRefSys="true" useOutboundPointSpline="true" pointOnUpright="(0 0 0)" pointOnChassis="(0 0 0)">
+               <Spline3d name="swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="ARB Deformation" xUnit="angle" yUnit="angle" datablock="ARB Deformation vs Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Displacement" yLabel="ARB Deformation" xUnit="length" yUnit="angle" datablock="ARB Deformation vs Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="x_j1_j2_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Wheel Travel" yLabel="x location" xUnit="length" yUnit="length" datablock="X location vs. WheelTravel vs Opposite WheelTravel" zLabel="Opposite Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      0
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="y_j1_j2_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Wheel Travel" yLabel="y location" xUnit="length" yUnit="length" datablock="Y location vs. WheelTravel vs Opposite WheelTravel" zLabel="Opposite Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      0
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="z_j1_j2_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Wheel Travel" yLabel="z location" xUnit="length" yUnit="length" datablock="Z location vs. WheelTravel vs Opposite WheelTravel" zLabel="Opposite Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      0
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="x_swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="x location" xUnit="angle" yUnit="length" datablock="X location vs. Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="y_swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="y location" xUnit="angle" yUnit="length" datablock="Y location vs. Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="z_swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="z location" xUnit="angle" yUnit="length" datablock="Z location vs. Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="x_rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="x location" xUnit="length" yUnit="length" datablock="X location vs. Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="y_rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="y location" xUnit="length" yUnit="length" datablock="Y location vs. Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="z_rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="z location" xUnit="length" yUnit="length" datablock="Z location vs. Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+          </CRTKinematicsData>
+          <CRTKinematicsData name="front_right_main_spring" active="true" userDefined="false" kingpinMomentActiveFlag="false" useWheelCenterAsRefSys="true" useOutboundPointSpline="false" pointOnUpright="(8.52 414.78 503.57)" pointOnChassis="(8.52 574.81 440.51)">
+               <Spline3d name="swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="Component Displacement" xUnit="angle" yUnit="length" datablock="Component Displacement vs Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0.912239 0.646417 0.406199 0.190709 0 -0.164651 -0.299868 -0.397609 -0.434179 0.95896 0.676731 0.42336 0.197778 0 -0.168537 -0.303997 -0.397215 -0.421235 1.00974 0.709663 0.441993 0.205446 0 -0.17274 -0.308431 -0.396691 -0.40703 1.06466 0.745247 0.462104 0.213711 0 -0.177237 -0.31311 -0.395916 -0.391346 1.12377 0.7835029999999999 0.483693 0.222564 0 -0.182006 -0.317974 -0.394769 -0.373965 1.18706 0.824406 0.506734 0.231987 0 -0.187019 -0.322948 -0.393112 -0.354667 1.25437 0.8678360000000001 0.531141 0.241936 0 -0.192224 -0.327926 -0.390775 -0.333213 1.32525 0.913476 0.556718 0.252317 0 -0.197539 -0.33275 -0.387538 -0.309343 1.39874 0.960667 0.583064 0.26295 0 -0.202816 -0.337165 -0.383085 -0.28277
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Displacement" yLabel="Component Displacement" xUnit="length" yUnit="length" datablock="Component Displacement vs Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0.912239 0.646417 0.406199 0.190709 0 -0.164651 -0.299868 -0.397609 -0.434179 0.95896 0.676731 0.42336 0.197778 0 -0.168537 -0.303997 -0.397215 -0.421235 1.00974 0.709663 0.441993 0.205446 0 -0.17274 -0.308431 -0.396691 -0.40703 1.06466 0.745247 0.462104 0.213711 0 -0.177237 -0.31311 -0.395916 -0.391346 1.12377 0.7835029999999999 0.483693 0.222564 0 -0.182006 -0.317974 -0.394769 -0.373965 1.18706 0.824406 0.506734 0.231987 0 -0.187019 -0.322948 -0.393112 -0.354667 1.25437 0.8678360000000001 0.531141 0.241936 0 -0.192224 -0.327926 -0.390775 -0.333213 1.32525 0.913476 0.556718 0.252317 0 -0.197539 -0.33275 -0.387538 -0.309343 1.39874 0.960667 0.583064 0.26295 0 -0.202816 -0.337165 -0.383085 -0.28277
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="x_j1_j2_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Wheel Travel" yLabel="x location" xUnit="length" yUnit="length" datablock="X location vs. WheelTravel vs Opposite WheelTravel" zLabel="Opposite Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      0
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="y_j1_j2_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Wheel Travel" yLabel="y location" xUnit="length" yUnit="length" datablock="Y location vs. WheelTravel vs Opposite WheelTravel" zLabel="Opposite Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      0
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="z_j1_j2_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Wheel Travel" yLabel="z location" xUnit="length" yUnit="length" datablock="Z location vs. WheelTravel vs Opposite WheelTravel" zLabel="Opposite Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      0
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="x_swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="x location" xUnit="angle" yUnit="length" datablock="X location vs. Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="y_swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="y location" xUnit="angle" yUnit="length" datablock="Y location vs. Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="z_swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="z location" xUnit="angle" yUnit="length" datablock="Z location vs. Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="x_rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="x location" xUnit="length" yUnit="length" datablock="X location vs. Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="y_rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="y location" xUnit="length" yUnit="length" datablock="Y location vs. Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="z_rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="z location" xUnit="length" yUnit="length" datablock="Z location vs. Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+          </CRTKinematicsData>
+          <CRTKinematicsData name="front_right_main_damper" active="true" userDefined="false" kingpinMomentActiveFlag="false" useWheelCenterAsRefSys="true" useOutboundPointSpline="false" pointOnUpright="(8.52 414.78 503.57)" pointOnChassis="(8.52 574.81 440.51)">
+               <Spline3d name="swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="Component Displacement" xUnit="angle" yUnit="length" datablock="Component Displacement vs Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0.912239 0.646417 0.406199 0.190709 0 -0.164651 -0.299868 -0.397609 -0.434179 0.95896 0.676731 0.42336 0.197778 0 -0.168537 -0.303997 -0.397215 -0.421235 1.00974 0.709663 0.441993 0.205446 0 -0.17274 -0.308431 -0.396691 -0.40703 1.06466 0.745247 0.462104 0.213711 0 -0.177237 -0.31311 -0.395916 -0.391346 1.12377 0.7835029999999999 0.483693 0.222564 0 -0.182006 -0.317974 -0.394769 -0.373965 1.18706 0.824406 0.506734 0.231987 0 -0.187019 -0.322948 -0.393112 -0.354667 1.25437 0.8678360000000001 0.531141 0.241936 0 -0.192224 -0.327926 -0.390775 -0.333213 1.32525 0.913476 0.556718 0.252317 0 -0.197539 -0.33275 -0.387538 -0.309343 1.39874 0.960667 0.583064 0.26295 0 -0.202816 -0.337165 -0.383085 -0.28277
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Displacement" yLabel="Component Displacement" xUnit="length" yUnit="length" datablock="Component Displacement vs Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0.912239 0.646417 0.406199 0.190709 0 -0.164651 -0.299868 -0.397609 -0.434179 0.95896 0.676731 0.42336 0.197778 0 -0.168537 -0.303997 -0.397215 -0.421235 1.00974 0.709663 0.441993 0.205446 0 -0.17274 -0.308431 -0.396691 -0.40703 1.06466 0.745247 0.462104 0.213711 0 -0.177237 -0.31311 -0.395916 -0.391346 1.12377 0.7835029999999999 0.483693 0.222564 0 -0.182006 -0.317974 -0.394769 -0.373965 1.18706 0.824406 0.506734 0.231987 0 -0.187019 -0.322948 -0.393112 -0.354667 1.25437 0.8678360000000001 0.531141 0.241936 0 -0.192224 -0.327926 -0.390775 -0.333213 1.32525 0.913476 0.556718 0.252317 0 -0.197539 -0.33275 -0.387538 -0.309343 1.39874 0.960667 0.583064 0.26295 0 -0.202816 -0.337165 -0.383085 -0.28277
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="x_j1_j2_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Wheel Travel" yLabel="x location" xUnit="length" yUnit="length" datablock="X location vs. WheelTravel vs Opposite WheelTravel" zLabel="Opposite Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      0
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="y_j1_j2_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Wheel Travel" yLabel="y location" xUnit="length" yUnit="length" datablock="Y location vs. WheelTravel vs Opposite WheelTravel" zLabel="Opposite Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      0
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="z_j1_j2_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Wheel Travel" yLabel="z location" xUnit="length" yUnit="length" datablock="Z location vs. WheelTravel vs Opposite WheelTravel" zLabel="Opposite Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      0
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="x_swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="x location" xUnit="angle" yUnit="length" datablock="X location vs. Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="y_swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="y location" xUnit="angle" yUnit="length" datablock="Y location vs. Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="z_swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="z location" xUnit="angle" yUnit="length" datablock="Z location vs. Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="x_rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="x location" xUnit="length" yUnit="length" datablock="X location vs. Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="y_rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="y location" xUnit="length" yUnit="length" datablock="Y location vs. Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="z_rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="z location" xUnit="length" yUnit="length" datablock="Z location vs. Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+          </CRTKinematicsData>
+          <CRTKinematicsData name="front_right_main_bumpstop" active="true" userDefined="false" kingpinMomentActiveFlag="false" useWheelCenterAsRefSys="true" useOutboundPointSpline="false" pointOnUpright="(8.52 414.78 503.57)" pointOnChassis="(8.52 574.81 440.51)">
+               <Spline3d name="swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="Component Displacement" xUnit="angle" yUnit="length" datablock="Component Displacement vs Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      -4.28979 -3.00217 -1.86379 -0.86492 0 0.731251 1.32037 1.73949 1.8948 -5.53391 -3.9006 -2.43741 -1.13743 0 0.967428 1.74368 2.27715 2.41451 -5.91909 -4.16053 -2.5915 -1.20466 0 1.01297 1.80872 2.32633 2.38696 -6.16914 -4.32008 -2.67971 -1.23968 0 1.0286 1.81746 2.29834 2.2718 -6.40081 -4.46483 -2.7575 -1.26928 0 1.03857 1.81478 2.25331 2.1345 -6.64556 -4.61744 -2.83932 -1.30032 0 1.04884 1.81146 2.20522 1.98946 -6.91672 -4.78723 -2.93094 -1.33545 0 1.06153 1.81118 2.15845 1.84039 -7.22331 -4.98031 -3.036 -1.37628 0 1.07784 1.81577 2.11483 1.68801 -7.57444 -5.20271 -3.15801 -1.42432 0 1.09874 1.82664 2.07545 1.53193
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Displacement" yLabel="Component Displacement" xUnit="length" yUnit="length" datablock="Component Displacement vs Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      -4.28979 -3.00217 -1.86379 -0.86492 0 0.731251 1.32037 1.73949 1.8948 -5.53391 -3.9006 -2.43741 -1.13743 0 0.967428 1.74368 2.27715 2.41451 -5.91909 -4.16053 -2.5915 -1.20466 0 1.01297 1.80872 2.32633 2.38696 -6.16914 -4.32008 -2.67971 -1.23968 0 1.0286 1.81746 2.29834 2.2718 -6.40081 -4.46483 -2.7575 -1.26928 0 1.03857 1.81478 2.25331 2.1345 -6.64556 -4.61744 -2.83932 -1.30032 0 1.04884 1.81146 2.20522 1.98946 -6.91672 -4.78723 -2.93094 -1.33545 0 1.06153 1.81118 2.15845 1.84039 -7.22331 -4.98031 -3.036 -1.37628 0 1.07784 1.81577 2.11483 1.68801 -7.57444 -5.20271 -3.15801 -1.42432 0 1.09874 1.82664 2.07545 1.53193
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="x_j1_j2_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Wheel Travel" yLabel="x location" xUnit="length" yUnit="length" datablock="X location vs. WheelTravel vs Opposite WheelTravel" zLabel="Opposite Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      0
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="y_j1_j2_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Wheel Travel" yLabel="y location" xUnit="length" yUnit="length" datablock="Y location vs. WheelTravel vs Opposite WheelTravel" zLabel="Opposite Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      0
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="z_j1_j2_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Wheel Travel" yLabel="z location" xUnit="length" yUnit="length" datablock="Z location vs. WheelTravel vs Opposite WheelTravel" zLabel="Opposite Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      0
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="x_swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="x location" xUnit="angle" yUnit="length" datablock="X location vs. Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="y_swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="y location" xUnit="angle" yUnit="length" datablock="Y location vs. Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="z_swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="z location" xUnit="angle" yUnit="length" datablock="Z location vs. Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="x_rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="x location" xUnit="length" yUnit="length" datablock="X location vs. Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="y_rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="y location" xUnit="length" yUnit="length" datablock="Y location vs. Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="z_rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="z location" xUnit="length" yUnit="length" datablock="Z location vs. Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+          </CRTKinematicsData>
+          <CRTKinematicsData name="front_right_main_reboundstop" active="true" userDefined="false" kingpinMomentActiveFlag="false" useWheelCenterAsRefSys="true" useOutboundPointSpline="false" pointOnUpright="(8.52 414.78 503.57)" pointOnChassis="(8.52 574.81 440.51)">
+               <Spline3d name="swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="Component Displacement" xUnit="angle" yUnit="length" datablock="Component Displacement vs Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      -4.28979 -3.00217 -1.86379 -0.86492 0 0.731251 1.32037 1.73949 1.8948 -5.53391 -3.9006 -2.43741 -1.13743 0 0.967428 1.74368 2.27715 2.41451 -5.91909 -4.16053 -2.5915 -1.20466 0 1.01297 1.80872 2.32633 2.38696 -6.16914 -4.32008 -2.67971 -1.23968 0 1.0286 1.81746 2.29834 2.2718 -6.40081 -4.46483 -2.7575 -1.26928 0 1.03857 1.81478 2.25331 2.1345 -6.64556 -4.61744 -2.83932 -1.30032 0 1.04884 1.81146 2.20522 1.98946 -6.91672 -4.78723 -2.93094 -1.33545 0 1.06153 1.81118 2.15845 1.84039 -7.22331 -4.98031 -3.036 -1.37628 0 1.07784 1.81577 2.11483 1.68801 -7.57444 -5.20271 -3.15801 -1.42432 0 1.09874 1.82664 2.07545 1.53193
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Displacement" yLabel="Component Displacement" xUnit="length" yUnit="length" datablock="Component Displacement vs Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      -4.28979 -3.00217 -1.86379 -0.86492 0 0.731251 1.32037 1.73949 1.8948 -5.53391 -3.9006 -2.43741 -1.13743 0 0.967428 1.74368 2.27715 2.41451 -5.91909 -4.16053 -2.5915 -1.20466 0 1.01297 1.80872 2.32633 2.38696 -6.16914 -4.32008 -2.67971 -1.23968 0 1.0286 1.81746 2.29834 2.2718 -6.40081 -4.46483 -2.7575 -1.26928 0 1.03857 1.81478 2.25331 2.1345 -6.64556 -4.61744 -2.83932 -1.30032 0 1.04884 1.81146 2.20522 1.98946 -6.91672 -4.78723 -2.93094 -1.33545 0 1.06153 1.81118 2.15845 1.84039 -7.22331 -4.98031 -3.036 -1.37628 0 1.07784 1.81577 2.11483 1.68801 -7.57444 -5.20271 -3.15801 -1.42432 0 1.09874 1.82664 2.07545 1.53193
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="x_j1_j2_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Wheel Travel" yLabel="x location" xUnit="length" yUnit="length" datablock="X location vs. WheelTravel vs Opposite WheelTravel" zLabel="Opposite Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      0
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="y_j1_j2_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Wheel Travel" yLabel="y location" xUnit="length" yUnit="length" datablock="Y location vs. WheelTravel vs Opposite WheelTravel" zLabel="Opposite Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      0
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="z_j1_j2_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Wheel Travel" yLabel="z location" xUnit="length" yUnit="length" datablock="Z location vs. WheelTravel vs Opposite WheelTravel" zLabel="Opposite Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      0
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="x_swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="x location" xUnit="angle" yUnit="length" datablock="X location vs. Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="y_swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="y location" xUnit="angle" yUnit="length" datablock="Y location vs. Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="z_swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="z location" xUnit="angle" yUnit="length" datablock="Z location vs. Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="x_rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="x location" xUnit="length" yUnit="length" datablock="X location vs. Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="y_rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="y location" xUnit="length" yUnit="length" datablock="Y location vs. Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="z_rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="z location" xUnit="length" yUnit="length" datablock="Z location vs. Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+          </CRTKinematicsData>
+          <CRTKinematicsData name="front_right_anti_roll_force" active="true" userDefined="false" kingpinMomentActiveFlag="false" useWheelCenterAsRefSys="true" useOutboundPointSpline="true" pointOnUpright="(0 0 0)" pointOnChassis="(0 0 0)">
+               <Spline3d name="swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="ARB Deformation" xUnit="angle" yUnit="angle" datablock="ARB Deformation vs Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Displacement" yLabel="ARB Deformation" xUnit="length" yUnit="angle" datablock="ARB Deformation vs Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="x_j1_j2_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Wheel Travel" yLabel="x location" xUnit="length" yUnit="length" datablock="X location vs. WheelTravel vs Opposite WheelTravel" zLabel="Opposite Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      0
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="y_j1_j2_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Wheel Travel" yLabel="y location" xUnit="length" yUnit="length" datablock="Y location vs. WheelTravel vs Opposite WheelTravel" zLabel="Opposite Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      0
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="z_j1_j2_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Wheel Travel" yLabel="z location" xUnit="length" yUnit="length" datablock="Z location vs. WheelTravel vs Opposite WheelTravel" zLabel="Opposite Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      0
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="x_swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="x location" xUnit="angle" yUnit="length" datablock="X location vs. Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="y_swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="y location" xUnit="angle" yUnit="length" datablock="Y location vs. Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="z_swa_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Steering Wheel Angle" yLabel="z location" xUnit="angle" yUnit="length" datablock="Z location vs. Steering Wheel Angle vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -180 -135 -90 -45 0 45 90 135 180
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="x_rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="x location" xUnit="length" yUnit="length" datablock="X location vs. Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="y_rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="y location" xUnit="length" yUnit="length" datablock="Y location vs. Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="z_rack_spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Rack Travel" yLabel="z location" xUnit="length" yUnit="length" datablock="Z location vs. Rack Travel vs Wheel Travel" zLabel="Wheel Travel" zUnit="length">
+                    <afc:VectorAttribute name="x_data">
+                      -47.1286 -35.3465 -23.5643 -11.7822 0 11.7822 23.5643 35.3465 47.1286
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
+                    </afc:VectorAttribute>
+               </Spline3d>
+          </CRTKinematicsData>
+          <CRTAdvancedSteering name="advanced_steering" active="true" userDefined="false" activeFlag="false" useInternal="false" pluginLibrary="steering_extdll" solverIntegrationStep="1e-05" solverIntegratorType="euler" steeringPidKp="1000.0" steeringPidKi="100.0" steeringPidKd="10.0" steeringAssistType="pinion EPS" steeringAssistActive="false" eMotorKt="0.015" eMotorColumnRatio="1.87e-06" eMotorPinionRatio="1.87e-06" eMotorRackRatio="2.87e-06" eMotorTau="0" eMotorDefaultCurrentMap="1" eServoGearFlag="false" eServoGearRigidFlag="false" eServoGearInertia="1e-06" eServoGearTorsionStiffness="1.0" eServoGearTorsionDamping="1.0" eServoGearEfficiency="1.0" hPistonArea="502.4" hDensity="8.25e-07" hTau="0" hBulkCoefficient="550.0" hPistonVolume="82000.0" hOrificeArea="50.24" hOrificeCoefficient="0.6" steeringWheelLowPassFrequency="40.0" steeringWheelModelError="10.0" steeringWheelMeasureError="1e-05" driverHandComplianceFlag="false" driverHandInertia="1.0" driverHandTorsionStiffness="1000.0" driverHandTorsionDamping="10.0">
+               <CRTMechanicalSteering name="mechanicalSteering" active="true" userDefined="false" columnALocation="(0 0 0)" columnBLocation="(0 0 0)" columnCLocation="(0 0 0)" columnDLocation="(0 0 0)" columnELocation="(0 0 0)" steeringColumnConfiguration="two hook joints" columnHookMountingAngle="0" columnHookRelativeAngle="0" columnExtraHookRelativeAngle="0" steeringWheelInertia="-1.0" steeringWheelMass="0" steeringWheelCgLatOffset="0" steeringWheelCgVertOffset="0" columnInertia="1.0" intermediateColumnInertia="-1.0" intermediateExtraColumnInertia="-1.0" lowerColumnInertia="-1.0" torsionBarFlag="true" torsionBarStiffness="1.0" torsionBarStiffnessAux="3500.0" torsionBarTau="0.01" torsionBarDamping="1.0" torsionBarAttachment="upper column" torsionBarTwistLimit="1.0" torsionBarLimitStiffness="1.0" meshStiffness="1.0" hardyDiskStiffness="1.0" steeringRatioMethod="constant" rackToPinionRatio="1.0" rackToPinionRatio_scaleFactor="1.0" rackMaxTravel="1.0" rackMass="3.0" rackDamping="0" upperColumnStiffness="0" lowerColumnStiffness="0" rigidUpperColumnFlag="true" rigidLowerColumnFlag="false" rigidHardyDiskFlag="false" rigidMeshFlag="false" upperColumnDamping="0" lowerColumnDamping="0" periodicMap="false" rackToPitmanRatio="1.0">
+                    <Spline3d name="rackToPinionSpline" active="true" userDefined="false" interpolation_method="akima" xLabel="pinion rotation" yLabel="rack displacement" xUnit="angle" yUnit="length/angle" datablock="rackToPinionSpline" zLabel="Velocity (m/s)" zUnit="velocity">
+                         <afc:VectorAttribute name="x_data">
+                           -5 -2.5 0 2.5 5
+                         </afc:VectorAttribute>
+                         <afc:VectorAttribute name="y_data">
+                           0 0 0 0 0
+                         </afc:VectorAttribute>
+                         <afc:VectorAttribute name="z_data">
+                           0
+                         </afc:VectorAttribute>
+                    </Spline3d>
+                    <CRTRotationalFriction name="torsionBarFriction" active="true" userDefined="false" activeFlag="false" stiffness="1.0" minTorque="1000000000000.0" maxTorque="1.0" maxwellActiveFlag="false" maxwellStiffness="0" maxwellDamping="0" maxwellMaxTorque="0" coulombActiveFlag="false" coulombMuS="0" coulombMuD="0" coulombMaxTorque="0" coulombTransitionVelocity="0.1"/>
+                    <CRTRotationalFriction name="columnFriction" active="true" userDefined="false" activeFlag="false" stiffness="1.0" minTorque="1000000000000.0" maxTorque="1.0" maxwellActiveFlag="false" maxwellStiffness="0" maxwellDamping="0" maxwellMaxTorque="0" coulombActiveFlag="false" coulombMuS="0" coulombMuD="0" coulombMaxTorque="0" coulombTransitionVelocity="0.1"/>
+                    <CRTTranslationalFriction name="rackFriction" active="true" userDefined="false" activeFlag="false" stiffness="1.0" maxForce="1.0" minForce="-1.0" maxwellActiveFlag="true" maxwellStiffness="1.0" maxwellDamping="1.0" maxwellMaxForce="1.0" coulombActiveFlag="false" coulombMuS="0" coulombMuD="0" coulombMaxForce="0" coulombTransitionVelocity="0.1"/>
+                    <Spline2d name="upperLowerAngleMap" id="0" active="true" userDefined="false" interpolation_method="akima" xLabel="Upper Column Angle" yLabel="Lower Column Angle" xUnit="angle" yUnit="angle" datablock="Upper to Lower Column angles Map">
+                      <![CDATA[
+              0               1
+             45               1
+             90               1
+            135               1
+            180               1
+]]>
+                    </Spline2d>
+               </CRTMechanicalSteering>
+               <Spline3d name="eMotorCurrentMap" active="true" userDefined="false" interpolation_method="akima" xLabel="Torsion Bar Twist Angle" yLabel="Current" xUnit="angle" yUnit="current" datablock="eMotorCurrentMap" zLabel="Velocity (m/s)" zUnit="velocity">
+                    <afc:VectorAttribute name="x_data">
+                      -5 -2.5 0 2.5 5
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -2000 -1000 0 1000 2000
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="eMotorCurrentMap2" active="true" userDefined="false" interpolation_method="akima" xLabel="Torsion Bar Twist Angle" yLabel="Current" xUnit="angle" yUnit="current" datablock="eMotorCurrentMap" zLabel="Velocity (m/s)" zUnit="velocity">
+                    <afc:VectorAttribute name="x_data">
+                      -5 -2.5 0 2.5 5
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -2000 -1000 0 1000 2000
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <Spline3d name="eMotorCurrentMap3" active="true" userDefined="false" interpolation_method="akima" xLabel="Torsion Bar Twist Angle" yLabel="Current" xUnit="angle" yUnit="current" datablock="eMotorCurrentMap" zLabel="Velocity (m/s)" zUnit="velocity">
+                    <afc:VectorAttribute name="x_data">
+                      -5 -2.5 0 2.5 5
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -2000 -1000 0 1000 2000
+                    </afc:VectorAttribute>
+               </Spline3d>
+               <CRTRotationalFriction name="eServoGearFriction" active="true" userDefined="false" activeFlag="false" stiffness="1.0" minTorque="1000000000000.0" maxTorque="1.0" maxwellActiveFlag="false" maxwellStiffness="0" maxwellDamping="0" maxwellMaxTorque="0" coulombActiveFlag="false" coulombMuS="0" coulombMuD="0" coulombMaxTorque="0" coulombTransitionVelocity="0.1"/>
+               <Spline3d name="hPressureMap" active="true" userDefined="false" interpolation_method="akima" xLabel="Torsion Bar Twist Angle" yLabel="Pressure" xUnit="angle" yUnit="pressure" datablock="hPressureMap" zLabel="Velocity (m/s)" zUnit="velocity">
+                    <afc:VectorAttribute name="x_data">
+                      -5 -2.5 0 2.5 5
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="y_data">
+                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    </afc:VectorAttribute>
+                    <afc:VectorAttribute name="z_data">
+                      -2000 -1000 0 1000 2000
+                    </afc:VectorAttribute>
+               </Spline3d>
+          </CRTAdvancedSteering>
+          <CRTSteeringSpline name="servo_steering_action_scaling" id="0" active="true" userDefined="true" interpolation_method="akima" xLabel="Vehicle Longitudinal Velocity [mm/sec]" yLabel="Servo Steering Action Scale" xUnit="velocity">
+            <![CDATA[
+              0               1
+          20000               1
+          50000               1
+          70000               1
+         100000               1
+]]>
+          </CRTSteeringSpline>
+     </Subsystem>
+</afc>

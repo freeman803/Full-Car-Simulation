@@ -1,0 +1,52 @@
+# Blender MTL File: 'FSAE_wheels.blend'
+# Material Count: 5
+
+newmtl Material
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.698192 0.698192 0.698192
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd hoosier.png
+
+newmtl Material.001
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\Users\Kermit\Documents\3D Models\Ferrari F1\Ferrari F1\fe0_wheel.tga
+
+newmtl Material.002
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.069712 0.069712 0.069712
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\Users\Kermit\Documents\3D Models\Ferrari F1\Ferrari F1\fe0_wheel.tga
+
+newmtl Material.003
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.058588 0.058588 0.058588
+Ks 0.036618 0.036618 0.036618
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\Users\Kermit\Documents\3D Models\Ferrari F1\Ferrari F1\tread_slick.tga
+
+newmtl Material.003_tyre.tga
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.058588 0.058588 0.058588
+Ks 0.036618 0.036618 0.036618
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\Users\Kermit\Documents\3D Models\Ferrari F1\Ferrari F1\tyre.tga

@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<afc xmlns="http://www.mscsoftware.com/:vfc" xmlns:afc="http://www.mscsoftware.com/:afc">
+     <afc:Bibliography>
+          <File schema="afc" version="2.0.0.0" URI="mdids://VI_Racer/subsystems.tbl/RT_CFR22 Try 3_rear_suspension.xml" publicationDate="2023-09-09 18:45:01-04:00"/>
+          <Revision version="2022.2"/>
+          <Corporation author="VI-grade" URI="http://www.vi-grade.com"/>
+          <Author user="Leand" name="-unknown name-"/>
+          <Environment hostName="KENOBI" operatingSystem="MS Windows NT 10.0"/>
+          <Application name="VI-CarRealTime" version="2022.2"/>
+     </afc:Bibliography>
+     <afc:Units>
+          <afc:UnitSetting name="angle" current="degree"/>
+          <afc:UnitSetting name="current" current="ampere"/>
+          <afc:UnitSetting name="force" current="newton"/>
+          <afc:UnitSetting name="length" current="mm"/>
+          <afc:UnitSetting name="luminosity" current="candela"/>
+          <afc:UnitSetting name="mass" current="kilogram"/>
+          <afc:UnitSetting name="quantity" current="mole"/>
+          <afc:UnitSetting name="solidAngle" current="steradian"/>
+          <afc:UnitSetting name="temperature" current="kelvin"/>
+          <afc:UnitSetting name="time" current="second"/>
+     </afc:Units>
+     <Subsystem name="RT_CFR22 Try 3_rear_suspension" active="true" userDefined="false">
+          <CRTSuspensionConfig name="config" active="true" userDefined="false" position="rear" kinematic_flag="true" default_left_radius="344.0" default_right_radius="344.0">
+               <CRTSuspensionAnalysis name="analysys" active="true" userDefined="false" jounce_start="-70.0" jounce_end="70.0" jounce_nsteps="14" steer_start="-180.0" steer_end="180.0" steer_nsteps="8" opposite_jounce_delta="30.0" opposite_jounce_nsteps="6" use_parallel_jounce_range="true" fx_start="-9000.0" fx_end="9000.0" fy_start="-9000.0" fy_end="9000.0" mz_start="-500000.0" mz_end="500000.0" force_nsteps="8" save_auxiliary_vertical="true"/>
+               <CRTSuspensionBushingPair name="uca_front" active="true" userDefined="false" symmetry="left_right">
+                    <CRTSuspensionBushing name="left" active="true" userDefined="false" attach_part_1="0" attach_part_2="0" attach_location_1="(0 0 0)" attach_location_2="(0 0 0)" activeFlag="true">
+                         <CRTSuspensionBushingContext name="context" active="true" propertyURI="mdids://VI_Racer/bushings.tbl/control_arm_mount.xml" userDefined="false" context="default" offset="(0 0 0)" type="bushing">
+                              <afc:VectorAttribute name="force_scaleFactor">
+                                1.0 1.0 1.0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="torque_scaleFactor">
+                                1.0 1.0 1.0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="tdisp_scaleFactor">
+                                1.0 1.0 1.0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="rdisp_scaleFactor">
+                                1.0 1.0 1.0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="t_preload">
+                                0 0 0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="r_preload">
+                                0 0 0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="t_offset">
+                                0 0 0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="r_offset">
+                                0 0 0
+                              </afc:VectorAttribute>
+                         </CRTSuspensionBushingContext>
+                    </CRTSuspensionBushing>
+               </CRTSuspensionBushingPair>
+               <CRTSuspensionBushingPair name="uca_rear" active="true" userDefined="false" symmetry="left_right">
+                    <CRTSuspensionBushing name="left" active="true" userDefined="false" attach_part_1="0" attach_part_2="0" attach_location_1="(0 0 0)" attach_location_2="(0 0 0)" activeFlag="true">
+                         <CRTSuspensionBushingContext name="context" active="true" propertyURI="mdids://VI_Racer/bushings.tbl/control_arm_mount.xml" userDefined="false" context="default" offset="(0 0 0)" type="bushing">
+                              <afc:VectorAttribute name="force_scaleFactor">
+                                1.0 1.0 1.0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="torque_scaleFactor">
+                                1.0 1.0 1.0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="tdisp_scaleFactor">
+                                1.0 1.0 1.0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="rdisp_scaleFactor">
+                                1.0 1.0 1.0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="t_preload">
+                                0 0 0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="r_preload">
+                                0 0 0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="t_offset">
+                                0 0 0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="r_offset">
+                                0 0 0
+                              </afc:VectorAttribute>
+                         </CRTSuspensionBushingContext>
+                    </CRTSuspensionBushing>
+               </CRTSuspensionBushingPair>
+               <CRTSuspensionBushingPair name="lca_front" active="true" userDefined="false" symmetry="left_right">
+                    <CRTSuspensionBushing name="left" active="true" userDefined="false" attach_part_1="0" attach_part_2="0" attach_location_1="(0 0 0)" attach_location_2="(0 0 0)" activeFlag="true">
+                         <CRTSuspensionBushingContext name="context" active="true" propertyURI="mdids://VI_Racer/bushings.tbl/control_arm_mount.xml" userDefined="false" context="default" offset="(0 0 0)" type="bushing">
+                              <afc:VectorAttribute name="force_scaleFactor">
+                                1.0 1.0 1.0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="torque_scaleFactor">
+                                1.0 1.0 1.0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="tdisp_scaleFactor">
+                                1.0 1.0 1.0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="rdisp_scaleFactor">
+                                1.0 1.0 1.0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="t_preload">
+                                0 0 0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="r_preload">
+                                0 0 0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="t_offset">
+                                0 0 0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="r_offset">
+                                0 0 0
+                              </afc:VectorAttribute>
+                         </CRTSuspensionBushingContext>
+                    </CRTSuspensionBushing>
+               </CRTSuspensionBushingPair>
+               <CRTSuspensionBushingPair name="lca_rear" active="true" userDefined="false" symmetry="left_right">
+                    <CRTSuspensionBushing name="left" active="true" userDefined="false" attach_part_1="0" attach_part_2="0" attach_location_1="(0 0 0)" attach_location_2="(0 0 0)" activeFlag="true">
+                         <CRTSuspensionBushingContext name="context" active="true" propertyURI="mdids://VI_Racer/bushings.tbl/control_arm_mount.xml" userDefined="false" context="default" offset="(0 0 0)" type="bushing">
+                              <afc:VectorAttribute name="force_scaleFactor">
+                                1.0 1.0 1.0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="torque_scaleFactor">
+                                1.0 1.0 1.0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="tdisp_scaleFactor">
+                                1.0 1.0 1.0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="rdisp_scaleFactor">
+                                1.0 1.0 1.0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="t_preload">
+                                0 0 0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="r_preload">
+                                0 0 0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="t_offset">
+                                0 0 0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="r_offset">
+                                0 0 0
+                              </afc:VectorAttribute>
+                         </CRTSuspensionBushingContext>
+                    </CRTSuspensionBushing>
+               </CRTSuspensionBushingPair>
+               <CRTSuspensionBushingPair name="tierod_inner" active="true" userDefined="false" symmetry="left_right">
+                    <CRTSuspensionBushing name="left" active="true" userDefined="false" attach_part_1="0" attach_part_2="0" attach_location_1="(0 0 0)" attach_location_2="(0 0 0)" activeFlag="true">
+                         <CRTSuspensionBushingContext name="context" active="true" propertyURI="mdids://VI_Racer/bushings.tbl/rear_tierod_attachment.xml" userDefined="false" context="default" offset="(0 0 0)" type="bushing">
+                              <afc:VectorAttribute name="force_scaleFactor">
+                                1.0 1.0 1.0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="torque_scaleFactor">
+                                1.0 1.0 1.0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="tdisp_scaleFactor">
+                                1.0 1.0 1.0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="rdisp_scaleFactor">
+                                1.0 1.0 1.0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="t_preload">
+                                0 0 0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="r_preload">
+                                0 0 0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="t_offset">
+                                0 0 0
+                              </afc:VectorAttribute>
+                              <afc:VectorAttribute name="r_offset">
+                                0 0 0
+                              </afc:VectorAttribute>
+                         </CRTSuspensionBushingContext>
+                    </CRTSuspensionBushing>
+               </CRTSuspensionBushingPair>
+               <CRTSuspensionDoubleWishboneWithPushrodPair name="susp_pair" active="true" userDefined="false" symmetry="left_right">
+                    <CRTSuspensionDoubleWishboneWithPushrod name="left" description="Double Wishbone with Pushrod" active="true" userDefined="false" toe_angle="0" camber_angle="0" steer_ratio_unit="angle/length" steer_ratio="15.0" tierod_body="ground" pushrod_body="upright" uca_rear_body="ground" draglink_body="ground">
+                         <CRTSuspensionAttach name="wheel_center" active="true" userDefined="false" location="(-1219.0 862.5 299.72)" kinematic_flag="true" kinematic_only="true">
+                              <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                         </CRTSuspensionAttach>
+                         <CRTSuspensionAttach name="uca_outer" active="true" userDefined="false" location="(-1265.7359999999999 779.645 403.123)" kinematic_flag="true" kinematic_only="true">
+                              <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                         </CRTSuspensionAttach>
+                         <CRTSuspensionAttach name="lca_outer" active="true" userDefined="false" location="(-1242.317 801.438 212.674)" kinematic_flag="true" kinematic_only="true">
+                              <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                         </CRTSuspensionAttach>
+                         <CRTSuspensionAttach name="tierod_outer" active="true" userDefined="false" location="(-1165.6599999999999 811.954 407.67)" kinematic_flag="true" kinematic_only="true">
+                              <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                         </CRTSuspensionAttach>
+                         <CRTSuspensionAttach name="uca_front" active="true" userDefined="false" location="(-1319.279 215.105 334.95)" kinematic_flag="false" kinematic_only="false">
+                              <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(-92.2465583 90 -90)"/>
+                         </CRTSuspensionAttach>
+                         <CRTSuspensionAttach name="uca_rear" active="true" userDefined="false" location="(-1619.0499999999997 226.86499999999998 334.95)" kinematic_flag="false" kinematic_only="false">
+                              <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(87.7534416 90 90)"/>
+                         </CRTSuspensionAttach>
+                         <CRTSuspensionAttach name="lca_front" active="true" userDefined="false" location="(-977.6999999999998 145.40699999999998 165.1)" kinematic_flag="false" kinematic_only="false">
+                              <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(-91.76239099999999 90 -90)"/>
+                         </CRTSuspensionAttach>
+                         <CRTSuspensionAttach name="lca_rear" active="true" userDefined="false" location="(-1596.8249999999998 164.457 165.1)" kinematic_flag="false" kinematic_only="false">
+                              <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(-91.76239099999999 90 -90)"/>
+                         </CRTSuspensionAttach>
+                         <CRTSuspensionAttach name="tierod_inner" active="true" userDefined="false" location="(-1212.2689999999998 183.507 331.775)" kinematic_flag="false" kinematic_only="false">
+                              <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(-180 0 0)"/>
+                         </CRTSuspensionAttach>
+                         <CRTSuspensionAttach name="rocker_pivot" active="true" userDefined="false" location="(-1315.574220939 116.71273292359999 483.9573031389)" kinematic_flag="true" kinematic_only="true">
+                              <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                         </CRTSuspensionAttach>
+                         <CRTSuspensionAttach name="rocker_pivot_axis" active="true" userDefined="false" location="(-1320.0268734858 98.25992052309999 437.7007619819)" kinematic_flag="true" kinematic_only="true">
+                              <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                         </CRTSuspensionAttach>
+                         <CRTSuspensionAttach name="pushrod_outer" active="true" userDefined="false" location="(-1241.5299999999997 736.389 234.899)" kinematic_flag="true" kinematic_only="true">
+                              <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                         </CRTSuspensionAttach>
+                         <CRTSuspensionAttach name="pushrod_inner" active="true" userDefined="false" location="(-1230.176 118.229 475.132)" kinematic_flag="true" kinematic_only="true">
+                              <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                         </CRTSuspensionAttach>
+                    </CRTSuspensionDoubleWishboneWithPushrod>
+               </CRTSuspensionDoubleWishboneWithPushrodPair>
+          </CRTSuspensionConfig>
+          <SpringPair name="rear" active="true" userDefined="false" symmetry="left_right">
+               <Spring name="left" active="true" userDefined="false" attach_part_1="0" attach_part_2="0" attach_location_1="(0 0 0)" attach_location_2="(0 0 0)" activeFlag="true">
+                    <CRTSpringContext active="true" propertyURI="mdids://VI_Racer/springs.tbl/rear_double_whishbone_pushrod.xml" userDefined="false" context="default" offset="(0 0 0)" installMethod="preload" installValue="7250.0" installationStiffness="0" installationStiffnessActiveFlag="false" multiplicityFlag="false" scaleFactor="1.0" multiplicity="1.0" decouplingFlag="false">
+                         <CRTMarker name="inner" active="true" userDefined="false" location="(-1561.4939999999997 56.50699999999999 531.647)" body="chassis">
+                              <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                         </CRTMarker>
+                         <CRTMarker name="outer" active="true" userDefined="false" location="(-1280.214 56.50699999999999 504.571)" body="rocker">
+                              <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                         </CRTMarker>
+                    </CRTSpringContext>
+               </Spring>
+          </SpringPair>
+          <DamperPair name="rear" active="true" userDefined="false" symmetry="left_right">
+               <Damper name="left" active="true" userDefined="false" attach_part_1="0" attach_part_2="0" attach_location_1="(0 0 0)" attach_location_2="(0 0 0)" activeFlag="true">
+                    <CRTDamperContext active="true" propertyURI="mdids://VI_Racer/dampers.tbl/rear_double_whishbone_pushrod.xml" userDefined="false" context="default" offset="(0 0 0)" scaleFactor="1.0" input_stretch="1.0" output_stretch="1.0" time_stretch="1.0" multiplicityFlag="false" multiplicity="1.0">
+                         <CRTMarker name="inner" active="true" userDefined="false" location="(-1561.4939999999997 56.50699999999999 504.571)" body="chassis">
+                              <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                         </CRTMarker>
+                         <CRTMarker name="outer" active="true" userDefined="false" location="(-1280.214 56.50699999999999 504.571)" body="rocker">
+                              <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                         </CRTMarker>
+                    </CRTDamperContext>
+               </Damper>
+          </DamperPair>
+          <BumpStopPair name="jounce_bumper" active="true" userDefined="false" symmetry="left_right">
+               <BumpStop name="left" active="true" userDefined="false" attach_part_1="0" attach_part_2="0" attach_location_1="(0 0 0)" attach_location_2="(0 0 0)" activeFlag="true" metalToMetalRate="0">
+                    <CRTBumperContext active="true" propertyURI="mdids://VI_Racer/bumpstops.tbl/bumpstop.xml" userDefined="false" context="default" offset="(0 0 0)" installMethod="installed_length" installValue="15.0" scaleFactor="0" multiplicityFlag="false" multiplicity="1.0">
+                         <CRTMarker name="inner" active="true" userDefined="false" location="(-1561.4939999999997 56.50699999999999 531.647)" body="chassis">
+                              <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                         </CRTMarker>
+                         <CRTMarker name="outer" active="true" userDefined="false" location="(-1280.214 56.50699999999999 454.571)" body="rocker">
+                              <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                         </CRTMarker>
+                    </CRTBumperContext>
+               </BumpStop>
+          </BumpStopPair>
+          <ReboundStopPair name="rebound_bumper" active="true" userDefined="false" symmetry="left_right">
+               <ReboundStop name="left" active="true" userDefined="false" attach_part_1="0" attach_part_2="0" attach_location_1="(0 0 0)" attach_location_2="(0 0 0)" activeFlag="true" metalToMetalRate="0">
+                    <CRTBumperContext active="true" propertyURI="mdids://VI_Racer/bumpstops.tbl/reboundstop.xml" userDefined="false" context="default" offset="(0 0 0)" installMethod="installed_length" installValue="15.0" scaleFactor="0" multiplicityFlag="false" multiplicity="1.0">
+                         <CRTMarker name="inner" active="true" userDefined="false" location="(-1561.4939999999997 56.50699999999999 531.647)" body="chassis">
+                              <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                         </CRTMarker>
+                         <CRTMarker name="outer" active="true" userDefined="false" location="(-1280.214 56.50699999999999 454.571)" body="rocker">
+                              <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                         </CRTMarker>
+                    </CRTBumperContext>
+               </ReboundStop>
+          </ReboundStopPair>
+          <CRTInstallationStiffnessPair name="installation_stiffness" active="true" userDefined="false" symmetry="left_right">
+               <CRTInstallationStiffness name="left" active="true" userDefined="false" activeFlag="false" antiRollBarActiveFlag="false" springActiveFlag="true" value="1.0" computationMode="static" mass="2.0" cutoffFrequency="200.0" dampingRatio="0.001"/>
+          </CRTInstallationStiffnessPair>
+          <CRTAuxiliaryTranslationalDOFPair name="AuxiliaryDOFX" active="true" userDefined="false" symmetry="left_right">
+               <CRTAuxiliaryTranslationalDOF name="left" active="true" userDefined="false" activeFlag="false" tFNumCoeff0="0" tFNumCoeff1="0" tFNumCoeff2="0" tFNumCoeff3="0" tFNumCoeff4="0" tFDenCoeff0="0" tFDenCoeff1="0" tFDenCoeff2="0" tFDenCoeff3="0" tFDenCoeff4="0" tFOrder="first" lowPassCutoffFrequency="20.0" mass="1.0" dampingMode="ratio" damping="1.0" dampingRatio="1.0" degreeOfFreedom="x" modelType="static" excitationMode="base"/>
+          </CRTAuxiliaryTranslationalDOFPair>
+          <CRTSuspensionSetupData name="suspensionSetupData" active="true" userDefined="false" wheelAnglesSetupStage="after settle" camberAngleSetupStage="after settle" toeAngleSetupStage="after settle" indipendentAngleSetupFlag="false" rideHeightAdjustmentActiveFlag="false" leftBumperClearanceAdjustmentActiveFlag="false" rightBumperClearanceAdjustmentActiveFlag="false" leftBumperPassiveAdjustmentActiveFlag="false" rightBumperPassiveAdjustmentActiveFlag="false" leftReboundstopClearanceAdjustmentActiveFlag="false" rightReboundstopClearanceAdjustmentActiveFlag="false" leftPinHeightAdjustmentMethod="pin_height" rightPinHeightAdjustmentMethod="pin_height" rideHeightMethod="inherit_from_system" centerBumperClearanceAdjustmentActiveFlag="false" centerReboundstopClearanceAdjustmentActiveFlag="false" centerPinHeightAdjustmentMethod="pin_height" setupStageBumpersActivity="inherit" complianceActiveFlag="true" directCmplActiveFlag="true" crossCmplActiveFlag="true" dirLongTracCmplActiveFlag="true" dirLongBrakCmplActiveFlag="true" dirLatCmplActiveFlag="true" dirAlignCmplActiveFlag="true" dirVertCmplActiveFlag="true" crossLongTracCmplActiveFlag="true" crossLongBrakCmplActiveFlag="true" crossLatCmplActiveFlag="true" crossAlignCmplActiveFlag="true" crossVertCmplActiveFlag="true" Direct_ToeFx_scaleFactor="1.0" Direct_ToeFy_scaleFactor="1.0" Direct_ToeMz_scaleFactor="1.0" Direct_ToeWheCtrFx_scaleFactor="1.0" Direct_ToeFz_scaleFactor="1.0" Direct_CamberFx_scaleFactor="1.0" Direct_CamberFy_scaleFactor="1.0" Direct_CamberMz_scaleFactor="1.0" Direct_CamberWheCtrFx_scaleFactor="1.0" Direct_CamberFz_scaleFactor="1.0" Direct_SvaFx_scaleFactor="1.0" Direct_SvaFy_scaleFactor="1.0" Direct_SvaMz_scaleFactor="1.0" Direct_SvaWheCtrFx_scaleFactor="1.0" Direct_SvaFz_scaleFactor="1.0" Direct_TrackFx_scaleFactor="1.0" Direct_TrackFy_scaleFactor="1.0" Direct_TrackMz_scaleFactor="1.0" Direct_TrackWheCtrFx_scaleFactor="1.0" Direct_TrackFz_scaleFactor="1.0" Direct_BaseFx_scaleFactor="1.0" Direct_BaseFy_scaleFactor="1.0" Direct_BaseMz_scaleFactor="1.0" Direct_BaseWheCtrFx_scaleFactor="1.0" Direct_BaseFz_scaleFactor="1.0" Cross_ToeFx_scaleFactor="1.0" Cross_ToeFy_scaleFactor="1.0" Cross_ToeMz_scaleFactor="1.0" Cross_ToeWheCtrFx_scaleFactor="1.0" Cross_ToeFz_scaleFactor="1.0" Cross_CamberFx_scaleFactor="1.0" Cross_CamberFy_scaleFactor="1.0" Cross_CamberMz_scaleFactor="1.0" Cross_CamberWheCtrFx_scaleFactor="1.0" Cross_CamberFz_scaleFactor="1.0" Cross_SvaFx_scaleFactor="1.0" Cross_SvaFy_scaleFactor="1.0" Cross_SvaMz_scaleFactor="1.0" Cross_SvaWheCtrFx_scaleFactor="1.0" Cross_SvaFz_scaleFactor="1.0" Cross_TrackFx_scaleFactor="1.0" Cross_TrackFy_scaleFactor="1.0" Cross_TrackMz_scaleFactor="1.0" Cross_TrackWheCtrFx_scaleFactor="1.0" Cross_TrackFz_scaleFactor="1.0" Cross_BaseFx_scaleFactor="1.0" Cross_BaseFy_scaleFactor="1.0" Cross_BaseMz_scaleFactor="1.0" Cross_BaseWheCtrFx_scaleFactor="1.0" Cross_BaseFz_scaleFactor="1.0" SideViewAngle_scaleFactor="1.0" Camber_scaleFactor="1.0" Toe_scaleFactor="1.0" Base_scaleFactor="1.0" Track_scaleFactor="1.0" ComplianceDampingActiveFlag="false" SideViewAngleDampingToStiffRatio="0" CamberDampingToStiffRatio="0" ToeDampingToStiffRatio="0" BaseDampingToStiffRatio="0" TrackDampingToStiffRatio="0">
+               <CRTAdjustment name="leftCamber" active="true" userDefined="false" activeFlag="false" value="-3.5"/>
+               <CRTAdjustment name="rightCamber" active="true" userDefined="false" activeFlag="false" value="-3.5"/>
+               <CRTAdjustment name="leftToe" active="true" userDefined="false" activeFlag="false" value="0.1"/>
+               <CRTAdjustment name="rightToe" active="true" userDefined="false" activeFlag="false" value="0.1"/>
+               <CRTAdjustment name="leftCaster" active="true" userDefined="false" activeFlag="false" value="0"/>
+               <CRTAdjustment name="rightCaster" active="true" userDefined="false" activeFlag="false" value="0"/>
+               <CRTLengthAdjustment name="leftPinHeight" active="true" userDefined="false" activeFlag="false" value="14.0675961659"/>
+               <CRTLengthAdjustment name="rightPinHeight" active="true" userDefined="false" activeFlag="false" value="14.0675961659"/>
+               <CRTForceAdjustment name="leftPreload" active="true" userDefined="false" activeFlag="false" value="0"/>
+               <CRTForceAdjustment name="rightPreload" active="true" userDefined="false" activeFlag="false" value="0"/>
+               <CRTRideHeightSensor name="leftRideHeightSensor" active="true" userDefined="false" activeFlag="false" location="(0 0 0)" rideHeight="1.0"/>
+               <CRTRideHeightSensor name="rightRideHeightSensor" active="true" userDefined="false" activeFlag="false" location="(0 0 0)" rideHeight="1.0"/>
+               <CRTRideHeightSensor name="centerRideHeightSensor" active="true" userDefined="false" activeFlag="true" location="(-3098.8 0 64.598)" rideHeight="63.5"/>
+               <CRTLengthAdjustment name="centerPinHeight" active="true" userDefined="false" activeFlag="false" value="0"/>
+               <CRTForceAdjustment name="centerPreload" active="true" userDefined="false" activeFlag="false" value="0"/>
+               <CRTLengthAdjustment name="leftSpringOffset" active="true" userDefined="false" activeFlag="false" value="0"/>
+               <CRTLengthAdjustment name="rightSpringOffset" active="true" userDefined="false" activeFlag="false" value="0"/>
+               <CRTLengthAdjustment name="leftBumperOffset" active="true" userDefined="false" activeFlag="false" value="0"/>
+               <CRTLengthAdjustment name="rightBumperOffset" active="true" userDefined="false" activeFlag="false" value="0"/>
+               <CRTLengthAdjustment name="centerBumperOffset" active="true" userDefined="false" activeFlag="false" value="0"/>
+               <CRTLengthAdjustment name="leftReboundstopOffset" active="true" userDefined="false" activeFlag="false" value="0"/>
+               <CRTLengthAdjustment name="rightReboundstopOffset" active="true" userDefined="false" activeFlag="false" value="0"/>
+               <CRTLengthAdjustment name="centerReboundstopOffset" active="true" userDefined="false" activeFlag="false" value="0"/>
+          </CRTSuspensionSetupData>
+          <Spring name="single" active="true" userDefined="false" attach_part_1="0" attach_part_2="0" attach_location_1="(0 0 0)" attach_location_2="(0 0 0)" activeFlag="false">
+               <CRTSpringContext active="true" propertyURI="mdids://VI_Racer/springs.tbl/rear_double_whishbone_pushrod_single.xml" userDefined="false" context="default" offset="(0 0 0)" installMethod="preload" installValue="0" installationStiffness="0" installationStiffnessActiveFlag="false" multiplicityFlag="false" scaleFactor="1.0" multiplicity="1.0" decouplingFlag="false">
+                    <CRTMarker name="left" active="true" userDefined="false" location="(-1238.2999999999997 95.407 485.0)" body="rocker">
+                         <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                    </CRTMarker>
+                    <CRTMarker name="right" active="true" userDefined="false" location="(-1238.2999999999997 -95.407 485.0)" body="rocker">
+                         <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                    </CRTMarker>
+               </CRTSpringContext>
+          </Spring>
+          <Damper name="single" active="true" userDefined="false" attach_part_1="0" attach_part_2="0" attach_location_1="(0 0 0)" attach_location_2="(0 0 0)" activeFlag="false">
+               <CRTDamperContext active="true" propertyURI="mdids://VI_Racer/dampers.tbl/rear_double_whishbone_pushrod_single.xml" userDefined="false" context="default" offset="(0 0 0)" scaleFactor="0" input_stretch="1.0" output_stretch="1.0" time_stretch="1.0" multiplicityFlag="false" multiplicity="1.0">
+                    <CRTMarker name="left" active="true" userDefined="false" location="(-1157.1999999999998 105.707 466.5)" body="rocker">
+                         <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                    </CRTMarker>
+                    <CRTMarker name="right" active="true" userDefined="false" location="(-1157.1999999999998 -105.707 466.5)" body="rocker">
+                         <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                    </CRTMarker>
+               </CRTDamperContext>
+          </Damper>
+          <Damper name="roll" active="true" userDefined="false" attach_part_1="0" attach_part_2="0" attach_location_1="(0 0 0)" attach_location_2="(0 0 0)" activeFlag="false">
+               <CRTDamperContext active="true" propertyURI="mdids://VI_Racer/dampers.tbl/rear_double_whishbone_pushrod_roll.xml" userDefined="false" context="default" offset="(0 0 0)" scaleFactor="0" input_stretch="1.0" output_stretch="1.0" time_stretch="1.0" multiplicityFlag="false" multiplicity="1.0">
+                    <CRTMarker name="left" active="true" userDefined="false" location="(-1152.1999999999998 105.707 466.5)" body="rocker">
+                         <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                    </CRTMarker>
+                    <CRTMarker name="right" active="true" userDefined="false" location="(108.80000000000018 -85.707 135.0)" body="rocker">
+                         <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                    </CRTMarker>
+               </CRTDamperContext>
+          </Damper>
+          <Damper name="jdamper" active="true" userDefined="false" attach_part_1="0" attach_part_2="0" attach_location_1="(0 0 0)" attach_location_2="(0 0 0)" activeFlag="false">
+               <CRTDamperContext active="true" propertyURI="mdids://VI_Racer/dampers.tbl/rear_double_whishbone_pushrod_jdamper.xml" userDefined="false" context="default" offset="(0 0 0)" scaleFactor="0" input_stretch="1.0" output_stretch="1.0" time_stretch="1.0" multiplicityFlag="false" multiplicity="1.0">
+                    <CRTMarker name="left" active="true" userDefined="false" location="(-1157.1999999999998 105.707 466.5)" body="rocker">
+                         <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                    </CRTMarker>
+                    <CRTMarker name="right" active="true" userDefined="false" location="(118.80000000000018 -85.707 135.0)" body="rocker">
+                         <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                    </CRTMarker>
+               </CRTDamperContext>
+          </Damper>
+          <BumpStop name="single_spr_jounce_bumper" active="true" userDefined="false" attach_part_1="0" attach_part_2="0" attach_location_1="(0 0 0)" attach_location_2="(0 0 0)" activeFlag="false" metalToMetalRate="0">
+               <CRTBumperContext active="true" propertyURI="mdids://VI_Racer/bumpstops.tbl/bumpstop.xml" userDefined="false" context="default" offset="(0 0 0)" installMethod="use_hardpoints" installValue="0" scaleFactor="1.0" multiplicityFlag="false" multiplicity="1.0">
+                    <CRTMarker name="left" active="true" userDefined="false" location="(-1238.2999999999997 95.407 485.0)" body="rocker">
+                         <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                    </CRTMarker>
+                    <CRTMarker name="right" active="true" userDefined="false" location="(-1238.2999999999997 -95.407 485.0)" body="rocker">
+                         <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                    </CRTMarker>
+               </CRTBumperContext>
+          </BumpStop>
+          <BumpStop name="single_dmp_jounce_bumper" active="true" userDefined="false" attach_part_1="0" attach_part_2="0" attach_location_1="(0 0 0)" attach_location_2="(0 0 0)" activeFlag="false" metalToMetalRate="0">
+               <CRTBumperContext active="true" propertyURI="mdids://VI_Racer/bumpstops.tbl/bumpstop.xml" userDefined="false" context="default" offset="(0 0 0)" installMethod="use_hardpoints" installValue="0" scaleFactor="1.0" multiplicityFlag="false" multiplicity="1.0">
+                    <CRTMarker name="left" active="true" userDefined="false" location="(-1157.1999999999998 105.707 466.5)" body="rocker">
+                         <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                    </CRTMarker>
+                    <CRTMarker name="right" active="true" userDefined="false" location="(-1157.1999999999998 -105.707 466.5)" body="rocker">
+                         <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                    </CRTMarker>
+               </CRTBumperContext>
+          </BumpStop>
+          <BumpStop name="roll_dmp_jounce_bumper" active="true" userDefined="false" attach_part_1="0" attach_part_2="0" attach_location_1="(0 0 0)" attach_location_2="(0 0 0)" activeFlag="false" metalToMetalRate="0">
+               <CRTBumperContext active="true" propertyURI="mdids://VI_Racer/bumpstops.tbl/roll_bumpstop.xml" userDefined="false" context="default" offset="(0 0 0)" installMethod="use_hardpoints" installValue="0" scaleFactor="1.0" multiplicityFlag="false" multiplicity="1.0">
+                    <CRTMarker name="left" active="true" userDefined="false" location="(-1152.1999999999998 105.707 466.5)" body="rocker">
+                         <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                    </CRTMarker>
+                    <CRTMarker name="right" active="true" userDefined="false" location="(108.80000000000018 -85.707 135.0)" body="rocker">
+                         <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                    </CRTMarker>
+               </CRTBumperContext>
+          </BumpStop>
+          <BumpStop name="jdamper_jounce_bumper" active="true" userDefined="false" attach_part_1="0" attach_part_2="0" attach_location_1="(0 0 0)" attach_location_2="(0 0 0)" activeFlag="false" metalToMetalRate="0">
+               <CRTBumperContext active="true" propertyURI="mdids://VI_Racer/bumpstops.tbl/bumpstop.xml" userDefined="false" context="default" offset="(0 0 0)" installMethod="use_hardpoints" installValue="0" scaleFactor="1.0" multiplicityFlag="false" multiplicity="1.0">
+                    <CRTMarker name="left" active="true" userDefined="false" location="(-1157.1999999999998 105.707 466.5)" body="rocker">
+                         <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                    </CRTMarker>
+                    <CRTMarker name="right" active="true" userDefined="false" location="(118.80000000000018 -85.707 135.0)" body="rocker">
+                         <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                    </CRTMarker>
+               </CRTBumperContext>
+          </BumpStop>
+          <ReboundStop name="single_spr_rebound_bumper" active="true" userDefined="false" attach_part_1="0" attach_part_2="0" attach_location_1="(0 0 0)" attach_location_2="(0 0 0)" activeFlag="false" metalToMetalRate="0">
+               <CRTBumperContext active="true" propertyURI="mdids://VI_Racer/bumpstops.tbl/reboundstop.xml" userDefined="false" context="default" offset="(0 0 0)" installMethod="use_hardpoints" installValue="0" scaleFactor="1.0" multiplicityFlag="false" multiplicity="1.0">
+                    <CRTMarker name="left" active="true" userDefined="false" location="(-1238.2999999999997 95.407 485.0)" body="rocker">
+                         <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                    </CRTMarker>
+                    <CRTMarker name="right" active="true" userDefined="false" location="(-1238.2999999999997 -95.407 485.0)" body="rocker">
+                         <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                    </CRTMarker>
+               </CRTBumperContext>
+          </ReboundStop>
+          <ReboundStop name="single_dmp_rebound_bumper" active="true" userDefined="false" attach_part_1="0" attach_part_2="0" attach_location_1="(0 0 0)" attach_location_2="(0 0 0)" activeFlag="false" metalToMetalRate="0">
+               <CRTBumperContext active="true" propertyURI="mdids://VI_Racer/bumpstops.tbl/reboundstop.xml" userDefined="false" context="default" offset="(0 0 0)" installMethod="use_hardpoints" installValue="0" scaleFactor="1.0" multiplicityFlag="false" multiplicity="1.0">
+                    <CRTMarker name="left" active="true" userDefined="false" location="(-1157.1999999999998 105.707 466.5)" body="rocker">
+                         <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                    </CRTMarker>
+                    <CRTMarker name="right" active="true" userDefined="false" location="(-1157.1999999999998 -105.707 466.5)" body="rocker">
+                         <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                    </CRTMarker>
+               </CRTBumperContext>
+          </ReboundStop>
+          <ReboundStop name="roll_dmp_rebound_bumper" active="true" userDefined="false" attach_part_1="0" attach_part_2="0" attach_location_1="(0 0 0)" attach_location_2="(0 0 0)" activeFlag="false" metalToMetalRate="0">
+               <CRTBumperContext active="true" propertyURI="mdids://VI_Racer/bumpstops.tbl/roll_reboundstop.xml" userDefined="false" context="default" offset="(0 0 0)" installMethod="use_hardpoints" installValue="0" scaleFactor="1.0" multiplicityFlag="false" multiplicity="1.0">
+                    <CRTMarker name="left" active="true" userDefined="false" location="(-1152.1999999999998 105.707 466.5)" body="rocker">
+                         <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                    </CRTMarker>
+                    <CRTMarker name="right" active="true" userDefined="false" location="(108.80000000000018 -85.707 135.0)" body="rocker">
+                         <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                    </CRTMarker>
+               </CRTBumperContext>
+          </ReboundStop>
+          <ReboundStop name="jdamper_rebound_bumper" active="true" userDefined="false" attach_part_1="0" attach_part_2="0" attach_location_1="(0 0 0)" attach_location_2="(0 0 0)" activeFlag="false" metalToMetalRate="0">
+               <CRTBumperContext active="true" propertyURI="mdids://VI_Racer/bumpstops.tbl/reboundstop.xml" userDefined="false" context="default" offset="(0 0 0)" installMethod="use_hardpoints" installValue="0" scaleFactor="1.0" multiplicityFlag="false" multiplicity="1.0">
+                    <CRTMarker name="left" active="true" userDefined="false" location="(-1157.1999999999998 105.707 466.5)" body="rocker">
+                         <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                    </CRTMarker>
+                    <CRTMarker name="right" active="true" userDefined="false" location="(118.80000000000018 -85.707 135.0)" body="rocker">
+                         <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                    </CRTMarker>
+               </CRTBumperContext>
+          </ReboundStop>
+          <AntiRollBar name="arb" active="true" userDefined="false" attach_part_1="0" attach_part_2="0" attach_location_1="(0 0 0)" attach_location_2="(0 0 0)" activeFlag="true">
+               <AntiRollBarContext active="true" propertyURI="mdids://VI_Racer/springs.tbl/rear_double_whishbone_pushrod_ubar_arb.xml" userDefined="false" context="default" offset="(0 0 0)" scaleFactor="1.0" torsionStiffnessAtGroundFlag="false" torsionStiffnessAtGround="0">
+                    <CRTMarker name="left_bend" active="true" userDefined="false" location="(-1161.024 108.229 405.132)" body="undef">
+                         <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                    </CRTMarker>
+                    <CRTMarker name="left_drop" active="true" userDefined="false" location="(-1161.024 108.229 515.132)" body="undef">
+                         <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                    </CRTMarker>
+                    <CRTMarker name="left_link" active="true" userDefined="false" location="(-1271.024 88.229 515.132)" body="rocker">
+                         <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                    </CRTMarker>
+                    <CRTMarker name="right_bend" active="true" userDefined="false" location="(-1161.024 -108.229 405.132)" body="undef">
+                         <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                    </CRTMarker>
+                    <CRTMarker name="right_drop" active="true" userDefined="false" location="(-1161.024 -108.229 515.132)" body="undef">
+                         <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                    </CRTMarker>
+                    <CRTMarker name="right_link" active="true" userDefined="false" location="(-1271.024 -88.229 515.132)" body="rocker">
+                         <Orientation name="orientation" active="true" userDefined="false" type="euler_angles" xp="(0 0 0)" zp="(0 0 0)" euler="(0 0 0)"/>
+                    </CRTMarker>
+               </AntiRollBarContext>
+          </AntiRollBar>
+     </Subsystem>
+</afc>

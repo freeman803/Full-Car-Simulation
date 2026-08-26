@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<afc xmlns="http://www.mscsoftware.com/:vfc" xmlns:afc="http://www.mscsoftware.com/:afc">
+     <afc:Bibliography>
+          <File schema="afc" version="2.0.0.0" URI="mdids://VI_Racer/subsystems.tbl/CFR26_brakes.xml" publicationDate="2026-08-25 22:11:29-04:00"/>
+          <Revision version="2025.2"/>
+          <Corporation author="VI-grade" URI="http://www.vi-grade.com"/>
+          <Author user="amp20" name="-unknown name-"/>
+          <Environment hostName="lecomputer" operatingSystem="MS Windows NT 10.0"/>
+          <Application name="VI-CarRealTime" version="2025.2"/>
+     </afc:Bibliography>
+     <afc:Units>
+          <afc:UnitSetting name="angle" current="deg"/>
+          <afc:UnitSetting name="current" current="ampere"/>
+          <afc:UnitSetting name="force" current="newton"/>
+          <afc:UnitSetting name="length" current="mm"/>
+          <afc:UnitSetting name="luminosity" current="candela"/>
+          <afc:UnitSetting name="mass" current="kg"/>
+          <afc:UnitSetting name="quantity" current="mole"/>
+          <afc:UnitSetting name="solidAngle" current="steradian"/>
+          <afc:UnitSetting name="temperature" current="kelvin"/>
+          <afc:UnitSetting name="time" current="sec"/>
+          <afc:UnitSetting name="frequency" current="Hz"/>
+     </afc:Units>
+     <Subsystem name="CFR26_brakes" active="true" userDefined="false">
+          <CRTBrakingSystem name="braking_system" active="true" userDefined="false" brakeSystemType="dual circuit" legacyMode="false">
+               <CRTAntiblockBrakingSystemStd name="ABS" active="true" userDefined="false" activeFlag="true" controlThreshold="0.1" controlGain="100000000.0" lowSpeedThreshold="500.0"/>
+               <CRTHillHolderSystemStd name="HillHolder" active="true" userDefined="false" activeFlag="false" pitchThreshold="0.1" controlGainP="100.0" controlGainI="10000.0" controlGainII="10.0" releaseTime="2.5" lowSpeedThreshold="500.0"/>
+               <CRTEspSystemStd name="ESP" active="true" userDefined="false" activeFlag="false" yawRateThreshold="0.3" yawRateOverSteerTreshold="10.0" sideSlipTreshold="1.4" lateralAccelarationGain="1.5" overSteerThrottleScaling="0.8" yawErrorGain="25.0" sideSlipErrorGain="100.0"/>
+               <CRTBrakingSystemCircuit name="front_circuit" active="true" userDefined="false" proportioningValveMethod="constant" proportioningValveConstant="0.6" masterCilinderPressureGain="16.0" axleLoadLowPassFrequency="5.0">
+                    <Spline3d name="proportioningValveTable" active="true" userDefined="false" interpolation_method="akima" xLabel="Master Cylinder Pressure" yLabel="Brake Pressure" xUnit="pressure" yUnit="pressure" datablock="Front BrakePressure vs. Master Pressure vs. Axle Load" zLabel="Axle Load" zUnit="force">
+                         <afc:VectorAttribute name="x_data">
+                           0 5 10 15 20
+                         </afc:VectorAttribute>
+                         <afc:VectorAttribute name="y_data">
+                           0 5 10 15 20 0 5 10 15 20 0 5 10 15 20
+                         </afc:VectorAttribute>
+                         <afc:VectorAttribute name="z_data">
+                           0 5000 10000
+                         </afc:VectorAttribute>
+                    </Spline3d>
+               </CRTBrakingSystemCircuit>
+               <CRTBrakingSystemCircuit name="rear_circuit" active="true" userDefined="false" proportioningValveMethod="constant" proportioningValveConstant="0.4" masterCilinderPressureGain="16.0" axleLoadLowPassFrequency="5.0">
+                    <Spline3d name="proportioningValveTable" active="true" userDefined="false" interpolation_method="akima" xLabel="Master Cylinder Pressure" yLabel="Brake Pressure" xUnit="pressure" yUnit="pressure" datablock="Rear BrakePressure vs. Master Pressure vs. Axle Load" zLabel="Axle Load" zUnit="force">
+                         <afc:VectorAttribute name="x_data">
+                           0 5 10 15 20
+                         </afc:VectorAttribute>
+                         <afc:VectorAttribute name="y_data">
+                           0 5 10 15 20 0 5 10 15 20 0 5 10 15 20
+                         </afc:VectorAttribute>
+                         <afc:VectorAttribute name="z_data">
+                           0 5000 10000
+                         </afc:VectorAttribute>
+                    </Spline3d>
+               </CRTBrakingSystemCircuit>
+               <CRTBrakingSystemCircuit name="single_circuit" active="true" userDefined="false" proportioningValveMethod="constant" proportioningValveConstant="0.6" masterCilinderPressureGain="0.1" axleLoadLowPassFrequency="5.0">
+                    <Spline3d name="proportioningValveTable" active="true" userDefined="false" interpolation_method="akima" xLabel="Master Cylinder Pressure" yLabel="Rear Brake Pressure" xUnit="pressure" yUnit="pressure" datablock="Rear Brake Pressure vs. Master Pressure" zLabel="Axle Load" zUnit="force">
+                         <afc:VectorAttribute name="x_data">
+                           0 5 10 15 20
+                         </afc:VectorAttribute>
+                         <afc:VectorAttribute name="y_data">
+                           0 5 10 15 20 0 5 10 15 20 0 5 10 15 20
+                         </afc:VectorAttribute>
+                         <afc:VectorAttribute name="z_data">
+                           0 5000 10000
+                         </afc:VectorAttribute>
+                    </Spline3d>
+               </CRTBrakingSystemCircuit>
+               <CRTBrakingSystemDataPairF name="front" active="true" userDefined="false" symmetry="left_right">
+                    <CRTBrakingSystemData name="left" active="true" userDefined="false" brakeType="disc_brakes">
+                         <CRTDiscBrake name="discBrakes" active="true" userDefined="false" mu="0.45" pistonArea="792.0" effectivePistonRadius="9.525"/>
+                         <CRTDrumBrake name="drumBrakes" active="true" userDefined="false" leadingShoes="1" mu="0.35" pistonArea="500.0" drumRadius="210.0" shoeAnchorPinToCylinder="280.0" shoeAnchorPinToShaft="140.0" shoeAnchorPinToFulcrum="150.0" shoeEngagementAngle="120.0"/>
+                         <CRTBrakeLockup name="lockup" active="true" userDefined="false" naturalFrequency="10.0" dampingRatio="1.0" speed="139.0"/>
+                    </CRTBrakingSystemData>
+               </CRTBrakingSystemDataPairF>
+               <CRTBrakingSystemDataPairR name="rear" active="true" userDefined="false" symmetry="left_right">
+                    <CRTBrakingSystemData name="left" active="true" userDefined="false" brakeType="disc_brakes">
+                         <CRTDiscBrake name="discBrakes" active="true" userDefined="false" mu="0.45" pistonArea="792.0" effectivePistonRadius="9.525"/>
+                         <CRTDrumBrake name="drumBrakes" active="true" userDefined="false" leadingShoes="1" mu="0.35" pistonArea="500.0" drumRadius="210.0" shoeAnchorPinToCylinder="280.0" shoeAnchorPinToShaft="140.0" shoeAnchorPinToFulcrum="150.0" shoeEngagementAngle="120.0"/>
+                         <CRTBrakeLockup name="lockup" active="true" userDefined="false" naturalFrequency="10.0" dampingRatio="1.0" speed="139.0"/>
+                    </CRTBrakingSystemData>
+               </CRTBrakingSystemDataPairR>
+          </CRTBrakingSystem>
+     </Subsystem>
+</afc>

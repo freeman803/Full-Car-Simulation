@@ -1,0 +1,75 @@
+$---------------------------------------------------------------------MDI_HEADER						
+[MDI_HEADER]						
+FILE_TYPE	=	'aer'				
+FILE_VERSION	=	5				
+FILE_FORMAT	=	'ASCII'				
+(COMMENTS)						
+{comment_string)						
+'Sample	Aero	Data'				
+$--------------------------------------------------------------------------UNITS						
+[UNITS]						
+(BASE)						
+{length	force	angle	mass	time}		
+'mm'	'N'	'degree'	'kg'	'sec'		
+(USER)						
+{unit_type	length	force	angle	mass	time	conversion}
+'kmh'	1	0	0	0	-1	277.77778
+'ride_height'	1	0	0	0	0	1
+$----------------------------------------------------------------TEST_CONDITIONS						
+[TEST_CONDITIONS]						
+reference_velocity	<kmh>	=	50			
+reference_density	=	1				
+front_ride_height_min	<ride_height>	=	0			
+front_ride_height_max	<ride_height>	=	100			
+rear_ride_height_min	<ride_height>	=	0			
+rear_ride_height_max	<ride_height>	=	100			
+DRAG_ARM_HEIGHT_MIN	=	-50				
+DRAG_ARM_HEIGHT_MAX	=	800				
+$----------------------------------------------------------------FRONT_DOWNFORCE						
+[FRONT_DOWNFORCE]						
+(Z_DATA)						
+{rear_ride_height	<ride_height>}					
+0						
+25						
+50						
+75						
+100						
+(XY_DATA)						
+{front_ride_height	<ride_height>	downforce	<force>}			
+0	133	169	186	189	223	
+25	130	185	202	225	232	
+50	109	146	198	259	269	
+75	116	151	204	180	225	
+100	91	135	189	182	176	
+$-----------------------------------------------------------------REAR_DOWNFORCE						
+[REAR_DOWNFORCE]						
+(Z_DATA)						
+{rear_ride_height	<ride_height>}					
+0						
+25						
+50						
+75						
+100						
+(XY_DATA)						
+{front_ride_height	<ride_height>	downforce	<force>}			
+0	180	202	194	225	261	
+25	178	202	227	250	280	
+50	143	184	233	264	274	
+75	123	177	196	205	223	
+100	132	139	175	200	210	
+$---------------------------------------------------------------------------DRAG						
+[DRAG]						
+(Z_DATA)						
+{rear_ride_height	<ride_height>}					
+0						
+25						
+50						
+75						
+100						
+(XY_DATA)						
+{front_ride_height	<ride_height>	drag	<force>}			
+0	142	145	151	169	189	
+25	145	124	141	162	161	
+50	138	134	152	144	140	
+75	154	160	141	153	149	
+100	179	151	167	138	149	

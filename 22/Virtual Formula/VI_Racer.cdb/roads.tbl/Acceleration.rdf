@@ -1,0 +1,61 @@
+$---------------------------------------------------------------------MDI_HEADER
+[MDI_HEADER]
+FILE_TYPE = 'RDF'
+FILE_VERSION = 17
+FILE_FORMAT = 'ASCII'
+$--------------------------------------------------------------------------UNITS
+[UNITS]
+LENGTH = 'METER'
+ANGLE = 'RADIAN'
+FORCE = 'NEWTON'
+MASS = 'KILOGRAM'
+TIME = 'SECOND'
+$--------------------------------------------------------------------------MODEL
+[MODEL]
+METHOD = 'USER'
+FUNCTION_NAME = 'vitools::vi_road'
+TYPE = 'ANALYTIC'
+MODE = 'STANDARD'
+FORMAT = 'STANDARD'
+$-------------------------------------------------------------------------GLOBAL
+[GLOBAL]
+OUTBOUND_SAFE = 'TRUE'
+EVENT_CHECK = 'TRUE'
+DISTANCE_CALC = 'STANDARD'
+FRICTION = 'STANDARD'
+IRREGULARITIES = 'ANALYTIC'
+LEFT_EDGE = 'FLAT'
+RIGHT_EDGE = 'FLAT'
+DISCRETIZATION_STEP = 1
+ORIGIN_X = 2
+ORIGIN_Y = 0
+ORIGIN_Z = 0
+ORIGIN_A3 = 3.141592653589793
+SAFE_CALC = 'FALSE'
+$--------------------------------------------------------------------WIDTH_TABLE
+[WIDTH_TABLE]
+{ track_s  width   }
+ 0 10
+ 75 10
+ 79 10
+$-----------------------------------------------------------------------FRICTION
+[FRICTION]
+LEFT_SIDE_MU = 1
+RIGHT_SIDE_MU = 1
+$---------------------------------------------------------------------PLANT_PATH
+[PLANT_PATH]
+{ s  curvature   }
+ 0 0
+ 79 0
+$------------------------------------------------------------------VERTICAL_PATH
+[VERTICAL_PATH]
+{ s  height   }
+ 0 0
+ 75 0
+ 79 0
+$----------------------------------------------------------------BANK_ANGLE_PATH
+[BANK_ANGLE_PATH]
+{ s  angle   }
+ 0 0
+ 75 0
+ 79 0

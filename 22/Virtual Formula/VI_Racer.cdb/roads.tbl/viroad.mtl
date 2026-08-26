@@ -1,0 +1,29 @@
+newmtl GRAY
+Kd 0.8 0.8 0.8
+Ka 0.8 0.8 0.8
+Ks 1.0 1.0 1.0
+Ns 10
+Tr 1
+illum 1
+map_Kd vigrade_road_asphalt.jpg
+newmtl DIMGRAY
+Kd 0.8 0.8 0.8
+Ka 0.8 0.8 0.8
+Ks 1.0 1.0 1.0
+Ns 10
+Tr 1
+illum 1
+newmtl WHITE
+Kd 0.95 0.95 0.95
+Ka 0.95 0.95 0.95
+Ks 1.0 1.0 1.0
+Ns 10
+Tr 1
+illum 1
+newmtl RED
+Kd 0.95 0 0
+Ka 0.95 0 0
+Ks 1.0 1.0 1.0
+Ns 10
+Tr 1
+illum 1

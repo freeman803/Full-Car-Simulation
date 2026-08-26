@@ -1,0 +1,102 @@
+assemblyName	AssemblyDoubleWishBonePRUBar
+lonPosType	                     rear
+unitsFile
+                   length	mm
+                    force	newton
+end
+leftSuspFile
+                 suspType	DoubleWishBonePR
+                 suspName	Rear
+               latPosType	left
+               lonPosType	rear
+              wheelCenter	                  -713.22	                     -587	                   197.35
+                 ucaFront	                  -457.12	                   -319.8	                  282.484
+                  ucaRear	                   -689.2	                   -319.8	                  282.484
+                 ucaOuter	                  -714.12	                 -509.496	                   325.43
+                 lcaFront	                  -457.12	                  -277.88	                    98.32
+                  lcaRear	                  -664.03	                  -277.88	                    98.32
+                 lcaOuter	                  -663.94	                 -517.139	                   96.098
+              tierodOuter	                  -763.93	                 -518.198	                   96.055
+              tierodInner	                  -697.27	                 -277.882	                   98.316
+             pushrodOuter	                   -664.9	                  -487.19	                   119.81
+             pushrodInner	                   -664.9	                     -392	                      438
+              rockerPivot	                   -666.1	                  -295.37	                   323.03
+          rockerPivotAxis	                   -651.1	                  -295.37	                   323.03
+               rockerLink	                   -664.9	                     -350	                      360
+         springUpperMount	                   -664.9	                  -102.47	                   360.37
+         springLowerMount	                  -666.11	                     -264	                      410
+         damperUpperMount	                   -664.9	                  -102.47	                   360.37
+         damperLowerMount	                   -666.1	                     -264	                      410
+rockerLinkToCentralSpring	                    -82.3	                    -89.7	                      190
+rockerLinkToCentralDamper	                    -95.6	                    -73.9	                    195.1
+   rockerLinkToRollDamper	                    -80.4	                   -101.6	                    142.2
+      rockerLinkToInerter	                   -108.8	                      -58	                    200.1
+       bumpstopUpperMount	                        0	                      -69	                      205
+       bumpstopLowerMount	                        0	                 -239.292	                  154.932
+    reboundstopUpperMount	                        0	                      -69	                      205
+    reboundstopLowerMount	                        0	                 -239.292	                  154.932
+                 toeAngle	                        0
+              camberAngle	                        0
+             groundHeigth	                       50
+              wheelRadius	                   260.35
+               wheelWidth	                    190.5
+           toeSetupActive	                        1
+                 toeSetup	                      0.6
+        camberSetupActive	                        1
+              camberSetup	                     -1.5
+          pinHeigthActive	                        0
+                pinHeigth	                    177.5
+         rideHeigthActive	                        0
+               rideHeigth	                      343
+                  kSpring	                    30.65
+            springPreload	                        0
+                 cgHeight	                      390
+                wheelBase	                    15750
+               driveRatio	                        0
+               brakeRatio	                       65
+           pRodAttachment	                        0
+               springType	                        0
+         springAttachment	                        3
+                  cDamper	                       10
+    rideHeightRefPosition	                        1
+             springLinear	                        1
+             damperLinear	                        1
+           bumpstopActive	                        0
+        reboundstopActive	                        0
+        bumpstopClearance	                        0
+     reboundstopClearance	                        0
+        springScaleFactor	                        1
+        damperScaleFactor	                        1
+      bumpstopScaleFactor	                        1
+   reboundstopScaleFactor	                        1
+                kUcaFront	                   875040	                   875040	                   875040	                    64736	                    64736	                        0	                   87.753	                       90	                      270
+                 kUcaRear	                   875040	                   875040	                   875040	                    64736	                    64736	                        0	                  267.753	                       90	                       90
+                kLcaFront	                   875040	                   875040	                   875040	                    64736	                    64736	                        0	                   88.238	                       90	                      270
+                 kLcaRear	                   875040	                   875040	                   875040	                    64736	                    64736	                        0	                  268.238	                       90	                       90
+             kTierodInner	                  1000000	                  1000000	                  1000000	                       10	                       10	                       10	                      180	                       90	                      180
+end
+rightSuspFile
+                     symm
+end
+analysisFile
+                    setup	1
+                      kin	1
+              jounceStart	-30
+                jounceEnd	30
+                  nJounce	8
+               steerStart	0
+                 steerEnd	0
+                   nSteer	8
+              forceXStart	-3500
+                forceXEnd	3500
+              forceYStart	-3500
+                forceYEnd	3500
+             momentZStart	-500000
+               momentZEnd	500000
+                   nForce	8
+              deltaJounce	30
+                    nRoll	8
+                 rollMode	0
+       oppositeCompliance	0
+               outputFile	output
+end

@@ -1,0 +1,50 @@
+$---------------------------------------------------------------------MDI_HEADER
+[MDI_HEADER]
+FILE_TYPE = 'RDF'
+FILE_VERSION = 17
+FILE_FORMAT = 'ASCII'
+$--------------------------------------------------------------------------UNITS
+[UNITS]
+LENGTH = 'METER'
+ANGLE = 'RADIAN'
+FORCE = 'NEWTON'
+MASS = 'KILOGRAM'
+TIME = 'SECOND'
+$--------------------------------------------------------------------------MODEL
+[MODEL]
+METHOD = 'USER'
+FUNCTION_NAME = 'vitools::vi_road'
+TYPE = 'OVAL'
+MODE = 'STANDARD'
+FORMAT = 'STANDARD'
+$-------------------------------------------------------------------------GLOBAL
+[GLOBAL]
+OUTBOUND_SAFE = 'TRUE'
+EVENT_CHECK = 'TRUE'
+DISTANCE_CALC = 'STANDARD'
+FRICTION = 'STANDARD'
+IRREGULARITIES = 'FLAT'
+LEFT_EDGE = 'FLAT'
+RIGHT_EDGE = 'FLAT'
+DISCRETIZATION_STEP = 1
+ORIGIN_X = 0
+ORIGIN_Y = 0
+ORIGIN_Z = 0
+ORIGIN_A3 = 3.141592653589793
+SAFE_CALC = 'FALSE'
+$--------------------------------------------------------------------------WIDTH
+[WIDTH]
+LEFT_SIDE_WIDTH = 1.5
+RIGHT_SIDE_WIDTH = 1.5
+$-----------------------------------------------------------------------FRICTION
+[FRICTION]
+LEFT_SIDE_MU = 1
+RIGHT_SIDE_MU = 1
+$------------------------------------------------------------------OVAL_GEOMETRY
+[OVAL_GEOMETRY]
+X_LENGTH = 0
+Y_LENGTH = 0
+RADIUS = 9.125
+BANK_ANGLE = 0
+SMOOTHING_AMPLITUDE = 0
+TURN_SIDE = 'LEFT'

@@ -1,0 +1,1585 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<afc xmlns="http://www.mscsoftware.com/:vfc" xmlns:afc="http://www.mscsoftware.com/:afc">
+     <afc:Bibliography>
+          <File schema="afc" version="2.0.0.0" URI="mdids://VI_Racer/systems.tbl/cfr 22 try 4.xml" publicationDate="2023-09-15 23:02:27-04:00"/>
+          <Revision version="2022.2"/>
+          <Corporation author="VI-grade" URI="http://www.vi-grade.com"/>
+          <Author user="Leand" name="-unknown name-"/>
+          <Environment hostName="KENOBI" operatingSystem="MS Windows NT 10.0"/>
+          <Application name="VI-CarRealTime" version="2022.2"/>
+     </afc:Bibliography>
+     <afc:Units>
+          <afc:UnitSetting name="angle" current="radian"/>
+          <afc:UnitSetting name="current" current="ampere"/>
+          <afc:UnitSetting name="force" current="newton"/>
+          <afc:UnitSetting name="length" current="meter"/>
+          <afc:UnitSetting name="luminosity" current="candela"/>
+          <afc:UnitSetting name="mass" current="kilogram"/>
+          <afc:UnitSetting name="quantity" current="mole"/>
+          <afc:UnitSetting name="solidAngle" current="steradian"/>
+          <afc:UnitSetting name="temperature" current="kelvin"/>
+          <afc:UnitSetting name="time" current="second"/>
+     </afc:Units>
+     <System description="vehicle_name" active="true" definition="$APRE_TOP/pre_py/system/full.py" userDefined="false">
+          <SystemReference name="body" active="true" propertyURI="mdids://VI_Racer/subsystems.tbl/RT_cfr 22 try 4_body.xml" userDefined="false">
+               <HardPointPair name="offset" active="true" userDefined="false" symmetry="left_right">
+                    <HardPoint name="left" active="true" userDefined="false" location="(0 0 0)"/>
+               </HardPointPair>
+          </SystemReference>
+          <SystemReference name="front_suspension" active="true" propertyURI="mdids://VI_Racer/subsystems.tbl/try 4.xml" userDefined="false">
+               <HardPointPair name="offset" active="true" userDefined="false" symmetry="left_right">
+                    <HardPoint name="left" active="true" userDefined="false" location="(0 0 0)"/>
+               </HardPointPair>
+          </SystemReference>
+          <SystemReference name="rear_suspension" active="true" propertyURI="mdids://VI_Racer/subsystems.tbl/try 4 rear.xml" userDefined="false">
+               <HardPointPair name="offset" active="true" userDefined="false" symmetry="left_right">
+                    <HardPoint name="left" active="true" userDefined="false" location="(0 0 0)"/>
+               </HardPointPair>
+          </SystemReference>
+          <SystemReference name="front_wheel_and_tires" active="true" propertyURI="mdids://VI_Racer/subsystems.tbl/RT_cfr 22 try 4_front_wheels.xml" userDefined="false">
+               <HardPointPair name="offset" active="true" userDefined="false" symmetry="left_right">
+                    <HardPoint name="left" active="true" userDefined="false" location="(0 0 0)"/>
+               </HardPointPair>
+          </SystemReference>
+          <SystemReference name="rear_wheel_and_tires" active="true" propertyURI="mdids://VI_Racer/subsystems.tbl/RT_cfr 22 try 4_rear_wheels.xml" userDefined="false">
+               <HardPointPair name="offset" active="true" userDefined="false" symmetry="left_right">
+                    <HardPoint name="left" active="true" userDefined="false" location="(0 0 0)"/>
+               </HardPointPair>
+          </SystemReference>
+          <SystemReference name="steering_gear" active="true" propertyURI="mdids://VI_Racer/suspensions.tbl/try 4_steering.xml" userDefined="false">
+               <HardPointPair name="offset" active="true" userDefined="false" symmetry="left_right">
+                    <HardPoint name="left" active="true" userDefined="false" location="(0 0 0)"/>
+               </HardPointPair>
+          </SystemReference>
+          <SystemReference name="powertrain" active="true" propertyURI="mdids://VI_Racer/subsystems.tbl/RT_cfr 22 try 4_powertrain.xml" userDefined="false">
+               <HardPointPair name="offset" active="true" userDefined="false" symmetry="left_right">
+                    <HardPoint name="left" active="true" userDefined="false" location="(0 0 0)"/>
+               </HardPointPair>
+          </SystemReference>
+          <SystemReference name="brakes" active="true" propertyURI="mdids://VI_Racer/subsystems.tbl/RT_cfr 22 try 4_brakes.xml" userDefined="false">
+               <HardPointPair name="offset" active="true" userDefined="false" symmetry="left_right">
+                    <HardPoint name="left" active="true" userDefined="false" location="(0 0 0)"/>
+               </HardPointPair>
+          </SystemReference>
+          <ParameterTree name="custom_solver" active="true" userDefined="false">
+               <IntParameter name="active" active="true" userDefined="false" value="0">
+                    <Comment userDefined="false">
+                      <![CDATA[Custom solver activity flag]]>
+                    </Comment>
+               </IntParameter>
+               <StringParameter name="library" active="true" userDefined="false">
+                    <Comment userDefined="false">
+                      <![CDATA[Dynamic link library name for custom solver]]>
+                    </Comment>
+               </StringParameter>
+          </ParameterTree>
+          <ParameterTree name="plugin" active="true" userDefined="false">
+               <IntParameter name="active" active="true" userDefined="false" value="0">
+                    <Comment userDefined="false">
+                      <![CDATA[Plugin dynamic library activity flag]]>
+                    </Comment>
+               </IntParameter>
+               <StringParameter name="library" active="true" userDefined="false">
+                    <Comment userDefined="false">
+                      <![CDATA[Dynamic link library name for plugin]]>
+                    </Comment>
+               </StringParameter>
+          </ParameterTree>
+          <ParameterTree name="VI-DriveSim" active="true" userDefined="false">
+               <IntParameter name="active" active="true" userDefined="false" value="1">
+                    <Comment userDefined="false">
+                      <![CDATA[VI-DriveSim dynamic library activity flag]]>
+                    </Comment>
+               </IntParameter>
+               <StringParameter name="library" active="true" userDefined="false" value="crt_simdll">
+                    <Comment userDefined="false">
+                      <![CDATA[Dynamic link library name for VI-DriveSim]]>
+                    </Comment>
+               </StringParameter>
+          </ParameterTree>
+          <ParameterTree name="driver_parameters" active="true" userDefined="false">
+               <FloatParameter name="preview_time" active="true" userDefined="false" value="0.5" unit="time">
+                    <Comment userDefined="false">
+                      <![CDATA[Driver Preview Time]]>
+                    </Comment>
+               </FloatParameter>
+               <FloatParameter name="anticipatory_compensation" active="true" userDefined="false" value="0" unit="time">
+                    <Comment userDefined="false">
+                      <![CDATA[Anticipatory Compensation]]>
+                    </Comment>
+               </FloatParameter>
+               <IntParameter name="max_perf_max_itx" active="true" userDefined="false" value="50">
+                    <Comment userDefined="false">
+                      <![CDATA[MaxPerfor Maximum Number Of Iterations]]>
+                    </Comment>
+               </IntParameter>
+               <IntParameter name="max_perf_save_restore_mode" active="true" userDefined="false" value="1">
+                    <Comment userDefined="false">
+                      <![CDATA[MaxPerfor Save Restore Method: 0/1 (disabled/enabled)]]>
+                    </Comment>
+               </IntParameter>
+               <FloatParameter name="DT1" active="true" userDefined="false" value="0" unit="time">
+                    <Comment userDefined="false">
+                      <![CDATA[DT1]]>
+                    </Comment>
+               </FloatParameter>
+               <FloatParameter name="DT2" active="true" userDefined="false" value="0.01" unit="time">
+                    <Comment userDefined="false">
+                      <![CDATA[DT2]]>
+                    </Comment>
+               </FloatParameter>
+               <FloatParameter name="gear_shifting_time" active="true" userDefined="false" value="0.5" unit="time">
+                    <Comment userDefined="false">
+                      <![CDATA[Gear Shifting Time]]>
+                    </Comment>
+               </FloatParameter>
+               <FloatParameter name="clutch_raise_time" active="true" userDefined="false" value="0.05" unit="time">
+                    <Comment userDefined="false">
+                      <![CDATA[Clutch Raise Time]]>
+                    </Comment>
+               </FloatParameter>
+               <FloatParameter name="clutch_fall_time" active="true" userDefined="false" value="0.03" unit="time">
+                    <Comment userDefined="false">
+                      <![CDATA[Clutch Fall Time]]>
+                    </Comment>
+               </FloatParameter>
+               <FloatParameter name="throttle_raise_time" active="true" userDefined="false" value="0.01" unit="time">
+                    <Comment userDefined="false">
+                      <![CDATA[Throttle Raise Time]]>
+                    </Comment>
+               </FloatParameter>
+               <FloatParameter name="throttle_fall_time" active="true" userDefined="false" value="0.03" unit="time">
+                    <Comment userDefined="false">
+                      <![CDATA[Throttle Fall Time]]>
+                    </Comment>
+               </FloatParameter>
+               <IntParameter name="use_idle_control" active="true" userDefined="false" value="1">
+                    <Comment userDefined="false">
+                      <![CDATA[key to enable idle control when using standard clutch type.]]>
+                    </Comment>
+               </IntParameter>
+          </ParameterTree>
+          <ParameterTree name="speedgen_parameters" active="true" userDefined="false">
+               <ParameterTree name="defaults" active="true" userDefined="false">
+                    <FloatParameter name="longVelMin" active="true" userDefined="false" value="0.1" unit="velocity">
+                         <Comment userDefined="false">
+                           <![CDATA[Minimum Longitudinal Velocity [m/sec]]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="longVelMax" active="true" userDefined="false" value="120" unit="velocity">
+                         <Comment userDefined="false">
+                           <![CDATA[Maximum Longitudinal Velocity [m/sec]]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="longVelTol" active="true" userDefined="false" value="0.1" unit="velocity">
+                         <Comment userDefined="false">
+                           <![CDATA[Longitudinal Velocity Tolerance [m/sec]]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="longAccMin" active="true" userDefined="false" value="-60" unit="acceleration">
+                         <Comment userDefined="false">
+                           <![CDATA[Minimum Longitudinal Acceleration [m/sec^2]]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="longAccMax" active="true" userDefined="false" value="30" unit="acceleration">
+                         <Comment userDefined="false">
+                           <![CDATA[Maximum Longitudinal Acceleration [m/sec^2]]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="longAccTol" active="true" userDefined="false" value="0.1" unit="acceleration">
+                         <Comment userDefined="false">
+                           <![CDATA[Longitudinal Acceleration Tolerance [m/sec^2]]]>
+                         </Comment>
+                    </FloatParameter>
+               </ParameterTree>
+               <IntParameter name="lazy_gear_shift" active="true" userDefined="false" value="0">
+                    <Comment userDefined="false">
+                      <![CDATA[Lazy Gear Shift Activity Flag]]>
+                    </Comment>
+               </IntParameter>
+               <IntParameter name="speed_postprocessing" active="true" userDefined="false" value="0">
+                    <Comment userDefined="false">
+                      <![CDATA[Speed PostProcessing Activity Flag]]>
+                    </Comment>
+               </IntParameter>
+               <IntParameter name="scale_high_speed_braking" active="true" userDefined="false" value="0">
+                    <Comment userDefined="false">
+                      <![CDATA[Scale High Speed Braking Activity Flag]]>
+                    </Comment>
+               </IntParameter>
+               <ParameterTree name="high_speed_braking_parameters" active="true" userDefined="false">
+                    <FloatParameter name="speed_min" active="true" userDefined="false" value="0" unit="velocity">
+                         <Comment userDefined="false">
+                           <![CDATA[Minimum Speed]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="speed_max" active="true" userDefined="false" value="100" unit="velocity">
+                         <Comment userDefined="false">
+                           <![CDATA[Maximum Speed]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="brake_min" active="true" userDefined="false" value="1">
+                         <Comment userDefined="false">
+                           <![CDATA[Minimum Brake Scaling]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="brake_max" active="true" userDefined="false" value="1">
+                         <Comment userDefined="false">
+                           <![CDATA[Maximum Brake Scaling]]>
+                         </Comment>
+                    </FloatParameter>
+               </ParameterTree>
+               <FloatParameter name="high_speed_braking_max_delta_s" active="true" userDefined="false" value="50" unit="length">
+                    <Comment userDefined="false">
+                      <![CDATA[High Speed Braking Maximum Delta S ]]>
+                    </Comment>
+               </FloatParameter>
+               <FloatParameter name="high_speed_braking_max_delta_v" active="true" userDefined="false" value="10" unit="velocity">
+                    <Comment userDefined="false">
+                      <![CDATA[High Speed Braking Maximum Delta V ]]>
+                    </Comment>
+               </FloatParameter>
+               <FloatParameter name="apex_join_distance" active="true" userDefined="false" value="5" unit="length">
+                    <Comment userDefined="false">
+                      <![CDATA[Apex Join Distance]]>
+                    </Comment>
+               </FloatParameter>
+               <IntParameter name="smooth_samples" active="true" userDefined="false" value="10">
+                    <Comment userDefined="false">
+                      <![CDATA[Smooth Samples]]>
+                    </Comment>
+               </IntParameter>
+               <FloatParameter name="pwr_scaling_factor" active="true" userDefined="false" value="1">
+                    <Comment userDefined="false">
+                      <![CDATA[MaxPerf Powertrain Scaling Factor]]>
+                    </Comment>
+               </FloatParameter>
+               <IntParameter name="use_desing_configuration" active="true" userDefined="false" value="1">
+                    <Comment userDefined="false">
+                      <![CDATA[flag to select masses geometry management (0 -> use masses geometry after setup; 1-> use masses geometry at design)]]>
+                    </Comment>
+               </IntParameter>
+               <IntParameter name="suspKinematicsMapsNPoints" active="true" userDefined="false" value="50">
+                    <Comment userDefined="false">
+                      <![CDATA[Number of points in statics model suspension kinematics maps]]>
+                    </Comment>
+               </IntParameter>
+               <FloatParameter name="solverTolerance" active="true" userDefined="false" value="1e-05" unit="length">
+                    <Comment userDefined="false">
+                      <![CDATA[Statics model suspension kinematics solver tolerance [m]]]>
+                    </Comment>
+               </FloatParameter>
+               <FloatParameter name="suspKinematicsPreEventIntegrationStep" active="true" userDefined="false" value="0.001" unit="time">
+                    <Comment userDefined="false">
+                      <![CDATA[Integration time step for pre analysis[s]]]>
+                    </Comment>
+               </FloatParameter>
+               <FloatParameter name="frontSuspKinWheelTravelMax" active="true" userDefined="false" value="0.05" unit="length">
+                    <Comment userDefined="false">
+                      <![CDATA[Front suspension maximum wheel travel kinematics for statics model suspension kinematics [m]]]>
+                    </Comment>
+               </FloatParameter>
+               <FloatParameter name="frontSuspKinWheelTravelMin" active="true" userDefined="false" value="-0.05" unit="length">
+                    <Comment userDefined="false">
+                      <![CDATA[Front suspension minimum wheel travel kinematics for statics model suspension kinematics [m]]]>
+                    </Comment>
+               </FloatParameter>
+               <FloatParameter name="rearSuspKinWheelTravelMax" active="true" userDefined="false" value="0.05" unit="length">
+                    <Comment userDefined="false">
+                      <![CDATA[Rear suspension maximum wheel travel kinematics for statics model suspension kinematics [m]]]>
+                    </Comment>
+               </FloatParameter>
+               <FloatParameter name="rearSuspKinWheelTravelMin" active="true" userDefined="false" value="-0.05" unit="length">
+                    <Comment userDefined="false">
+                      <![CDATA[Rear suspension minimum wheel travel kinematics for statics model suspension kinematics [m]]]>
+                    </Comment>
+               </FloatParameter>
+          </ParameterTree>
+          <ParameterTree name="seven_postrig_parameters" active="true" userDefined="false">
+               <FloatParameter name="front_aeroforce_actuator_loc_X" active="true" userDefined="false" value="0" unit="length">
+                    <Comment userDefined="false">
+                      <![CDATA[X location of front aero force actuator]]>
+                    </Comment>
+               </FloatParameter>
+               <FloatParameter name="front_aeroforce_actuator_loc_Y" active="true" userDefined="false" value="0" unit="length">
+                    <Comment userDefined="false">
+                      <![CDATA[Y location of front aero force actuator]]>
+                    </Comment>
+               </FloatParameter>
+               <FloatParameter name="front_aeroforce_actuator_loc_Z" active="true" userDefined="false" value="0" unit="length">
+                    <Comment userDefined="false">
+                      <![CDATA[Z location of front aero force actuator]]>
+                    </Comment>
+               </FloatParameter>
+               <FloatParameter name="rear_left_aeroforce_actuator_loc_X" active="true" userDefined="false" value="-2.8" unit="length">
+                    <Comment userDefined="false">
+                      <![CDATA[X location of rear left aero force actuator]]>
+                    </Comment>
+               </FloatParameter>
+               <FloatParameter name="rear_left_aeroforce_actuator_loc_Y" active="true" userDefined="false" value="1" unit="length">
+                    <Comment userDefined="false">
+                      <![CDATA[Y location of rear left aero force actuator]]>
+                    </Comment>
+               </FloatParameter>
+               <FloatParameter name="rear_left_aeroforce_actuator_loc_Z" active="true" userDefined="false" value="0" unit="length">
+                    <Comment userDefined="false">
+                      <![CDATA[Z location of rear left aero force actuator]]>
+                    </Comment>
+               </FloatParameter>
+               <FloatParameter name="rear_right_aeroforce_actuator_loc_X" active="true" userDefined="false" value="-2.8" unit="length">
+                    <Comment userDefined="false">
+                      <![CDATA[X location of rear right aero force actuator]]>
+                    </Comment>
+               </FloatParameter>
+               <FloatParameter name="rear_right_aeroforce_actuator_loc_Y" active="true" userDefined="false" value="-1" unit="length">
+                    <Comment userDefined="false">
+                      <![CDATA[Y location of rear right aero force actuator]]>
+                    </Comment>
+               </FloatParameter>
+               <FloatParameter name="rear_right_aeroforce_actuator_loc_Z" active="true" userDefined="false" value="0" unit="length">
+                    <Comment userDefined="false">
+                      <![CDATA[Z location of rear right aero force actuator]]>
+                    </Comment>
+               </FloatParameter>
+               <FloatParameter name="front_left_spring_design_length" active="true" userDefined="false" value="0" unit="length">
+                    <Comment userDefined="false">
+                      <![CDATA[front left spring design length]]>
+                    </Comment>
+               </FloatParameter>
+               <FloatParameter name="front_right_spring_design_length" active="true" userDefined="false" value="0" unit="length">
+                    <Comment userDefined="false">
+                      <![CDATA[front right spring design length]]>
+                    </Comment>
+               </FloatParameter>
+               <FloatParameter name="rear_left_spring_design_length" active="true" userDefined="false" value="0" unit="length">
+                    <Comment userDefined="false">
+                      <![CDATA[rear left spring design length]]>
+                    </Comment>
+               </FloatParameter>
+               <FloatParameter name="rear_right_spring_design_length" active="true" userDefined="false" value="0" unit="length">
+                    <Comment userDefined="false">
+                      <![CDATA[rear right spring design length]]>
+                    </Comment>
+               </FloatParameter>
+               <FloatParameter name="controller_gain" active="true" userDefined="false" value="10">
+                    <Comment userDefined="false">
+                      <![CDATA[Actuator gain for hub acceleration and spring length excitation]]>
+                    </Comment>
+               </FloatParameter>
+               <IntParameter name="statistics" active="true" userDefined="false" value="1">
+                    <Comment userDefined="false">
+                      <![CDATA[activation flag for 7-post statistics]]>
+                    </Comment>
+               </IntParameter>
+               <FloatParameter name="actuators_max_jounce" active="true" userDefined="false" value="0.07000000000000001" unit="length">
+                    <Comment userDefined="false">
+                      <![CDATA[Maximum actuator vertical jounce]]>
+                    </Comment>
+               </FloatParameter>
+               <FloatParameter name="actuators_min_jounce" active="true" userDefined="false" value="-0.07000000000000001" unit="length">
+                    <Comment userDefined="false">
+                      <![CDATA[Minimum actuator vertical jounce]]>
+                    </Comment>
+               </FloatParameter>
+               <IntParameter name="psd_output" active="true" userDefined="false" value="1">
+                    <Comment userDefined="false">
+                      <![CDATA[Activation flag for PSD data output]]>
+                    </Comment>
+               </IntParameter>
+               <IntParameter name="psd_segment_points" active="true" userDefined="false" value="256">
+                    <Comment userDefined="false">
+                      <![CDATA[Number of points for time sequence used for PSD evaluation]]>
+                    </Comment>
+               </IntParameter>
+               <FloatParameter name="psd_overlap" active="true" userDefined="false" value="50">
+                    <Comment userDefined="false">
+                      <![CDATA[Time sequence overalpping percentage [%]]]>
+                    </Comment>
+               </FloatParameter>
+               <IntParameter name="psd_fft_points" active="true" userDefined="false" value="1024">
+                    <Comment userDefined="false">
+                      <![CDATA[Number of points for used by Fast Fourier Tranform algorithm]]>
+                    </Comment>
+               </IntParameter>
+               <FloatParameter name="psd_sampling_freq" active="true" userDefined="false" value="200" unit="frequency">
+                    <Comment userDefined="false">
+                      <![CDATA[Sampling frequency for PSD evaluation]]>
+                    </Comment>
+               </FloatParameter>
+               <IntParameter name="unlock_wheels" active="true" userDefined="false" value="0">
+                    <Comment userDefined="false">
+                      <![CDATA[flag to unlock wheel rotation]]>
+                    </Comment>
+               </IntParameter>
+               <ParameterTree name="body_stake" active="true" userDefined="false">
+                    <FloatParameter name="x_translational_kp" active="true" userDefined="false" value="100000">
+                         <Comment userDefined="false">
+                           <![CDATA[Proportional Gain for chassis translational stiffness lock PID ]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="y_translational_kp" active="true" userDefined="false" value="100000">
+                         <Comment userDefined="false">
+                           <![CDATA[Proportional Gain for chassis translational stiffness lock PID ]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="z_rotational_kp" active="true" userDefined="false" value="100000">
+                         <Comment userDefined="false">
+                           <![CDATA[Proportional Gain for chassis z rotational stiffness lock PID ]]>
+                         </Comment>
+                    </FloatParameter>
+                    <IntParameter name="activity_flag" active="true" userDefined="false" value="1">
+                         <Comment userDefined="false">
+                           <![CDATA[Activation flag for body stake]]>
+                         </Comment>
+                    </IntParameter>
+               </ParameterTree>
+               <ParameterTree name="actuator_gains" active="true" userDefined="false">
+                    <FloatParameter name="hub_actuators_kp" active="true" userDefined="false" value="10000000">
+                         <Comment userDefined="false">
+                           <![CDATA[Proportional Gain for vertical hub actuators ]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="hub_actuators_kd" active="true" userDefined="false" value="10000">
+                         <Comment userDefined="false">
+                           <![CDATA[Derivative Gain for vertical hub actuators ]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="hub_actuators_ki" active="true" userDefined="false" value="100000">
+                         <Comment userDefined="false">
+                           <![CDATA[Integral Gain for vertical hub actuators ]]>
+                         </Comment>
+                    </FloatParameter>
+               </ParameterTree>
+          </ParameterTree>
+          <ParameterTree name="suspension_testrig_parameters" active="true" userDefined="false">
+               <IntParameter name="use_pid_constant_part" active="true" userDefined="false" value="1">
+                    <Comment userDefined="false">
+                      <![CDATA[if 1 previous pid value will be summed up to runtime pid value - useful for small unsprung masses-]]>
+                    </Comment>
+               </IntParameter>
+               <IntParameter name="use_isoW_direction_for_fx_driving_loadcase" active="true" userDefined="false" value="0">
+                    <Comment userDefined="false">
+                      <![CDATA[if 1 fx driving loadcases will be applied along iso w x direction.]]>
+                    </Comment>
+                    <Comment userDefined="false">
+                      <![CDATA[if 1 fx driving loadcases will be applied along iso w x direction.]]>
+                    </Comment>
+               </IntParameter>
+               <FloatParameter name="static_threshold" active="true" userDefined="false" value="1e-09">
+                    <Comment userDefined="false">
+                      <![CDATA[testrig step is not achieved until the norms of the system speeds & acceleration are below this value]]>
+                    </Comment>
+               </FloatParameter>
+               <ParameterTree name="setup" active="true" userDefined="false">
+                    <IntParameter name="active" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[if 1 setup will be applied to the model before performing suspension analysis.]]>
+                         </Comment>
+                    </IntParameter>
+                    <FloatParameter name="gravity_for_testrig_setup" active="true" userDefined="false" value="9.81">
+                         <Comment userDefined="false">
+                           <![CDATA[Acceleration due to gravity for testrig setup.]]>
+                         </Comment>
+                    </FloatParameter>
+               </ParameterTree>
+               <IntParameter name="smooth_steps_transition" active="true" userDefined="false" value="0">
+                    <Comment userDefined="false">
+                      <![CDATA[if 1 solver will perform a smooth transition when switching between loadcase steps.]]>
+                    </Comment>
+               </IntParameter>
+               <ParameterTree name="actuator_gains" active="true" userDefined="false">
+                    <FloatParameter name="hub_actuators_kp" active="true" userDefined="false" value="1000000">
+                         <Comment userDefined="false">
+                           <![CDATA[Proportional Gain for vertical hub actuators ]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="hub_actuators_kd" active="true" userDefined="false" value="10000">
+                         <Comment userDefined="false">
+                           <![CDATA[Derivative Gain for vertical hub actuators ]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="hub_actuators_ki" active="true" userDefined="false" value="1000000">
+                         <Comment userDefined="false">
+                           <![CDATA[Integral Gain for vertical hub actuators ]]>
+                         </Comment>
+                    </FloatParameter>
+               </ParameterTree>
+          </ParameterTree>
+          <ParameterTree name="live_animation_parameters" active="true" userDefined="false">
+               <IntParameter name="multicast_server_flag" active="true" userDefined="false" value="0">
+                    <Comment userDefined="false">
+                      <![CDATA[if 1 data for live animation will be sent through a multicast server]]>
+                    </Comment>
+               </IntParameter>
+               <IntParameter name="udp_port" active="true" userDefined="false" value="0">
+                    <Comment userDefined="false">
+                      <![CDATA[udp port for server connection ( if 0 automatically detected at simulation run)]]>
+                    </Comment>
+               </IntParameter>
+               <IntParameter name="tcp_port" active="true" userDefined="false" value="22222">
+                    <Comment userDefined="false">
+                      <![CDATA[tcp port used to communicate with animator]]>
+                    </Comment>
+               </IntParameter>
+               <IntParameter name="reuse_animator_flag" active="true" userDefined="false" value="0">
+                    <Comment userDefined="false">
+                      <![CDATA[if 1 permits to reuse a previuos instance of VI-Animator]]>
+                    </Comment>
+               </IntParameter>
+               <FloatParameter name="max_solver_waiting_time" active="true" userDefined="false" value="10">
+                    <Comment userDefined="false">
+                      <![CDATA[maximum time that VI-CarRealtime solver will wait for a VI-Animator connection]]>
+                    </Comment>
+               </FloatParameter>
+          </ParameterTree>
+          <ParameterTree name="path_sensor" active="true" userDefined="false">
+               <ParameterTree name="tolerances" active="true" userDefined="false">
+                    <FloatParameter name="end_of_path" active="true" userDefined="false" value="0.25">
+                         <Comment userDefined="false">
+                           <![CDATA[tolerance used for end of path checking (meter).]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="beacon" active="true" userDefined="false" value="0.01">
+                         <Comment userDefined="false">
+                           <![CDATA[tolerance for beacon checking (meter).]]>
+                         </Comment>
+                    </FloatParameter>
+               </ParameterTree>
+          </ParameterTree>
+          <ParameterTree name="solver_executive_control" active="true" userDefined="false">
+               <ParameterTree name="vehicle" active="true" userDefined="false">
+                    <IntParameter name="simplified_model" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[activity flag for enabling simplified vehicle model.]]>
+                         </Comment>
+                    </IntParameter>
+               </ParameterTree>
+               <ParameterTree name="user_sensor" active="true" userDefined="false">
+                    <IntParameter name="acceleration_computation_legacy_mode" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[key to restore v20 acceleration computation mode (at mid step).]]>
+                         </Comment>
+                         <Comment userDefined="false">
+                           <![CDATA[key to restore v20 acceleration computation mode (at mid step).]]>
+                         </Comment>
+                    </IntParameter>
+               </ParameterTree>
+               <ParameterTree name="kinematic" active="true" userDefined="false">
+                    <FloatParameter name="steering_acceleration_dependency" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[flag to enable second derivative kinematic dependency by steering acceleration (0: off - 1: on)]]>
+                         </Comment>
+                    </FloatParameter>
+               </ParameterTree>
+               <ParameterTree name="driveline" active="true" userDefined="false">
+                    <ParameterTree name="transmission" active="true" userDefined="false">
+                         <ParameterTree name="automatic" active="true" userDefined="false">
+                              <IntParameter name="automatic_initial_gear_selection" active="true" userDefined="false" value="1">
+                                   <Comment userDefined="false">
+                                     <![CDATA[activity flag for enabling initial gear auto-selection.]]>
+                                   </Comment>
+                              </IntParameter>
+                         </ParameterTree>
+                    </ParameterTree>
+                    <ParameterTree name="engine" active="true" userDefined="false">
+                         <IntParameter name="experimental_initial_condition" active="true" userDefined="false" value="0">
+                              <Comment userDefined="false">
+                                <![CDATA[activity flag for enabling experimental clutch/engine initial conditions.]]>
+                              </Comment>
+                         </IntParameter>
+                         <IntParameter name="enable_extra_parts" active="true" userDefined="false" value="0">
+                              <Comment userDefined="false">
+                                <![CDATA[activity flag for enabling extra parts connections.]]>
+                              </Comment>
+                         </IntParameter>
+                    </ParameterTree>
+                    <ParameterTree name="differential" active="true" userDefined="false">
+                         <IntParameter name="enable_extra_output" active="true" userDefined="false" value="0">
+                              <Comment userDefined="false">
+                                <![CDATA[activity flag for enabling extra_outputs.]]>
+                              </Comment>
+                         </IntParameter>
+                    </ParameterTree>
+                    <IntParameter name="enable_all_motors_IO" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[key to force the creation of input/output force for each motor.]]>
+                         </Comment>
+                    </IntParameter>
+               </ParameterTree>
+               <ParameterTree name="kingpin_moment_computation" active="true" userDefined="false">
+                    <IntParameter name="extra_output_activity" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[activity flag for enabling extra output computation.]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="inertial_contribute_activity" active="true" userDefined="false" value="1">
+                         <Comment userDefined="false">
+                           <![CDATA[activity flag for enabling inertial contribute on kingpin computation.]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="steering_axis_compliance_correction_activity" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[activity flag for enabling compliance correction on steering axis computation.]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="kingpin_location_correction_mode" active="true" userDefined="false" value="1">
+                         <Comment userDefined="false">
+                           <![CDATA[key to select different kinping location correction.(0 - no correction[v2021], 1 - include suspension curve offset, 2 - geometric, 3 - instant axis)]]>
+                         </Comment>
+                    </IntParameter>
+               </ParameterTree>
+               <ParameterTree name="runtime_road_plane" active="true" userDefined="false">
+                    <IntParameter name="flying_car_computation_mode" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[standard computation (value = 0), estimated contact points(value = 1), maintain heights for aero/skidplate (value = 2), maintain heights for aero/skidplate/sensor measure wrt road (value = 3).]]>
+                         </Comment>
+                    </IntParameter>
+               </ParameterTree>
+               <ParameterTree name="multithread" active="true" userDefined="false">
+                    <IntParameter name="tire_calc_active_flag" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[if 1 permits to launch tire calculation on a separated thread]]>
+                         </Comment>
+                    </IntParameter>
+               </ParameterTree>
+               <ParameterTree name="external_input" active="true" userDefined="false">
+                    <IntParameter name="computation_mode" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[standard computation (value = 0), backward interpolation (value = 1), forward extrapolation (value = 2).]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="use_damper_force_extrapolation" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[standard computation (value = 0), force extrapolation (value = 1)]]>
+                         </Comment>
+                    </IntParameter>
+               </ParameterTree>
+               <ParameterTree name="extended_log" active="true" userDefined="false">
+                    <IntParameter name="active_verbose_mode" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[activity flag to enable verbose mode]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="active_runtime_log" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[activity flag to enable runtime log writing]]>
+                         </Comment>
+                    </IntParameter>
+               </ParameterTree>
+               <ParameterTree name="compliance_maps" active="true" userDefined="false">
+                    <IntParameter name="use_polynomial" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[activity flag for compliance curve polynomial fitting]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="polynomial_order" active="true" userDefined="false" value="3">
+                         <Comment userDefined="false">
+                           <![CDATA[compliance maps polinomial order]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="use_spline_extrapolation" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[enables spline extrapolation]]>
+                         </Comment>
+                    </IntParameter>
+               </ParameterTree>
+               <ParameterTree name="kinematic_maps" active="true" userDefined="false">
+                    <IntParameter name="use_polynomial" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[activity flag for kinematic curve polynomial fitting]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="polynomial_order" active="true" userDefined="false" value="3">
+                         <Comment userDefined="false">
+                           <![CDATA[kinematic curve polinomial order]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="use_spline_extrapolation" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[enables spline extrapolation]]>
+                         </Comment>
+                    </IntParameter>
+               </ParameterTree>
+               <ParameterTree name="spline" active="true" userDefined="false">
+                    <StringParameter name="method" active="true" userDefined="false" value="DeBoor">
+                         <Comment userDefined="false">
+                           <![CDATA[spline interpolation method ( options: DeBoor, Akima).]]>
+                         </Comment>
+                    </StringParameter>
+               </ParameterTree>
+               <ParameterTree name="compliance" active="true" userDefined="false">
+                    <FloatParameter name="cross_compliance_jounce_bias" active="true" userDefined="false" value="1">
+                         <Comment userDefined="false">
+                           <![CDATA[jounce used as second independent variable on cross compliance splines (0: side jounce - 1: opposite jounce)]]>
+                         </Comment>
+                    </FloatParameter>
+                    <IntParameter name="compliance_extra_output_activity" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[activity flag for compliance deformations and velocities additional output.]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="compliance_map_linear_extrapolation_flag" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[activity flag for compliance maps linear extrapolation (default = Flat).]]>
+                         </Comment>
+                    </IntParameter>
+                    <FloatParameter name="compliance_map_translational_cut_off_threshold" active="true" userDefined="false" value="1e-06">
+                         <Comment userDefined="false">
+                           <![CDATA[threshold value for translational compliance map activation (units = m / Newton).]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="compliance_map_rotational_cut_off_threshold" active="true" userDefined="false" value="1e-05">
+                         <Comment userDefined="false">
+                           <![CDATA[threshold value for rotational compliance map activation (units = rad / Newton).]]>
+                         </Comment>
+                    </FloatParameter>
+               </ParameterTree>
+               <ParameterTree name="brake" active="true" userDefined="false">
+                    <FloatParameter name="friction_transition_wheel_omega" active="true" userDefined="false" value="2.5">
+                         <Comment userDefined="false">
+                           <![CDATA[Threshold for wheel omega: below this value brake starts working according to static friction model.]]>
+                         </Comment>
+                    </FloatParameter>
+               </ParameterTree>
+               <ParameterTree name="static_results" active="true" userDefined="false">
+                    <IntParameter name="active_dump" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[if 1 solver will perform only the static analysis.]]>
+                         </Comment>
+                    </IntParameter>
+               </ParameterTree>
+               <ParameterTree name="VI-SuspensionGen" active="true" userDefined="false">
+                    <IntParameter name="dump_intermediate_files" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[Enables intermediate files generated by vi-suspensiongen solver.]]>
+                         </Comment>
+                    </IntParameter>
+               </ParameterTree>
+          </ParameterTree>
+          <ParameterTree name="ABS" active="true" userDefined="false">
+               <FloatParameter name="ABS_control_threshold" active="true" userDefined="false" value="0.1">
+                    <Comment userDefined="false">
+                      <![CDATA[ABS Control Threshold]]>
+                    </Comment>
+               </FloatParameter>
+               <FloatParameter name="ABS_control_gain" active="true" userDefined="false" value="100000000">
+                    <Comment userDefined="false">
+                      <![CDATA[ABS Control gain]]>
+                    </Comment>
+               </FloatParameter>
+               <IntParameter name="built_in_ABS_active" active="true" userDefined="false" value="1">
+                    <Comment userDefined="false">
+                      <![CDATA[ABS Control Activity Flag]]>
+                    </Comment>
+               </IntParameter>
+               <FloatParameter name="low_speed_threshold" active="true" userDefined="false" value="0.5">
+                    <Comment userDefined="false">
+                      <![CDATA[threshold below which the abs is turned off]]>
+                    </Comment>
+               </FloatParameter>
+          </ParameterTree>
+          <ParameterTree name="system_parameters" active="true" userDefined="false">
+               <ParameterTree name="trailer" active="true" userDefined="false">
+                    <FloatParameter name="hitch_ball_loc_X" active="true" userDefined="false" value="-3.5" unit="length">
+                         <Comment userDefined="false">
+                           <![CDATA[X Location for car hitch ball]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="hitch_ball_loc_Y" active="true" userDefined="false" value="0" unit="length">
+                         <Comment userDefined="false">
+                           <![CDATA[Y Location for car hitch ball]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="hitch_ball_loc_Z" active="true" userDefined="false" value="0.26" unit="length">
+                         <Comment userDefined="false">
+                           <![CDATA[Z Location for car hitch ball]]>
+                         </Comment>
+                    </FloatParameter>
+               </ParameterTree>
+               <ParameterTree name="aerodynamics" active="true" userDefined="false">
+                    <IntParameter name="use_road_plane_direction" active="true" userDefined="false" value="1">
+                         <Comment userDefined="false">
+                           <![CDATA[Road Direction Activity Flag]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="aero_force_statics_active" active="true" userDefined="false" value="1">
+                         <Comment userDefined="false">
+                           <![CDATA[Aerodynamic Force Activity Flag for Static Analysis]]>
+                         </Comment>
+                    </IntParameter>
+               </ParameterTree>
+               <ParameterTree name="powertrain" active="true" userDefined="false">
+                    <ParameterTree name="driveline" active="true" userDefined="false">
+                         <IntParameter name="torque_reaction_on_chassis_active" active="true" userDefined="false" value="1">
+                              <Comment userDefined="false">
+                                <![CDATA[Driveline Torque Reaction Part Flag: 1=on chassis 0=on unsprung mass]]>
+                              </Comment>
+                         </IntParameter>
+                    </ParameterTree>
+                    <ParameterTree name="clutch" active="true" userDefined="false">
+                         <IntParameter name="built_in_clutch_active" active="true" userDefined="false" value="1">
+                              <Comment userDefined="false">
+                                <![CDATA[Internal Clutch Activity Flag]]>
+                              </Comment>
+                         </IntParameter>
+                         <FloatParameter name="built_in_clutch_dt" active="true" userDefined="false" value="0.001">
+                              <Comment userDefined="false">
+                                <![CDATA[Internal Clutch Model Integration Step]]>
+                              </Comment>
+                         </FloatParameter>
+                         <IntParameter name="experimental" active="true" userDefined="false" value="0">
+                              <Comment userDefined="false">
+                                <![CDATA[enables experimental clutch cosimlation]]>
+                              </Comment>
+                         </IntParameter>
+                    </ParameterTree>
+                    <ParameterTree name="engine" active="true" userDefined="false">
+                         <IntParameter name="built_in_engine_active" active="true" userDefined="false" value="1">
+                              <Comment userDefined="false">
+                                <![CDATA[Internal Engine Activity Flag]]>
+                              </Comment>
+                         </IntParameter>
+                    </ParameterTree>
+                    <ParameterTree name="gearbox" active="true" userDefined="false">
+                         <IntParameter name="built_in_gearbox_active" active="true" userDefined="false" value="1">
+                              <Comment userDefined="false">
+                                <![CDATA[Internal Gearbox Activity Flag]]>
+                              </Comment>
+                         </IntParameter>
+                    </ParameterTree>
+               </ParameterTree>
+               <IntParameter name="update_ride_height_maps" active="true" userDefined="false" value="0">
+                    <Comment userDefined="false">
+                      <![CDATA[Activation Flag For Ride Height Maps Update. Works only with DrivingMachine events]]>
+                    </Comment>
+                    <ParameterTree name="defaults" active="true" userDefined="false">
+                         <FloatParameter name="v_init" active="true" userDefined="false" value="100" unit="velocity">
+                              <Comment userDefined="false">
+                                <![CDATA[Initial velocity for automatic ride height maps computation (MaxPerformance and SpeedGen events) [m/s]]]>
+                              </Comment>
+                         </FloatParameter>
+                         <FloatParameter name="v_end" active="true" userDefined="false" value="2" unit="velocity">
+                              <Comment userDefined="false">
+                                <![CDATA[Velocity end condition for automatic ride height maps computation (MaxPerformance and SpeedGen events) [m/s]]]>
+                              </Comment>
+                         </FloatParameter>
+                         <FloatParameter name="dt" active="true" userDefined="false" value="0.001" unit="time">
+                              <Comment userDefined="false">
+                                <![CDATA[Integration step size for automatic ride height maps computation (MaxPerformance and SpeedGen events) [s]]]>
+                              </Comment>
+                         </FloatParameter>
+                         <FloatParameter name="dtout" active="true" userDefined="false" value="0.05" unit="time">
+                              <Comment userDefined="false">
+                                <![CDATA[Output step size for automatic ride height maps computation (MaxPerformance and SpeedGen events) [s]]]>
+                              </Comment>
+                         </FloatParameter>
+                         <FloatParameter name="aero_drag_smoothing_time" active="true" userDefined="false" value="10" unit="time">
+                              <Comment userDefined="false">
+                                <![CDATA[Smoothing time for Aerodynamics Drag  Force (MaxPerformance and SpeedGen events) [s]]]>
+                              </Comment>
+                         </FloatParameter>
+                         <FloatParameter name="aero_downforce_smoothing_time" active="true" userDefined="false" value="3" unit="time">
+                              <Comment userDefined="false">
+                                <![CDATA[Smoothing time for Aerodynamics Down Forces (MaxPerformance and SpeedGen events) [s]]]>
+                              </Comment>
+                         </FloatParameter>
+                         <FloatParameter name="aero_settling_time" active="true" userDefined="false" value="5" unit="time">
+                              <Comment userDefined="false">
+                                <![CDATA[Settling Time for Aerodynamics Forces (MaxPerformance and SpeedGen events) [s]]]>
+                              </Comment>
+                         </FloatParameter>
+                         <IntParameter name="experimental_mode" active="true" userDefined="false" value="0">
+                              <Comment userDefined="false">
+                                <![CDATA[flag to enable new ride height maps description]]>
+                              </Comment>
+                         </IntParameter>
+                         <FloatParameter name="minimum_load_percentage" active="true" userDefined="false" value="25">
+                              <Comment userDefined="false">
+                                <![CDATA[% of axle load wrt static condition to be used as mimimum for rh independent variable]]>
+                              </Comment>
+                         </FloatParameter>
+                         <FloatParameter name="maximum_load_percentage" active="true" userDefined="false" value="150">
+                              <Comment userDefined="false">
+                                <![CDATA[% of axle load wrt static condition to be used as maximum for rh independent variable]]>
+                              </Comment>
+                         </FloatParameter>
+                         <FloatParameter name="loadcase_duration" active="true" userDefined="false" value="20" unit="s">
+                              <Comment userDefined="false">
+                                <![CDATA[time required to increase axle load]]>
+                              </Comment>
+                         </FloatParameter>
+                    </ParameterTree>
+               </IntParameter>
+               <FloatParameter name="g" active="true" userDefined="false" value="9.81" unit="acceleration">
+                    <Comment userDefined="false">
+                      <![CDATA[Acceleration due to gravity]]>
+                    </Comment>
+               </FloatParameter>
+               <ParameterTree name="circular_buffer" active="true" userDefined="false">
+                    <IntParameter name="activity_flag" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[Circular Buffer Activity Flag]]>
+                         </Comment>
+                    </IntParameter>
+                    <FloatParameter name="dimension" active="true" userDefined="false" value="10">
+                         <Comment userDefined="false">
+                           <![CDATA[Max results dimension [seconds]]]>
+                         </Comment>
+                    </FloatParameter>
+               </ParameterTree>
+               <ParameterTree name="statics" active="true" userDefined="false">
+                    <FloatParameter name="statics_abort_time" active="true" userDefined="false" value="100" unit="time">
+                         <Comment userDefined="false">
+                           <![CDATA[Abort simulation if static equilibrium is not achieved within this time]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="statics_integration_time_step" active="true" userDefined="false" value="-1" unit="time">
+                         <Comment userDefined="false">
+                           <![CDATA[integration time step to be used during static/setup analysis (<=0 -> use dynamic event dt)]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="statics_trans_speed_threshold" active="true" userDefined="false" value="0.001" unit="velocity">
+                         <Comment userDefined="false">
+                           <![CDATA[Static equilibrium is not achieved until the norm of the system translational speeds is below this value]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="statics_trans_accel_threshold" active="true" userDefined="false" value="0.001" unit="acceleration">
+                         <Comment userDefined="false">
+                           <![CDATA[Static equilibrium is not achieved until the norm of the system translational accelerations is below this value]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="statics_angular_speed_threshold" active="true" userDefined="false" value="0.001" unit="angular_velocity">
+                         <Comment userDefined="false">
+                           <![CDATA[Static equilibrium is not achieved until the norm of the system angular speeds is below this value]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="statics_angular_accel_threshold" active="true" userDefined="false" value="0.001" unit="angular_velocity">
+                         <Comment userDefined="false">
+                           <![CDATA[Static equilibrium is not achieved until the norm of the system angular acceleration is below this value]]>
+                         </Comment>
+                    </FloatParameter>
+                    <IntParameter name="statics_use_brakes" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[Vehicle brakes are engaged during statics when the parameter is set to 1]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="statics_use_linear_damper" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[Linear dampers are used during statics when the parameter is set to 1]]>
+                         </Comment>
+                    </IntParameter>
+                    <FloatParameter name="statics_linear_damper_rate_front" active="true" userDefined="false" value="5000" unit="damping">
+                         <Comment userDefined="false">
+                           <![CDATA[Front dampers damping rate used in statics]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="statics_linear_damper_rate_rear" active="true" userDefined="false" value="5000" unit="damping">
+                         <Comment userDefined="false">
+                           <![CDATA[Rear dampers damping rate used in statics]]>
+                         </Comment>
+                    </FloatParameter>
+                    <IntParameter name="statics_use_linear_spring" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[Linear springs are used during statics when the parameter is set to 1]]>
+                         </Comment>
+                    </IntParameter>
+                    <FloatParameter name="statics_linear_spring_rate_front" active="true" userDefined="false" value="100" unit="stiffness">
+                         <Comment userDefined="false">
+                           <![CDATA[Front springs stiffness used in statics]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="statics_linear_spring_rate_rear" active="true" userDefined="false" value="100" unit="stiffness">
+                         <Comment userDefined="false">
+                           <![CDATA[Rear springs stiffness used in statics]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="statics_brake_damping" active="true" userDefined="false" value="0" unit="damping">
+                         <Comment userDefined="false">
+                           <![CDATA[auxiliary wheel damping used in statics]]>
+                         </Comment>
+                    </FloatParameter>
+               </ParameterTree>
+               <ParameterTree name="body_compliance" active="true" userDefined="false">
+                    <FloatParameter name="rotational_kp" active="true" userDefined="false" value="200000">
+                         <Comment userDefined="false">
+                           <![CDATA[Proportional Gain for chassis rotational stiffness lock PID ]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="rotational_kd" active="true" userDefined="false" value="20000">
+                         <Comment userDefined="false">
+                           <![CDATA[Derivative Gain for chassis rotational stiffness lock PID ]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="rotational_ki" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[Integral Gain for chassis rotational stiffness lock PID ]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="translational_kp" active="true" userDefined="false" value="100000">
+                         <Comment userDefined="false">
+                           <![CDATA[Proportional Gain for chassis translational stiffness lock PID ]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="translational_kd" active="true" userDefined="false" value="10000">
+                         <Comment userDefined="false">
+                           <![CDATA[Derivative Gain for chassis translational stiffness lock PID ]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="translational_ki" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[Integral Gain for chassis translational stiffness lock PID ]]>
+                         </Comment>
+                    </FloatParameter>
+               </ParameterTree>
+               <ParameterTree name="setup" active="true" userDefined="false">
+                    <FloatParameter name="mode" active="true" userDefined="false" value="1">
+                         <Comment userDefined="false">
+                           <![CDATA[Setup mode: 1-> standard (pushrod) 2-> preload]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="tolerance" active="true" userDefined="false" value="0.01">
+                         <Comment userDefined="false">
+                           <![CDATA[Tolerance for setup targets; warning issued for target greater than tolerance [0.0 - 1.0]]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="cross_weight_tolerance" active="true" userDefined="false" value="0.01">
+                         <Comment userDefined="false">
+                           <![CDATA[Tolerance for cross weight targets; warning issued for target greater than tolerance [0.0 - 1.0]]]>
+                         </Comment>
+                    </FloatParameter>
+                    <IntParameter name="statistics" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[activation flag for setup statistics]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="orientation_reference" active="true" userDefined="false" value="1">
+                         <Comment userDefined="false">
+                           <![CDATA[Reference for suspension angles adjustments: 1-> sprung mass; 2-> ground]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="setup_on_flat_road" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[flag to use flat road during setup analysis]]>
+                         </Comment>
+                    </IntParameter>
+                    <ParameterTree name="ride_height" active="true" userDefined="false">
+                         <FloatParameter name="ride_height_preload_kp" active="true" userDefined="false" value="100000">
+                              <Comment userDefined="false">
+                                <![CDATA[Proportional Gain for Ride Height Adjustment (preload)]]>
+                              </Comment>
+                         </FloatParameter>
+                         <FloatParameter name="ride_height_preload_kd" active="true" userDefined="false" value="10000">
+                              <Comment userDefined="false">
+                                <![CDATA[Derivative Gain for Ride Height Adjustment (preload)]]>
+                              </Comment>
+                         </FloatParameter>
+                         <FloatParameter name="ride_height_preload_ki" active="true" userDefined="false" value="100000">
+                              <Comment userDefined="false">
+                                <![CDATA[Integral Gain for Ride Height Adjustment (preload)]]>
+                              </Comment>
+                         </FloatParameter>
+                         <FloatParameter name="ride_height_standard_kp" active="true" userDefined="false" value="1">
+                              <Comment userDefined="false">
+                                <![CDATA[Proportional Gain for Ride Height Adjustment]]>
+                              </Comment>
+                         </FloatParameter>
+                         <FloatParameter name="ride_height_standard_kd" active="true" userDefined="false" value="0">
+                              <Comment userDefined="false">
+                                <![CDATA[Derivative Gain for Ride Height Adjustment]]>
+                              </Comment>
+                         </FloatParameter>
+                         <FloatParameter name="ride_height_standard_ki" active="true" userDefined="false" value="10">
+                              <Comment userDefined="false">
+                                <![CDATA[Integral Gain for Ride Height Adjustment]]>
+                              </Comment>
+                         </FloatParameter>
+                    </ParameterTree>
+                    <ParameterTree name="pin_height" active="true" userDefined="false">
+                         <FloatParameter name="pin_height_kp" active="true" userDefined="false" value="100000">
+                              <Comment userDefined="false">
+                                <![CDATA[Proportional Gain for Pin Height]]>
+                              </Comment>
+                         </FloatParameter>
+                         <FloatParameter name="pin_height_kd" active="true" userDefined="false" value="10000">
+                              <Comment userDefined="false">
+                                <![CDATA[Derivative Gain for Pin Height]]>
+                              </Comment>
+                         </FloatParameter>
+                         <FloatParameter name="pin_height_ki" active="true" userDefined="false" value="1000000">
+                              <Comment userDefined="false">
+                                <![CDATA[Integral Gain for Pin Height]]>
+                              </Comment>
+                         </FloatParameter>
+                    </ParameterTree>
+                    <ParameterTree name="cross_weight" active="true" userDefined="false">
+                         <FloatParameter name="ratio_kp" active="true" userDefined="false" value="0.1">
+                              <Comment userDefined="false">
+                                <![CDATA[Ratio Method Proportioanl Gain]]>
+                              </Comment>
+                         </FloatParameter>
+                         <FloatParameter name="ratio_ki" active="true" userDefined="false" value="1">
+                              <Comment userDefined="false">
+                                <![CDATA[Ratio Method Integrative Gain]]>
+                              </Comment>
+                         </FloatParameter>
+                         <FloatParameter name="force_kp" active="true" userDefined="false" value="1e-05">
+                              <Comment userDefined="false">
+                                <![CDATA[Force Method Proportioanl Gain]]>
+                              </Comment>
+                         </FloatParameter>
+                         <FloatParameter name="force_ki" active="true" userDefined="false" value="0.0001">
+                              <Comment userDefined="false">
+                                <![CDATA[Force Method Integrative Gain]]>
+                              </Comment>
+                         </FloatParameter>
+                         <FloatParameter name="preload_RH_CW_gain" active="true" userDefined="false" value="1000000">
+                              <Comment userDefined="false">
+                                <![CDATA[Cross Weight overall Gain used when RH mode is set to 2 (preload) ]]>
+                              </Comment>
+                         </FloatParameter>
+                    </ParameterTree>
+                    <ParameterTree name="setup_wheels" active="true" userDefined="false">
+                         <IntParameter name="setup_wheels_active" active="true" userDefined="false" value="0">
+                              <Comment userDefined="false">
+                                <![CDATA[Activity flag for setup wheels]]>
+                              </Comment>
+                         </IntParameter>
+                         <FloatParameter name="setup_wheels_normal_stiffness" active="true" userDefined="false" value="1000000" unit="stiffness">
+                              <Comment userDefined="false">
+                                <![CDATA[Setup wheels normal stiffness]]>
+                              </Comment>
+                         </FloatParameter>
+                         <ParameterTree name="setup_wheels_radius" active="true" userDefined="false">
+                              <FloatParameter name="front_left" active="true" userDefined="false" value="0.324" unit="length">
+                                   <Comment userDefined="false">
+                                     <![CDATA[Front left setup wheels radius]]>
+                                   </Comment>
+                              </FloatParameter>
+                              <FloatParameter name="front_right" active="true" userDefined="false" value="0.324" unit="length">
+                                   <Comment userDefined="false">
+                                     <![CDATA[Front right setup wheels radius]]>
+                                   </Comment>
+                              </FloatParameter>
+                              <FloatParameter name="rear_left" active="true" userDefined="false" value="0.354" unit="length">
+                                   <Comment userDefined="false">
+                                     <![CDATA[Rear left setup wheels radius]]>
+                                   </Comment>
+                              </FloatParameter>
+                              <FloatParameter name="rear_right" active="true" userDefined="false" value="0.354" unit="length">
+                                   <Comment userDefined="false">
+                                     <![CDATA[Rear right setup wheels radius]]>
+                                   </Comment>
+                              </FloatParameter>
+                         </ParameterTree>
+                    </ParameterTree>
+               </ParameterTree>
+               <ParameterTree name="differential" active="true" userDefined="false">
+                    <FloatParameter name="locked_differential_kp" active="true" userDefined="false" value="10000">
+                         <Comment userDefined="false">
+                           <![CDATA[Proportional Gain for locked differential controller]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="locked_differential_kd" active="true" userDefined="false" value="100">
+                         <Comment userDefined="false">
+                           <![CDATA[Derivative Gain for locked differential controller]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="locked_differential_ki" active="true" userDefined="false" value="10">
+                         <Comment userDefined="false">
+                           <![CDATA[Integral Gain for locked differential controller]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="locked_pid_constant_part_gain" active="true" userDefined="false" value="1">
+                         <Comment userDefined="false">
+                           <![CDATA[quote of previous torque pid value that will be summed up to runtime pid value (1 = entire torque , 0 = nothing)]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="user_differential_lp_filter" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[Activity flag for user differential low pass filter - cutoff freq 100Hz]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="LSD_omega_threshold" active="true" userDefined="false" value="0.5">
+                         <Comment userDefined="false">
+                           <![CDATA[LSD angular velocity threshold [rad/s]]]>
+                         </Comment>
+                    </FloatParameter>
+               </ParameterTree>
+               <ParameterTree name="anti_roll_bar" active="true" userDefined="false">
+                    <FloatParameter name="front_aux_roll_damping" active="true" userDefined="false" value="0.05">
+                         <Comment userDefined="false">
+                           <![CDATA[Front auxiliary roll force damping]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="rear_aux_roll_damping" active="true" userDefined="false" value="0.05">
+                         <Comment userDefined="false">
+                           <![CDATA[Rear auxiliary roll force damping]]>
+                         </Comment>
+                    </FloatParameter>
+                    <IntParameter name="setup_active" active="true" userDefined="false" value="1">
+                         <Comment userDefined="false">
+                           <![CDATA[Activity flag for ARB during setup]]>
+                         </Comment>
+                    </IntParameter>
+               </ParameterTree>
+               <ParameterTree name="auxiliary_vertical" active="true" userDefined="false">
+                    <FloatParameter name="front_aux_vertical_damping" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[Front auxiliary vertical force damping]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="rear_aux_vertical_damping" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[Rear auxiliary vertical force damping]]>
+                         </Comment>
+                    </FloatParameter>
+               </ParameterTree>
+               <ParameterTree name="std_tire_ref" active="true" userDefined="false">
+                    <FloatParameter name="std_tire_ref_X" active="true" userDefined="false" value="0" unit="length">
+                         <Comment userDefined="false">
+                           <![CDATA[X Location for standard tire reference]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="std_tire_ref_Y" active="true" userDefined="false" value="0" unit="length">
+                         <Comment userDefined="false">
+                           <![CDATA[Y Location for standard tire reference]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="std_tire_ref_Z" active="true" userDefined="false" value="0" unit="length">
+                         <Comment userDefined="false">
+                           <![CDATA[Z Location for standard tire reference]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="std_tire_ref_PSI" active="true" userDefined="false" value="3.1415926536" unit="angle">
+                         <Comment userDefined="false">
+                           <![CDATA[PSI orientation for standard tire reference]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="std_tire_ref_THETA" active="true" userDefined="false" value="0" unit="angle">
+                         <Comment userDefined="false">
+                           <![CDATA[THETA orientation for standard tire reference]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="std_tire_ref_PHI" active="true" userDefined="false" value="0" unit="angle">
+                         <Comment userDefined="false">
+                           <![CDATA[PHI orientation for standard tire reference]]>
+                         </Comment>
+                    </FloatParameter>
+               </ParameterTree>
+               <ParameterTree name="dampers" active="true" userDefined="false">
+                    <IntParameter name="damper_lp_filter" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[Activity flag for damper low pass filter]]>
+                         </Comment>
+                    </IntParameter>
+               </ParameterTree>
+          </ParameterTree>
+          <Context name="OutputChannelsFile" active="true" propertyURI="mdids://VI_Racer//output_maps.tbl/cfr 22 try 4_output_map.xml" userDefined="false" context="default" offset="(0 0 0)"/>
+          <ParameterTree name="output_files" active="true" userDefined="false">
+               <IntParameter name="XML" active="true" userDefined="false" value="1">
+                    <Comment userDefined="false">
+                      <![CDATA[XML/Res output export activity flag]]>
+                    </Comment>
+               </IntParameter>
+               <IntParameter name="Nam_Overwrite" active="true" userDefined="false" value="1">
+                    <Comment userDefined="false">
+                      <![CDATA[Request export activity Flag]]>
+                    </Comment>
+                    <Comment userDefined="false">
+                      <![CDATA[Overwrite Nam File if exists: 0->Only in Files Only Mode 1->Always]]>
+                    </Comment>
+               </IntParameter>
+               <IntParameter name="PiToolbox" active="true" userDefined="false" value="0">
+                    <Comment userDefined="false">
+                      <![CDATA[PiToolbox export activity Flag]]>
+                    </Comment>
+               </IntParameter>
+               <IntParameter name="Tabular" active="true" userDefined="false" value="0">
+                    <Comment userDefined="false">
+                      <![CDATA[Tabular output export activity Flag]]>
+                    </Comment>
+               </IntParameter>
+               <IntParameter name="CSV" active="true" userDefined="false" value="0">
+                    <Comment userDefined="false">
+                      <![CDATA[CSV output export activity Flag]]>
+                    </Comment>
+               </IntParameter>
+               <IntParameter name="ATLAS" active="true" userDefined="false" value="0">
+                    <Comment userDefined="false">
+                      <![CDATA[ATLAS output export activity flag]]>
+                    </Comment>
+               </IntParameter>
+               <IntParameter name="MATLAB" active="true" userDefined="false" value="0">
+                    <Comment userDefined="false">
+                      <![CDATA[MATLAB output export activity flag]]>
+                    </Comment>
+               </IntParameter>
+               <ParameterTree name="SevenPost" active="true" userDefined="false">
+                    <IntParameter name="SPC" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[Seven Post Rig input export activity flag (Full Vehicle Dynamic Analyses Only)]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="AeroMode" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[Aerodynamic mode: 0->Data 1->Model]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="OperativeMode" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[Operative mode: 0->Hub Acceleration 1->Spring Length]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="CompensationFlag" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[Compensation Activity Flag]]>
+                         </Comment>
+                    </IntParameter>
+               </ParameterTree>
+               <IntParameter name="Req" active="true" userDefined="false" value="0">
+                    <Comment userDefined="false">
+                      <![CDATA[Request output export activity flag]]>
+                    </Comment>
+               </IntParameter>
+          </ParameterTree>
+          <ParameterTree name="external_suspension" active="true" userDefined="false">
+               <ParameterTree name="front" active="true" userDefined="false">
+                    <IntParameter name="user_input_activity" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[additional input port for front suspension kinematic and compliance activity flag]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="user_spring_input" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[additional input port for front suspension main spring [scaling / motion ratio]]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="user_damper_input" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[additional input port for front suspension main damper [scaling / motion ratio]]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="user_bumpstop_input" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[additional input port for front suspension main bumpstop [scaling / motion ratio]]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="user_reboundstop_input" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[additional input port for front suspension main reboundstop [scaling / motion ratio]]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="user_arb_input" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[additional input port for front suspension antiroll bar [scaling]]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="user_kinematic_scaling_input" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[additional input port for front suspension curve scaling [scaling]]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="user_compliance_scaling_input" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[additional input port for front suspension compliance curve scaling [scaling]]]>
+                         </Comment>
+                    </IntParameter>
+               </ParameterTree>
+               <ParameterTree name="rear" active="true" userDefined="false">
+                    <IntParameter name="user_input_activity" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[additional input port for rear suspension kinematic and compliance activity flag]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="user_spring_input" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[additional input port for rear suspension main spring [scaling / motion ratio]]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="user_damper_input" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[additional input port for rear suspension main damper [scaling / motion ratio]]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="user_bumpstop_input" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[additional input port for rear suspension main bumpstop [scaling / motion ratio]]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="user_reboundstop_input" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[additional input port for rear suspension main reboundstop [scaling / motion ratio]]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="user_arb_input" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[additional input port for rear suspension antiroll bar [scaling]]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="user_kinematic_scaling_input" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[additional input rear for front suspension curve scaling [scaling]]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="user_compliance_scaling_input" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[additional input port for rear suspension compliance curve scaling [scaling]]]>
+                         </Comment>
+                    </IntParameter>
+               </ParameterTree>
+               <ParameterTree name="steering" active="true" userDefined="false">
+                    <IntParameter name="user_input_activity" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[steering subsystem activity flag for additional input port]]>
+                         </Comment>
+                    </IntParameter>
+               </ParameterTree>
+          </ParameterTree>
+          <ParameterTree name="simulink" active="true" userDefined="false">
+               <ParameterTree name="aerodynamic" active="true" userDefined="false">
+                    <IntParameter name="active_fx_body_driver_feedforward" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[drag force chassis oriented feedforward activity flag]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="active_fx_tracking_driver_feedforward" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[drag force gyro oriented feedforward activity flag]]>
+                         </Comment>
+                    </IntParameter>
+               </ParameterTree>
+               <ParameterTree name="additional_input" active="true" userDefined="false">
+                    <IntParameter name="powertrain_extra_input" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[additional powertrain input activity flag]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="wheel_orientation_extra_input" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[additional wheel orientation input activity flag]]>
+                         </Comment>
+                    </IntParameter>
+                    <IntParameter name="engine_bushing_extra_input" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[additional engine bushing forces/torque input activity flag]]>
+                         </Comment>
+                    </IntParameter>
+               </ParameterTree>
+          </ParameterTree>
+          <ParameterTree name="yaw_moment_testrig" active="true" userDefined="false">
+               <ParameterTree name="x_controller" active="true" userDefined="false">
+                    <FloatParameter name="xKp" active="true" userDefined="false" value="1000000">
+                         <Comment userDefined="false">
+                           <![CDATA[PID proportional gain to control longitudinal displacement of the vehicle.]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="xKd" active="true" userDefined="false" value="10000">
+                         <Comment userDefined="false">
+                           <![CDATA[PID derivative gain to control longitudinal displacement of the vehicle.]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="xKi" active="true" userDefined="false" value="100000">
+                         <Comment userDefined="false">
+                           <![CDATA[PID integrative gain to control longitudinal displacement of the vehicle.]]>
+                         </Comment>
+                    </FloatParameter>
+                    <IntParameter name="xPidConst" active="true" userDefined="false" value="1">
+                         <Comment userDefined="false">
+                           <![CDATA[if 1 previous PID value will be summed up to runtime pid value, improves convergence with low gain values.]]>
+                         </Comment>
+                    </IntParameter>
+               </ParameterTree>
+               <ParameterTree name="y_controller" active="true" userDefined="false">
+                    <FloatParameter name="yKp" active="true" userDefined="false" value="100000">
+                         <Comment userDefined="false">
+                           <![CDATA[PID proportional gain to control lateral displacement of the vehicle.]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="yKd" active="true" userDefined="false" value="1000">
+                         <Comment userDefined="false">
+                           <![CDATA[PID derivative gain to control lateral displacement of the vehicle.]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="yKi" active="true" userDefined="false" value="10000">
+                         <Comment userDefined="false">
+                           <![CDATA[PID integrative gain to control lateral displacement of the vehicle.]]>
+                         </Comment>
+                    </FloatParameter>
+                    <IntParameter name="yPidConst" active="true" userDefined="false" value="1">
+                         <Comment userDefined="false">
+                           <![CDATA[if 1 previous PID value will be summed up to runtime pid value, improves convergence with low gain values.]]>
+                         </Comment>
+                    </IntParameter>
+               </ParameterTree>
+               <ParameterTree name="yaw_controller" active="true" userDefined="false">
+                    <FloatParameter name="yawKp" active="true" userDefined="false" value="10000000">
+                         <Comment userDefined="false">
+                           <![CDATA[PID proportional gain to control yaw displacement of the vehicle.]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="yawKd" active="true" userDefined="false" value="1000000">
+                         <Comment userDefined="false">
+                           <![CDATA[PID derivative gain to control yaw displacement of the vehicle.]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="yawKi" active="true" userDefined="false" value="1000000">
+                         <Comment userDefined="false">
+                           <![CDATA[PID integrative gain to control yaw displacement of the vehicle.]]>
+                         </Comment>
+                    </FloatParameter>
+                    <IntParameter name="yawPidConst" active="true" userDefined="false" value="1">
+                         <Comment userDefined="false">
+                           <![CDATA[if 1 previous PID value will be summed up to runtime pid value, improves convergence with low gain values.]]>
+                         </Comment>
+                    </IntParameter>
+               </ParameterTree>
+               <ParameterTree name="throttle_controller" active="true" userDefined="false">
+                    <FloatParameter name="velKp" active="true" userDefined="false" value="100">
+                         <Comment userDefined="false">
+                           <![CDATA[Proportional gain for longitudinal velocity control.]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="velKi" active="true" userDefined="false" value="50">
+                         <Comment userDefined="false">
+                           <![CDATA[Integral gain for longitudinal velocity control.]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="fxKp" active="true" userDefined="false" value="0.1">
+                         <Comment userDefined="false">
+                           <![CDATA[Proportional gain for longitudinal force control.]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="fxKi" active="true" userDefined="false" value="0.1">
+                         <Comment userDefined="false">
+                           <![CDATA[Integral gain for longitudinal force control.]]>
+                         </Comment>
+                    </FloatParameter>
+               </ParameterTree>
+               <FloatParameter name="angularThreshold" active="true" userDefined="false" value="0.0001">
+                    <Comment userDefined="false">
+                      <![CDATA[Angular velocity norm of the system should be below this value before the analysis step is performed.]]>
+                    </Comment>
+               </FloatParameter>
+               <FloatParameter name="translationalThreshold" active="true" userDefined="false" value="0.0001">
+                    <Comment userDefined="false">
+                      <![CDATA[Translational velocity norm of the system should be below this value before the analysis step is performed.]]>
+                    </Comment>
+               </FloatParameter>
+               <FloatParameter name="translationalJounceThreshold" active="true" userDefined="false" value="0.001">
+                    <Comment userDefined="false">
+                      <![CDATA[Suspension Jounce velocity norm of the system should be below this value before the analysis step is performed.]]>
+                    </Comment>
+               </FloatParameter>
+               <FloatParameter name="circularBufferLength" active="true" userDefined="false" value="100">
+                    <Comment userDefined="false">
+                      <![CDATA[When a value X is specified, only the X last seconds performed will be published in the dynamic results.]]>
+                    </Comment>
+               </FloatParameter>
+               <IntParameter name="generateDynamicResults" active="true" userDefined="false" value="0">
+                    <Comment userDefined="false">
+                      <![CDATA[Flag which enables the results files for the full dynamic simulation performed by the testrig. Otherwse a results with only the relevant steps will be published.]]>
+                    </Comment>
+               </IntParameter>
+          </ParameterTree>
+     </System>
+</afc>
