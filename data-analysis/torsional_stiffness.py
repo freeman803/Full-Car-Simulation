@@ -612,7 +612,64 @@ def report_installation():
     print("      nothing about its size. It needs a twist test.")
 
 
-def main():
+def headline(balance_range=(40.0, 60.0)):
+    """The answer, and only the answer. Everything else is behind --detail."""
+    kf, kr = cfr26_axle_stiffness()
+    k_total = kf + kr
+    floor = stiffness_for_range(k_total, list(balance_range))
+    target = floor * 1.2
+    inst = infer_installation(target, CFR26_FEA_NM_DEG)
+    roll_to_wheel = 0.5 * cc.FRONT_TRACK_MM ** 2 * DEG / 1000.0
+
+    print("=" * 70)
+    print("CFR26 CHASSIS TORSIONAL STIFFNESS TARGET")
+    print("=" * 70)
+    print()
+    print(f"  >>  DESIGN TO   {target:>6.0f} N*m/deg  <<")
+    print()
+    print(f"      {floor:>6.0f}   floor, Deakin 80% criterion")
+    print(f"      {target:>6.0f}   + Velie 20% build margin   <- the target")
+    print(f"      {CFR26_FEA_NM_DEG:>6.0f}   as built, unvalidated FEA  "
+          f"-> clears by {CFR26_FEA_NM_DEG/target:.1f}x")
+    print()
+    print("  BASIS")
+    print(f"      total roll stiffness      {k_total:6.1f} N*m/deg"
+          f"   ({kf:.1f} F / {kr:.1f} R)")
+    print(f"      roll stiff distribution   {100*kf/k_total:6.2f} % front   (no ARB fitted)")
+    print(f"      balance range assumed     {balance_range[0]:.0f}-{balance_range[1]:.0f} % front")
+    print(f"      target is {target/k_total:.2f}x total roll stiffness"
+          f"   (the folk rule says 4x)")
+    print()
+    print("  BEFORE YOU USE THIS")
+    print(f"      1. Quasi-static floor. Velie's transient method gives a")
+    print(f"         higher number (1550 on a comparable car).")
+    print(f"      2. Spring box unknown. A stiffer box raises this --")
+    print(f"         run report_spring_box() with the real rates.")
+    print(f"      3. Installation stiffness unmeasured, and it is in series:")
+    print(f"         at a {CFR26_FEA_NM_DEG:.0f} frame it must reach"
+          f" {2*inst/roll_to_wheel:.0f} N/mm at the wheel")
+    print(f"         for the car to hit {target:.0f} overall. Needs a twist test.")
+    print()
+    print("  Run with --detail for the derivation, --sources for references.")
+    return target
+
+
+def main(argv=None):
+    import argparse
+    ap = argparse.ArgumentParser(description="CFR26 chassis torsional stiffness target")
+    ap.add_argument("--detail", action="store_true", help="show the full derivation")
+    ap.add_argument("--sources", action="store_true", help="show references")
+    a = ap.parse_args(argv)
+
+    headline()
+    if a.detail:
+        report_derivation()
+        report_installation()
+    if a.sources:
+        print("\n" + "=" * 70 + "\nSOURCES\n" + "=" * 70 + SOURCES)
+
+
+def report_derivation():
     kf, kr = cfr26_axle_stiffness()
     k_total = kf + kr
     dist = 100.0 * kf / k_total
@@ -675,7 +732,6 @@ def main():
         note = "   [FEA est]" if k_ch == CFR26_FEA_NM_DEG else ""
         print(f"  {k_ch:>13.0f} | {100*f:>9.1f}%{mark}{note}")
 
-    report_installation()
 
 
 SOURCES = """
@@ -690,6 +746,3 @@ SOURCES = """
 
 if __name__ == "__main__":
     main()
-    print("\n" + "=" * 72)
-    print("SOURCES")
-    print("=" * 72 + SOURCES)
