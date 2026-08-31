@@ -241,8 +241,10 @@ def delivered_fraction(k_chassis, baseline, commanded, **kw):
 def stiffness_for_criterion(baseline, commanded, threshold=0.80,
                             lo=10.0, hi=1e6, **kw):
     """Smallest K_ch (N*m/deg) meeting `threshold`, by bisection."""
+    if threshold >= 1.0:
+        return np.inf          # 100% delivery is the rigid-chassis asymptote
     if delivered_fraction(hi, baseline, commanded, **kw) < threshold:
-        return float("nan")
+        return np.inf
     for _ in range(200):
         mid = 0.5 * (lo + hi)
         if delivered_fraction(mid, baseline, commanded, **kw) < threshold:
@@ -684,11 +686,20 @@ def headline(balance_range=(40.0, 60.0), criterion=DEFAULT_CRITERION):
     for th, note in [(0.80, "Deakin's published floor -- a LOWER BOUND, not a target"),
                      (0.85, ""),
                      (0.90, "recommended, and where the cross-checks agree"),
-                     (0.95, "diminishing returns; the curve is flat here")]:
+                     (0.95, "diminishing returns; the curve is flat here"),
+                     (1.00, "unreachable: a rigid chassis is the asymptote")]:
         k = stiffness_for_range(k_total, list(balance_range), threshold=th)
         mark = "  <--" if abs(th - criterion) < 1e-9 else "     "
-        print(f"    {100*th:>3.0f}%  {k:>6.0f} floor  ->  {k*1.2:>6.0f} target"
-              f"  ({chassis_motion_share(k*1.2):4.1f}% motion){mark} {note}")
+        if np.isfinite(k):
+            print(f"    {100*th:>3.0f}%  {k:>6.0f} floor  ->  {k*1.2:>7.0f} target"
+                  f"  ({chassis_motion_share(k*1.2):4.1f}% motion){mark} {note}")
+        else:
+            print(f"    {100*th:>3.0f}%  {'inf':>6} floor  ->  {'inf':>7} target"
+                  f"  ({0.0:4.1f}% motion){mark} {note}")
+    print()
+    print("    Cost of the last few percent: 90 -> 95% roughly DOUBLES the")
+    print("    frame, and 100% is unreachable at any mass. Picking a number")
+    print("    here is the design decision -- there is no 'correct' one.")
     print()
     print("  WHY NOT 80%: three independent routes land near 1500, not 700")
     print("    Velie, transient lap sim, comparable car          1550 N*m/deg")

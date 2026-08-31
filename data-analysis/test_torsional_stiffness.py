@@ -291,3 +291,11 @@ def test_pooles_rule_is_self_inconsistent():
     # parallel one, and only the latter matches the 1200-1500 he also quoted
     assert 3.0 * k_series == pytest.approx(450, abs=10)
     assert 3.0 * k_parallel == pytest.approx(1803, abs=10)
+
+
+def test_full_delivery_is_unreachable():
+    """100% is the rigid-chassis asymptote, so it must report inf, not nan."""
+    kf, kr = ts.cfr26_axle_stiffness()
+    k = ts.stiffness_for_range(kf + kr, [40.0, 60.0], threshold=1.0)
+    assert k == np.inf
+    assert np.isfinite(ts.stiffness_for_range(kf + kr, [40.0, 60.0], threshold=0.99))
