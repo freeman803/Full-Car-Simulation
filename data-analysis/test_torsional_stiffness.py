@@ -203,3 +203,43 @@ if __name__ == "__main__":
     # So `uv run test_torsional_stiffness.py` works like the other scripts here,
     # rather than importing the module and silently doing nothing.
     raise SystemExit(pytest.main([__file__, "-q"]))
+
+
+# --- spring box -------------------------------------------------------------
+
+def test_spring_box_reproduces_the_as_run_setup():
+    """225/200 out of the box must equal the as-built axle stiffnesses."""
+    setups = ts.spring_box_setups((225.0,), (200.0,))
+    assert len(setups) == 1
+    kf, kr, _ = setups[0]
+    assert (kf, kr) == pytest.approx(ts.cfr26_axle_stiffness())
+
+
+def test_spring_box_enumerates_every_combination():
+    assert len(ts.spring_box_setups((200, 225, 250), (175, 200, 225))) == 9
+    assert len(ts.spring_box_setups((225,), (200,), arb_front=(0.0, 100.0))) == 2
+
+
+def test_degenerate_pairs_are_filtered_out():
+    """
+    Deakin's criterion is a FRACTION, so it blows up as the commanded change
+    goes to zero. Without the filter the answer is set by the most pointless
+    swap in the box -- 1233 N*m/deg off a 0.17-point change.
+    """
+    setups = ts.spring_box_setups((200, 225, 250), (175, 200, 225))
+    unfiltered, _, _ = ts.stiffness_for_setups(setups, min_change_pts=0.0)
+    filtered, _, change = ts.stiffness_for_setups(setups)
+    assert unfiltered > 1200
+    assert filtered < 800
+    assert change >= ts.MIN_MEANINGFUL_LLTD_CHANGE_PTS
+
+
+def test_a_stiffer_box_demands_a_stiffer_chassis():
+    """
+    Required stiffness scales with total roll stiffness, so owning stiffer
+    springs raises the target -- the reason to size off the box, not the
+    as-run setup.
+    """
+    soft, _, _ = ts.stiffness_for_setups(ts.spring_box_setups((175, 200), (150, 175)))
+    stiff, _, _ = ts.stiffness_for_setups(ts.spring_box_setups((275, 300), (250, 275)))
+    assert stiff > soft

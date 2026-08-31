@@ -405,6 +405,112 @@ def reachable_distribution(k_install_n_mm, arb_max_nm_deg, on="front"):
 
 
 # ---------------------------------------------------------------------------
+# What is actually in the spring box
+# ---------------------------------------------------------------------------
+#
+# "Don't fill out a VD spreadsheet and stop. Check what springs are actually in
+# the box -- if the calc is based on a 350 lb spring and a 450 lb spring is what
+# is available, the numbers change. Design around the worst case."
+#                                       -- Poole, 2026 design event feedback
+#
+# stiffness_for_range() asks a hypothetical: what if I wanted 40-60% front. The
+# real requirement comes from the setups the car can PHYSICALLY reach, and two
+# things change when you use the real hardware instead of a hypothetical:
+#
+#   1. TOTAL roll stiffness moves too, not just the distribution. Every spring
+#      swap changes both. Required chassis stiffness scales with the total, so
+#      the binding case is usually the STIFFEST combination you own -- and
+#      sizing off the as-run setup can under-spec the frame.
+#
+#   2. The reachable distributions are a discrete, lopsided SET, not a tidy
+#      symmetric band. The worst pair is whichever two setups are furthest
+#      apart in load-transfer terms, and it is often not the two extremes.
+#
+# Only list combinations you would genuinely run. A spring you own but would
+# never fit is not a requirement, it is a distraction.
+
+def axle_from_spring(spring_lbf_in, motion_ratio, track_mm,
+                     arb_nm_deg=0.0, k_install_n_mm=np.inf):
+    """Ground-referenced axle roll stiffness straight from a spring rate."""
+    wheel = spring_lbf_in * cc.LBF_IN_TO_N_MM / motion_ratio ** 2
+    return axle_roll_stiffness(wheel, track_mm, arb_nm_deg, k_install_n_mm)
+
+
+def spring_box_setups(front_lbf_in, rear_lbf_in, arb_front=(0.0,), arb_rear=(0.0,),
+                      k_install_n_mm=np.inf):
+    """
+    Every setup reachable from the hardware, as (K_f, K_r, label) triples.
+
+    front_lbf_in / rear_lbf_in are the spring rates you own; arb_* are the bar
+    settings available at each end (leave at (0.0,) for a car with no bar).
+    """
+    out = []
+    for sf in front_lbf_in:
+        for sr in rear_lbf_in:
+            for af in arb_front:
+                for ar in arb_rear:
+                    kf = axle_from_spring(sf, cc.MOTION_RATIO_FRONT,
+                                          cc.FRONT_TRACK_MM, af, k_install_n_mm)
+                    kr = axle_from_spring(sr, cc.MOTION_RATIO_REAR,
+                                          cc.REAR_TRACK_MM, ar, k_install_n_mm)
+                    bar = f" +{af:g}/{ar:g}" if (af or ar) else ""
+                    out.append((kf, kr, f"{sf:g}/{sr:g}{bar}"))
+    return out
+
+
+# A commanded balance change smaller than this is not a tuning move -- it is
+# two setups that happen to land in the same place. Deakin's criterion is a
+# FRACTION of the commanded change, so it degenerates as that change goes to
+# zero: demanding 80% of 0.17 points drives the required stiffness to infinity
+# for an adjustment nobody would ever make. Pairs below this are skipped.
+MIN_MEANINGFUL_LLTD_CHANGE_PTS = 1.0
+
+
+def stiffness_for_setups(setups, threshold=0.80,
+                         min_change_pts=MIN_MEANINGFUL_LLTD_CHANGE_PTS, **kw):
+    """
+    Chassis stiffness needed so that EVERY meaningful pair of reachable setups
+    still delivers `threshold` of its commanded balance change. Returns
+    (required_stiffness, worst_pair_labels, commanded_change_pts).
+
+    Unlike stiffness_for_range this does not hold total roll stiffness fixed,
+    because a real spring swap does not. Pairs whose rigid-chassis LLTD change
+    is below min_change_pts are skipped -- see the note above; without that
+    filter the answer is set by the most pointless swap in the box.
+    """
+    worst, pair, change = 0.0, (None, None), 0.0
+    for i, a in enumerate(setups):
+        for b in setups[i + 1:]:
+            delta = abs(lltd(b[0], b[1], RIGID, **kw) - lltd(a[0], a[1], RIGID, **kw))
+            if delta < min_change_pts:
+                continue
+            k = stiffness_for_criterion((a[0], a[1]), (b[0], b[1]), threshold, **kw)
+            if np.isfinite(k) and k > worst:
+                worst, pair, change = k, (a[2], b[2]), delta
+    return worst, pair, change
+
+
+def report_spring_box(front_lbf_in, rear_lbf_in, arb_front=(0.0,), arb_rear=(0.0,)):
+    """Print the reachable-setup table and the requirement it implies."""
+    setups = spring_box_setups(front_lbf_in, rear_lbf_in, arb_front, arb_rear)
+    print("\n" + "=" * 72)
+    print("THE REAL REQUIREMENT: WHAT THE SPRING BOX CAN REACH   [Poole, 2026]")
+    print("=" * 72)
+    print(f"  {'setup lbf/in':>16} | {'K_f':>7} | {'K_r':>7} | {'total':>7} | {'% front':>8}")
+    print("  " + "-" * 60)
+    for kf, kr, lab in sorted(setups, key=lambda t: 100 * t[0] / (t[0] + t[1])):
+        print(f"  {lab:>16} | {kf:>7.1f} | {kr:>7.1f} | {kf+kr:>7.1f} | {100*kf/(kf+kr):>7.2f}%")
+    k, pair, change = stiffness_for_setups(setups)
+    print(f"\n  Worst MEANINGFUL pair: {pair[0]} <-> {pair[1]}"
+          f"   ({change:.2f} pts of balance)")
+    print(f"  Chassis stiffness needed for 80% across the whole box: {k:.0f} N*m/deg")
+    print(f"  With Velie's +20% build margin:                        {k*1.2:.0f} N*m/deg")
+    print(f"\n  (Pairs commanding under {MIN_MEANINGFUL_LLTD_CHANGE_PTS:.1f} pts are skipped:")
+    print( "   80% of a change too small to feel is not a design requirement.)")
+    return k
+
+
+# ---------------------------------------------------------------------------
 # Report
 # ---------------------------------------------------------------------------
 
