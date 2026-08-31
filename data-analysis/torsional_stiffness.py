@@ -421,7 +421,7 @@ def report_installation():
     k_total = kf + kr
 
     print("\n" + "=" * 72)
-    print("SPLITTING THE BUDGET: FRAME vs INSTALLATION STIFFNESS")
+    print("SPLITTING THE BUDGET                    [Riley & George, 2002-01-3300]")
     print("=" * 72)
     print("  Installation stiffness is quoted at the WHEEL, N/mm. For scale,")
     print(f"  CFR26's wheel rates are {cc.WHEEL_RATE_FRONT_N_MM:.1f} / "
@@ -437,7 +437,8 @@ def report_installation():
         print(f"      {lab:>12} | {a:>8.1f} / {b:<8.1f} | {a+b:>8.1f} | "
               f"{100*(1-(a+b)/k_total):>5.1f}%")
 
-    print("\n  (b) ARB AUTHORITY SATURATES. A front ARB is fitted and swept;")
+    print("\n  (b) ARB AUTHORITY SATURATES [Poole, 2026 design feedback].")
+    print("      A front ARB is fitted and swept;")
     print("      the question is what roll stiffness distribution it can")
     print("      actually reach through a given installation stiffness.")
     arbs = [0, 100, 200, 400, 800]
@@ -542,7 +543,7 @@ def main():
     print("    identical -> the open 1.167x gap does not touch the target.\n")
 
     print("=" * 72)
-    print("WHAT THE CFR26 TARGET SHOULD HAVE BEEN")
+    print("WHAT THE CFR26 TARGET SHOULD HAVE BEEN     [Deakin, SAE 2000-01-3554]")
     print("=" * 72)
     print(f"  Total roll stiffness is held at the as-built {k_total:.0f} N*m/deg; the")
     print("  question is how much DISTRIBUTION range the chassis must support.")
@@ -551,11 +552,12 @@ def main():
     for lo_d, hi_d in [(45, 55), (42.5, 57.5), (40, 60), (35, 65), (30, 70)]:
         k = stiffness_for_range(k_total, [lo_d, hi_d])
         print(f"  {f'{lo_d:g}-{hi_d:g} % front':>22} | {k:>9.0f} N*m/deg | {k*1.2:>6.0f}")
-    print("\n  (+20% is Velie's manufacturing-error factor: MRacing measure a")
-    print("   10-20% shortfall of built vs designed on spindle-to-spindle tests.)")
+    print("\n  (+20% is Velie's manufacturing-error factor [Velie, U. Michigan]:")
+    print("   MRacing measure a 10-20% shortfall of built vs designed on")
+    print("   spindle-to-spindle tests.)")
 
     print("\n" + "=" * 72)
-    print("DELIVERED FRACTION vs CHASSIS STIFFNESS  (40-60 % front range)")
+    print("DELIVERED FRACTION vs CHASSIS STIFFNESS    [Deakin: the 80% criterion]")
     print("=" * 72)
     base = (k_total * 0.40, k_total * 0.60)
     cmd = (k_total * 0.60, k_total * 0.40)
@@ -570,5 +572,18 @@ def main():
     report_installation()
 
 
+SOURCES = """
+  Deakin et al., SAE 2000-01-3554    two-mass model, 80% criterion, roll-stiffness basis
+  Riley & George, SAE 2002-01-3300   springs in series, MR^2, equal-split efficiency
+  Velie, U. Michigan (MRacing)       sweep-to-degradation method, 10-20% build margin
+  Featherston et al., Cardiff        twist-test practice, twist distribution
+  Poole, Multimatic (2026 feedback)  installation stiffness, saturation behaviour
+  Notes: ~/.claude/skills/chassis-design/references/papers.md
+"""
+
+
 if __name__ == "__main__":
     main()
+    print("\n" + "=" * 72)
+    print("SOURCES")
+    print("=" * 72 + SOURCES)
