@@ -111,3 +111,55 @@ def test_linear_to_torsional_matches_hand_calc():
     # an axle is two springs at half-track: K_roll = 2 * K_L * (t/2)^2
     kf, _ = ts.cfr26_axle_stiffness()
     assert 2 * got == pytest.approx(kf, rel=1e-9)
+
+
+# --- installation stiffness / Riley & George chain ---------------------------
+
+def test_rigid_installation_is_a_no_op():
+    for kw, t in [(cc.WHEEL_RATE_FRONT_N_MM, cc.FRONT_TRACK_MM),
+                  (cc.WHEEL_RATE_REAR_N_MM, cc.REAR_TRACK_MM)]:
+        assert ts.delivered_axle_stiffness(kw, t, 0.0, np.inf) == pytest.approx(
+            ts.axle_roll_stiffness(kw, t, 0.0))
+
+
+def test_installation_always_costs_even_with_nothing_commanded():
+    """
+    The asymmetry against frame stiffness: a soft frame is free when you
+    command nothing, a soft installation never is.
+    """
+    totals = []
+    for ki in [50, 100, 200, 400, 800, np.inf]:
+        a, b = ts.cfr26_delivered(k_install_n_mm=ki)
+        totals.append(a + b)
+    assert all(y > x for x, y in zip(totals, totals[1:]))     # monotonic
+    assert totals[0] < 0.7 * totals[-1]                        # 50 N/mm costs >30%
+
+
+def test_arb_authority_saturates_at_the_installation_stiffness():
+    """An infinite bar cannot reach 100% front through a finite installation."""
+    for ki in [50, 100, 200]:
+        ceiling = ts.reachable_distribution(ki, 1e7)
+        assert ceiling < 99.0
+    # and a softer installation caps it lower
+    assert ts.reachable_distribution(50, 1e7) < ts.reachable_distribution(400, 1e7)
+    assert ts.reachable_distribution(1e12, 1e7) == pytest.approx(100.0, abs=0.1)
+
+
+def test_infer_installation_round_trips_spindle_to_spindle():
+    frame, ki_f, ki_r = 1100.0, 3000.0, 4000.0
+    meas = ts.spindle_to_spindle(frame, ki_f, ki_r)
+    assert meas < min(frame, ki_f, ki_r)                       # series is softest
+    assert ts.infer_installation(meas, frame) == pytest.approx(
+        ts.series_stiffness(ki_f, ki_r))
+
+
+def test_infer_installation_flags_a_measurement_that_beats_the_frame():
+    assert ts.infer_installation(1200.0, 1100.0) == np.inf
+
+
+def test_split_budget_hits_the_target():
+    target = 863.0
+    per = ts.split_budget(target, n_elements=2)
+    assert ts.series_stiffness(per, per) == pytest.approx(target)
+    per3 = ts.split_budget(target, n_elements=3)
+    assert ts.series_stiffness(per3, per3, per3) == pytest.approx(target)

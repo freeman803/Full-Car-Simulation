@@ -223,6 +223,136 @@ def linear_to_torsional(k_linear_n_mm, radius_mm):
 
 
 # ---------------------------------------------------------------------------
+# Installation stiffness — Riley & George's chain, applied to the roll model
+# ---------------------------------------------------------------------------
+#
+# THE TWO COMPLIANCES FAIL DIFFERENTLY, and that is the whole reason to
+# separate them. Both are "the chassis is not stiff enough", but they cost
+# you tuning authority by different mechanisms and are found by different
+# tests.
+#
+#   FRAME torsional stiffness sits BETWEEN the axles. It only costs you
+#   anything when you command a distribution the mass split does not already
+#   provide -- when M_f/K_f != M_r/K_r. Command nothing and a floppy frame is
+#   free. This is why CFR26, with no ARB and its distribution sitting on its
+#   mass split, is nearly insensitive to it.
+#
+#   INSTALLATION stiffness sits at EACH CORNER, in series with that corner's
+#   wheel rate. It costs you on every corner, in every condition, whether or
+#   not you commanded anything. Worse, it is downstream of the ARB: stiffen
+#   the bar and you are pushing a stiffer spring through a fixed soft link,
+#   so DELIVERED axle roll stiffness asymptotes to the installation stiffness
+#   no matter how big the bar gets. That is Poole's "the soft elements
+#   dominate all the motion and suspension adjustments have no effect", and
+#   it is a saturation, not a gradual loss.
+#
+# So a frame number alone cannot tell you whether the car is tunable. A car
+# can pass on torsional stiffness and still be untunable on installation
+# stiffness -- Poole's own student car had a rocker mount about as soft as
+# the tyre and ~400 N*m/deg as a result.
+#
+# THE SIMPLIFICATION, stated plainly because it matters: installation
+# compliance is modelled as a single roll-mode spring in series with the
+# axle's total roll stiffness (road springs AND anti-roll bar). In reality
+# the ARB often has its own load path to the chassis, sharing only part of
+# the rocker compliance, so the true saturation is somewhere between this
+# and none. Resolving it needs the actual mounting geometry, not this model.
+# This form is the conservative end and the right one for setting a target.
+
+def install_roll_stiffness(k_install_n_mm, track_mm):
+    """
+    Corner installation stiffness (N/mm, referred to the WHEEL) expressed as
+    an axle roll stiffness, N*m/deg. Same geometry as a wheel rate: two
+    springs at half-track each.
+    """
+    if not np.isfinite(k_install_n_mm):
+        return np.inf
+    return 0.5 * k_install_n_mm * track_mm ** 2 * DEG / 1000.0
+
+
+def delivered_axle_stiffness(wheel_rate_n_mm, track_mm, arb_nm_deg=0.0,
+                             k_install_n_mm=np.inf):
+    """
+    Axle roll stiffness the TYRES actually see, N*m/deg.
+
+    Springs and ARB act in parallel (both resist roll); installation
+    compliance is in series with their sum, and caps it.
+    """
+    commanded = axle_roll_stiffness(wheel_rate_n_mm, track_mm, arb_nm_deg)
+    k_inst = install_roll_stiffness(k_install_n_mm, track_mm)
+    if not np.isfinite(k_inst):
+        return commanded
+    return series_stiffness(commanded, k_inst)
+
+
+def cfr26_delivered(arb_front=0.0, arb_rear=0.0, k_install_n_mm=np.inf):
+    """CFR26's two delivered axle roll stiffnesses, including installation."""
+    return (
+        delivered_axle_stiffness(cc.WHEEL_RATE_FRONT_N_MM, cc.FRONT_TRACK_MM,
+                                 arb_front, k_install_n_mm),
+        delivered_axle_stiffness(cc.WHEEL_RATE_REAR_N_MM, cc.REAR_TRACK_MM,
+                                 arb_rear, k_install_n_mm),
+    )
+
+
+def spindle_to_spindle(k_frame, k_install_front, k_install_rear):
+    """
+    What a twist test measures, N*m/deg — Riley & George's series chain
+    (SAE 2002-01-3300), with the suspension locked out so the road springs
+    and tyres drop out of the chain and only structure remains.
+
+    This is the bridge between the model and the rig: it is the number to
+    predict BEFORE the test and to compare the test against afterwards.
+    Installation stiffnesses are roll-mode (N*m/deg), i.e. already through
+    install_roll_stiffness().
+    """
+    return series_stiffness(k_frame, k_install_front, k_install_rear)
+
+
+def infer_installation(measured_s2s, k_frame):
+    """
+    Back the COMBINED installation stiffness out of a twist test, N*m/deg.
+
+    Given a measured spindle-to-spindle number and a frame stiffness from
+    FEA, whatever is missing is installation (plus any manufacturing
+    shortfall in the frame -- the test cannot separate those two, which is
+    exactly why Velie folds a 10-20% factor in rather than pretending it
+    can). Returns inf if the measurement meets or beats the frame number,
+    which means either the FEA is conservative or the test is wrong.
+    """
+    if measured_s2s >= k_frame:
+        return np.inf
+    return 1.0 / (1.0 / measured_s2s - 1.0 / k_frame)
+
+
+def split_budget(target_s2s, n_elements=2):
+    """
+    Riley & George's structural-efficiency result: for elements of similar
+    stiffness-to-weight, the lightest way to hit a series target is to make
+    them EQUAL. n elements in series each need n * target.
+
+    Returns the per-element stiffness. With n_elements=2 (frame vs. the
+    combined installation path) this is just 2 * target.
+    """
+    return n_elements * target_s2s
+
+
+def reachable_distribution(k_install_n_mm, arb_max_nm_deg, on="front"):
+    """
+    Percent-front roll stiffness distribution reachable with an ARB of rate
+    `arb_max_nm_deg` fitted to one axle, given installation stiffness.
+
+    This is the number that saturates. It is what the ARB is FOR, and a soft
+    installation quietly takes it away.
+    """
+    arb_f = arb_max_nm_deg if on == "front" else 0.0
+    arb_r = arb_max_nm_deg if on == "rear" else 0.0
+    kf, kr = cfr26_delivered(arb_f, arb_r, k_install_n_mm)
+    return 100.0 * kf / (kf + kr)
+
+
+
+# ---------------------------------------------------------------------------
 # Report
 # ---------------------------------------------------------------------------
 
@@ -230,6 +360,94 @@ def linear_to_torsional(k_linear_n_mm, radius_mm):
 # The design sheet's D93 = 1700 N*m/deg is an ASSUMPTION, not a measurement or
 # an analysis result, and is deliberately not used here.
 CFR26_FEA_NM_DEG = 1100.0
+
+
+
+def report_installation():
+    """Where the tuning authority actually goes: frame vs. installation."""
+    kf, kr = ts_kf, ts_kr = cfr26_axle_stiffness()
+    k_total = kf + kr
+
+    print("\n" + "=" * 72)
+    print("SPLITTING THE BUDGET: FRAME vs INSTALLATION STIFFNESS")
+    print("=" * 72)
+    print("  Installation stiffness is quoted at the WHEEL, N/mm. For scale,")
+    print(f"  CFR26's wheel rates are {cc.WHEEL_RATE_FRONT_N_MM:.1f} / "
+          f"{cc.WHEEL_RATE_REAR_N_MM:.1f} N/mm, so a 200 N/mm installation")
+    print("  is about 7x the spring it sits behind.\n")
+
+    print("  (a) INSTALLATION ALONE, no ARB commanded — it still costs you.")
+    print(f"      {'k_inst N/mm':>12} | {'delivered K_f/K_r':>19} | {'total':>8} | {'lost':>6}")
+    print("      " + "-" * 54)
+    for ki in [50, 100, 200, 400, 800, np.inf]:
+        a, b = cfr26_delivered(k_install_n_mm=ki)
+        lab = "rigid" if not np.isfinite(ki) else f"{ki:.0f}"
+        print(f"      {lab:>12} | {a:>8.1f} / {b:<8.1f} | {a+b:>8.1f} | "
+              f"{100*(1-(a+b)/k_total):>5.1f}%")
+
+    print("\n  (b) ARB AUTHORITY SATURATES. A front ARB is fitted and swept;")
+    print("      the question is what roll stiffness distribution it can")
+    print("      actually reach through a given installation stiffness.")
+    arbs = [0, 100, 200, 400, 800]
+    print(f"      {'k_inst N/mm':>12} | " + " | ".join(f"ARB{a:>4}" for a in arbs) + " |  ceiling")
+    print("      " + "-" * 62)
+    for ki in [50, 100, 200, 400, 800, np.inf]:
+        row = [f"{reachable_distribution(ki, a):6.1f}%" for a in arbs]
+        ceiling = reachable_distribution(ki, 1e7)
+        lab = "rigid" if not np.isfinite(ki) else f"{ki:.0f}"
+        print(f"      {lab:>12} | " + " | ".join(row) + f" |  {ceiling:5.1f}%")
+    print("\n      The ceiling column is an INFINITE bar. A 100 N/mm installation")
+    print("      caps distribution at that ceiling no matter what bar you fit —")
+    print("      the authority is gone before the bar is sized.")
+
+    print("\n  (c) BUDGET SPLIT for a spindle-to-spindle target.")
+    target = stiffness_for_range(k_total, [40.0, 60.0]) * 1.2
+    roll_to_wheel = 0.5 * cc.FRONT_TRACK_MM ** 2 * DEG / 1000.0   # N*m/deg per N/mm
+    print(f"      Deakin floor for 40-60% front, +20% mfg: {target:.0f} N*m/deg")
+    print(f"      spindle-to-spindle. Two elements in series get you there.\n")
+
+    per = split_budget(target, n_elements=2)
+    print(f"      Riley's EQUAL SPLIT — lightest, if frame and suspension have")
+    print(f"      similar stiffness-to-weight:")
+    print(f"        frame                            {per:>6.0f} N*m/deg")
+    print(f"        installation, both axles         {per:>6.0f} N*m/deg")
+    print(f"        = spindle-to-spindle             "
+          f"{series_stiffness(per, per):>6.0f} N*m/deg  (target {target:.0f})")
+    print(f"      Splitting that installation figure equally front/rear puts")
+    print(f"      each axle at {2*per:.0f} N*m/deg = {2*per/roll_to_wheel:.0f} N/mm at the wheel.\n")
+
+    print(f"      BUT THE FRAME IS NOT A FREE VARIABLE — the FEA says")
+    print(f"      {CFR26_FEA_NM_DEG:.0f} N*m/deg, well under the {per:.0f} an equal split wants.")
+    need = infer_installation(target, CFR26_FEA_NM_DEG)
+    if np.isfinite(need):
+        print(f"      Holding the frame at {CFR26_FEA_NM_DEG:.0f}, installation must reach")
+        print(f"        {need:>6.0f} N*m/deg combined, i.e. {2*need:.0f} per axle")
+        print(f"        = {2*need/roll_to_wheel:.0f} N/mm at the wheel, ~"
+              f"{2*need/roll_to_wheel/cc.WHEEL_RATE_FRONT_N_MM:.0f}x the wheel rate.")
+        print(f"      That is the binding constraint, and it is a demanding number.")
+        print(f"      A stiffer frame buys it down fast: at {1.5*CFR26_FEA_NM_DEG:.0f} N*m/deg frame,")
+        need2 = infer_installation(target, 1.5 * CFR26_FEA_NM_DEG)
+        print(f"      installation only needs {2*need2/roll_to_wheel:.0f} N/mm.")
+    else:
+        print(f"      The frame alone already clears the target.")
+
+    print("\n  (d) WHAT A TWIST TEST WOULD TELL YOU, given the 1100 FEA frame.")
+    print(f"      {'measured s2s':>13} | {'implied installation':>21}")
+    print("      " + "-" * 38)
+    for meas in [500, 700, 900, 1000, 1050]:
+        imp = infer_installation(meas, CFR26_FEA_NM_DEG)
+        s = "beats FEA" if not np.isfinite(imp) else f"{imp:.0f} N*m/deg"
+        print(f"      {meas:>10.0f}    | {s:>21}")
+    print("      A test landing well under 1100 is not a bad frame -- it is")
+    print("      the installation path showing up. The test cannot separate")
+    print("      that from a manufacturing shortfall in the frame itself,")
+    print("      which is why Velie folds in 10-20% rather than pretending it can.")
+
+    print("\n  (e) CFR26 SPECIFICALLY: installation stiffness CANNOT be backed")
+    print("      out of the roll data. Compliance can only ever ADD roll, and")
+    print("      the measured roll gradient is already 1.167x BELOW prediction.")
+    print("      So the telemetry bounds total compliance from above and says")
+    print("      nothing about its size. It needs a twist test.")
 
 
 def main():
@@ -287,6 +505,8 @@ def main():
         mark = "  <-- 80%" if f >= 0.80 and delivered_fraction(k_ch - 1, base, cmd) < 0.80 else ""
         note = "   [FEA est]" if k_ch == CFR26_FEA_NM_DEG else ""
         print(f"  {k_ch:>13.0f} | {100*f:>9.1f}%{mark}{note}")
+
+    report_installation()
 
 
 if __name__ == "__main__":
