@@ -243,3 +243,25 @@ def test_a_stiffer_box_demands_a_stiffer_chassis():
     soft, _, _ = ts.stiffness_for_setups(ts.spring_box_setups((175, 200), (150, 175)))
     stiff, _, _ = ts.stiffness_for_setups(ts.spring_box_setups((275, 300), (250, 275)))
     assert stiff > soft
+
+
+def test_criterion_is_the_dominant_lever():
+    """
+    Deakin's 80% is the weakest defensible criterion, and the gap between it
+    and 90% is most of the gap to what teams actually build. If this stops
+    being true the headline's whole argument needs revisiting.
+    """
+    kf, kr = ts.cfr26_axle_stiffness()
+    kt = kf + kr
+    k80 = ts.stiffness_for_range(kt, [40.0, 60.0], threshold=0.80)
+    k90 = ts.stiffness_for_range(kt, [40.0, 60.0], threshold=0.90)
+    assert k90 > 2 * k80
+    assert 1200 < k90 * 1.2 < 1800          # lands in the band teams build to
+
+
+def test_requirement_scales_with_total_roll_stiffness():
+    """Why a car with an ARB needs a stiffer frame than CFR26 does."""
+    ratios = []
+    for tot in (601.0, 800.0, 1000.0, 1200.0):
+        ratios.append(ts.stiffness_for_range(tot, [40.0, 60.0]) / tot)
+    assert max(ratios) - min(ratios) < 0.01   # near-constant multiple

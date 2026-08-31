@@ -612,45 +612,72 @@ def report_installation():
     print("      nothing about its size. It needs a twist test.")
 
 
-def headline(balance_range=(40.0, 60.0)):
+# The criterion is the single biggest lever on the answer, and Deakin's
+# published 80% is the WEAKEST defensible choice -- it accepts losing a fifth
+# of your tuning authority. Going to 90% roughly doubles the requirement. This
+# is why Deakin's FSAE row (300-1000 N*m/deg) sits so far below what teams
+# actually build (1200-2500): they are not disagreeing about the physics, they
+# are demanding a tighter criterion. Default here is 90%, not 80%, because at
+# 80% three independent cross-checks all say the answer is too low --
+# see headline().
+DEFAULT_CRITERION = 0.90
+
+
+def headline(balance_range=(40.0, 60.0), criterion=DEFAULT_CRITERION):
     """The answer, and only the answer. Everything else is behind --detail."""
     kf, kr = cfr26_axle_stiffness()
     k_total = kf + kr
-    floor = stiffness_for_range(k_total, list(balance_range))
+    floor = stiffness_for_range(k_total, list(balance_range), threshold=criterion)
     target = floor * 1.2
-    inst = infer_installation(target, CFR26_FEA_NM_DEG)
-    roll_to_wheel = 0.5 * cc.FRONT_TRACK_MM ** 2 * DEG / 1000.0
 
     print("=" * 70)
     print("CFR26 CHASSIS TORSIONAL STIFFNESS TARGET")
     print("=" * 70)
     print()
-    print(f"  >>  DESIGN TO   {target:>6.0f} N*m/deg  <<")
+    print(f"  >>  DESIGN TO  {target:>6.0f} N*m/deg  <<"
+          f"   ({100*criterion:.0f}% criterion + 20% build margin)")
     print()
-    print(f"      {floor:>6.0f}   floor, Deakin 80% criterion")
-    print(f"      {target:>6.0f}   + Velie 20% build margin   <- the target")
-    print(f"      {CFR26_FEA_NM_DEG:>6.0f}   as built, unvalidated FEA  "
-          f"-> clears by {CFR26_FEA_NM_DEG/target:.1f}x")
+    print(f"      as built  {CFR26_FEA_NM_DEG:>5.0f} N*m/deg, unvalidated FEA"
+          f"   -> {'CLEARS' if CFR26_FEA_NM_DEG >= target else 'SHORT by'}"
+          f" {abs(1 - CFR26_FEA_NM_DEG/target)*100:.0f}%")
+    print()
+    print("  THE CRITERION IS THE DOMINANT CHOICE -- MAKE IT DELIBERATELY")
+    print("  (what fraction of a commanded balance change must reach the tyres)")
+    print()
+    for th, note in [(0.80, "Deakin's published floor -- a LOWER BOUND, not a target"),
+                     (0.85, ""),
+                     (0.90, "recommended, and where the cross-checks agree"),
+                     (0.95, "diminishing returns; the curve is flat here")]:
+        k = stiffness_for_range(k_total, list(balance_range), threshold=th)
+        mark = "  <--" if abs(th - criterion) < 1e-9 else "     "
+        print(f"    {100*th:>3.0f}%  {k:>6.0f} floor  ->  {k*1.2:>6.0f} target{mark} {note}")
+    print()
+    print("  WHY NOT 80%: three independent routes land near 1500, not 700")
+    print("    Velie, transient lap sim, comparable car          1550 N*m/deg")
+    print("    Cardiff, \"typical FSAE target\"                    1500")
+    print("    Michigan, 30 yrs of iteration (measured)          2100")
+    print("    what most FSAE teams build                   1200-1500")
     print()
     print("  BASIS")
     print(f"      total roll stiffness      {k_total:6.1f} N*m/deg"
           f"   ({kf:.1f} F / {kr:.1f} R)")
     print(f"      roll stiff distribution   {100*kf/k_total:6.2f} % front   (no ARB fitted)")
     print(f"      balance range assumed     {balance_range[0]:.0f}-{balance_range[1]:.0f} % front")
-    print(f"      target is {target/k_total:.2f}x total roll stiffness"
-          f"   (the folk rule says 4x)")
+    print(f"      target is {target/k_total:.1f}x total roll stiffness")
     print()
-    print("  BEFORE YOU USE THIS")
-    print(f"      1. Quasi-static floor. Velie's transient method gives a")
-    print(f"         higher number (1550 on a comparable car).")
-    print(f"      2. Spring box unknown. A stiffer box raises this --")
-    print(f"         run report_spring_box() with the real rates.")
-    print(f"      3. Installation stiffness unmeasured, and it is in series:")
-    print(f"         at a {CFR26_FEA_NM_DEG:.0f} frame it must reach"
-          f" {2*inst/roll_to_wheel:.0f} N/mm at the wheel")
-    print(f"         for the car to hit {target:.0f} overall. Needs a twist test.")
+    print("      CFR26's roll stiffness is LOW because it runs no ARB. The")
+    print("      requirement scales with it, so a car with 1000 N*m/deg of roll")
+    print(f"      stiffness needs {stiffness_for_range(1000.0, list(balance_range), threshold=criterion)*1.2:.0f}"
+          f" on the same criterion. That, plus the")
+    print("      criterion, is the whole gap to what other teams quote.")
     print()
-    print("  Run with --detail for the derivation, --sources for references.")
+    print("  STILL MISSING")
+    print("      spring box unknown -- a stiffer box raises this")
+    print("      installation stiffness unmeasured -- needs a twist test")
+    print("      1100 is FEA, never validated on a rig")
+    print()
+    print("  --detail for the derivation, --sources for references,")
+    print("  --criterion 0.85 to change the criterion.")
     return target
 
 
@@ -659,9 +686,12 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description="CFR26 chassis torsional stiffness target")
     ap.add_argument("--detail", action="store_true", help="show the full derivation")
     ap.add_argument("--sources", action="store_true", help="show references")
+    ap.add_argument("--criterion", type=float, default=DEFAULT_CRITERION,
+                    help="fraction of commanded balance change that must be "
+                         "delivered (default 0.90; Deakin publishes 0.80)")
     a = ap.parse_args(argv)
 
-    headline()
+    headline(criterion=a.criterion)
     if a.detail:
         report_derivation()
         report_installation()
