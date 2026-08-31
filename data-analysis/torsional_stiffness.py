@@ -7,7 +7,7 @@ torsional_stiffness.py — what chassis torsional stiffness the car actually
 needs, and why.
 
 THE QUESTION THIS ANSWERS. Not "how stiff can we make it" (the answer to
-that is always "stiffer, for more mass") but Velie's question: how stiff
+that is always "stiffer, for more mass") but the MRacing paper's question: how stiff
 does it have to be before the car stops responding to the setup changes we
 want to make? Stiffness past that point is pure mass.
 
@@ -68,7 +68,7 @@ constants already live. Nothing is re-typed here.
 
 NOT MODELLED: installation stiffness (Riley & George's series chain,
 series_stiffness() below, is the hook for it), transient response (Deakin's
-static model is steady-state; Velie used a lap sim and got a HIGHER number
+static model is steady-state; the MRacing paper used a lap sim and got a HIGHER number
 than a quasi-static criterion gives), and tyre load sensitivity.
 """
 
@@ -370,7 +370,7 @@ def infer_installation(measured_s2s, k_frame):
     Given a measured spindle-to-spindle number and a frame stiffness from
     FEA, whatever is missing is installation (plus any manufacturing
     shortfall in the frame -- the test cannot separate those two, which is
-    exactly why Velie folds a 10-20% factor in rather than pretending it
+    exactly why the MRacing paper folds a 10-20% factor in rather than pretending it
     can). Returns inf if the measurement meets or beats the frame number,
     which means either the FEA is conservative or the test is wrong.
     """
@@ -543,7 +543,7 @@ def report_spring_box(front_lbf_in, rear_lbf_in, arb_front=(0.0,), arb_rear=(0.0
     print(f"\n  Worst MEANINGFUL pair: {pair[0]} <-> {pair[1]}"
           f"   ({change:.2f} pts of balance)")
     print(f"  Chassis stiffness needed for 80% across the whole box: {k:.0f} N*m/deg")
-    print(f"  With Velie's +20% build margin:                        {k*1.2:.0f} N*m/deg")
+    print(f"  With MRacing's +20% build margin:                        {k*1.2:.0f} N*m/deg")
     print(f"\n  (Pairs commanding under {MIN_MEANINGFUL_LLTD_CHANGE_PTS:.1f} pts are skipped:")
     print( "   80% of a change too small to feel is not a design requirement.)")
     return k
@@ -642,7 +642,7 @@ def report_installation():
     print("      A test landing well under 1100 is not a bad frame -- it is")
     print("      the installation path showing up. The test cannot separate")
     print("      that from a manufacturing shortfall in the frame itself,")
-    print("      which is why Velie folds in 10-20% rather than pretending it can.")
+    print("      which is why the MRacing paper folds in 10-20% rather than pretending it can.")
 
     print("\n  (e) CFR26 SPECIFICALLY: installation stiffness CANNOT be backed")
     print("      out of the roll data. Compliance can only ever ADD roll, and")
@@ -702,7 +702,7 @@ def headline(balance_range=(40.0, 60.0), criterion=DEFAULT_CRITERION):
     print("    here is the design decision -- there is no 'correct' one.")
     print()
     print("  WHY NOT 80%: three independent routes land near 1500, not 700")
-    print("    Velie, transient lap sim, comparable car          1550 N*m/deg")
+    print("    MRacing paper, transient lap sim, comparable car          1550 N*m/deg")
     print("    Cardiff, \"typical FSAE target\"                    1500")
     print("    Michigan, 30 yrs of iteration (measured)          2100")
     print("    what most FSAE teams build                   1200-1500")
@@ -794,7 +794,7 @@ def report_derivation():
     for lo_d, hi_d in [(45, 55), (42.5, 57.5), (40, 60), (35, 65), (30, 70)]:
         k = stiffness_for_range(k_total, [lo_d, hi_d])
         print(f"  {f'{lo_d:g}-{hi_d:g} % front':>22} | {k:>9.0f} N*m/deg | {k*1.2:>6.0f}")
-    print("\n  (+20% is Velie's manufacturing-error factor [Velie, U. Michigan]:")
+    print("\n  (+20% is the build margin from the MRacing paper [Velie, U. Michigan]:")
     print("   MRacing measure a 10-20% shortfall of built vs designed on")
     print("   spindle-to-spindle tests.)")
 
@@ -816,7 +816,7 @@ def report_derivation():
 SOURCES = """
   Deakin et al., SAE 2000-01-3554    two-mass model, 80% criterion, roll-stiffness basis
   Riley & George, SAE 2002-01-3300   springs in series, MR^2, equal-split efficiency
-  Velie, U. Michigan (MRacing)       sweep-to-degradation method, 10-20% build margin
+  MRacing paper (Velie, U. Michigan)  sweep-to-degradation method, 10-20% build margin
   Featherston et al., Cardiff        twist-test practice, twist distribution
   Poole, Multimatic (2026 feedback)  installation stiffness, saturation behaviour
   Notes: ~/.claude/skills/chassis-design/references/papers.md
