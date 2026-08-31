@@ -357,6 +357,16 @@ def spindle_to_spindle(k_frame, k_install_front, k_install_rear):
 
     This is the bridge between the model and the rig: it is the number to
     predict BEFORE the test and to compare the test against afterwards.
+
+    AND IT IS WHAT DESIGN JUDGES ASK FOR. From DesignJudges.com, "Tube Frame
+    Analysis": "I don't want to see just a fixed-bulkhead-to-fixed-bulkhead
+    torsional load case on only the frame design that you'd already sent out to
+    the tube cutter." They want torsion measured "either from the front
+    suspension pickup points to the rear suspension pickup points, or (better)
+    from the wheelrim to the wheelrim through the outboard assemblies and
+    links" -- i.e. WITH the installation path in it, which is exactly this
+    function. A frame-only number (our 1100 N*m/deg FEA) is the thing that
+    article specifically pushes back on.
     Installation stiffnesses are roll-mode (N*m/deg), i.e. already through
     install_roll_stiffness().
     """
