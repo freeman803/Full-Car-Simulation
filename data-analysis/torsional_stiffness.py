@@ -1,6 +1,6 @@
 # /// script
 # requires-python = ">=3.9"
-# dependencies = ["numpy"]
+# dependencies = ["numpy", "pandas", "scipy"]
 # ///
 """
 torsional_stiffness.py — what chassis torsional stiffness the car actually

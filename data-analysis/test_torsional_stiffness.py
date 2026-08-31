@@ -1,6 +1,6 @@
 # /// script
 # requires-python = ">=3.9"
-# dependencies = ["numpy", "pytest"]
+# dependencies = ["numpy", "pandas", "scipy", "pytest"]
 # ///
 """
 test_torsional_stiffness.py — physics checks on the Deakin model.
@@ -163,3 +163,9 @@ def test_split_budget_hits_the_target():
     assert ts.series_stiffness(per, per) == pytest.approx(target)
     per3 = ts.split_budget(target, n_elements=3)
     assert ts.series_stiffness(per3, per3, per3) == pytest.approx(target)
+
+
+if __name__ == "__main__":
+    # So `uv run test_torsional_stiffness.py` works like the other scripts here,
+    # rather than importing the module and silently doing nothing.
+    raise SystemExit(pytest.main([__file__, "-q"]))
