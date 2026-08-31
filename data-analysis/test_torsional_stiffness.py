@@ -265,3 +265,29 @@ def test_requirement_scales_with_total_roll_stiffness():
     for tot in (601.0, 800.0, 1000.0, 1200.0):
         ratios.append(ts.stiffness_for_range(tot, [40.0, 60.0]) / tot)
     assert max(ratios) - min(ratios) < 0.01   # near-constant multiple
+
+
+def test_motion_share_round_trips():
+    for pct in (2.5, 5.0, 10.0, 25.0):
+        k = ts.stiffness_for_motion_share(pct)
+        assert ts.chassis_motion_share(k) == pytest.approx(pct)
+
+
+def test_pooles_rule_is_self_inconsistent():
+    """
+    "Allow ~5% of motion through the chassis" and "roughly 3:1" are not the
+    same rule. 5% implies 19:1; 3:1 implies 25% of motion. Documented so the
+    discrepancy is not rediscovered as a bug in this model.
+    """
+    kf, kr = ts.cfr26_axle_stiffness()
+    # "the suspension" in a SERIES comparison is the series-equivalent, not
+    # the parallel roll stiffness -- they differ by ~4x on this car.
+    k_series = ts.series_stiffness(kf, kr)          # 150.2
+    k_parallel = kf + kr                            # 601.1
+    assert k_parallel / k_series == pytest.approx(4.0, rel=0.02)
+    assert ts.stiffness_for_motion_share(5.0) / k_series == pytest.approx(19.0, rel=0.02)
+    assert ts.chassis_motion_share(3.0 * k_series) == pytest.approx(25.0, rel=0.02)
+    # so his "3:1" reads as 450 against the series value but 1803 against the
+    # parallel one, and only the latter matches the 1200-1500 he also quoted
+    assert 3.0 * k_series == pytest.approx(450, abs=10)
+    assert 3.0 * k_parallel == pytest.approx(1803, abs=10)

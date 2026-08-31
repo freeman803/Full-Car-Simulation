@@ -404,6 +404,43 @@ def reachable_distribution(k_install_n_mm, arb_max_nm_deg, on="front"):
 
 
 
+def chassis_motion_share(k_chassis, k_front=None, k_rear=None):
+    """
+    Percent of TWIST MOTION absorbed by the chassis rather than the suspension
+    -- Poole's language, so his rule of thumb can be checked against a target.
+
+        share = (1/K_ch) / (1/K_ch + 1/K_f + 1/K_r)
+
+    NOT the same quantity as delivered_fraction(). This is a share of
+    DEFLECTION in the series chain; Deakin's criterion is a share of commanded
+    BALANCE CHANGE that reaches the tyres. They are convertible but distinct,
+    and for CFR26 they happen to land close (a 95% criterion gives ~4.4% of
+    motion, against Poole's 5%). Whether that near-coincidence generalises to
+    other cars has not been checked.
+
+    NOTE Poole's rule is self-inconsistent: "allow ~5% of motion through the
+    chassis" implies K_ch = 19x the suspension, not the 3:1 he quoted, and 3:1
+    implies 25% of motion. He flagged the rule as imprecise himself.
+    """
+    if k_front is None or k_rear is None:
+        kf, kr = cfr26_axle_stiffness()
+        k_front = k_front if k_front is not None else kf
+        k_rear = k_rear if k_rear is not None else kr
+    a = 1.0 / k_chassis
+    return 100.0 * a / (a + 1.0 / k_front + 1.0 / k_rear)
+
+
+def stiffness_for_motion_share(pct, k_front=None, k_rear=None):
+    """Inverse of chassis_motion_share: K_ch that leaks `pct` of the motion."""
+    if k_front is None or k_rear is None:
+        kf, kr = cfr26_axle_stiffness()
+        k_front = k_front if k_front is not None else kf
+        k_rear = k_rear if k_rear is not None else kr
+    b = 1.0 / k_front + 1.0 / k_rear
+    return 1.0 / ((pct / 100.0) * b / (1.0 - pct / 100.0))
+
+
+
 # ---------------------------------------------------------------------------
 # What is actually in the spring box
 # ---------------------------------------------------------------------------
@@ -650,7 +687,8 @@ def headline(balance_range=(40.0, 60.0), criterion=DEFAULT_CRITERION):
                      (0.95, "diminishing returns; the curve is flat here")]:
         k = stiffness_for_range(k_total, list(balance_range), threshold=th)
         mark = "  <--" if abs(th - criterion) < 1e-9 else "     "
-        print(f"    {100*th:>3.0f}%  {k:>6.0f} floor  ->  {k*1.2:>6.0f} target{mark} {note}")
+        print(f"    {100*th:>3.0f}%  {k:>6.0f} floor  ->  {k*1.2:>6.0f} target"
+              f"  ({chassis_motion_share(k*1.2):4.1f}% motion){mark} {note}")
     print()
     print("  WHY NOT 80%: three independent routes land near 1500, not 700")
     print("    Velie, transient lap sim, comparable car          1550 N*m/deg")
