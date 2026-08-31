@@ -81,33 +81,95 @@ DEG = np.pi / 180.0
 # ---------------------------------------------------------------------------
 # Roll stiffness from the suspension
 # ---------------------------------------------------------------------------
+#
+# REFERENCE MATTERS HERE AND IT IS EASY TO GET WRONG. There are two different
+# axle roll stiffnesses in circulation on this car and they differ by 23-27%:
+#
+#   SUSPENSION-referenced  built from WHEEL rates. Chassis measured against
+#                          the suspension, no tyre deflection in it. 362.2 /
+#                          387.3, total 749.4 N*m/deg. This is what
+#                          case5_gradients cross-checks, because a shock pot
+#                          can only ever see suspension travel.
+#
+#   GROUND-referenced      built from RIDE rates (wheel rate in series with
+#                          the tyre). Chassis measured against the ROAD.
+#                          295.0 / 306.1, total 601.1 N*m/deg. This is what
+#                          the CFR26 design sheet reports.
+#
+# THE LOAD-TRANSFER MODEL NEEDS THE GROUND-REFERENCED ONE. The elastic load
+# transfer force passes through the spring AND then the tyre -- they are in
+# series in the same load path -- and the roll angle the roll moment works
+# against is the body against the ROAD, not against the suspension. Ride rate
+# is the standard basis for axle roll rates for exactly this reason.
+#
+# (An earlier version of this module used the wheel-rate figures and claimed
+# adding the tyre would "double-count" it. That was wrong: the tyre is a real
+# series element, not a double count. Caught by Bianca against the design
+# sheet, 2026-08-31.)
 
-def axle_roll_stiffness(wheel_rate_n_mm, track_mm, arb_nm_deg=0.0):
+def spring_roll_stiffness(wheel_rate_n_mm, track_mm, arb_nm_deg=0.0):
     """
-    Roll stiffness of one axle, N*m/deg, suspension-referenced.
+    Suspension-referenced axle roll stiffness, N*m/deg -- springs and ARB
+    only, no tyre.
 
-        K_roll = 1/2 * k_wheel * track^2      [N*mm/rad]  -> N*m/deg
+        K = 1/2 * k_wheel * track^2      [N*mm/rad]  ->  N*m/deg
 
-    Suspension-referenced means "chassis against the suspension", i.e. what
-    the springs alone set, with no tyre deflection in it. That is the right
-    reference for a load-transfer model: load transfer is set by the spring
-    and ARB rates, and adding the tyre in series would double-count the
-    tyre's own deflection, which does not feed back into elastic transfer.
-    (case_common's GROUND_MULT_* exist for the different job of comparing a
-    predicted chassis attitude against a measured one.)
-
-    arb_nm_deg adds directly -- an ARB is a roll spring in parallel with the
-    road springs, so its rate sums with theirs.
+    The ARB adds directly: it is a roll spring in parallel with the road
+    springs, so their rates sum.
     """
-    k = 0.5 * wheel_rate_n_mm * track_mm ** 2 * DEG / 1000.0
-    return k + arb_nm_deg
+    return 0.5 * wheel_rate_n_mm * track_mm ** 2 * DEG / 1000.0 + arb_nm_deg
 
 
-def cfr26_axle_stiffness(arb_front=0.0, arb_rear=0.0):
-    """CFR26's two axle roll stiffnesses, from the validated case_common constants."""
+def tyre_roll_stiffness(track_mm, tyre_rate_n_mm=None):
+    """The tyres' own roll stiffness, N*m/deg. Same geometry, tyre rate."""
+    k = cc.TYRE_RATE_N_MM if tyre_rate_n_mm is None else tyre_rate_n_mm
+    return 0.5 * k * track_mm ** 2 * DEG / 1000.0
+
+
+def axle_roll_stiffness(wheel_rate_n_mm, track_mm, arb_nm_deg=0.0,
+                        k_install_n_mm=np.inf, with_tyre=True):
+    """
+    GROUND-referenced axle roll stiffness, N*m/deg -- what the load-transfer
+    model wants.
+
+    The chain at one axle, all in series because the same load passes through
+    each link in turn:
+
+        (road springs + ARB)  ->  installation  ->  tyre  ->  road
+
+    With no ARB and rigid installation this reproduces the design sheet's
+    295.0 / 306.1 N*m/deg exactly.
+    """
+    chain = [spring_roll_stiffness(wheel_rate_n_mm, track_mm, arb_nm_deg)]
+    if np.isfinite(k_install_n_mm):
+        chain.append(install_roll_stiffness(k_install_n_mm, track_mm))
+    if with_tyre:
+        chain.append(tyre_roll_stiffness(track_mm))
+    return series_stiffness(*chain)
+
+
+def cfr26_axle_stiffness(arb_front=0.0, arb_rear=0.0, k_install_n_mm=np.inf):
+    """
+    CFR26's two axle roll stiffnesses, GROUND-referenced, from the validated
+    case_common constants. Matches the design sheet.
+    """
     return (
-        axle_roll_stiffness(cc.WHEEL_RATE_FRONT_N_MM, cc.FRONT_TRACK_MM, arb_front),
-        axle_roll_stiffness(cc.WHEEL_RATE_REAR_N_MM, cc.REAR_TRACK_MM, arb_rear),
+        axle_roll_stiffness(cc.WHEEL_RATE_FRONT_N_MM, cc.FRONT_TRACK_MM,
+                            arb_front, k_install_n_mm),
+        axle_roll_stiffness(cc.WHEEL_RATE_REAR_N_MM, cc.REAR_TRACK_MM,
+                            arb_rear, k_install_n_mm),
+    )
+
+
+def cfr26_axle_stiffness_susp(arb_front=0.0, arb_rear=0.0):
+    """
+    Suspension-referenced pair -- springs and ARB only. Provided so the
+    case5_gradients cross-check (749 N*m/deg) stays reproducible here, NOT
+    for use in the load-transfer model.
+    """
+    return (
+        spring_roll_stiffness(cc.WHEEL_RATE_FRONT_N_MM, cc.FRONT_TRACK_MM, arb_front),
+        spring_roll_stiffness(cc.WHEEL_RATE_REAR_N_MM, cc.REAR_TRACK_MM, arb_rear),
     )
 
 
@@ -273,26 +335,16 @@ def install_roll_stiffness(k_install_n_mm, track_mm):
 def delivered_axle_stiffness(wheel_rate_n_mm, track_mm, arb_nm_deg=0.0,
                              k_install_n_mm=np.inf):
     """
-    Axle roll stiffness the TYRES actually see, N*m/deg.
-
-    Springs and ARB act in parallel (both resist roll); installation
-    compliance is in series with their sum, and caps it.
+    Axle roll stiffness the road actually sees, N*m/deg, with installation
+    compliance included. Thin alias for axle_roll_stiffness, kept because the
+    installation discussion reads better with the intent in the name.
     """
-    commanded = axle_roll_stiffness(wheel_rate_n_mm, track_mm, arb_nm_deg)
-    k_inst = install_roll_stiffness(k_install_n_mm, track_mm)
-    if not np.isfinite(k_inst):
-        return commanded
-    return series_stiffness(commanded, k_inst)
+    return axle_roll_stiffness(wheel_rate_n_mm, track_mm, arb_nm_deg, k_install_n_mm)
 
 
 def cfr26_delivered(arb_front=0.0, arb_rear=0.0, k_install_n_mm=np.inf):
     """CFR26's two delivered axle roll stiffnesses, including installation."""
-    return (
-        delivered_axle_stiffness(cc.WHEEL_RATE_FRONT_N_MM, cc.FRONT_TRACK_MM,
-                                 arb_front, k_install_n_mm),
-        delivered_axle_stiffness(cc.WHEEL_RATE_REAR_N_MM, cc.REAR_TRACK_MM,
-                                 arb_rear, k_install_n_mm),
-    )
+    return cfr26_axle_stiffness(arb_front, arb_rear, k_install_n_mm)
 
 
 def spindle_to_spindle(k_frame, k_install_front, k_install_rear):
@@ -399,6 +451,9 @@ def report_installation():
     print("\n      The ceiling column is an INFINITE bar. A 100 N/mm installation")
     print("      caps distribution at that ceiling no matter what bar you fit —")
     print("      the authority is gone before the bar is sized.")
+    print("      NOTE the rigid row does not reach 100% either: the TYRE is a")
+    print("      series element too, and it is the last soft link. Even with")
+    print("      perfect mounts an infinite bar stops at 83.9% front.")
 
     print("\n  (c) BUDGET SPLIT for a spindle-to-spindle target.")
     target = stiffness_for_range(k_total, [40.0, 60.0]) * 1.2
@@ -424,7 +479,7 @@ def report_installation():
         print(f"        {need:>6.0f} N*m/deg combined, i.e. {2*need:.0f} per axle")
         print(f"        = {2*need/roll_to_wheel:.0f} N/mm at the wheel, ~"
               f"{2*need/roll_to_wheel/cc.WHEEL_RATE_FRONT_N_MM:.0f}x the wheel rate.")
-        print(f"      That is the binding constraint, and it is a demanding number.")
+        print(f"      That is the binding constraint on the corners.")
         print(f"      A stiffer frame buys it down fast: at {1.5*CFR26_FEA_NM_DEG:.0f} N*m/deg frame,")
         need2 = infer_installation(target, 1.5 * CFR26_FEA_NM_DEG)
         print(f"      installation only needs {2*need2/roll_to_wheel:.0f} N/mm.")
@@ -458,11 +513,17 @@ def main():
     print("=" * 72)
     print("CFR26 AS BUILT (no ARB)")
     print("=" * 72)
+    sf, sr = cfr26_axle_stiffness_susp()
     print(f"  wheel rates            {cc.WHEEL_RATE_FRONT_N_MM:6.2f} / {cc.WHEEL_RATE_REAR_N_MM:5.2f} N/mm")
-    print(f"  axle roll stiffness    {kf:6.1f} / {kr:5.1f} N*m/deg")
-    print(f"  TOTAL roll stiffness   {k_total:6.1f} N*m/deg   (case5 cross-check: 749)")
-    print(f"  roll stiffness distr   {dist:6.1f} % front")
-    print(f"  static mass distr      {100*FRONT_MASS_FRACTION:6.1f} % front")
+    print(f"  tyre rate              {cc.TYRE_RATE_N_MM:6.2f} N/mm, in series -> ride rate")
+    print(f"  susp-referenced roll   {sf:6.1f} / {sr:5.1f} N*m/deg   total {sf+sr:5.1f}"
+          f"   (case5 cross-check: 749)")
+    print(f"  GROUND-referenced roll {kf:6.1f} / {kr:5.1f} N*m/deg   total {k_total:5.1f}"
+          f"   (design sheet: 295.0 / 306.1)")
+    print(f"  ^ the model uses the ground-referenced pair: the tyre is in series")
+    print(f"    in the load path, so it belongs in the roll rate.")
+    print(f"  roll stiffness distr   {dist:6.2f} % front   (design sheet: 49%)")
+    print(f"  static mass distr      {100*FRONT_MASS_FRACTION:6.2f} % front")
     print(f"  -> mismatch of only {abs(dist - 100*FRONT_MASS_FRACTION):.1f} points: the chassis is")
     print(f"     asked to carry almost no torque.\n")
 
@@ -483,7 +544,7 @@ def main():
     print("=" * 72)
     print("WHAT THE CFR26 TARGET SHOULD HAVE BEEN")
     print("=" * 72)
-    print("  Total roll stiffness is held at the as-built 749 N*m/deg; the")
+    print(f"  Total roll stiffness is held at the as-built {k_total:.0f} N*m/deg; the")
     print("  question is how much DISTRIBUTION range the chassis must support.")
     print(f"\n  {'range kept open':>22} | {'K_ch for 80%':>12} | {'+20% mfg':>9}")
     print("  " + "-" * 50)

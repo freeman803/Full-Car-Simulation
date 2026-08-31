@@ -21,16 +21,38 @@ import case_common as cc
 import torsional_stiffness as ts
 
 
-def test_cfr26_matches_case5():
-    """case5_gradients derives 749 N*m/deg from the springs independently."""
-    kf, kr = ts.cfr26_axle_stiffness()
+def test_suspension_referenced_matches_case5():
+    """case5_gradients derives 749 N*m/deg from the springs alone, no tyre."""
+    kf, kr = ts.cfr26_axle_stiffness_susp()
     assert kf + kr == pytest.approx(749.0, abs=1.0)
 
 
-def test_arb_adds_in_parallel():
-    kf_bare, _ = ts.cfr26_axle_stiffness()
-    kf_arb, _ = ts.cfr26_axle_stiffness(arb_front=100.0)
-    assert kf_arb == pytest.approx(kf_bare + 100.0)
+def test_ground_referenced_matches_the_design_sheet():
+    """
+    The load-transfer model runs ground-referenced (ride rates), which is what
+    the CFR26 design sheet reports. Getting this wrong inflates every axle
+    stiffness by the GROUND_MULT factors, ~23-27%.
+    """
+    kf, kr = ts.cfr26_axle_stiffness()
+    assert kf == pytest.approx(295.0, abs=0.5)
+    assert kr == pytest.approx(306.1, abs=0.5)
+    assert 100 * kf / (kf + kr) == pytest.approx(49.1, abs=0.2)
+
+
+def test_the_two_references_differ_by_the_ground_multipliers():
+    (sf, sr), (gf, gr) = ts.cfr26_axle_stiffness_susp(), ts.cfr26_axle_stiffness()
+    assert sf / gf == pytest.approx(cc.GROUND_MULT_ROLL_FRONT, rel=1e-9)
+    assert sr / gr == pytest.approx(cc.GROUND_MULT_ROLL_REAR, rel=1e-9)
+
+
+def test_arb_adds_in_parallel_at_the_spring():
+    """The ARB sums with the road springs, upstream of the tyre."""
+    bare = ts.spring_roll_stiffness(cc.WHEEL_RATE_FRONT_N_MM, cc.FRONT_TRACK_MM)
+    with_bar = ts.spring_roll_stiffness(cc.WHEEL_RATE_FRONT_N_MM, cc.FRONT_TRACK_MM, 100.0)
+    assert with_bar == pytest.approx(bare + 100.0)
+    # but downstream of the tyre it cannot add linearly
+    axle = ts.cfr26_axle_stiffness(arb_front=100.0)[0]
+    assert axle < ts.cfr26_axle_stiffness()[0] + 100.0
 
 
 def test_rigid_limit_splits_by_roll_stiffness():
@@ -94,7 +116,7 @@ def test_cfr26_target_lands_near_total_roll_stiffness():
     """Deakin's floor for CFR26: order of 1x total roll stiffness, not 4x."""
     kf, kr = ts.cfr26_axle_stiffness()
     k = ts.stiffness_for_range(kf + kr, [40.0, 60.0])
-    assert 600.0 < k < 900.0
+    assert 0.85 * (kf + kr) < k < 1.05 * (kf + kr)
 
 
 def test_series_chain_is_dominated_by_the_softest_link():
@@ -108,9 +130,10 @@ def test_linear_to_torsional_matches_hand_calc():
     got = ts.linear_to_torsional(k_wheel, half_track)
     want = k_wheel * half_track ** 2 * (np.pi / 180.0) / 1000.0
     assert got == pytest.approx(want)
-    # an axle is two springs at half-track: K_roll = 2 * K_L * (t/2)^2
-    kf, _ = ts.cfr26_axle_stiffness()
-    assert 2 * got == pytest.approx(kf, rel=1e-9)
+    # an axle is two springs at half-track: K_roll = 2 * K_L * (t/2)^2.
+    # Compare against the SUSPENSION-referenced figure -- no tyre in either.
+    sf, _ = ts.cfr26_axle_stiffness_susp()
+    assert 2 * got == pytest.approx(sf, rel=1e-9)
 
 
 # --- installation stiffness / Riley & George chain ---------------------------
@@ -142,7 +165,18 @@ def test_arb_authority_saturates_at_the_installation_stiffness():
         assert ceiling < 99.0
     # and a softer installation caps it lower
     assert ts.reachable_distribution(50, 1e7) < ts.reachable_distribution(400, 1e7)
-    assert ts.reachable_distribution(1e12, 1e7) == pytest.approx(100.0, abs=0.1)
+
+
+def test_the_tyre_itself_caps_arb_authority():
+    """
+    Even with perfectly rigid mounts the tyre is still a series element, so an
+    infinite bar cannot reach 100% front. The tyre is the last soft link.
+    """
+    ceiling = ts.reachable_distribution(np.inf, 1e9)
+    tyre_f = ts.tyre_roll_stiffness(cc.FRONT_TRACK_MM)
+    _, kr = ts.cfr26_axle_stiffness()
+    assert ceiling == pytest.approx(100 * tyre_f / (tyre_f + kr), abs=0.2)
+    assert ceiling < 90.0
 
 
 def test_infer_installation_round_trips_spindle_to_spindle():
