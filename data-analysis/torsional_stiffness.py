@@ -711,11 +711,15 @@ def headline(balance_range=(40.0, 60.0), criterion=DEFAULT_CRITERION):
     print("    frame, and 100% is unreachable at any mass. Picking a number")
     print("    here is the design decision -- there is no 'correct' one.")
     print()
-    print("  WHY NOT 80%: three independent routes land near 1500, not 700")
-    print("    MRacing paper, transient lap sim, comparable car          1550 N*m/deg")
-    print("    Cardiff, \"typical FSAE target\"                    1500")
-    print("    Michigan, 30 yrs of iteration (measured)          2100")
-    print("    what most FSAE teams build                   1200-1500")
+    print("  WHY NOT 80%: independent routes land near 1500-3000, not 700")
+    print("    MRacing paper, transient lap sim, comparable car     1550 N*m/deg")
+    print("    Cardiff, \"typical FSAE target\"                       1500")
+    print("    Michigan, 30 yrs of iteration (measured)             2100")
+    print("    what most FSAE teams build                      1200-1500")
+    print(f"    Milliken RCVD, 3-5x total roll stiffness        "
+          f"{3*k_total:.0f}-{5*k_total:.0f}")
+    print("      (via Danielsson & Cocana, Chalmers 2015 -- who also confirm")
+    print("       Deakin's 80% is stated only 'as an example')")
     print()
     print("  BASIS")
     print(f"      total roll stiffness      {k_total:6.1f} N*m/deg"
@@ -829,6 +833,9 @@ SOURCES = """
   MRacing paper (Velie, U. Michigan)  sweep-to-degradation method, 10-20% build margin
   Featherston et al., Cardiff        twist-test practice, twist distribution
   Poole, Multimatic (2026 feedback)  installation stiffness, saturation behaviour
+  Danielsson & Cocana, Chalmers 2015 same model independently (Figs 2.6/2.7);
+                                     Milliken's 3-5x rule; PASSENGER CARS
+  DesignJudges.com, Tube Frame Anly. torsion load case wheelrim-to-wheelrim
   Notes: ~/.claude/skills/chassis-design/references/papers.md
 """
 
