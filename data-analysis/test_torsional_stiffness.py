@@ -352,7 +352,8 @@ def test_build_loss_is_inverted_not_added():
     """
     assert ts.build_multiplier(0.20) == pytest.approx(1.25)
     assert ts.build_multiplier(0.10) == pytest.approx(1.0 / 0.9)
-    assert ts.BUILD_MARGIN == pytest.approx(1.25)
+    assert ts.BUILD_LOSS == 0.10          # team decision, 2026-09-01
+    assert ts.BUILD_MARGIN == pytest.approx(1.0 / 0.9)
     # a target uplifted for `loss` must still clear the floor after that loss
     floor = 1298.0
     for L in (0.05, 0.10, 0.20):

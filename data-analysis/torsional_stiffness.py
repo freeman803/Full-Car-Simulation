@@ -638,7 +638,23 @@ def report_spring_box(front_lbf_in, rear_lbf_in, arb_front=(0.0,), arb_rear=(0.0
 #
 # The MRacing paper uses the loss form, which is the check that settles it:
 # 1550 / 0.8 = 1937, and they quote "around 1900 N*m/deg".
-BUILD_LOSS = 0.20
+#
+# WE USE 10%, NOT MRACING'S 20% (Bianca's call, 2026-09-01). Defensible on the
+# evidence -- Cardiff measured 3.7% and their car came out STIFFER than FEA,
+# and the Elsevier FS frame paper sets "up to 10% is acceptable" as its bar --
+# but it is an ASSUMPTION WE HAVE NOT EARNED. We have never run a twist test,
+# so we cannot yet claim our model predicts the rig to 10%. Two obligations
+# follow, and they belong in any writeup that quotes the target:
+#
+#   1. Say it is an assumption, not a measurement. A judge who asks "how do
+#      you know your build loss is 10%?" must not get a shrug.
+#   2. Check it at the first twist test (CHASSIS_TASKS.md 6d). If our real gap
+#      is worse than 10%, the target rises and the frame is further short than
+#      we currently think.
+#
+# Nothing about the conclusion depends on this: the frame falls short at every
+# loss from 5% to 20%. Pinned by test_frame_is_short_at_every_plausible_build_loss.
+BUILD_LOSS = 0.10
 
 
 def build_multiplier(loss=None):
@@ -779,7 +795,8 @@ def headline(balance_range=(40.0, 60.0), criterion=DEFAULT_CRITERION,
           f" {abs(1 - CFR26_FEA_NM_DEG/target)*100:.0f}%")
     print()
     print("  THE CRITERION IS THE DOMINANT CHOICE -- MAKE IT DELIBERATELY")
-    print("  (what fraction of a commanded balance change must reach the tyres)")
+    print("  (what fraction of a commanded balance change must reach the tyres;")
+    print(f"   targets below include the {100*loss:.0f}% build loss, x{margin:.3f})")
     print()
     for th, note in [(0.80, "Deakin's published floor -- a LOWER BOUND, not a target"),
                      (0.85, ""),
@@ -789,8 +806,8 @@ def headline(balance_range=(40.0, 60.0), criterion=DEFAULT_CRITERION,
         k = stiffness_for_range(k_total, list(balance_range), threshold=th)
         mark = "  <--" if abs(th - criterion) < 1e-9 else "     "
         if np.isfinite(k):
-            print(f"    {100*th:>3.0f}%  {k:>6.0f} floor  ->  {k*1.2:>7.0f} target"
-                  f"  ({chassis_motion_share(k*1.2):4.1f}% motion){mark} {note}")
+            print(f"    {100*th:>3.0f}%  {k:>6.0f} floor  ->  {k*margin:>7.0f} target"
+                  f"  ({chassis_motion_share(k*margin):4.1f}% motion){mark} {note}")
         else:
             print(f"    {100*th:>3.0f}%  {'inf':>6} floor  ->  {'inf':>7} target"
                   f"  ({0.0:4.1f}% motion){mark} {note}")
@@ -799,9 +816,9 @@ def headline(balance_range=(40.0, 60.0), criterion=DEFAULT_CRITERION,
     print("    frame, and 100% is unreachable at any mass. Picking a number")
     print("    here is the design decision -- there is no 'correct' one.")
     print()
-    print("  BUILD MARGIN -- the second choice, and 20% is a LUMP SUM")
-    print("  (FEA-vs-measured gap: modelling + test method + fabrication,")
-    print("   not fabrication alone)")
+    print(f"  BUILD LOSS -- the second choice. {100*loss:.0f}% is A LUMP SUM:")
+    print("  the FEA-vs-measured gap is modelling + test method + fabrication,")
+    print("  not fabrication alone -- and OURS HAS NEVER BEEN MEASURED.")
     print()
     print(f"    {'build loss':>10} | {'x':>6} | {'target':>8} | {'FEA 1100':>9}")
     print("    " + "-" * 46)
