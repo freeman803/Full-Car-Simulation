@@ -307,7 +307,10 @@ def test_full_delivery_is_unreachable():
 
 def test_cfr27_scaffold_reports_missing_parameters():
     import cfr27_target as c27
-    assert len(c27.missing()) == 10          # nothing filled in yet
+    # spring box confirmed 2026-09-01 as unchanged from CFR26; the other 8 are open
+    assert c27.P["spring_rates_front_lbf_in"] == ts.CFR26_SPRING_BOX
+    assert c27.P["spring_rates_rear_lbf_in"] == ts.CFR26_SPRING_BOX
+    assert len(c27.missing()) == 8
     assert c27.check() is False
 
 

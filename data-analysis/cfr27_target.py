@@ -46,8 +46,9 @@ P = {
     # --- springs -----------------------------------------------------------
     # EVERY rate you would actually run, not just the expected pair. A spring
     # you own but would never fit is not a requirement, it is a distraction.
-    "spring_rates_front_lbf_in": None,      # e.g. (200, 225, 250)
-    "spring_rates_rear_lbf_in":  None,      # e.g. (175, 200, 225)
+    # CONFIRMED 2026-09-01: CFR27 inherits CFR26's box unchanged.
+    "spring_rates_front_lbf_in": ts.CFR26_SPRING_BOX,
+    "spring_rates_rear_lbf_in":  ts.CFR26_SPRING_BOX,
 
     # --- motion ratio ------------------------------------------------------
     # Defined as WHEEL travel / SPRING travel, so > 1 for CFR26. Enters
@@ -97,17 +98,26 @@ P = {
 # mass SPLIT matters. They are needed to report roll angles in deg/g, which is
 # a different question. (Pinned by test_lltd_invariant_to_roll_moment_scale.)
 
+# label, units, who owns it, CFR26 value for reference
 _LABELS = {
-    "spring_rates_front_lbf_in": "front spring rates available    lbf/in, tuple",
-    "spring_rates_rear_lbf_in":  "rear spring rates available     lbf/in, tuple",
-    "motion_ratio_front":        "front motion ratio              wheel/spring",
-    "motion_ratio_rear":         "rear motion ratio               wheel/spring",
-    "track_front_mm":            "front track                     mm",
-    "track_rear_mm":             "rear track                      mm",
-    "tyre_rate_lbf_in":          "tyre vertical rate              lbf/in at running psi",
-    "arb_settings_front_nm_deg": "front ARB settings              N*m/deg, tuple",
-    "arb_settings_rear_nm_deg":  "rear ARB settings               N*m/deg, tuple",
-    "front_mass_fraction":       "front mass fraction             0-1",
+    "spring_rates_front_lbf_in": ("front spring rates available", "lbf/in tuple",
+                                  "suspension", "150/175/200/225/250"),
+    "spring_rates_rear_lbf_in":  ("rear spring rates available", "lbf/in tuple",
+                                  "suspension", "150/175/200/225/250"),
+    "motion_ratio_front":        ("front motion ratio", "wheel/spring",
+                                  "suspension kinematics", "1.188 measured"),
+    "motion_ratio_rear":         ("rear motion ratio", "wheel/spring",
+                                  "suspension kinematics", "1.038 measured"),
+    "track_front_mm":            ("front track", "mm", "suspension / CAD", "1219.2"),
+    "track_rear_mm":             ("rear track", "mm", "suspension / CAD", "1168.4"),
+    "tyre_rate_lbf_in":          ("tyre vertical rate", "lbf/in @ running psi",
+                                  "suspension / tyre choice", "700 Hoosier 43075"),
+    "arb_settings_front_nm_deg": ("front ARB settings reachable", "N*m/deg tuple",
+                                  "suspension", "0, none fitted"),
+    "arb_settings_rear_nm_deg":  ("rear ARB settings reachable", "N*m/deg tuple",
+                                  "suspension", "0, none fitted"),
+    "front_mass_fraction":       ("front mass fraction", "0-1",
+                                  "vehicle integration", "0.507 measured"),
 }
 
 
@@ -125,10 +135,12 @@ def check():
     if not gaps:
         print("\n  All present.\n")
         return True
-    print(f"\n  {len(gaps)} of {len(_LABELS)} still missing:\n")
-    for k in _LABELS:
-        mark = "  [ ]" if k in gaps else "  [x]"
-        print(f"{mark} {_LABELS[k]}")
+    print(f"\n  {len(gaps)} of {len(_LABELS)} still missing.\n")
+    print(f"  {'':4}{'parameter':<31} {'units':<22} {'ask':<24} {'CFR26 was'}")
+    print("  " + "-" * 100)
+    for k, (lab, unit, who, was) in _LABELS.items():
+        mark = "[ ]" if k in gaps else "[x]"
+        print(f"  {mark} {lab:<31} {unit:<22} {who:<24} {was}")
     print("\n  Fill these into P at the top of this file, then re-run.")
     print("  Not needed: sprung mass, sprung CG height, roll centre heights —")
     print("  they cancel out of the target. See the note in this file.\n")
