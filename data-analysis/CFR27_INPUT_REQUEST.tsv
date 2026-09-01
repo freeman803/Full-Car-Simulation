@@ -1,0 +1,9 @@
+#	Parameter	Units	Ask	CFR26 was
+1	ARB settings reachable, front	N·m/deg at the axle	Suspension	0 — none fitted
+2	ARB settings reachable, rear	N·m/deg at the axle	Suspension	0 — none fitted
+3	Motion ratio, front	wheel ÷ spring	Suspension kinematics	1.188 measured
+4	Motion ratio, rear	wheel ÷ spring	Suspension kinematics	1.038 measured
+5	Track, front	mm	Suspension / CAD	1219.2
+6	Track, rear	mm	Suspension / CAD	1168.4
+7	Tyre vertical rate	lbf/in at running pressure	Suspension / tyre choice	700 (Hoosier 43075, 300 lb, 10 psi)
+8	Front mass fraction	0–1	Vehicle integration	0.507 measured
