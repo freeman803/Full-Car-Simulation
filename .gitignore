@@ -24,3 +24,5 @@ data-analysis/plots/
 # decision itself lives in data-analysis/case_common.py.
 data-analysis/cutoff_decisions.yaml
 data-analysis/cutoff_decisions.yaml.new
+data-analysis/*.xlsx
+data-analysis/*.docx
