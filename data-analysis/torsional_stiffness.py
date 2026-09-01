@@ -66,6 +66,19 @@ stiffness_for_range() does.
 INPUTS all come from case_common, which is where the validated CFR26
 constants already live. Nothing is re-typed here.
 
+A KNOWN GAP IN DEAKIN, worth stating before leaning on any number here.
+Sampo (Surrey PhD, supervised by Sorniotti and Crocombe -- the same three
+names as SAE 2010-01-0094) reviewed Deakin and found "inconsistencies ...
+in the equations and in their comments", and notes the model "does not
+consider the fact that load transfer distribution is partially controlled by
+roll axis position and by unsprung masses". Load transfer distribution has
+THREE terms -- sprung roll moment reacted by the axle, lateral force at the
+axle via roll axis position, and unsprung mass -- and a spring or bar change
+moves only the first. So the tuning authority a setup change really buys is
+smaller than this elastic-only model implies, which makes the criterion
+argument stronger rather than weaker. Modelling the other two terms is open
+work; see the Sampo entry in the chassis-design skill's papers.md.
+
 NOT MODELLED: installation stiffness (Riley & George's series chain,
 series_stiffness() below, is the hook for it), transient response (Deakin's
 static model is steady-state; the MRacing paper used a lap sim and got a HIGHER number
@@ -835,6 +848,8 @@ SOURCES = """
   Poole, Multimatic (2026 feedback)  installation stiffness, saturation behaviour
   Danielsson & Cocana, Chalmers 2015 same model independently (Figs 2.6/2.7);
                                      Milliken's 3-5x rule; PASSENGER CARS
+  Sampo, Surrey PhD (2011)           critiques Deakin; roll axis + unsprung
+                                     terms omitted; Formula Student example
   DesignJudges.com, Tube Frame Anly. torsion load case wheelrim-to-wheelrim
   Notes: ~/.claude/skills/chassis-design/references/papers.md
 """
