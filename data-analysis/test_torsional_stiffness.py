@@ -299,3 +299,47 @@ def test_full_delivery_is_unreachable():
     k = ts.stiffness_for_range(kf + kr, [40.0, 60.0], threshold=1.0)
     assert k == np.inf
     assert np.isfinite(ts.stiffness_for_range(kf + kr, [40.0, 60.0], threshold=0.99))
+
+
+# --- CFR27 scaffold ---------------------------------------------------------
+
+def test_cfr27_scaffold_reports_missing_parameters():
+    import cfr27_target as c27
+    assert len(c27.missing()) == 10          # nothing filled in yet
+    assert c27.check() is False
+
+
+def test_cfr27_scaffold_reproduces_cfr26_when_fed_cfr26():
+    """
+    Smoke test for the plumbing: feed the CFR27 script CFR26's parameters and
+    it must land on CFR26's axle stiffnesses. Catches a parameter collected in
+    P but never actually passed through to the model -- which is exactly what
+    happened to tyre rate on the first cut.
+    """
+    import cfr27_target as c27
+    saved = dict(c27.P)
+    try:
+        c27.P.update({
+            "spring_rates_front_lbf_in": (225.0,),
+            "spring_rates_rear_lbf_in": (200.0,),
+            "motion_ratio_front": cc.MOTION_RATIO_FRONT,
+            "motion_ratio_rear": cc.MOTION_RATIO_REAR,
+            "track_front_mm": cc.FRONT_TRACK_MM,
+            "track_rear_mm": cc.REAR_TRACK_MM,
+            "tyre_rate_lbf_in": cc.TYRE_RATE_LBF_IN,
+            "arb_settings_front_nm_deg": (0.0,),
+            "arb_settings_rear_nm_deg": (0.0,),
+            "front_mass_fraction": 0.507,
+        })
+        assert c27.missing() == []
+        (kf, kr, _), = c27.setups()
+        assert (kf, kr) == pytest.approx(ts.cfr26_axle_stiffness())
+    finally:
+        c27.P.clear(); c27.P.update(saved)
+
+
+def test_tyre_rate_is_actually_used():
+    """A softer tyre must lower the axle roll stiffness."""
+    soft = ts.axle_from_spring(225.0, 1.188, 1219.2, tyre_rate_n_mm=60.0)
+    stiff = ts.axle_from_spring(225.0, 1.188, 1219.2, tyre_rate_n_mm=300.0)
+    assert soft < stiff

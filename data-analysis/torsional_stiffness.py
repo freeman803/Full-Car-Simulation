@@ -140,7 +140,8 @@ def tyre_roll_stiffness(track_mm, tyre_rate_n_mm=None):
 
 
 def axle_roll_stiffness(wheel_rate_n_mm, track_mm, arb_nm_deg=0.0,
-                        k_install_n_mm=np.inf, with_tyre=True):
+                        k_install_n_mm=np.inf, with_tyre=True,
+                        tyre_rate_n_mm=None):
     """
     GROUND-referenced axle roll stiffness, N*m/deg -- what the load-transfer
     model wants.
@@ -157,7 +158,7 @@ def axle_roll_stiffness(wheel_rate_n_mm, track_mm, arb_nm_deg=0.0,
     if np.isfinite(k_install_n_mm):
         chain.append(install_roll_stiffness(k_install_n_mm, track_mm))
     if with_tyre:
-        chain.append(tyre_roll_stiffness(track_mm))
+        chain.append(tyre_roll_stiffness(track_mm, tyre_rate_n_mm))
     return series_stiffness(*chain)
 
 
@@ -492,29 +493,39 @@ def stiffness_for_motion_share(pct, k_front=None, k_rear=None):
 # never fit is not a requirement, it is a distraction.
 
 def axle_from_spring(spring_lbf_in, motion_ratio, track_mm,
-                     arb_nm_deg=0.0, k_install_n_mm=np.inf):
+                     arb_nm_deg=0.0, k_install_n_mm=np.inf,
+                     tyre_rate_n_mm=None):
     """Ground-referenced axle roll stiffness straight from a spring rate."""
     wheel = spring_lbf_in * cc.LBF_IN_TO_N_MM / motion_ratio ** 2
-    return axle_roll_stiffness(wheel, track_mm, arb_nm_deg, k_install_n_mm)
+    return axle_roll_stiffness(wheel, track_mm, arb_nm_deg, k_install_n_mm,
+                               tyre_rate_n_mm=tyre_rate_n_mm)
 
 
 def spring_box_setups(front_lbf_in, rear_lbf_in, arb_front=(0.0,), arb_rear=(0.0,),
-                      k_install_n_mm=np.inf):
+                      k_install_n_mm=np.inf, geometry=None):
     """
     Every setup reachable from the hardware, as (K_f, K_r, label) triples.
 
     front_lbf_in / rear_lbf_in are the spring rates you own; arb_* are the bar
     settings available at each end (leave at (0.0,) for a car with no bar).
+
+    `geometry` defaults to CFR26. Pass a dict for another car:
+        {"mr_front":, "mr_rear":, "track_front_mm":, "track_rear_mm":}
     """
+    g = {"mr_front": cc.MOTION_RATIO_FRONT, "mr_rear": cc.MOTION_RATIO_REAR,
+         "track_front_mm": cc.FRONT_TRACK_MM, "track_rear_mm": cc.REAR_TRACK_MM,
+         "tyre_rate_n_mm": None}
+    if geometry:
+        g.update(geometry)
     out = []
     for sf in front_lbf_in:
         for sr in rear_lbf_in:
             for af in arb_front:
                 for ar in arb_rear:
-                    kf = axle_from_spring(sf, cc.MOTION_RATIO_FRONT,
-                                          cc.FRONT_TRACK_MM, af, k_install_n_mm)
-                    kr = axle_from_spring(sr, cc.MOTION_RATIO_REAR,
-                                          cc.REAR_TRACK_MM, ar, k_install_n_mm)
+                    kf = axle_from_spring(sf, g["mr_front"], g["track_front_mm"],
+                                          af, k_install_n_mm, g["tyre_rate_n_mm"])
+                    kr = axle_from_spring(sr, g["mr_rear"], g["track_rear_mm"],
+                                          ar, k_install_n_mm, g["tyre_rate_n_mm"])
                     bar = f" +{af:g}/{ar:g}" if (af or ar) else ""
                     out.append((kf, kr, f"{sf:g}/{sr:g}{bar}"))
     return out
