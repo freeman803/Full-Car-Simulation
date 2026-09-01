@@ -623,9 +623,30 @@ def report_spring_box(front_lbf_in, rear_lbf_in, arb_front=(0.0,), arb_rear=(0.0
 #   build margin        "inflate the requirement by X% because the finished car
 #                       will be worse" -- a claim about RISK, applied before.
 # They are only equal once the model has been validated. We have never run a
-# twist test, so we cannot claim a small one yet. Hence 1.20 until CFR26 is on
+# twist test, so we cannot claim a small one yet. Hence 20% until CFR26 is on
 # a rig and we can measure our own -- see CHASSIS_TASKS.md section 6d.
-BUILD_MARGIN = 1.20
+#
+# EXPRESS IT AS A LOSS, NOT AS A MULTIPLIER. The physically meaningful number
+# is the fraction the shop takes away:
+#
+#     measured = FEA * (1 - loss)      so      FEA_target = floor / (1 - loss)
+#
+# A 20% UPLIFT is not a 20% LOSS: 1/1.20 = 0.833, so multiplying by 1.20 only
+# covers a 16.7% loss. Covering a true 20% loss needs 1/0.8 = 1.25. An earlier
+# version of this module multiplied by 1.20 and called it a 20% margin, which
+# under-covered by about 4%. Caught by Bianca, 2026-09-01.
+#
+# The MRacing paper uses the loss form, which is the check that settles it:
+# 1550 / 0.8 = 1937, and they quote "around 1900 N*m/deg".
+BUILD_LOSS = 0.20
+
+
+def build_multiplier(loss=None):
+    """Uplift on the requirement that survives a fractional build loss."""
+    return 1.0 / (1.0 - (BUILD_LOSS if loss is None else loss))
+
+
+BUILD_MARGIN = build_multiplier()          # 1.25 at a 20% loss
 
 
 # Unvalidated FEA estimate for the as-built CFR26 frame (Bianca, 2026-08-30).
@@ -738,11 +759,12 @@ DEFAULT_CRITERION = 0.90
 
 
 def headline(balance_range=(40.0, 60.0), criterion=DEFAULT_CRITERION,
-             margin=BUILD_MARGIN):
+             loss=BUILD_LOSS):
     """The answer, and only the answer. Everything else is behind --detail."""
     kf, kr = cfr26_axle_stiffness()
     k_total = kf + kr
     floor = stiffness_for_range(k_total, list(balance_range), threshold=criterion)
+    margin = build_multiplier(loss)
     target = floor * margin
 
     print("=" * 70)
@@ -750,7 +772,7 @@ def headline(balance_range=(40.0, 60.0), criterion=DEFAULT_CRITERION,
     print("=" * 70)
     print()
     print(f"  >>  DESIGN TO  {target:>6.0f} N*m/deg  <<"
-          f"   ({100*criterion:.0f}% criterion + {100*(margin-1):.0f}% build margin)")
+          f"   ({100*criterion:.0f}% criterion, {100*loss:.0f}% build loss)")
     print()
     print(f"      as built  {CFR26_FEA_NM_DEG:>5.0f} N*m/deg, unvalidated FEA"
           f"   -> {'CLEARS' if CFR26_FEA_NM_DEG >= target else 'SHORT by'}"
@@ -781,13 +803,18 @@ def headline(balance_range=(40.0, 60.0), criterion=DEFAULT_CRITERION,
     print("  (FEA-vs-measured gap: modelling + test method + fabrication,")
     print("   not fabrication alone)")
     print()
-    for m, note in [(1.05, "Cardiff achieved ~3.7% (their car came out STIFFER)"),
-                    (1.10, "Elsevier FS frame: \"up to 10% is acceptable\""),
-                    (1.20, "MRacing, repeated spindle-to-spindle tests")]:
+    print(f"    {'build loss':>10} | {'x':>6} | {'target':>8} | {'FEA 1100':>9}")
+    print("    " + "-" * 46)
+    for L, note in [(0.05, "Cardiff achieved ~3.7%, and STIFFER"),
+                    (0.10, "Elsevier: \"up to 10% is acceptable\""),
+                    (0.20, "MRacing, repeated s2s tests")]:
+        m = build_multiplier(L)
         t = floor * m
-        mk = "  <--" if abs(m - margin) < 1e-9 else "     "
-        print(f"    +{100*(m-1):>3.0f}%   {t:>6.0f} N*m/deg   "
-              f"FEA {CFR26_FEA_NM_DEG:.0f} is {100*(1-CFR26_FEA_NM_DEG/t):>4.1f}% short{mk} {note}")
+        mk = " <--" if abs(L - loss) < 1e-9 else "    "
+        print(f"    {100*L:>9.0f}% | {m:>6.3f} | {t:>6.0f}   | {100*(1-CFR26_FEA_NM_DEG/t):>6.1f}% short{mk} {note}")
+    print()
+    print("    A 20% LOSS needs a x1.25 uplift, not x1.20 -- 1/1.20 only")
+    print("    covers 16.7%. MRacing: 1550 / 0.8 = 1937, they quote ~1900.")
     print()
     print("    One published result moved agreement ~15% just by modelling the")
     print("    ARB or not, so most of a 20% gap is usually NOT the welding.")
@@ -832,14 +859,14 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description="CFR26 chassis torsional stiffness target")
     ap.add_argument("--detail", action="store_true", help="show the full derivation")
     ap.add_argument("--sources", action="store_true", help="show references")
-    ap.add_argument("--margin", type=float, default=BUILD_MARGIN,
-                    help="build margin multiplier (default 1.20)")
+    ap.add_argument("--loss", type=float, default=BUILD_LOSS,
+                    help="fractional build loss, FEA -> as-built (default 0.20)")
     ap.add_argument("--criterion", type=float, default=DEFAULT_CRITERION,
                     help="fraction of commanded balance change that must be "
                          "delivered (default 0.90; Deakin publishes 0.80)")
     a = ap.parse_args(argv)
 
-    headline(criterion=a.criterion, margin=a.margin)
+    headline(criterion=a.criterion, loss=a.loss)
     if a.detail:
         report_derivation()
         report_installation()

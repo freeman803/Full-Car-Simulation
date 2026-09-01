@@ -345,12 +345,28 @@ def test_tyre_rate_is_actually_used():
     assert soft < stiff
 
 
-def test_build_margin_is_a_parameter_not_a_hardcode():
-    """--margin must actually move the answer; it was hardcoded as 1.2 once."""
+def test_build_loss_is_inverted_not_added():
+    """
+    A 20% build LOSS needs a 1.25 uplift, not 1.20 -- multiplying by 1.20 only
+    survives a 16.7% loss. This module got that wrong once.
+    """
+    assert ts.build_multiplier(0.20) == pytest.approx(1.25)
+    assert ts.build_multiplier(0.10) == pytest.approx(1.0 / 0.9)
+    assert ts.BUILD_MARGIN == pytest.approx(1.25)
+    # a target uplifted for `loss` must still clear the floor after that loss
+    floor = 1298.0
+    for L in (0.05, 0.10, 0.20):
+        built = floor * ts.build_multiplier(L) * (1 - L)
+        assert built == pytest.approx(floor)
+
+
+def test_mracing_arithmetic_reproduces():
+    """1550 / 0.8 = 1937, and the MRacing paper quotes 'around 1900'."""
+    assert 1550.0 * ts.build_multiplier(0.20) == pytest.approx(1937.5)
+
+
+def test_frame_is_short_at_every_plausible_build_loss():
     kf, kr = ts.cfr26_axle_stiffness()
     floor = ts.stiffness_for_range(kf + kr, [40.0, 60.0], threshold=0.90)
-    assert ts.BUILD_MARGIN == 1.20
-    assert floor * 1.05 < floor * ts.BUILD_MARGIN
-    # the frame falls short of the 90% target at every margin in the range
-    for m in (1.05, 1.10, 1.20):
-        assert ts.CFR26_FEA_NM_DEG < floor * m
+    for L in (0.05, 0.10, 0.20):
+        assert ts.CFR26_FEA_NM_DEG < floor * ts.build_multiplier(L)
