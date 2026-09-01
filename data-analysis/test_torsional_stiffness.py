@@ -343,3 +343,14 @@ def test_tyre_rate_is_actually_used():
     soft = ts.axle_from_spring(225.0, 1.188, 1219.2, tyre_rate_n_mm=60.0)
     stiff = ts.axle_from_spring(225.0, 1.188, 1219.2, tyre_rate_n_mm=300.0)
     assert soft < stiff
+
+
+def test_build_margin_is_a_parameter_not_a_hardcode():
+    """--margin must actually move the answer; it was hardcoded as 1.2 once."""
+    kf, kr = ts.cfr26_axle_stiffness()
+    floor = ts.stiffness_for_range(kf + kr, [40.0, 60.0], threshold=0.90)
+    assert ts.BUILD_MARGIN == 1.20
+    assert floor * 1.05 < floor * ts.BUILD_MARGIN
+    # the frame falls short of the 90% target at every margin in the range
+    for m in (1.05, 1.10, 1.20):
+        assert ts.CFR26_FEA_NM_DEG < floor * m

@@ -587,6 +587,47 @@ def report_spring_box(front_lbf_in, rear_lbf_in, arb_front=(0.0,), arb_rear=(0.0
 # Report
 # ---------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------
+# The build margin -- and why 20% is a lump sum, not a fabrication figure
+# ---------------------------------------------------------------------------
+#
+# The MRacing paper's 10-20% is the gap between DESIGNED (FEA) and MEASURED
+# (spindle-to-spindle) stiffness, and the direction is that the built car comes
+# out SOFTER: "designing to a stiffness less than this value puts the vehicle
+# at risk of being significantly affected by chassis twist once manufacturing
+# is complete". So the requirement is inflated, not reduced.
+#
+# BUT IT IS NOT ALL FABRICATION, and the rest of the library says so. The gap
+# lumps together modelling choices, test method, and build quality:
+#
+#   Cardiff (bssm-2005)        FEA 1446 -> measured ~1500. The built car was
+#                              ~3.7% STIFFER than predicted -- opposite sign to
+#                              MRacing, and small.
+#   FS-frame two-beam rig      experiment 679.4 +/- 6.1 N*m/deg against FEA of
+#                              645.5 (no ARB, -5.3%) or 753 (with ARB, +9.7%).
+#                              MODELLING THE ARB OR NOT MOVED AGREEMENT BY
+#                              ~15% -- more than the "manufacturing error".
+#   Elsevier FS frame          rig method vs one-wheel-lift differ by ~7%, and
+#                              "modelling the suspension as rigid beams leads
+#                              to a stiffer model response, making the results
+#                              overestimated". Their own bar: "a resulting
+#                              difference of up to 10% is acceptable".
+#
+# So a well-built frame with a well-posed model can land far inside 20%.
+# Cardiff did. The honest reading is that 20% is what you carry when your model
+# is NOT validated, and it shrinks as your model earns trust.
+#
+# DO NOT CONFUSE TWO DIFFERENT NUMBERS:
+#   validation target   "my FEA should predict the rig within X%" -- a claim
+#                       about MODEL QUALITY, checked after a twist test.
+#   build margin        "inflate the requirement by X% because the finished car
+#                       will be worse" -- a claim about RISK, applied before.
+# They are only equal once the model has been validated. We have never run a
+# twist test, so we cannot claim a small one yet. Hence 1.20 until CFR26 is on
+# a rig and we can measure our own -- see CHASSIS_TASKS.md section 6d.
+BUILD_MARGIN = 1.20
+
+
 # Unvalidated FEA estimate for the as-built CFR26 frame (Bianca, 2026-08-30).
 # The design sheet's D93 = 1700 N*m/deg is an ASSUMPTION, not a measurement or
 # an analysis result, and is deliberately not used here.
@@ -696,19 +737,20 @@ def report_installation():
 DEFAULT_CRITERION = 0.90
 
 
-def headline(balance_range=(40.0, 60.0), criterion=DEFAULT_CRITERION):
+def headline(balance_range=(40.0, 60.0), criterion=DEFAULT_CRITERION,
+             margin=BUILD_MARGIN):
     """The answer, and only the answer. Everything else is behind --detail."""
     kf, kr = cfr26_axle_stiffness()
     k_total = kf + kr
     floor = stiffness_for_range(k_total, list(balance_range), threshold=criterion)
-    target = floor * 1.2
+    target = floor * margin
 
     print("=" * 70)
     print("CFR26 CHASSIS TORSIONAL STIFFNESS TARGET")
     print("=" * 70)
     print()
     print(f"  >>  DESIGN TO  {target:>6.0f} N*m/deg  <<"
-          f"   ({100*criterion:.0f}% criterion + 20% build margin)")
+          f"   ({100*criterion:.0f}% criterion + {100*(margin-1):.0f}% build margin)")
     print()
     print(f"      as built  {CFR26_FEA_NM_DEG:>5.0f} N*m/deg, unvalidated FEA"
           f"   -> {'CLEARS' if CFR26_FEA_NM_DEG >= target else 'SHORT by'}"
@@ -734,6 +776,23 @@ def headline(balance_range=(40.0, 60.0), criterion=DEFAULT_CRITERION):
     print("    Cost of the last few percent: 90 -> 95% roughly DOUBLES the")
     print("    frame, and 100% is unreachable at any mass. Picking a number")
     print("    here is the design decision -- there is no 'correct' one.")
+    print()
+    print("  BUILD MARGIN -- the second choice, and 20% is a LUMP SUM")
+    print("  (FEA-vs-measured gap: modelling + test method + fabrication,")
+    print("   not fabrication alone)")
+    print()
+    for m, note in [(1.05, "Cardiff achieved ~3.7% (their car came out STIFFER)"),
+                    (1.10, "Elsevier FS frame: \"up to 10% is acceptable\""),
+                    (1.20, "MRacing, repeated spindle-to-spindle tests")]:
+        t = floor * m
+        mk = "  <--" if abs(m - margin) < 1e-9 else "     "
+        print(f"    +{100*(m-1):>3.0f}%   {t:>6.0f} N*m/deg   "
+              f"FEA {CFR26_FEA_NM_DEG:.0f} is {100*(1-CFR26_FEA_NM_DEG/t):>4.1f}% short{mk} {note}")
+    print()
+    print("    One published result moved agreement ~15% just by modelling the")
+    print("    ARB or not, so most of a 20% gap is usually NOT the welding.")
+    print("    Carry 1.20 while the model is unvalidated; shrink it once CFR26")
+    print("    has been on a twist rig and we know our own number.")
     print()
     print("  WHY NOT 80%: independent routes land near 1500-3000, not 700")
     print("    MRacing paper, transient lap sim, comparable car     1550 N*m/deg")
@@ -773,12 +832,14 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description="CFR26 chassis torsional stiffness target")
     ap.add_argument("--detail", action="store_true", help="show the full derivation")
     ap.add_argument("--sources", action="store_true", help="show references")
+    ap.add_argument("--margin", type=float, default=BUILD_MARGIN,
+                    help="build margin multiplier (default 1.20)")
     ap.add_argument("--criterion", type=float, default=DEFAULT_CRITERION,
                     help="fraction of commanded balance change that must be "
                          "delivered (default 0.90; Deakin publishes 0.80)")
     a = ap.parse_args(argv)
 
-    headline(criterion=a.criterion)
+    headline(criterion=a.criterion, margin=a.margin)
     if a.detail:
         report_derivation()
         report_installation()
