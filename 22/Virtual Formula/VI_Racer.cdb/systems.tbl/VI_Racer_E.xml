@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <afc xmlns="http://www.mscsoftware.com/:vfc" xmlns:afc="http://www.mscsoftware.com/:afc">
      <afc:Bibliography>
-          <File schema="afc" version="2.0.0.0" URI="mdids://VI_Racer/systems.tbl/VI_Racer_E.xml" publicationDate="2023-09-13 21:14:10-04:00"/>
-          <Revision version="2022.2"/>
+          <File schema="afc" version="2.0.0.0" URI="mdids://VI_Racer/systems.tbl/VI_Racer_E.xml" publicationDate="2026-08-31 22:41:53-04:00"/>
+          <Revision version="2025.2"/>
           <Corporation author="VI-grade" URI="http://www.vi-grade.com"/>
-          <Author user="Leand" name="-unknown name-"/>
-          <Environment hostName="KENOBI" operatingSystem="MS Windows NT 10.0"/>
-          <Application name="VI-CarRealTime" version="2022.2"/>
+          <Author user="amp20" name="-unknown name-"/>
+          <Environment hostName="lecomputer" operatingSystem="MS Windows NT 10.0"/>
+          <Application name="VI-CarRealTime" version="2025.2"/>
      </afc:Bibliography>
      <afc:Units>
           <afc:UnitSetting name="angle" current="radian"/>
@@ -294,6 +294,11 @@
                       <![CDATA[Statics model suspension kinematics solver tolerance [m]]]>
                     </Comment>
                </FloatParameter>
+               <IntParameter name="improveExecutionEfficiency" active="true" userDefined="false" value="1">
+                    <Comment userDefined="false">
+                      <![CDATA[Improve execution efficiency]]>
+                    </Comment>
+               </IntParameter>
           </ParameterTree>
           <ParameterTree name="seven_postrig_parameters" active="true" userDefined="false">
                <FloatParameter name="front_aeroforce_actuator_loc_X" active="true" userDefined="false" value="0" unit="length">
@@ -371,12 +376,12 @@
                       <![CDATA[activation flag for 7-post statistics]]>
                     </Comment>
                </IntParameter>
-               <FloatParameter name="actuators_max_jounce" active="true" userDefined="false" value="0.07000000000000001" unit="length">
+               <FloatParameter name="actuators_max_jounce" active="true" userDefined="false" value="0.07" unit="length">
                     <Comment userDefined="false">
                       <![CDATA[Maximum actuator vertical jounce]]>
                     </Comment>
                </FloatParameter>
-               <FloatParameter name="actuators_min_jounce" active="true" userDefined="false" value="-0.07000000000000001" unit="length">
+               <FloatParameter name="actuators_min_jounce" active="true" userDefined="false" value="-0.07" unit="length">
                     <Comment userDefined="false">
                       <![CDATA[Minimum actuator vertical jounce]]>
                     </Comment>
@@ -485,7 +490,7 @@
                            <![CDATA[if 1 setup will be applied to the model before performing suspension analysis.]]>
                          </Comment>
                     </IntParameter>
-                    <FloatParameter name="gravity_for_testrig_setup" active="true" userDefined="false" value="9.806649999999999">
+                    <FloatParameter name="gravity_for_testrig_setup" active="true" userDefined="false" value="9.80665">
                          <Comment userDefined="false">
                            <![CDATA[Acceleration due to gravity for testrig setup.]]>
                          </Comment>
@@ -654,11 +659,6 @@
                            <![CDATA[activity flag for enabling inertial contribute on kingpin computation.]]>
                          </Comment>
                     </IntParameter>
-                    <IntParameter name="steering_axis_compliance_correction_activity" active="true" userDefined="false" value="0">
-                         <Comment userDefined="false">
-                           <![CDATA[activity flag for enabling compliance correction on steering axis computation.]]>
-                         </Comment>
-                    </IntParameter>
                     <IntParameter name="kingpin_location_correction_mode" active="true" userDefined="false" value="1">
                          <Comment userDefined="false">
                            <![CDATA[key to select different kinping location correction.(0 - no correction[v2021], 1 - include suspension curve offset, 2 - geometric, 3 - instant axis)]]>
@@ -735,28 +735,6 @@
                          </Comment>
                     </IntParameter>
                </ParameterTree>
-          </ParameterTree>
-          <ParameterTree name="ABS" active="true" userDefined="false">
-               <FloatParameter name="ABS_control_threshold" active="true" userDefined="false" value="0.2">
-                    <Comment userDefined="false">
-                      <![CDATA[ABS Control Threshold]]>
-                    </Comment>
-               </FloatParameter>
-               <FloatParameter name="ABS_control_gain" active="true" userDefined="false" value="100000000">
-                    <Comment userDefined="false">
-                      <![CDATA[ABS Control gain]]>
-                    </Comment>
-               </FloatParameter>
-               <IntParameter name="built_in_ABS_active" active="true" userDefined="false" value="0">
-                    <Comment userDefined="false">
-                      <![CDATA[ABS Control Activity Flag]]>
-                    </Comment>
-               </IntParameter>
-               <FloatParameter name="low_speed_threshold" active="true" userDefined="false" value="0.5">
-                    <Comment userDefined="false">
-                      <![CDATA[threshold below which the abs is turned off]]>
-                    </Comment>
-               </FloatParameter>
           </ParameterTree>
           <ParameterTree name="system_parameters" active="true" userDefined="false">
                <ParameterTree name="trailer" active="true" userDefined="false">
@@ -888,9 +866,14 @@
                                 <![CDATA[time required to increase axle load]]>
                               </Comment>
                          </FloatParameter>
+                         <FloatParameter name="v_delta" active="true" userDefined="false" value="0" unit="velocity">
+                              <Comment userDefined="false">
+                                <![CDATA[Delta Velocity for ride height resampling (map resampling skipped if 0) [m/s]]]>
+                              </Comment>
+                         </FloatParameter>
                     </ParameterTree>
                </IntParameter>
-               <FloatParameter name="g" active="true" userDefined="false" value="9.806649999999999" unit="acceleration">
+               <FloatParameter name="g" active="true" userDefined="false" value="9.80665" unit="acceleration">
                     <Comment userDefined="false">
                       <![CDATA[Acceleration due to gravity]]>
                     </Comment>
@@ -933,11 +916,6 @@
                            <![CDATA[Static equilibrium is not achieved until the norm of the system angular acceleration is below this value]]>
                          </Comment>
                     </FloatParameter>
-                    <IntParameter name="statics_use_brakes" active="true" userDefined="false" value="0">
-                         <Comment userDefined="false">
-                           <![CDATA[Vehicle brakes are engaged during statics when the parameter is set to 1]]>
-                         </Comment>
-                    </IntParameter>
                     <IntParameter name="statics_use_linear_damper" active="true" userDefined="false" value="0">
                          <Comment userDefined="false">
                            <![CDATA[Linear dampers are used during statics when the parameter is set to 1]]>
@@ -1325,6 +1303,16 @@
                       <![CDATA[Overwrite Nam File if exists: 0->Only in Files Only Mode 1->Always]]>
                     </Comment>
                </IntParameter>
+               <IntParameter name="AoR_Config" active="true" userDefined="false" value="0">
+                    <Comment userDefined="false">
+                      <![CDATA[AoR json output file export activity flag]]>
+                    </Comment>
+               </IntParameter>
+               <IntParameter name="Mdf4" active="true" userDefined="false" value="0">
+                    <Comment userDefined="false">
+                      <![CDATA[ASAM MDF file format mf4]]>
+                    </Comment>
+               </IntParameter>
           </ParameterTree>
           <ParameterTree name="simulink" active="true" userDefined="false">
                <ParameterTree name="aerodynamic" active="true" userDefined="false">
@@ -1478,6 +1466,28 @@
                               </Comment>
                          </FloatParameter>
                     </ParameterTree>
+               </ParameterTree>
+               <ParameterTree name="ABS" active="true" userDefined="false">
+                    <FloatParameter name="ABS_control_threshold" active="true" userDefined="false" value="0.2">
+                         <Comment userDefined="false">
+                           <![CDATA[[DEPRECATED] ABS Control Threshold]]>
+                         </Comment>
+                    </FloatParameter>
+                    <FloatParameter name="ABS_control_gain" active="true" userDefined="false" value="100000000">
+                         <Comment userDefined="false">
+                           <![CDATA[[DEPRECATED] ABS Control gain]]>
+                         </Comment>
+                    </FloatParameter>
+                    <IntParameter name="built_in_ABS_active" active="true" userDefined="false" value="0">
+                         <Comment userDefined="false">
+                           <![CDATA[[DEPRECATED] ABS Control Activity Flag]]>
+                         </Comment>
+                    </IntParameter>
+                    <FloatParameter name="low_speed_threshold" active="true" userDefined="false" value="0.5">
+                         <Comment userDefined="false">
+                           <![CDATA[[DEPRECATED] threshold below which the abs is turned off]]>
+                         </Comment>
+                    </FloatParameter>
                </ParameterTree>
           </ParameterTree>
           <ParameterTree name="yaw_moment_testrig" active="true" userDefined="false">

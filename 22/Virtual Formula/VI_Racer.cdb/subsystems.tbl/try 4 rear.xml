@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <afc xmlns="http://www.mscsoftware.com/:vfc" xmlns:afc="http://www.mscsoftware.com/:afc">
      <afc:Bibliography>
-          <File schema="afc" version="2.0.0.0" URI="mdids://VI_Racer/subsystems.tbl/try 4 rear.xml" publicationDate="2023-09-16 19:31:08-04:00"/>
-          <Revision version="2022.2"/>
+          <File schema="afc" version="2.0.0.0" URI="mdids://VI_Racer/subsystems.tbl/try 4 rear.xml" publicationDate="2026-08-31 22:41:53-04:00"/>
+          <Revision version="2025.2"/>
           <Corporation author="VI-grade" URI="http://www.vi-grade.com"/>
-          <Author user="Leand" name="-unknown name-"/>
-          <Environment hostName="KENOBI" operatingSystem="MS Windows NT 10.0"/>
-          <Application name="VI-CarRealTime" version="2022.2"/>
+          <Author user="amp20" name="-unknown name-"/>
+          <Environment hostName="lecomputer" operatingSystem="MS Windows NT 10.0"/>
+          <Application name="VI-CarRealTime" version="2025.2"/>
      </afc:Bibliography>
      <afc:Units>
           <afc:UnitSetting name="angle" current="deg"/>
@@ -955,7 +955,7 @@
                                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
                                    </afc:VectorAttribute>
                                    <afc:VectorAttribute name="y_data">
-                                     -18.4857 -14.0118 -9.44022 -4.7698 0 4.86859 9.833729999999999 14.8909 20.0321
+                                     -18.4857 -14.0118 -9.44022 -4.7698 0 4.86859 9.83373 14.8909 20.0321
                                    </afc:VectorAttribute>
                                    <afc:VectorAttribute name="z_data">
                                      0
@@ -963,18 +963,22 @@
                               </Spline3d>
                          </CRTSuspensionData>
                     </CRTSpringContext>
+                    <CRTElementInstallationStiffness name="installation_stiffness" active="true" userDefined="false" attach_part_1="0" attach_part_2="0" attach_location_1="(0 0 0)" attach_location_2="(0 0 0)" damperActiveFlag="false">
+                         <CRTSpringContext name="springContext" active="true" userDefined="false" context="default" offset="(0 0 0)" installMethod="preload" installValue="0" installationStiffness="0" installationStiffnessActiveFlag="false" multiplicityFlag="false" scaleFactor="1.0" multiplicity="1.0" decouplingFlag="false"/>
+                         <CRTDamperContext name="damperContext" active="true" userDefined="false" context="default" offset="(0 0 0)" scaleFactor="1.0" installationStiffnessActiveFlag="false"/>
+                    </CRTElementInstallationStiffness>
                </Spring>
           </SpringPair>
           <DamperPair name="rear" active="true" userDefined="false" symmetry="left_right">
                <Damper name="left" active="true" userDefined="false" attach_part_1="0" attach_part_2="0" attach_location_1="(0 0 0)" attach_location_2="(0 0 0)" activeFlag="true">
-                    <CRTDamperContext active="true" propertyURI="mdids://VI_Racer/dampers.tbl/try 4 rear_damper.xml" userDefined="false" context="default" offset="(0 0 0)" scaleFactor="1.0" input_stretch="1.0" output_stretch="1.0" time_stretch="1.0" multiplicityFlag="false" multiplicity="1.0">
+                    <CRTDamperContext active="true" propertyURI="mdids://VI_Racer/dampers.tbl/try 4 rear_damper.xml" userDefined="false" context="default" offset="(0 0 0)" scaleFactor="1.0" installationStiffnessActiveFlag="false">
                          <CRTSuspensionData name="compression_ratio" active="true" userDefined="false" method="table" constant="0" mirror="none" scaleFactor="1.0">
                               <Spline3d name="table" active="true" userDefined="false" interpolation_method="akima" xLabel="Jounce" yLabel="Deflection" xUnit="length" yUnit="length" datablock="Damper Deflection vs. Jounce" zUnit="length">
                                    <afc:VectorAttribute name="x_data">
                                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
                                    </afc:VectorAttribute>
                                    <afc:VectorAttribute name="y_data">
-                                     -18.4857 -14.0118 -9.44022 -4.7698 0 4.86859 9.833729999999999 14.8909 20.0321
+                                     -18.4857 -14.0118 -9.44022 -4.7698 0 4.86859 9.83373 14.8909 20.0321
                                    </afc:VectorAttribute>
                                    <afc:VectorAttribute name="z_data">
                                      0
@@ -982,18 +986,22 @@
                               </Spline3d>
                          </CRTSuspensionData>
                     </CRTDamperContext>
+                    <CRTElementInstallationStiffness name="installation_stiffness" active="true" userDefined="false" attach_part_1="0" attach_part_2="0" attach_location_1="(0 0 0)" attach_location_2="(0 0 0)" damperActiveFlag="false">
+                         <CRTSpringContext name="springContext" active="true" userDefined="false" context="default" offset="(0 0 0)" installMethod="preload" installValue="0" installationStiffness="0" installationStiffnessActiveFlag="false" multiplicityFlag="false" scaleFactor="1.0" multiplicity="1.0" decouplingFlag="false"/>
+                         <CRTDamperContext name="damperContext" active="true" userDefined="false" context="default" offset="(0 0 0)" scaleFactor="1.0" installationStiffnessActiveFlag="false"/>
+                    </CRTElementInstallationStiffness>
                </Damper>
           </DamperPair>
           <BumpStopPair name="jounce_bumper" active="true" userDefined="false" symmetry="left_right">
                <BumpStop name="left" active="true" userDefined="false" attach_part_1="0" attach_part_2="0" attach_location_1="(0 0 0)" attach_location_2="(0 0 0)" activeFlag="true" metalToMetalRate="0">
-                    <CRTBumperContext active="true" propertyURI="mdids://VI_Racer/bumpstops.tbl/try 4 rear_bumpstop.xml" userDefined="false" context="default" offset="(0 0 0)" installMethod="use_hardpoints" installValue="0" scaleFactor="1.0" multiplicityFlag="false" multiplicity="1.0">
+                    <CRTBumperContext active="true" propertyURI="mdids://VI_Racer/bumpstops.tbl/try 4 rear_bumpstop.xml" userDefined="false" context="default" offset="(0 0 0)" installMethod="use_hardpoints" installValue="0" scaleFactor="1.0" multiplicityFlag="false" multiplicity="1.0" installationStiffnessActiveFlag="false">
                          <CRTSuspensionData name="compression_ratio" active="true" userDefined="false" method="table" constant="0" mirror="none" scaleFactor="1.0">
                               <Spline3d name="table" active="true" userDefined="false" interpolation_method="akima" xLabel="Jounce" yLabel="Deflection" xUnit="length" yUnit="length" datablock="Jounce Deflection vs. Jounce" zUnit="length">
                                    <afc:VectorAttribute name="x_data">
                                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
                                    </afc:VectorAttribute>
                                    <afc:VectorAttribute name="y_data">
-                                     35.064 26.6676 18.0175 9.125920000000001 0 -9.35779 -18.9492 -28.7799 -38.8596
+                                     35.064 26.6676 18.0175 9.12592 0 -9.35779 -18.9492 -28.7799 -38.8596
                                    </afc:VectorAttribute>
                                    <afc:VectorAttribute name="z_data">
                                      0
@@ -1001,18 +1009,22 @@
                               </Spline3d>
                          </CRTSuspensionData>
                     </CRTBumperContext>
+                    <CRTElementInstallationStiffness name="installation_stiffness" active="true" userDefined="false" attach_part_1="0" attach_part_2="0" attach_location_1="(0 0 0)" attach_location_2="(0 0 0)" damperActiveFlag="false">
+                         <CRTSpringContext name="springContext" active="true" userDefined="false" context="default" offset="(0 0 0)" installMethod="preload" installValue="0" installationStiffness="0" installationStiffnessActiveFlag="false" multiplicityFlag="false" scaleFactor="1.0" multiplicity="1.0" decouplingFlag="false"/>
+                         <CRTDamperContext name="damperContext" active="true" userDefined="false" context="default" offset="(0 0 0)" scaleFactor="1.0" installationStiffnessActiveFlag="false"/>
+                    </CRTElementInstallationStiffness>
                </BumpStop>
           </BumpStopPair>
           <ReboundStopPair name="rebound_bumper" active="true" userDefined="false" symmetry="left_right">
                <ReboundStop name="left" active="true" userDefined="false" attach_part_1="0" attach_part_2="0" attach_location_1="(0 0 0)" attach_location_2="(0 0 0)" activeFlag="true" metalToMetalRate="0">
-                    <CRTBumperContext active="true" propertyURI="mdids://VI_Racer/bumpstops.tbl/try 4 rear_reboundstop.xml" userDefined="false" context="default" offset="(0 0 0)" installMethod="use_hardpoints" installValue="0" scaleFactor="1.0" multiplicityFlag="false" multiplicity="1.0">
+                    <CRTBumperContext active="true" propertyURI="mdids://VI_Racer/bumpstops.tbl/try 4 rear_reboundstop.xml" userDefined="false" context="default" offset="(0 0 0)" installMethod="use_hardpoints" installValue="0" scaleFactor="1.0" multiplicityFlag="false" multiplicity="1.0" installationStiffnessActiveFlag="false">
                          <CRTSuspensionData name="compression_ratio" active="true" userDefined="false" method="table" constant="0" mirror="none" scaleFactor="1.0">
                               <Spline3d name="table" active="true" userDefined="false" interpolation_method="akima" xLabel="Rebound" yLabel="Deflection" xUnit="length" yUnit="length" datablock="Rebound Deflection vs. Jounce" zUnit="length">
                                    <afc:VectorAttribute name="x_data">
                                      -30 -22.5 -15 -7.5 0 7.5 15 22.5 30
                                    </afc:VectorAttribute>
                                    <afc:VectorAttribute name="y_data">
-                                     35.064 26.6676 18.0175 9.125920000000001 0 -9.35779 -18.9492 -28.7799 -38.8596
+                                     35.064 26.6676 18.0175 9.12592 0 -9.35779 -18.9492 -28.7799 -38.8596
                                    </afc:VectorAttribute>
                                    <afc:VectorAttribute name="z_data">
                                      0
@@ -1020,9 +1032,13 @@
                               </Spline3d>
                          </CRTSuspensionData>
                     </CRTBumperContext>
+                    <CRTElementInstallationStiffness name="installation_stiffness" active="true" userDefined="false" attach_part_1="0" attach_part_2="0" attach_location_1="(0 0 0)" attach_location_2="(0 0 0)" damperActiveFlag="false">
+                         <CRTSpringContext name="springContext" active="true" userDefined="false" context="default" offset="(0 0 0)" installMethod="preload" installValue="0" installationStiffness="0" installationStiffnessActiveFlag="false" multiplicityFlag="false" scaleFactor="1.0" multiplicity="1.0" decouplingFlag="false"/>
+                         <CRTDamperContext name="damperContext" active="true" userDefined="false" context="default" offset="(0 0 0)" scaleFactor="1.0" installationStiffnessActiveFlag="false"/>
+                    </CRTElementInstallationStiffness>
                </ReboundStop>
           </ReboundStopPair>
-          <Spline name="left_auxiliary_vertical_force" id="0" active="true" userDefined="false" interpolation_method="akima" xLabel="Suspension Jounce" yLabel="Force" xUnit="length" yUnit="force" datablock="Auxiliary Vertical Force vs. Jounce">
+          <Spline name="left_auxiliary_vertical_force" active="true" userDefined="false" interpolation_method="akima" xLabel="Suspension Jounce" yLabel="Force" xUnit="length" yUnit="force" datablock="Auxiliary Vertical Force vs. Jounce">
             <![CDATA[
             -30               0
           -22.5               0
@@ -1035,7 +1051,7 @@
              30               0
 ]]>
           </Spline>
-          <Spline name="right_auxiliary_vertical_force" id="0" active="true" userDefined="false" interpolation_method="akima" xLabel="Suspension Jounce" yLabel="Force" xUnit="length" yUnit="force" datablock="Auxiliary Vertical Force vs. Jounce">
+          <Spline name="right_auxiliary_vertical_force" active="true" userDefined="false" interpolation_method="akima" xLabel="Suspension Jounce" yLabel="Force" xUnit="length" yUnit="force" datablock="Auxiliary Vertical Force vs. Jounce">
             <![CDATA[
             -30               0
           -22.5               0
@@ -1059,6 +1075,8 @@
                <CRTLengthAdjustment name="rightPinHeight" active="true" userDefined="false" activeFlag="true" value="0"/>
                <CRTForceAdjustment name="leftPreload" active="true" userDefined="false" activeFlag="false" value="0"/>
                <CRTForceAdjustment name="rightPreload" active="true" userDefined="false" activeFlag="false" value="0"/>
+               <CRTLengthAdjustment name="leftPushrod" active="true" userDefined="false" activeFlag="false" value="0"/>
+               <CRTLengthAdjustment name="rightPushrod" active="true" userDefined="false" activeFlag="false" value="0"/>
                <CRTRideHeightSensor name="leftRideHeightSensor" active="true" userDefined="false" activeFlag="false" location="(0 0 0)" rideHeight="0"/>
                <CRTRideHeightSensor name="rightRideHeightSensor" active="true" userDefined="false" activeFlag="false" location="(0 0 0)" rideHeight="0"/>
                <CRTRideHeightSensor name="centerRideHeightSensor" active="true" userDefined="false" activeFlag="true" location="(-1750.0 0 343.0)" rideHeight="343.0"/>
@@ -1072,6 +1090,24 @@
                <CRTLengthAdjustment name="leftReboundstopOffset" active="true" userDefined="false" activeFlag="false" value="0"/>
                <CRTLengthAdjustment name="rightReboundstopOffset" active="true" userDefined="false" activeFlag="false" value="0"/>
                <CRTLengthAdjustment name="centerReboundstopOffset" active="true" userDefined="false" activeFlag="false" value="0"/>
+               <ComplianceModifiers name="directComplianceModifiers" active="true" userDefined="false" activeFlag="true">
+                    <ComplianceModifier name="Fx" active="true" userDefined="false" activeFlag="true" toe_scaleFactor="1.0" sva_scaleFactor="1.0" camber_scaleFactor="1.0" base_scaleFactor="1.0" track_scaleFactor="1.0"/>
+                    <ComplianceModifier name="FxWheCtr" active="true" userDefined="false" activeFlag="true" toe_scaleFactor="1.0" sva_scaleFactor="1.0" camber_scaleFactor="1.0" base_scaleFactor="1.0" track_scaleFactor="1.0"/>
+                    <ComplianceModifier name="Fy" active="true" userDefined="false" activeFlag="true" toe_scaleFactor="1.0" sva_scaleFactor="1.0" camber_scaleFactor="1.0" base_scaleFactor="1.0" track_scaleFactor="1.0"/>
+                    <ComplianceModifier name="Fz" active="true" userDefined="false" activeFlag="true" toe_scaleFactor="1.0" sva_scaleFactor="1.0" camber_scaleFactor="1.0" base_scaleFactor="1.0" track_scaleFactor="1.0"/>
+                    <ComplianceModifier name="Mx" active="true" userDefined="false" activeFlag="true" toe_scaleFactor="1.0" sva_scaleFactor="1.0" camber_scaleFactor="1.0" base_scaleFactor="1.0" track_scaleFactor="1.0"/>
+                    <ComplianceModifier name="My" active="true" userDefined="false" activeFlag="true" toe_scaleFactor="1.0" sva_scaleFactor="1.0" camber_scaleFactor="1.0" base_scaleFactor="1.0" track_scaleFactor="1.0"/>
+                    <ComplianceModifier name="Mz" active="true" userDefined="false" activeFlag="true" toe_scaleFactor="1.0" sva_scaleFactor="1.0" camber_scaleFactor="1.0" base_scaleFactor="1.0" track_scaleFactor="1.0"/>
+               </ComplianceModifiers>
+               <ComplianceModifiers name="crossComplianceModifiers" active="true" userDefined="false" activeFlag="true">
+                    <ComplianceModifier name="Fx" active="true" userDefined="false" activeFlag="true" toe_scaleFactor="1.0" sva_scaleFactor="1.0" camber_scaleFactor="1.0" base_scaleFactor="1.0" track_scaleFactor="1.0"/>
+                    <ComplianceModifier name="FxWheCtr" active="true" userDefined="false" activeFlag="true" toe_scaleFactor="1.0" sva_scaleFactor="1.0" camber_scaleFactor="1.0" base_scaleFactor="1.0" track_scaleFactor="1.0"/>
+                    <ComplianceModifier name="Fy" active="true" userDefined="false" activeFlag="true" toe_scaleFactor="1.0" sva_scaleFactor="1.0" camber_scaleFactor="1.0" base_scaleFactor="1.0" track_scaleFactor="1.0"/>
+                    <ComplianceModifier name="Fz" active="true" userDefined="false" activeFlag="true" toe_scaleFactor="1.0" sva_scaleFactor="1.0" camber_scaleFactor="1.0" base_scaleFactor="1.0" track_scaleFactor="1.0"/>
+                    <ComplianceModifier name="Mx" active="true" userDefined="false" activeFlag="true" toe_scaleFactor="1.0" sva_scaleFactor="1.0" camber_scaleFactor="1.0" base_scaleFactor="1.0" track_scaleFactor="1.0"/>
+                    <ComplianceModifier name="My" active="true" userDefined="false" activeFlag="true" toe_scaleFactor="1.0" sva_scaleFactor="1.0" camber_scaleFactor="1.0" base_scaleFactor="1.0" track_scaleFactor="1.0"/>
+                    <ComplianceModifier name="Mz" active="true" userDefined="false" activeFlag="true" toe_scaleFactor="1.0" sva_scaleFactor="1.0" camber_scaleFactor="1.0" base_scaleFactor="1.0" track_scaleFactor="1.0"/>
+               </ComplianceModifiers>
           </CRTSuspensionSetupData>
           <CRTInstallationStiffnessPair name="installation_stiffness" active="true" userDefined="false" symmetry="left_right">
                <CRTInstallationStiffness name="left" active="true" userDefined="false" activeFlag="false" antiRollBarActiveFlag="false" springActiveFlag="true" value="0" computationMode="static" mass="2.0" cutoffFrequency="200.0" dampingRatio="0.001"/>
