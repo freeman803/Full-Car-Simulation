@@ -227,8 +227,10 @@ def test_degenerate_pairs_are_filtered_out():
     swap in the box -- 1233 N*m/deg off a 0.17-point change.
     """
     setups = ts.spring_box_setups((200, 225, 250), (175, 200, 225))
-    unfiltered, _, _ = ts.stiffness_for_setups(setups, min_change_pts=0.0)
-    filtered, _, change = ts.stiffness_for_setups(setups)
+    # pinned at 0.80 -- this test predates the 0.90 default and is about the
+    # filter, not the criterion
+    unfiltered, _, _ = ts.stiffness_for_setups(setups, threshold=0.80, min_change_pts=0.0)
+    filtered, _, change = ts.stiffness_for_setups(setups, threshold=0.80)
     assert unfiltered > 1200
     assert filtered < 800
     assert change >= ts.MIN_MEANINGFUL_LLTD_CHANGE_PTS
@@ -371,3 +373,54 @@ def test_frame_is_short_at_every_plausible_build_loss():
     floor = ts.stiffness_for_range(kf + kr, [40.0, 60.0], threshold=0.90)
     for L in (0.05, 0.10, 0.20):
         assert ts.CFR26_FEA_NM_DEG < floor * ts.build_multiplier(L)
+
+
+# --- spring box -------------------------------------------------------------
+
+def test_real_spring_box_shape():
+    box = ts.spring_box_setups(ts.CFR26_SPRING_BOX, ts.CFR26_SPRING_BOX)
+    assert len(box) == 25
+    d = [100 * a / (a + b) for a, b, _ in box]
+    assert min(d) == pytest.approx(36.57, abs=0.05)
+    assert max(d) == pytest.approx(57.00, abs=0.05)
+    # the as-run pair must be in the box
+    assert any(lab == "225/200" for _, _, lab in box)
+
+
+def test_range_ends_picks_the_extremes():
+    box = ts.spring_box_setups(ts.CFR26_SPRING_BOX, ts.CFR26_SPRING_BOX)
+    lo, hi = ts.range_ends(box)
+    assert lo[2] == "150/250"      # softest front relative to rear
+    assert hi[2] == "250/150"
+
+
+def test_box_range_method_beats_all_pairs_degeneracy():
+    """
+    All-pairs is degenerate: pairs commanding the SAME size of adjustment
+    demand wildly different stiffness, because the criterion is a fraction and
+    the denominator collapses. The full-range method has one large denominator.
+    """
+    box = ts.spring_box_setups(ts.CFR26_SPRING_BOX, ts.CFR26_SPRING_BOX)
+    spread = []
+    for i, a in enumerate(box):
+        for b in box[i + 1:]:
+            d = abs(ts.lltd(b[0], b[1], ts.RIGID) - ts.lltd(a[0], a[1], ts.RIGID))
+            if 1.4 < d < 1.8:
+                spread.append(ts.stiffness_for_criterion((a[0], a[1]), (b[0], b[1]), 0.90))
+    assert max(spread) / min(spread) > 10          # the degeneracy is real
+    floor, _, _, pts = ts.stiffness_for_box(box)
+    assert pts > 20                                 # one big denominator
+    assert 1100 < floor < 1400
+
+
+def test_the_assumed_window_was_a_good_proxy():
+    """
+    Before the real rates arrived we assumed a 40-60% window and got 1298.
+    The real box reaches 36.6-57.0% and gives 1207 -- within 8%, so the
+    assumption did not mislead. Worth keeping honest if the box changes.
+    """
+    kf, kr = ts.cfr26_axle_stiffness()
+    assumed = ts.stiffness_for_range(kf + kr, [40.0, 60.0], threshold=0.90)
+    box = ts.spring_box_setups(ts.CFR26_SPRING_BOX, ts.CFR26_SPRING_BOX)
+    real = ts.stiffness_for_box(box)[0]
+    assert abs(real - assumed) / assumed < 0.10

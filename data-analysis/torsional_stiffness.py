@@ -539,9 +539,51 @@ def spring_box_setups(front_lbf_in, rear_lbf_in, arb_front=(0.0,), arb_rear=(0.0
 MIN_MEANINGFUL_LLTD_CHANGE_PTS = 1.0
 
 
-def stiffness_for_setups(setups, threshold=0.80,
+# The spring rates the team owns (from suspension, 2026-09-01). Same set at
+# both ends. CFR26 ran 225 front / 200 rear out of this box.
+CFR26_SPRING_BOX = (150.0, 175.0, 200.0, 225.0, 250.0)
+
+
+def range_ends(setups):
+    """
+    The two setups at the extremes of reachable balance -- the widest
+    adjustment the hardware can actually make. Returns (soft, stiff) as
+    (K_f, K_r, label) triples.
+    """
+    ordered = sorted(setups, key=lambda t: t[0] / (t[0] + t[1]))
+    return ordered[0], ordered[-1]
+
+
+def stiffness_for_box(setups, threshold=None, **kw):
+    """
+    THE RIGHT WAY TO SIZE OFF A SPRING BOX. Applies Deakin's criterion to the
+    FULL RANGE the hardware can reach -- the two extreme setups -- rather than
+    to every pair. Returns (floor, soft_label, stiff_label, commanded_pts).
+
+    WHY NOT ALL PAIRS (stiffness_for_setups, below). The criterion is a
+    FRACTION of a commanded change, so its denominator shrinks toward zero for
+    any two setups that happen to land at similar balance, and the requirement
+    blows up for adjustments nobody would make. On CFR26's real box this is not
+    a small effect: pairs commanding an identical 1.4-1.8 points demanded
+    anywhere from 180 to 2772 N*m/deg depending on which pair they were. A
+    requirement that varies 15x for the same size of adjustment is not a
+    requirement. The full range gives one large, well-defined denominator and
+    the degeneracy disappears.
+    """
+    if threshold is None:
+        threshold = DEFAULT_CRITERION
+    lo, hi = range_ends(setups)
+    change = abs(lltd(hi[0], hi[1], RIGID, **kw) - lltd(lo[0], lo[1], RIGID, **kw))
+    floor = stiffness_for_criterion((lo[0], lo[1]), (hi[0], hi[1]), threshold, **kw)
+    return floor, lo[2], hi[2], change
+
+
+def stiffness_for_setups(setups, threshold=None,
                          min_change_pts=MIN_MEANINGFUL_LLTD_CHANGE_PTS, **kw):
     """
+    ALL-PAIRS variant. Kept for comparison, but PREFER stiffness_for_box() --
+    this one is degenerate on a real spring box, for the reason set out there.
+
     Chassis stiffness needed so that EVERY meaningful pair of reachable setups
     still delivers `threshold` of its commanded balance change. Returns
     (required_stiffness, worst_pair_labels, commanded_change_pts).
@@ -551,6 +593,8 @@ def stiffness_for_setups(setups, threshold=0.80,
     is below min_change_pts are skipped -- see the note above; without that
     filter the answer is set by the most pointless swap in the box.
     """
+    if threshold is None:
+        threshold = DEFAULT_CRITERION
     worst, pair, change = 0.0, (None, None), 0.0
     for i, a in enumerate(setups):
         for b in setups[i + 1:]:
@@ -774,12 +818,14 @@ def report_installation():
 DEFAULT_CRITERION = 0.90
 
 
-def headline(balance_range=(40.0, 60.0), criterion=DEFAULT_CRITERION,
-             loss=BUILD_LOSS):
+def headline(criterion=DEFAULT_CRITERION, loss=BUILD_LOSS):
     """The answer, and only the answer. Everything else is behind --detail."""
     kf, kr = cfr26_axle_stiffness()
     k_total = kf + kr
-    floor = stiffness_for_range(k_total, list(balance_range), threshold=criterion)
+    box = spring_box_setups(CFR26_SPRING_BOX, CFR26_SPRING_BOX)
+    dists = [100 * a / (a + b) for a, b, _ in box]
+    totals = [a + b for a, b, _ in box]
+    floor, soft, stiff, cmd_pts = stiffness_for_box(box, threshold=criterion)
     margin = build_multiplier(loss)
     target = floor * margin
 
@@ -803,7 +849,7 @@ def headline(balance_range=(40.0, 60.0), criterion=DEFAULT_CRITERION,
                      (0.90, "recommended, and where the cross-checks agree"),
                      (0.95, "diminishing returns; the curve is flat here"),
                      (1.00, "unreachable: a rigid chassis is the asymptote")]:
-        k = stiffness_for_range(k_total, list(balance_range), threshold=th)
+        k = stiffness_for_box(box, threshold=th)[0]
         mark = "  <--" if abs(th - criterion) < 1e-9 else "     "
         if np.isfinite(k):
             print(f"    {100*th:>3.0f}%  {k:>6.0f} floor  ->  {k*margin:>7.0f} target"
@@ -835,8 +881,8 @@ def headline(balance_range=(40.0, 60.0), criterion=DEFAULT_CRITERION,
     print()
     print("    One published result moved agreement ~15% just by modelling the")
     print("    ARB or not, so most of a 20% gap is usually NOT the welding.")
-    print("    Carry 1.20 while the model is unvalidated; shrink it once CFR26")
-    print("    has been on a twist rig and we know our own number.")
+    print(f"    We carry {100*loss:.0f}% while the model is unvalidated; shrink it once")
+    print("    CFR26 has been on a twist rig and we know our own number.")
     print()
     print("  WHY NOT 80%: independent routes land near 1500-3000, not 700")
     print("    MRacing paper, transient lap sim, comparable car     1550 N*m/deg")
@@ -852,17 +898,22 @@ def headline(balance_range=(40.0, 60.0), criterion=DEFAULT_CRITERION,
     print(f"      total roll stiffness      {k_total:6.1f} N*m/deg"
           f"   ({kf:.1f} F / {kr:.1f} R)")
     print(f"      roll stiff distribution   {100*kf/k_total:6.2f} % front   (no ARB fitted)")
-    print(f"      balance range assumed     {balance_range[0]:.0f}-{balance_range[1]:.0f} % front")
+    print(f"      SPRING BOX                "
+          f"{'/'.join(f'{r:g}' for r in CFR26_SPRING_BOX)} lbf/in, {len(box)} setups")
+    print(f"      balance reachable         {min(dists):.2f} - {max(dists):.2f} % front"
+          f"  ({cmd_pts:.1f} pts)")
+    print(f"      widest adjustment         {soft} <-> {stiff}")
+    print(f"      total roll stiffness      {min(totals):.0f} - {max(totals):.0f} N*m/deg"
+          f"  (as run {k_total:.0f})")
     print(f"      target is {target/k_total:.1f}x total roll stiffness")
     print()
     print("      CFR26's roll stiffness is LOW because it runs no ARB. The")
     print("      requirement scales with it, so a car with 1000 N*m/deg of roll")
-    print(f"      stiffness needs {stiffness_for_range(1000.0, list(balance_range), threshold=criterion)*1.2:.0f}"
+    print(f"      stiffness needs {stiffness_for_range(1000.0, [40., 60.], threshold=criterion)*margin:.0f}"
           f" on the same criterion. That, plus the")
     print("      criterion, is the whole gap to what other teams quote.")
     print()
     print("  STILL MISSING")
-    print("      spring box unknown -- a stiffer box raises this")
     print("      installation stiffness unmeasured -- needs a twist test")
     print("      1100 is FEA, never validated on a rig")
     print()
