@@ -2,10 +2,18 @@
 
 Working roadmap for the CFR27 chassis stiffness work. Written 2026-09-01.
 
-Where things stand: CFR26's target is derived and defensible
-(`torsional_stiffness.py`, 1557 N·m/deg at a 90 % criterion, against ~1100 from
-unvalidated FEA). Everything below either feeds CFR27's target or closes a gap
-the CFR26 work exposed.
+**Where things stand.** CFR26's target is derived and defensible:
+**1341 N·m/deg** — a 90 % delivery criterion across the balance range the real
+spring box reaches, with a 10 % build loss allowed for. Unvalidated FEA puts
+the frame near 1100, so it is **~18 % short**, and short at every criterion
+from 85 % up and every build loss from 5 % to 20 %.
+
+Closed already: the model and its tests (`torsional_stiffness.py`, 39 tests),
+the criterion decision at 90 %, the build loss at 10 %, and the CFR26 spring
+box (150/175/200/225/250 lbf/in, 25 setups, 36.6–57.0 % front).
+
+Everything below either feeds CFR27's target or closes a gap the CFR26 work
+exposed.
 
 **The critical path is 1 → 5 → 6.** Nothing else unblocks a number.
 **Do 8 first anyway** — it is cheap, and prior Concordia work may already
@@ -20,9 +28,11 @@ as placeholders; run it and it prints exactly what is still missing. Filling
 `P` at the top of that file and re-running produces the target.
 
 - [ ] **1a — Ask suspension for the ten inputs.** The list is in the script;
-      `uv run cfr27_target.py` prints it as a checklist.
+      `uv run cfr27_target.py` prints it as a checklist. Note these are
+      **CFR27's** values — the CFR26 box is known and is not a substitute.
   - spring rates available, front and rear — **every rate we'd actually run**,
-    not the expected pair
+    not the expected pair. (CFR26's box is 150/175/200/225/250; ask whether
+    CFR27 inherits it or changes.)
   - motion ratios front/rear (wheel ÷ spring), and **say whether measured or
     CAD** — this enters stiffness as MR², so it is the most error-sensitive
     input in the set. CFR26's was corrected twice.
@@ -30,8 +40,12 @@ as placeholders; run it and it prints exactly what is still missing. Filling
   - tyre vertical rate at running pressure and load — not a catalogue default
   - **ARB settings reachable at each end** ← the one that matters most
   - front mass fraction (CAD estimate now, corner weights once it's on scales)
-- [ ] **1b — Decide the criterion as a team.** Not a suspension input. 0.90 is
-      the current default and the reasoning is on slide 9 of the deck.
+- [x] **1b — Criterion decided: 90 %.** Not a suspension input. Reasoning is
+      on slide 9 — 80 % costs a fifth of the tuning authority, and the MRacing
+      paper, Cardiff, common practice and Milliken's 3–5× rule all agree nearer
+      90 %. Revisit only with a reason.
+- [x] **1b′ — Build loss set at 10 %**, i.e. ÷0.90, not ×1.10. Assumed, not
+      measured — see 6d, which is where it gets checked.
 - [ ] **1c — Run it, sanity-check against CFR26**, and expect a materially
       different number. CFR26 had no ARB, so its frame was barely loaded; the
       bar is what makes the frame work for a living.
@@ -154,9 +168,12 @@ Closes three gaps at once and is the highest-value single thing on this list.
       wheel-to-wheel figure against frame-only FEA (`infer_installation()`).
       This number has never been measured on this car and is the one most
       likely to be limiting.
-- [ ] **6d — Derive our own build margin** and replace the MRacing paper's
-      borrowed 20 %. "Our designed-vs-built gap is X %" is a far stronger
-      design-event answer than quoting Michigan's.
+- [ ] **6d — Measure our own build loss** and replace the assumed 10 %. That
+      10 % is a judgement call from published results (Cardiff hit 3.7 %,
+      Elsevier call 10 % acceptable, MRacing measure 10–20 %) — **we have never
+      run a twist test, so we have not earned it.** "Our designed-vs-built gap
+      is X %" is a far stronger design-event answer than any borrowed number.
+      If our real gap is worse than 10 %, the target rises.
 
 ---
 
@@ -213,7 +230,8 @@ to avoid redoing it.
 
 ## Reference
 
-- Model, criterion and derivation: `torsional_stiffness.py` (`--detail`, `--sources`)
+- Model, criterion and derivation: `torsional_stiffness.py`
+  (`--detail`, `--sources`, `--criterion`, `--loss`)
 - CFR27 scaffold: `cfr27_target.py`
 - Reading library: `~/.claude/skills/chassis-design/references/papers.md`
 - Rules, tube sizes, SES: the `fsae-rules` skill — never quote a rule from memory
