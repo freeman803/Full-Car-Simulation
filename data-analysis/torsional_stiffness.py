@@ -193,9 +193,21 @@ def cfr26_axle_stiffness_susp(arb_front=0.0, arb_rear=0.0):
 
 # Static front weight fraction, from competition corner weights (see
 # fcs-cfr26-xlsx: the design sheet's typed 0.501 is slightly off; 0.507 is
-# measured). Used as the sprung-mass split too, which is an approximation --
-# unsprung mass is not distributed identically -- but LLTD is only weakly
-# sensitive to it and nothing better is measured.
+# measured). Used as the SPRUNG-mass split too, which is an approximation --
+# unsprung mass is not distributed identically front to rear.
+#
+# DO NOT SPEND TIME ESTIMATING THE SPRUNG SPLIT SEPARATELY. Measured, not
+# assumed: sweeping this parameter from 0.470 to 0.550 -- eight points, far
+# wider than sprung could plausibly differ from total -- moves the target by
+# +1.0% to -1.2%. Working it properly (35-45 kg unsprung, anywhere from 45% to
+# 55% front) puts the implied sprung split between 0.496 and 0.522 and the
+# target between 1336 and 1345, i.e. +/-0.4%. Against a criterion choice worth
+# a factor of five and a build loss worth +/-10%, that is noise.
+# Pinned by test_target_is_insensitive_to_the_mass_split.
+#
+# Sprung mass and sprung CG height ARE needed for three other things, none of
+# them this: resolving the open 1.167x roll gap (CHASSIS_TASKS 7d), predicting
+# roll angles in deg/g, and absolute load transfer in newtons.
 FRONT_MASS_FRACTION = 0.507
 
 # Absolute roll moment per g, N*m/g, from the design sheet's sprung mass

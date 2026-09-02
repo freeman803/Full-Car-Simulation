@@ -430,3 +430,16 @@ def test_the_assumed_window_was_a_good_proxy():
     box = ts.spring_box_setups(ts.CFR26_SPRING_BOX, ts.CFR26_SPRING_BOX)
     real = ts.stiffness_for_box(box)[0]
     assert abs(real - assumed) / assumed < 0.10
+
+
+def test_target_is_insensitive_to_the_mass_split():
+    """
+    Why we do not estimate front/rear SPRUNG mass separately from total mass.
+    An 8-point sweep of the split — wider than sprung could plausibly differ
+    from total — moves the target ~1%. If this stops being true, the decision
+    to skip that estimate needs revisiting.
+    """
+    box = ts.spring_box_setups(ts.CFR26_SPRING_BOX, ts.CFR26_SPRING_BOX)
+    t = [ts.stiffness_for_box(box, front_mass_fraction=f)[0]
+         for f in (0.470, 0.507, 0.550)]
+    assert max(t) / min(t) - 1 < 0.03
