@@ -63,9 +63,17 @@ P = {
 
     # --- tyre --------------------------------------------------------------
     # Vertical rate at the RUNNING pressure and load, not a catalogue default.
-    # CFR26 used 700 lbf/in (Hoosier 43075, 300 lb, 10 psi). If the tyre or
-    # pressure changes for CFR27 this must change with it.
-    "tyre_rate_lbf_in": None,               # CFR26: 700
+    # CONFIRMED 2026-09-01: same COMPOUND as CFR26 -- Hoosier 43075, and 700
+    # lbf/in is the 300 lb / 10 psi figure from Hoosier's published table.
+    #
+    # COMPOUND ALONE DOES NOT FIX THE RATE. The same tyre reads 652-859 lbf/in
+    # across Hoosier's table depending on pressure and load (10-14 psi,
+    # 200-400 lb). CFR26 carried 520 for a while, which was a rate for the
+    # WRONG COMPOUND, and correcting it moved every ground-referenced angle by
+    # 6-7%. So if CFR27 runs a different PRESSURE, this number changes even
+    # though the compound has not. Worth re-checking once running pressures
+    # are set.
+    "tyre_rate_lbf_in": 700.0,
 
     # --- anti-roll bars  << THE BIG ONE FOR CFR27 >> ------------------------
     # Every setting reachable, in N*m/deg at the AXLE. If the bar is blade-
@@ -76,9 +84,23 @@ P = {
     "arb_settings_rear_nm_deg":  None,      # e.g. (0, 80, 160)
 
     # --- mass --------------------------------------------------------------
-    # Front fraction of total mass. Estimate from CAD until the car is on
-    # scales, then replace with measured corner weights (CFR26: 0.507).
-    "front_mass_fraction": None,
+    # SUPPLIED 2026-09-01 as a DESIGN TARGET of 50/50, not a measurement.
+    # CFR26's 0.507 was measured on competition scales; this is intent.
+    #
+    # Treat it as provisional and replace it with corner weights as soon as
+    # CFR27 is on scales -- the as-built number will not be exactly 0.500 and
+    # the direction of the miss matters (see below).
+    #
+    # WHY 50/50 IS AN INTERESTING CHOICE HERE. The chassis carries torque only
+    # when roll stiffness distribution differs from roll MOMENT distribution.
+    # At a 50/50 mass split the no-torque condition lands at a 50/50 roll
+    # stiffness split, which is close to what several spring pairs give. So a
+    # car built exactly to this target is, like CFR26, insensitive to chassis
+    # flex in its NEUTRAL setup -- the frame only starts working once the ARB
+    # is used to move away from it. That does not lower the target (the target
+    # comes from the widest adjustment, not the neutral one), but it does mean
+    # a chassis-stiffness problem would again be invisible until you tune.
+    "front_mass_fraction": 0.500,
 
     # --- team decision, NOT a suspension input -----------------------------
     # What fraction of a commanded balance change must reach the tyres.
@@ -118,6 +140,7 @@ _LABELS = {
                                   "suspension", "0, none fitted"),
     "front_mass_fraction":       ("front mass fraction", "0-1",
                                   "vehicle integration", "0.507 measured"),
+
 }
 
 

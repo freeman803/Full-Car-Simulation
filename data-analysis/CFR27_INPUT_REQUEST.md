@@ -1,7 +1,7 @@
-# CFR27 chassis stiffness — inputs needed
+# CFR27 chassis stiffness — inputs still needed
 
 For the chassis torsional stiffness target. Model is written and waiting; these
-eight numbers are all that's missing.
+six numbers are all that's missing.
 
 | # | Parameter | Units | Ask | CFR26 was |
 |---|-----------|-------|-----|-----------|
@@ -11,11 +11,15 @@ eight numbers are all that's missing.
 | 4 | Motion ratio, rear | wheel ÷ spring | Suspension kinematics | 1.038 measured |
 | 5 | Track, front | mm | Suspension / CAD | 1219.2 |
 | 6 | Track, rear | mm | Suspension / CAD | 1168.4 |
-| 7 | Tyre vertical rate | lbf/in at running pressure | Suspension / tyre choice | 700 (Hoosier 43075, 300 lb, 10 psi) |
-| 8 | Front mass fraction | 0–1 | Vehicle integration | 0.507 measured |
 
-Already confirmed: spring rates **150 / 175 / 200 / 225 / 250 lbf/in**, same set
-both ends, unchanged from CFR26.
+
+**Already answered** — spring rates **150/175/200/225/250 lbf/in**, same set both
+ends · tyre **700 lbf/in**, same Hoosier 43075 at the same pressure · front mass
+fraction **0.500**, a design *target*.
+
+> The mass fraction is intent, not a measurement — CFR26's 0.507 came off
+> competition scales. Replace it with corner weights as soon as CFR27 is
+> weighed; the as-built number will not be exactly 0.500.
 
 ## Notes when answering
 
@@ -35,9 +39,6 @@ motion ratio, and it bites just as hard.
 **Motion ratio (3–4)** — please say whether each is **measured or from CAD**. It
 enters stiffness as MR², so a 5 % error becomes 10 % in the target. CFR26's was
 corrected twice before it settled.
-
-**Tyre rate (7)** — at the *running* pressure and load, not a catalogue default.
-If the tyre or pressure changes for CFR27 this must change with it.
 
 ## Not needed
 

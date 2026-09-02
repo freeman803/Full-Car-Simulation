@@ -310,7 +310,10 @@ def test_cfr27_scaffold_reports_missing_parameters():
     # spring box confirmed 2026-09-01 as unchanged from CFR26; the other 8 are open
     assert c27.P["spring_rates_front_lbf_in"] == ts.CFR26_SPRING_BOX
     assert c27.P["spring_rates_rear_lbf_in"] == ts.CFR26_SPRING_BOX
-    assert len(c27.missing()) == 8
+    # tyre rate and mass-fraction target also confirmed 2026-09-01
+    assert c27.P["tyre_rate_lbf_in"] == 700.0
+    assert c27.P["front_mass_fraction"] == 0.500
+    assert len(c27.missing()) == 6      # 2 motion ratios, 2 tracks, 2 ARBs
     assert c27.check() is False
 
 
