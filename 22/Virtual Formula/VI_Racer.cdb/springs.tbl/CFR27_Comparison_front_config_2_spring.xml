@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <afc xmlns="http://www.mscsoftware.com/:vfc" xmlns:afc="http://www.mscsoftware.com/:afc">
      <afc:Bibliography>
-          <File schema="afc" version="2.0.0.0" URI="mdids://VI_Racer/springs.tbl/CFR26_Front_250_anti_roll_bar.xml" publicationDate="2026-09-01 23:34:13-04:00"/>
+          <File schema="afc" version="2.0.0.0" URI="mdids://VI_Racer/springs.tbl/CFR27_Comparison_front_config_2_spring.xml" publicationDate="2026-09-05 17:17:57-04:00"/>
           <Revision version="2025.2"/>
           <Corporation author="VI-grade" URI="http://www.vi-grade.com"/>
           <Author user="amp20" name="-unknown name-"/>
@@ -21,19 +21,21 @@
           <afc:UnitSetting name="time" current="sec"/>
           <afc:UnitSetting name="frequency" current="Hz"/>
      </afc:Units>
-     <AntiRollBarProperties name="ARB" active="true" userDefined="false" rate="0" method="non_linear">
-          <Spline name="spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Anti Roll Bar Deformation" yLabel="Anti Roll Bar Torque" xUnit="angle" yUnit="torque" datablock="Anti Roll Bar Torque vs. Deformation">
+     <SpringProperties name="spring" active="true" userDefined="false" diameter="1" coils="5" rate="43.781" freeLength="183.42" method="non_linear" independentAxis="deflection">
+          <Spline name="spline_data" active="true" userDefined="false" interpolation_method="akima" yLabel="Spring Force" xUnit="length" yUnit="force" datablock="Spring Force">
             <![CDATA[
-            -30               0
-          -22.5               0
-            -15               0
-           -7.5               0
-              0               0
-            7.5               0
-             15               0
-           22.5               0
-             30               0
+       -20.9198         -915.89
+        -16.863        -738.281
+       -12.7444        -557.961
+       -8.56168        -374.839
+       -4.31366        -188.856
+   -1.54889e-05    -0.000678118
+        4.37813         191.679
+        8.81764         386.045
+        13.3123         582.827
+        17.8514         781.552
+        22.4166          981.42
 ]]>
           </Spline>
-     </AntiRollBarProperties>
+     </SpringProperties>
 </afc>

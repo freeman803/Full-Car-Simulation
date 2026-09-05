@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <afc xmlns="http://www.mscsoftware.com/:vfc" xmlns:afc="http://www.mscsoftware.com/:afc">
      <afc:Bibliography>
-          <File schema="afc" version="2.0.0.0" URI="mdids://VI_Racer/springs.tbl/CFR26_Front_250_anti_roll_bar.xml" publicationDate="2026-09-01 23:34:13-04:00"/>
+          <File schema="afc" version="2.0.0.0" URI="mdids://VI_Racer/suspensions.tbl/CFR27_Susp_Configs/Config_2/front_config_2_anti_roll_bar.xml" publicationDate="2026-09-05 17:01:20-04:00"/>
           <Revision version="2025.2"/>
           <Corporation author="VI-grade" URI="http://www.vi-grade.com"/>
           <Author user="amp20" name="-unknown name-"/>
@@ -21,19 +21,24 @@
           <afc:UnitSetting name="time" current="sec"/>
           <afc:UnitSetting name="frequency" current="Hz"/>
      </afc:Units>
-     <AntiRollBarProperties name="ARB" active="true" userDefined="false" rate="0" method="non_linear">
+     <AntiRollBarProperties name="ARB" active="true" userDefined="false" rate="2490.513842" method="linear">
           <Spline name="spline_data" active="true" userDefined="false" interpolation_method="akima" xLabel="Anti Roll Bar Deformation" yLabel="Anti Roll Bar Torque" xUnit="angle" yUnit="torque" datablock="Anti Roll Bar Torque vs. Deformation">
             <![CDATA[
             -30               0
-          -22.5               0
-            -15               0
-           -7.5               0
+            -24               0
+            -18               0
+            -12               0
+             -6               0
               0               0
-            7.5               0
-             15               0
-           22.5               0
+              6               0
+             12               0
+             18               0
+             24               0
              30               0
 ]]>
+               <Comment userDefined="false">
+                 <![CDATA[]]>
+               </Comment>
           </Spline>
      </AntiRollBarProperties>
 </afc>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <afc xmlns="http://www.mscsoftware.com/:vfc" xmlns:afc="http://www.mscsoftware.com/:afc">
      <afc:Bibliography>
-          <File schema="afc" version="2.0.0.0" URI="mdids://VI_Racer/subsystems.tbl/CFR27_rear_wheel_and_tires.xml" publicationDate="2026-09-05 11:06:01-04:00"/>
+          <File schema="afc" version="2.0.0.0" URI="mdids://VI_Racer/subsystems.tbl/CFR27_Comparison_rear_wheel_and_tires.xml" publicationDate="2026-09-05 17:17:57-04:00"/>
           <Revision version="2025.2"/>
           <Corporation author="VI-grade" URI="http://www.vi-grade.com"/>
           <Author user="amp20" name="-unknown name-"/>
@@ -21,7 +21,7 @@
           <afc:UnitSetting name="time" current="sec"/>
           <afc:UnitSetting name="frequency" current="Hz"/>
      </afc:Units>
-     <Subsystem name="CFR27_rear_wheel_and_tires" active="true" userDefined="false">
+     <Subsystem name="CFR27_Comparison_rear_wheel_and_tires" active="true" userDefined="false">
           <CRTWheelPair name="rear_wheels" active="true" userDefined="false" symmetry="left_right">
                <CRTWheel name="left" active="true" userDefined="false" spinInertia="506864.0" minCorrSpinInertia="700000.0" unsprungMass="9.5" wheelCenterHeight="203.2" ixx="3738430.65" iyy="5151847.89" izz="8251741.86" longitudinalDynamicsFlag="false" longitudinalDynamicsMass="25.0" longitudinalDynamicsCutoffFrequency="500.0" longitudinalDynamicsDamping="0.01" Mode="1">
                     <Tire name="tire_data" active="true" userDefined="false">
@@ -29,6 +29,10 @@
                     </Tire>
                     <Part name="part_data" active="true" userDefined="false" location="(0 0 0)" cm_location="(0 0 0)" im_location="(0 0 0)" part_num="-1" mass="0" ixx="0" iyy="0" izz="0" ixy="0" ixz="0" iyz="0" use_offdiagonal_terms="false" default_cg="false" global_cg="false" user_sprung="false" percent_sprung="100" locationDependent="true" display_graphics="true"/>
                     <WheelGraphics name="graphics_parameters" active="true" userDefined="false" bulgeRatio="0" wheelWidth="0"/>
+                    <Part active="true" userDefined="false" location="(0 0 0)" cm_location="(0 0 0)" im_location="(0 0 0)" part_num="-1" mass="0" ixx="0" iyy="0" izz="0" ixy="0" ixz="0" iyz="0" use_offdiagonal_terms="false" default_cg="false" global_cg="false" user_sprung="false" percent_sprung="100" locationDependent="true" display_graphics="true"/>
+                    <WheelGraphics active="true" userDefined="false" bulgeRatio="0" wheelWidth="0"/>
+                    <Part active="true" userDefined="false" location="(0 0 0)" cm_location="(0 0 0)" im_location="(0 0 0)" part_num="-1" mass="0" ixx="0" iyy="0" izz="0" ixy="0" ixz="0" iyz="0" use_offdiagonal_terms="false" default_cg="false" global_cg="false" user_sprung="false" percent_sprung="100" locationDependent="true" display_graphics="true"/>
+                    <WheelGraphics active="true" userDefined="false" bulgeRatio="0" wheelWidth="0"/>
                     <Part active="true" userDefined="false" location="(0 0 0)" cm_location="(0 0 0)" im_location="(0 0 0)" part_num="-1" mass="0" ixx="0" iyy="0" izz="0" ixy="0" ixz="0" iyz="0" use_offdiagonal_terms="false" default_cg="false" global_cg="false" user_sprung="false" percent_sprung="100" locationDependent="true" display_graphics="true"/>
                     <WheelGraphics active="true" userDefined="false" bulgeRatio="0" wheelWidth="0"/>
                     <Part active="true" userDefined="false" location="(0 0 0)" cm_location="(0 0 0)" im_location="(0 0 0)" part_num="-1" mass="0" ixx="0" iyy="0" izz="0" ixy="0" ixz="0" iyz="0" use_offdiagonal_terms="false" default_cg="false" global_cg="false" user_sprung="false" percent_sprung="100" locationDependent="true" display_graphics="true"/>

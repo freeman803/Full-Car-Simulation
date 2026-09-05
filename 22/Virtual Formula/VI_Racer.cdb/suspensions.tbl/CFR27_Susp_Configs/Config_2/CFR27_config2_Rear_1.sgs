@@ -1,0 +1,176 @@
+assemblyName
+AssemblyDoubleWishBonePR
+lonPosType
+rear
+unitsFile
+length
+mm
+force
+newton
+end
+leftSuspFile
+suspType
+DoubleWishBonePR
+suspName
+CFR27_config2_Rear
+latPosType
+left
+lonPosType
+rear
+wheelCenter            773.8390    -583.9100     203.2000
+ucaFront               428.8720    -250.7210     243.4270
+ucaRear                921.3550    -250.7210     268.0810
+ucaOuter               792.1860    -509.6330     292.0000
+lcaFront               428.4020    -209.7810     104.6740
+lcaRear                921.4990    -209.7810     102.8980
+lcaOuter               743.0490    -523.8020     113.0000
+tierodOuter            793.7810    -523.0750     118.0680
+tierodInner            733.8610    -209.7810     108.1140
+pushrodOuter           791.6310    -485.7680     303.0890
+pushrodInner           791.6310    -353.2070     434.0380
+rockerPivot            791.6310    -301.2030     381.3940
+rockerPivotAxis        792.6310    -301.2030     381.3940
+rockerLink             791.6310    -250.5550     463.8980
+springUpperMount       791.6310     -99.7150     371.2970
+springLowerMount       791.6310    -250.5550     463.8980
+damperUpperMount       791.6310     -99.7150     371.2970
+damperLowerMount       791.6310    -250.5550     463.8980
+toeAngle
+0
+camberAngle
+0
+svaAngle
+0
+steerRatio
+-0.111
+groundHeigth
+203
+wheelRadius
+203.2
+wheelWidth
+190.5
+toeSetupActive
+0
+toeSetup
+0
+camberSetupActive
+0
+camberSetup
+0
+pinHeigthActive
+0
+pinHeigth
+0
+rideHeigthActive
+0
+rideHeigth
+0
+pushrodVariationActive
+0
+pushrodVariation
+0
+rideHeightRefPosition
+1
+springPreload
+500
+cgHeight
+325
+wheelBase
+1543
+driveRatio
+0
+springType
+0
+springAttachment
+3
+tierodInnerAttachment
+0
+springLinear
+1
+damperLinear
+1
+springScaleFactor
+1
+damperScaleFactor
+1
+bumpstopActive
+0
+bumpstopClearance
+0
+bumpstopScaleFactor
+1
+reboundstopActive
+0
+reboundstopClearance
+0
+reboundstopScaleFactor
+1
+kSpring
+39.403
+cDamper
+2
+brakeRatio
+48
+pRodAttachment
+1
+kUcaFront          1.0E+07 1.0E+07 1.0E+07 1.0E+04 1.0E+04 1.0E+04 0 0 0
+kUcaRear           1.0E+07 1.0E+07 1.0E+07 1.0E+04 1.0E+04 1.0E+04 0 0 0
+kLcaFront          1.0E+07 1.0E+07 1.0E+07 1.0E+04 1.0E+04 1.0E+04 0 0 0
+kLcaRear           1.0E+07 1.0E+07 1.0E+07 1.0E+04 1.0E+04 1.0E+04 0 0 0
+kTierodInner       1.0E+07 1.0E+07 1.0E+07 1.0E+04 1.0E+04 1.0E+04 0 0 0
+end
+rightSuspFile
+symm
+end
+aRollFile
+aRollType
+AntiRollBladeBar
+aRollName
+ARB_REAR
+lonPosType
+rear
+kARB
+2862.7107
+kARBType
+0
+end
+analysisFile
+setup
+1
+kin
+3
+jounceStart
+-25
+jounceEnd
+25
+nJounce
+10
+steerStart
+-100
+steerEnd
+100
+nSteer
+10
+forceXStart
+-3000
+forceXEnd
+3000
+forceYStart
+-3000
+forceYEnd
+3000
+momentZStart
+-200000
+momentZEnd
+200000
+nForce
+10
+deltaJounce
+15
+nRoll
+4
+outputFile
+output_rear
+defaultDatabase
+private
+end

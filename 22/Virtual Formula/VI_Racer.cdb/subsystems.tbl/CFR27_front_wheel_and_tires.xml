@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <afc xmlns="http://www.mscsoftware.com/:vfc" xmlns:afc="http://www.mscsoftware.com/:afc">
      <afc:Bibliography>
-          <File schema="afc" version="2.0.0.0" URI="mdids://VI_Racer/subsystems.tbl/CFR27_front_wheel_and_tires.xml" publicationDate="2026-08-31 20:46:00-04:00"/>
+          <File schema="afc" version="2.0.0.0" URI="mdids://VI_Racer/subsystems.tbl/CFR27_front_wheel_and_tires.xml" publicationDate="2026-09-05 11:06:01-04:00"/>
           <Revision version="2025.2"/>
           <Corporation author="VI-grade" URI="http://www.vi-grade.com"/>
           <Author user="amp20" name="-unknown name-"/>
@@ -23,7 +23,7 @@
      </afc:Units>
      <Subsystem name="CFR27_front_wheel_and_tires" active="true" userDefined="false">
           <CRTWheelPair name="front_wheels" active="true" userDefined="false" symmetry="right_left">
-               <CRTWheel name="right" active="true" userDefined="false" spinInertia="161535.8" minCorrSpinInertia="700000.0" unsprungMass="7.4" wheelCenterHeight="203.2" ixx="3738430.65" iyy="6956111.37" izz="10181670.7" longitudinalDynamicsFlag="false" longitudinalDynamicsMass="25.0" longitudinalDynamicsCutoffFrequency="500.0" longitudinalDynamicsDamping="0.01" Mode="1">
+               <CRTWheel name="right" active="true" userDefined="false" spinInertia="161535.8" minCorrSpinInertia="700000.0" unsprungMass="9.0" wheelCenterHeight="203.2" ixx="3738430.65" iyy="6956111.37" izz="10181670.7" longitudinalDynamicsFlag="false" longitudinalDynamicsMass="25.0" longitudinalDynamicsCutoffFrequency="500.0" longitudinalDynamicsDamping="0.01" Mode="1">
                     <Tire name="tire_data" active="true" userDefined="false">
                          <TireContext active="true" propertyURI="mdids://VI_Racer/tires.tbl/R20 7.5x10.TIR" userDefined="false" context="default" offset="(0 0 0)" lateralForceScale="1" overturningMomentScale="1" aligningTorqueScale="1" slipAngleSurfCorrFactor="1" forceSurfCorrFactor="1" frictionCoeff="1" rollingRadiusOffset="0" plysteerLateralForce="0" conicityLateralForce="0" plysteerAligningTorque="0" conicityAligningTorque="0" cmOffset="0" wheelCenterOffset="0" contactType="handling" useMode="900" highPerformance="false" staticMode="false"/>
                     </Tire>

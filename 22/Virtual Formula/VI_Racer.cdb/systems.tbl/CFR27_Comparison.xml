@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <afc xmlns="http://www.mscsoftware.com/:vfc" xmlns:afc="http://www.mscsoftware.com/:afc">
      <afc:Bibliography>
-          <File schema="afc" version="2.0.0.0" URI="mdids://VI_Racer/systems.tbl/CFR27.xml" publicationDate="2026-09-05 17:00:24-04:00"/>
+          <File schema="afc" version="2.0.0.0" URI="mdids://VI_Racer/systems.tbl/CFR27_Comparison.xml" publicationDate="2026-09-05 17:17:57-04:00"/>
           <Revision version="2025.2"/>
           <Corporation author="VI-grade" URI="http://www.vi-grade.com"/>
           <Author user="amp20" name="-unknown name-"/>
@@ -21,42 +21,42 @@
           <afc:UnitSetting name="time" current="second"/>
      </afc:Units>
      <System description="vehicle_name" active="true" definition="$APRE_TOP/pre_py/system/full.py" userDefined="false">
-          <SystemReference name="body" active="true" propertyURI="mdids://VI_Racer/subsystems.tbl/CFR27_body.xml" userDefined="false">
+          <SystemReference name="body" active="true" propertyURI="mdids://VI_Racer/subsystems.tbl/CFR27_Comparison_body.xml" userDefined="false">
                <HardPointPair name="offset" active="true" userDefined="false" symmetry="left_right">
                     <HardPoint name="left" active="true" userDefined="false" location="(0 0 0)"/>
                </HardPointPair>
           </SystemReference>
-          <SystemReference name="front_suspension" active="true" propertyURI="mdids://VI_Racer/suspensions.tbl/CFR27_Susp_Configs/Config_2/front_config_2.xml" userDefined="false">
+          <SystemReference name="front_suspension" active="true" propertyURI="mdids://VI_Racer/subsystems.tbl/CFR27_Comparison_front_suspension.xml" userDefined="false">
                <HardPointPair name="offset" active="true" userDefined="false" symmetry="left_right">
                     <HardPoint name="left" active="true" userDefined="false" location="(0 0 0)"/>
                </HardPointPair>
           </SystemReference>
-          <SystemReference name="rear_suspension" active="true" propertyURI="mdids://VI_Racer/suspensions.tbl/CFR27_Susp_Configs/Config_2/rear_config_2.xml" userDefined="false">
+          <SystemReference name="rear_suspension" active="true" propertyURI="mdids://VI_Racer/subsystems.tbl/CFR27_Comparison_rear_suspension.xml" userDefined="false">
                <HardPointPair name="offset" active="true" userDefined="false" symmetry="left_right">
                     <HardPoint name="left" active="true" userDefined="false" location="(0 0 0)"/>
                </HardPointPair>
           </SystemReference>
-          <SystemReference name="front_wheel_and_tires" active="true" propertyURI="mdids://VI_Racer/subsystems.tbl/CFR27_front_wheel_and_tires.xml" userDefined="false">
+          <SystemReference name="front_wheel_and_tires" active="true" propertyURI="mdids://VI_Racer/subsystems.tbl/CFR27_Comparison_front_wheel_and_tires.xml" userDefined="false">
                <HardPointPair name="offset" active="true" userDefined="false" symmetry="left_right">
                     <HardPoint name="left" active="true" userDefined="false" location="(0 0 0)"/>
                </HardPointPair>
           </SystemReference>
-          <SystemReference name="rear_wheel_and_tires" active="true" propertyURI="mdids://VI_Racer/subsystems.tbl/CFR27_rear_wheel_and_tires.xml" userDefined="false">
+          <SystemReference name="rear_wheel_and_tires" active="true" propertyURI="mdids://VI_Racer/subsystems.tbl/CFR27_Comparison_rear_wheel_and_tires.xml" userDefined="false">
                <HardPointPair name="offset" active="true" userDefined="false" symmetry="left_right">
                     <HardPoint name="left" active="true" userDefined="false" location="(0 0 0)"/>
                </HardPointPair>
           </SystemReference>
-          <SystemReference name="steering_gear" active="true" propertyURI="mdids://VI_Racer/subsystems.tbl/CFR26_Front_250_steering.xml" userDefined="false">
+          <SystemReference name="steering_gear" active="true" propertyURI="mdids://VI_Racer/subsystems.tbl/CFR27_Comparison_steering_gear.xml" userDefined="false">
                <HardPointPair name="offset" active="true" userDefined="false" symmetry="left_right">
                     <HardPoint name="left" active="true" userDefined="false" location="(0 0 0)"/>
                </HardPointPair>
           </SystemReference>
-          <SystemReference name="powertrain" active="true" propertyURI="mdids://VI_Racer/subsystems.tbl/CFR27_powertrain.xml" userDefined="false">
+          <SystemReference name="powertrain" active="true" propertyURI="mdids://VI_Racer/subsystems.tbl/CFR27_Comparison_powertrain.xml" userDefined="false">
                <HardPointPair name="offset" active="true" userDefined="false" symmetry="left_right">
                     <HardPoint name="left" active="true" userDefined="false" location="(0 0 0)"/>
                </HardPointPair>
           </SystemReference>
-          <SystemReference name="brakes" active="true" propertyURI="mdids://VI_Racer/subsystems.tbl/CFR27_brakes.xml" userDefined="false">
+          <SystemReference name="brakes" active="true" propertyURI="mdids://VI_Racer/subsystems.tbl/CFR27_Comparison_brakes.xml" userDefined="false">
                <HardPointPair name="offset" active="true" userDefined="false" symmetry="left_right">
                     <HardPoint name="left" active="true" userDefined="false" location="(0 0 0)"/>
                </HardPointPair>
