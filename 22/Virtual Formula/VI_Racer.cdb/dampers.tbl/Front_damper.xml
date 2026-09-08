@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<afc xmlns="http://www.mscsoftware.com/:vfc" xmlns:afc="http://www.mscsoftware.com/:afc">
+    <afc:Bibliography>
+        <File schema="afc" version="2.0.0.0" URI="mdids://VI_Racer/dampers.tbl/Front_damper_curve.xml" publicationDate="2026-07-08 00:00:00-04:00"/>
+        <Revision version="2024.2"/>
+        <Corporation author="VI-grade" URI="http://www.vi-grade.com"/>
+        <Author user="hrushikesh" name="CSV Import"/>
+        <Environment hostName="LAPTOP-8M4M1K76" operatingSystem="MS Windows NT 10.0"/>
+        <Application name="VI-CarRealTime" version="2024.2"/>
+    </afc:Bibliography>
+
+    <afc:Units>
+        <afc:UnitSetting name="angle" current="deg"/>
+	<afc:UnitSetting name="current" current="ampere"/>
+	<afc:UnitSetting name="force" current="newton"/>
+	<afc:UnitSetting name="length" current="mm"/>
+	<afc:UnitSetting name="luminosity" current="candela"/>
+	<afc:UnitSetting name="mass" current="kg"/>
+	<afc:UnitSetting name="quantity" current="mole"/>
+	<afc:UnitSetting name="solidAngle" current="steradian"/>
+	<afc:UnitSetting name="temperature" current="kelvin"/>
+	<afc:UnitSetting name="time" current="sec"/>
+	<afc:UnitSetting name="frequency" current="Hz"/>
+    </afc:Units>
+
+    <DamperProperties name="Front Damper Curve (CSV kg)" active="true" userDefined="false"
+                      dampingMethod="non_linear" gasPreloadMethod="none" gasPreloadConstant="0">
+
+        <Spline name="spline_data" id="0" active="true" userDefined="false"
+                interpolation_method="akima"
+                xLabel="Damper Velocity (positive in extension)"
+                yLabel="Damper Force"
+                xUnit="velocity" yUnit="force"
+                datablock="Damper Force vs. Velocity">
+            <![CDATA[
+-218.76   -752.60
+-213.94   -749.90
+-209.12   -743.50
+-204.31   -738.00
+-199.52   -731.60
+-194.74   -721.90
+-189.96   -717.00
+-185.17   -708.00
+-180.37   -703.00
+-175.56   -697.00
+-170.75   -691.00
+-165.94   -684.00
+-161.13   -681.00
+-156.32   -668.00
+-151.52   -668.00
+-146.73   -659.00
+-141.95   -654.00
+-137.17   -640.00
+-132.41   -638.00
+-127.65   -628.00
+-122.90   -619.00
+-118.15   -612.00
+-113.42   -599.00
+-108.71   -587.00
+-104.05   -572.00
+-99.46    -559.00
+-94.95    -544.00
+-90.53    -525.00
+-86.18    -502.00
+-81.91    -472.00
+-77.71    -453.00
+-73.58    -430.00
+-69.48    -407.00
+-65.39    -372.00
+-61.27    -355.00
+-57.09    -331.00
+-52.81    -309.00
+-48.44    -289.00
+-44.01    -269.00
+-39.57    -250.00
+-35.15    -232.00
+-30.79    -210.00
+-26.53    -187.00
+-22.35    -164.00
+-18.25    -138.00
+-14.24    -111.00
+-10.31    -83.40
+-6.45     -54.80
+-2.65     -25.40
+0         -4.50
+1.13       4.41
+4.89      34.20
+8.66      64.00
+12.48     93.40
+16.33    122.30
+20.19    150.80
+24.06    179.50
+27.91    208.40
+31.72    237.30
+35.46    266.80
+39.15    296.40
+42.78    326.40
+46.38    357.00
+49.95    387.90
+53.50    419.00
+57.05    450.30
+60.62    481.90
+64.27    513.80
+68.03    544.00
+71.95    581.40
+76.09    605.40
+80.45    624.40
+85.03    639.70
+89.74    652.40
+94.53    662.40
+99.34    670.80
+104.13   678.90
+108.90   687.40
+113.66   696.00
+118.41   703.80
+123.18   711.80
+127.95   719.80
+132.73   727.80
+137.51   735.80
+142.30   743.60
+147.09   751.40
+151.88   759.10
+156.67   766.80
+161.46   774.40
+166.26   782.00
+171.05   789.60
+175.84   797.40
+180.63   805.40
+185.40   813.60
+190.15   822.20
+194.90   825.00
+199.65   834.00
+204.41   843.00
+209.18   851.00
+213.98   859.00
+218.78   864.00
+]]>        
+
+</Spline>
+
+        <Spline name="gasPreloadForceCurve" id="0" active="true" userDefined="false" interpolation_method="akima">
+            <![CDATA[
+-50000   0
+-20000   0
+0        0
+20000    0
+50000    0
+]]>
+        </Spline>
+
+    </DamperProperties>
+</afc>

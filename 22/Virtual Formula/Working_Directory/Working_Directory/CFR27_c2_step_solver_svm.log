@@ -1,0 +1,92 @@
+
+========================================
+=            VI-CarRealTime            =
+========================================
+  VERSION : 2025.2
+  REVISION: 9b78eed1c5/release/2025.2
+  BUILT ON: lupus/28-May-25
+========================================
+
+
+Event data is being read from input XML file...
+
+Performing the simulation: CFR27_c2_step.
+
+
+Initializing powertrain / driveline...
+Done.
+
+Initializing aero force...
+Done.
+
+Initializing tires...
+Loading road data file... (file=C:/PROGRA~1/VI-grade/VI-CAR~1/acarrt/CARREA~1.CDB/roads.tbl/flat.rdf)
+
+road file total reading time = 0s
+
+FLAT road model has been initialized...
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+Done.
+
+Initializing driver...
+
+Done.
+
+
+Solving for static equilibrium...
+
+
+Performing Vehicle Setup...
+
+
+Solving for static equilibrium...
+
+Static equilibrium has been achieved.
+Elapsed Simulation Time:  3.865 (sec).
+Elapsed Clock Time:  0.065 (sec).
+
+
+Setup Completed.
+
+
+Performing dynamic simulation...
+
+Simulation Progress (percent complete):
+0                      50                      100
+-------------------------------------------------
+
+======================================
+=           VI-CarRealTime           =
+=    VEHICLE SIMULATION STATISTICS   =
+======================================
+
+ --- Simulation Statistics ---
+>> LAP TIME           = 10.000000 sec
+>> LAT ACCEL MAX      = 0.000033 G
+>> LAT ACCEL MIN      = -0.267339 G
+>> LON ACCEL MAX      = 1.059807 G
+>> LON ACCEL MIN      = 0.945058 G
+>> LON SPEED MAX      = 18.008708 km/h
+>> LON SPEED MIN      = 17.967264 km/h
+>> LON SPEED AVG      = 17.992724 km/h
+>> STEERING MAX       = 30.000000 deg
+>> STEERING MIN       = 0.000000 deg
+
+
+Writing output to file. Please Wait ...
+
+
+Elapsed Simulation Time:  10.000 (sec).
+Elapsed Clock Time:  0.688 (sec).
+Computational Efficiency:  14.535 (sim. sec)/(sec).
+
+
+Simulation is complete.

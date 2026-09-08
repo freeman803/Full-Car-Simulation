@@ -1,0 +1,95 @@
+
+
+=========================================
+=        VI-Driver/MaxPerformance       =
+=========================================
+  VERSION : 2025.2
+  REVISION: 9b78eed1c5/release/2025.2
+  BUILT ON: lupus/28-May-25
+=========================================
+
+
+
+Initializing VI-CRT Pre Event Simulation...
+
+Event data is being read from input XML file...
+
+Aerodynamic force inactive or non-existent. Skipped.Running CRT Simulation...
+
+Initializing powertrain / driveline...
+Done.
+
+Initializing tires...
+FLAT road model has been initialized...
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+Done.
+
+Solving for static equilibrium...
+
+
+Performing Vehicle Setup...
+ -- ERROR -- 
+ -- ERROR -- 
+ -- ERROR -- Equations-of-motion evaluation error at Time = 45.365 (s).
+ -- ERROR -- 
+ -- ERROR -- Offending 1st-level intermediate expression: zv[2343] = -inf.
+ -- ERROR -- 
+ -- ERROR -- Offending 2nd-level intermediate expression: zztemp[0] = -nan(ind).
+
+Effected state derivative: dxdt(X[15]) = -nan(ind).
+Effected state derivative: dxdt(X[16]) = -nan(ind).
+Effected state derivative: dxdt(X[17]) = nan.
+Effected state derivative: dxdt(X[18]) = -nan(ind).
+Effected state derivative: dxdt(X[19]) = -nan(ind).
+Effected state derivative: dxdt(X[20]) = -nan(ind).
+Effected state derivative: dxdt(X[21]) = -nan(ind).
+Effected state derivative: dxdt(X[22]) = -nan(ind).
+Effected state derivative: dxdt(X[23]) = -nan(ind).
+Effected state derivative: dxdt(X[24]) = -nan(ind).
+Effected state derivative: dxdt(X[25]) = -nan(ind).
+Effected state derivative: dxdt(X[26]) = -nan(ind).
+Effected state derivative: dxdt(X[27]) = -nan(ind).
+Effected state derivative: dxdt(X[28]) = -nan(ind).
+Effected state derivative: dxdt(X[53]) = inf.
+Effected auxiliary-algebraic state: X[290] = -nan(ind).
+Effected auxiliary-algebraic state: X[291] = -nan(ind).
+Effected auxiliary-algebraic state: X[292] = -nan(ind).
+Effected auxiliary-algebraic state: X[293] = -nan(ind).
+Effected auxiliary-algebraic state: X[407] = -nan(ind).
+Effected auxiliary-algebraic state: X[408] = -nan(ind).
+Effected auxiliary-algebraic state: X[409] = -nan(ind).
+Effected auxiliary-algebraic state: X[410] = nan.
+Effected auxiliary-algebraic state: X[411] = nan.
+Effected auxiliary-algebraic state: X[412] = nan.
+Effected auxiliary-algebraic state: X[419] = -nan(ind).
+Effected auxiliary-algebraic state: X[420] = -nan(ind).
+Effected auxiliary-algebraic state: X[421] = -nan(ind).
+Effected auxiliary-algebraic state: X[422] = nan.
+Effected auxiliary-algebraic state: X[423] = nan.
+Effected auxiliary-algebraic state: X[424] = nan.
+Effected auxiliary-algebraic state: X[444] = -nan(ind).
+Effected auxiliary-algebraic state: X[445] = -nan(ind).
+Effected auxiliary-algebraic state: X[446] = -nan(ind).
+Effected auxiliary-algebraic state: X[447] = nan.
+Effected auxiliary-algebraic state: X[448] = nan.
+Effected auxiliary-algebraic state: X[449] = nan.
+Effected auxiliary-algebraic state: X[456] = -nan(ind).
+Effected auxiliary-algebraic state: X[457] = -nan(ind).
+Effected auxiliary-algebraic state: X[458] = -nan(ind).
+Effected auxiliary-algebraic state: X[459] = nan.
+Effected auxiliary-algebraic state: X[460] = nan.
+Effected auxiliary-algebraic state: X[461] = nan.
+
+ -- ERROR -- Input Error. Problems during model initialization.
+Initialize Simulation
+TEIMORBIT DATA FILE READING ERROR: MALFORMED FILE OR FILE FORMAT NOT SUPPORTED
+(please check file hader to look for corrupted or missed data)
+ -- ERROR -- Error initializing using file 'CFR27_Endurance_send_svm.xml'.

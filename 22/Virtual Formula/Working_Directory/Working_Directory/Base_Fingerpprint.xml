@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<afc xmlns="http://www.mscsoftware.com/:vfc" xmlns:afc="http://www.mscsoftware.com/:afc" xmlns:chassis="http://www.mscsoftware.com/:chassis">
+     <afc:Bibliography>
+          <File schema="afc" version="2.0.0.0" URI="file://C:/Users/amp20/Desktop/Formula/CFR27/22/Virtual Formula/Working_Directory/Base_Fingerpprint.xml" publicationDate="2026-09-05 11:00:04-04:00"/>
+          <Revision version="2025.2"/>
+          <Corporation author="VI-grade" URI="http://www.vi-grade.com"/>
+          <Author user="amp20" name="-unknown name-"/>
+          <Environment hostName="lecomputer" operatingSystem="MS Windows NT 10.0"/>
+          <Application name="VI-CarRealTime" version="2025.2"/>
+     </afc:Bibliography>
+     <afc:Units>
+          <afc:UnitSetting name="angle" current="degree"/>
+          <afc:UnitSetting name="current" current="ampere"/>
+          <afc:UnitSetting name="force" current="newton"/>
+          <afc:UnitSetting name="length" current="mm"/>
+          <afc:UnitSetting name="luminosity" current="candela"/>
+          <afc:UnitSetting name="mass" current="kilogram"/>
+          <afc:UnitSetting name="quantity" current="mole"/>
+          <afc:UnitSetting name="solidAngle" current="steradian"/>
+          <afc:UnitSetting name="temperature" current="kelvin"/>
+          <afc:UnitSetting name="time" current="second"/>
+          <afc:UnitSetting name="vehicle_velocity" current="kph"/>
+          <afc:UnitSetting name="course_length" current="meter"/>
+          <afc:UnitSetting name="frequency" current="Hz"/>
+     </afc:Units>
+     <chassis:SVMFingerprint name="Base_Fingerpprint" active="true" userDefined="false">
+          <afc:MaxPerformance name="CFR26_Skidpad" active="true" userDefined="false" eventClass="MaxPerformance" systemFile="mdids://VI_Racer/systems.tbl/CFR26.xml" overlayCapable="true" doAnimation="true" doPlot="true" doReport="true" doCustomPostprocessing="false" doCustomSolverPostprocessing="false" integrationTimeStep="0.001" outputTimeStep="0.01" integrator="Runge-Kutta midstep" useRoadFile="true" roadFile="mdids://VI_Racer/roads.tbl/Skidpad.rdf" fLroadFile="mdids://carrealtime_shared/roads.tbl/flat.rdf" fRroadFile="mdids://carrealtime_shared/roads.tbl/flat.rdf" rLroadFile="mdids://carrealtime_shared/roads.tbl/flat.rdf" rRroadFile="mdids://carrealtime_shared/roads.tbl/flat.rdf" individualRoad="false" useRoadGraphicsFile="true" roadGraphicsFile="mdids://VI_Racer/shell_graphics.tbl/Skidpad.obj" useEventLapSensorDRD="false" lapSensor="No Lap Sensor" simulationMode="interactive" broadcastMode="multiple_run" showRoadWidgets="true" showLapSensorWidgets="true" enableIndividualRoad="true" tireLimits="false" tLFZMin="1000.0" tLFZMax="5000.0" tLFZStep="500.0" tLCamberMin="-3.0" tLCamberMax="3.0" tLCamberStep="0.5" tLLongitudinalSlipMin="-0.3" tLLongitudinalSlipMax="0.3" tLLongitudinalSlipStep="0.05" tLLateralSlipMin="-20.0" tLLateralSlipMax="20.0" tLLateralSlipStep="0.5" showTrailerWidgets="false" showSolverSettingsWidgets="true" showTireLimitsWidgets="true" trailerActiveFlag="false" plotConfigFile="mdids://carrealtime_shared/plot_configs.tbl/vi_animator_std.xpl" customPostprocessingScript="mdids://carrealtime_shared/postprocessing_scripts.tbl/maxPerformance_report.py" customXgrFile_flag="false" customXgrFileMode="replace" multipleLapsFlag="true" multipleLapsMin="1" multipleLapsMax="1" multipleLapsVelocityTolerance="1000.0" multipleLapsSplitResults="false" driverParametersUpdate="false" vehicleUserLocationActive="true" vehicleAutomaticLocationActive="false" vehicleAutomaticLocationS="0" vehicleUserAutomaticZActive="true" vehicleUserLocationX="0" vehicleUserLocationY="0" vehicleUserLocationZ="0" vehicleUserOrientationYaw="0" vehicleUserOrientationPitch="0" vehicleUserOrientationRoll="0" vehicleUserStdTireRefLocationActive="false" vehicleUserStdTireRefLocationX="0" vehicleUserStdTireRefLocationY="0" vehicleUserStdTireRefLocationZ="0" vehicleUserStdTireRefOrientationPsi="0" vehicleUserStdTireRefOrientationTheta="0" vehicleUserStdTireRefOrientationPhi="0" useVehicleOverrideFile="false" debugStaticFlag="false" drdFile="mdids://VI_Racer/driver_roads.tbl/Skidpad.drd" vdfTemplateFlag="false" vdfTemplate="mdids://carrealtime_shared/driver_controls.tbl/vicrt_maneuver_template.vdf_tpl" vdfTemplateBase="mdids://carrealtime_shared/driver_controls.tbl/vicrt_maneuver_template.vdf_tpq" initialVelocity="5.0" initialGear="1" flyingLap="false" maxAllowablePathDistance="1500.0" lonAccPerformanceScalingFactor="1.0" lonBraPerformanceScalingFactor="1.0" latPerformanceScalingFactor="1.0" performanceCorrectionStep="0.05" numRefinements="0" userLogicFlag="false" userLogicFile="mdids://carrealtime_shared/driver_controls.tbl/bt_pathdistance_only.xbt" userLogicCheckMode="check by time" intermediateResults="false" mxp_max_itx="50" mxpSaveRestoreMode="1" viSpeedGenManeuver="CFR26_Skidpad.xsg" preEventEmbedded="true" updateRideHeightMaps="false" rideHeightMapsEvent="mdids://carrealtime_shared/driver_controls.tbl/coast_down.xml" customSegmentsFileFlag="false" useTireLimitsInQuasiStatics="true" useRoadDataInQuasiStatics="true" useSuspensionDataInQuasiStatics="true" usePerformanceModifiers="false" slt_tlCustomSettings="false" slt_tLFZMin="0.1" slt_tLFZMax="10000.1" slt_tLFZStep="50.0" slt_tLCamberMin="-10.0" slt_tLCamberMax="10.0" slt_tLCamberStep="1.0" slt_tLLongitudinalSlipMin="-0.5" slt_tLLongitudinalSlipMax="0.5" slt_tLLongitudinalSlipStep="0.05" slt_tLLateralSlipMin="-25.0" slt_tLLateralSlipMax="25.0" slt_tLLateralSlipStep="2.0" FLCamberAngle="0" FRCamberAngle="0" RLCamberAngle="0" RRCamberAngle="0">
+               <Spline name="latPerformanceScalingTable" active="true" userDefined="false" interpolation_method="akima" xLabel="Path S" yLabel="Grip Scaling" xUnit="length" datablock="Grip Scaling vs Path S">
+                 <![CDATA[
+              0               1
+          50000               1
+         100000               1
+         150000               1
+         200000               1
+         250000               1
+         300000               1
+         350000               1
+         400000               1
+         450000               1
+         500000               1
+         550000               1
+         600000               1
+         650000               1
+         700000               1
+         750000               1
+         800000               1
+         850000               1
+         900000               1
+         950000               1
+        1000000               1
+        1050000               1
+        1100000               1
+        1150000               1
+]]>
+                    <Comment userDefined="false">
+                      <![CDATA[]]>
+                    </Comment>
+               </Spline>
+               <Spline name="lonAccPerformanceScalingTable" active="true" userDefined="false" interpolation_method="akima" xLabel="Path S" yLabel="Grip Scaling" xUnit="length" datablock="Grip Scaling vs Path S">
+                 <![CDATA[
+              0               1
+          50000               1
+         100000               1
+         150000               1
+         200000               1
+         250000               1
+         300000               1
+         350000               1
+         400000               1
+         450000               1
+         500000               1
+         550000               1
+         600000               1
+         650000               1
+         700000               1
+         750000               1
+         800000               1
+         850000               1
+         900000               1
+         950000               1
+        1000000               1
+        1050000               1
+        1100000               1
+        1150000               1
+]]>
+                    <Comment userDefined="false">
+                      <![CDATA[]]>
+                    </Comment>
+               </Spline>
+               <Spline name="lonBraPerformanceScalingTable" active="true" userDefined="false" interpolation_method="akima" xLabel="Path S" yLabel="Grip Scaling" xUnit="length" datablock="Grip Scaling vs Path S">
+                 <![CDATA[
+              0               1
+          50000               1
+         100000               1
+         150000               1
+         200000               1
+         250000               1
+         300000               1
+         350000               1
+         400000               1
+         450000               1
+         500000               1
+         550000               1
+         600000               1
+         650000               1
+         700000               1
+         750000               1
+         800000               1
+         850000               1
+         900000               1
+         950000               1
+        1000000               1
+        1050000               1
+        1100000               1
+        1150000               1
+]]>
+                    <Comment userDefined="false">
+                      <![CDATA[]]>
+                    </Comment>
+               </Spline>
+          </afc:MaxPerformance>
+          <afc:FileDriven name="CFR26_E_Acceleration" active="true" userDefined="false" eventClass="FileDriven" systemFile="mdids://VI_Racer/systems.tbl/CFR26.xml" overlayCapable="true" doAnimation="true" doPlot="true" doReport="true" doCustomPostprocessing="false" doCustomSolverPostprocessing="false" integrationTimeStep="0.001" outputTimeStep="0.01" integrator="Runge-Kutta midstep" useRoadFile="true" roadFile="mdids://VI_Racer/roads.tbl/Acceleration.rdf" fLroadFile="mdids://carrealtime_shared/roads.tbl/flat.rdf" fRroadFile="mdids://carrealtime_shared/roads.tbl/flat.rdf" rLroadFile="mdids://carrealtime_shared/roads.tbl/flat.rdf" rRroadFile="mdids://carrealtime_shared/roads.tbl/flat.rdf" individualRoad="false" useRoadGraphicsFile="true" roadGraphicsFile="mdids://VI_Racer/shell_graphics.tbl/Acceleration.obj" useEventLapSensorDRD="false" lapSensor="No Lap Sensor" simulationMode="interactive" broadcastMode="multiple_run" showRoadWidgets="true" showLapSensorWidgets="true" enableIndividualRoad="true" tireLimits="false" tLFZMin="1000.0" tLFZMax="5000.0" tLFZStep="500.0" tLCamberMin="-3.0" tLCamberMax="3.0" tLCamberStep="0.5" tLLongitudinalSlipMin="-0.3" tLLongitudinalSlipMax="0.3" tLLongitudinalSlipStep="0.05" tLLateralSlipMin="-20.0" tLLateralSlipMax="20.0" tLLateralSlipStep="0.5" showTrailerWidgets="true" showSolverSettingsWidgets="true" showTireLimitsWidgets="true" trailerActiveFlag="false" plotConfigFile="mdids://carrealtime_shared/plot_configs.tbl/vi_animator_std.xpl" customPostprocessingScript="mdids://carrealtime_shared/postprocessing_scripts.tbl/fileDriven_report.py" customXgrFile_flag="false" customXgrFileMode="replace" multipleLapsFlag="false" multipleLapsMin="1" multipleLapsMax="1" multipleLapsVelocityTolerance="1000.0" multipleLapsSplitResults="false" driverParametersUpdate="false" vehicleUserLocationActive="true" vehicleAutomaticLocationActive="false" vehicleAutomaticLocationS="0" vehicleUserAutomaticZActive="true" vehicleUserLocationX="0" vehicleUserLocationY="0" vehicleUserLocationZ="0" vehicleUserOrientationYaw="0" vehicleUserOrientationPitch="0" vehicleUserOrientationRoll="0" vehicleUserStdTireRefLocationActive="false" vehicleUserStdTireRefLocationX="0" vehicleUserStdTireRefLocationY="0" vehicleUserStdTireRefLocationZ="0" vehicleUserStdTireRefOrientationPsi="0" vehicleUserStdTireRefOrientationTheta="0" vehicleUserStdTireRefOrientationPhi="0" useVehicleOverrideFile="false" debugStaticFlag="false" smartDriverFile="mdids://VI_Racer/driver_controls.tbl/Acceleration.vdf" usePerformanceModifiers="false"/>
+          <afc:MaxPerformance name="CFR26_E_Endurance" active="true" userDefined="false" eventClass="MaxPerformance" systemFile="mdids://VI_Racer/systems.tbl/CFR26.xml" overlayCapable="true" doAnimation="true" doPlot="true" doReport="true" doCustomPostprocessing="false" doCustomSolverPostprocessing="false" integrationTimeStep="0.001" outputTimeStep="0.01" integrator="Runge-Kutta midstep" useRoadFile="true" roadFile="mdids://VI_Racer/roads.tbl/Endurance_Track_V3.rdf" fLroadFile="mdids://carrealtime_shared/roads.tbl/flat.rdf" fRroadFile="mdids://carrealtime_shared/roads.tbl/flat.rdf" rLroadFile="mdids://carrealtime_shared/roads.tbl/flat.rdf" rRroadFile="mdids://carrealtime_shared/roads.tbl/flat.rdf" individualRoad="false" useRoadGraphicsFile="true" roadGraphicsFile="mdids://VI_Racer/roads.tbl/Endurance_Track_V2.obj" useEventLapSensorDRD="false" lapSensor="No Lap Sensor" simulationMode="interactive" broadcastMode="multiple_run" showRoadWidgets="true" showLapSensorWidgets="true" enableIndividualRoad="true" tireLimits="false" tLFZMin="1000.0" tLFZMax="5000.0" tLFZStep="500.0" tLCamberMin="-3.0" tLCamberMax="3.0" tLCamberStep="0.5" tLLongitudinalSlipMin="-0.3" tLLongitudinalSlipMax="0.3" tLLongitudinalSlipStep="0.05" tLLateralSlipMin="-20.0" tLLateralSlipMax="20.0" tLLateralSlipStep="0.5" showTrailerWidgets="false" showSolverSettingsWidgets="true" showTireLimitsWidgets="true" trailerActiveFlag="false" plotConfigFile="mdids://carrealtime_shared/plot_configs.tbl/vi_animator_std.xpl" customPostprocessingScript="mdids://carrealtime_shared/postprocessing_scripts.tbl/maxPerformance_report.py" customXgrFile_flag="false" customXgrFileMode="replace" multipleLapsFlag="true" multipleLapsMin="1" multipleLapsMax="1" multipleLapsVelocityTolerance="1000.0" multipleLapsSplitResults="false" driverParametersUpdate="false" vehicleUserLocationActive="true" vehicleAutomaticLocationActive="false" vehicleAutomaticLocationS="0" vehicleUserAutomaticZActive="true" vehicleUserLocationX="0" vehicleUserLocationY="0" vehicleUserLocationZ="0" vehicleUserOrientationYaw="0" vehicleUserOrientationPitch="0" vehicleUserOrientationRoll="0" vehicleUserStdTireRefLocationActive="false" vehicleUserStdTireRefLocationX="0" vehicleUserStdTireRefLocationY="0" vehicleUserStdTireRefLocationZ="0" vehicleUserStdTireRefOrientationPsi="0" vehicleUserStdTireRefOrientationTheta="0" vehicleUserStdTireRefOrientationPhi="0" useVehicleOverrideFile="false" debugStaticFlag="false" drdFile="mdids://VI_Racer/roads.tbl/Endurance_Track_V3.drd" vdfTemplateFlag="false" vdfTemplate="mdids://carrealtime_shared/driver_controls.tbl/vicrt_maneuver_template.vdf_tpl" vdfTemplateBase="mdids://carrealtime_shared/driver_controls.tbl/vicrt_maneuver_template.vdf_tpq" initialVelocity="3.6" initialGear="1" flyingLap="false" maxAllowablePathDistance="1500.0" lonAccPerformanceScalingFactor="1.0" lonBraPerformanceScalingFactor="1.0" latPerformanceScalingFactor="1.0" performanceCorrectionStep="0.05" numRefinements="0" userLogicFlag="false" userLogicFile="mdids://carrealtime_shared/driver_controls.tbl/bt_pathdistance_only.xbt" userLogicCheckMode="check by time" intermediateResults="false" mxp_max_itx="50" mxpSaveRestoreMode="1" viSpeedGenManeuver="CFR26_E_Endurance.xsg" preEventEmbedded="true" updateRideHeightMaps="false" rideHeightMapsEvent="mdids://carrealtime_shared/driver_controls.tbl/coast_down.xml" customSegmentsFileFlag="false" useTireLimitsInQuasiStatics="true" useRoadDataInQuasiStatics="true" useSuspensionDataInQuasiStatics="true" usePerformanceModifiers="false" slt_tlCustomSettings="false" slt_tLFZMin="0.1" slt_tLFZMax="10000.1" slt_tLFZStep="50.0" slt_tLCamberMin="-10.0" slt_tLCamberMax="10.0" slt_tLCamberStep="1.0" slt_tLLongitudinalSlipMin="-0.5" slt_tLLongitudinalSlipMax="0.5" slt_tLLongitudinalSlipStep="0.05" slt_tLLateralSlipMin="-25.0" slt_tLLateralSlipMax="25.0" slt_tLLateralSlipStep="2.0" FLCamberAngle="0" FRCamberAngle="0" RLCamberAngle="0" RRCamberAngle="0">
+               <Spline name="latPerformanceScalingTable" active="true" userDefined="false" interpolation_method="akima" xLabel="Path S" yLabel="Grip Scaling" xUnit="length" datablock="Grip Scaling vs Path S">
+                 <![CDATA[
+              0               1
+          50000               1
+         100000               1
+         150000               1
+         200000               1
+         250000               1
+         300000               1
+         350000               1
+         400000               1
+         450000               1
+         500000               1
+         550000               1
+         600000               1
+         650000               1
+         700000               1
+         750000               1
+         800000               1
+         850000               1
+         900000               1
+         950000               1
+]]>
+               </Spline>
+               <Spline name="lonAccPerformanceScalingTable" active="true" userDefined="false" interpolation_method="akima" xLabel="Path S" yLabel="Grip Scaling" xUnit="length" datablock="Grip Scaling vs Path S">
+                 <![CDATA[
+              0               1
+          50000               1
+         100000               1
+         150000               1
+         200000               1
+         250000               1
+         300000               1
+         350000               1
+         400000               1
+         450000               1
+         500000               1
+         550000               1
+         600000               1
+         650000               1
+         700000               1
+         750000               1
+         800000               1
+         850000               1
+         900000               1
+         950000               1
+]]>
+               </Spline>
+               <Spline name="lonBraPerformanceScalingTable" active="true" userDefined="false" interpolation_method="akima" xLabel="Path S" yLabel="Grip Scaling" xUnit="length" datablock="Grip Scaling vs Path S">
+                 <![CDATA[
+              0               1
+          50000               1
+         100000               1
+         150000               1
+         200000               1
+         250000               1
+         300000               1
+         350000               1
+         400000               1
+         450000               1
+         500000               1
+         550000               1
+         600000               1
+         650000               1
+         700000               1
+         750000               1
+         800000               1
+         850000               1
+         900000               1
+         950000               1
+]]>
+               </Spline>
+          </afc:MaxPerformance>
+          <afc:SineSteer name="CFR26_sin" active="true" userDefined="false" eventClass="SineSteer" systemFile="mdids://VI_Racer/systems.tbl/CFR26.xml" overlayCapable="true" doAnimation="true" doPlot="true" doReport="true" doCustomPostprocessing="false" doCustomSolverPostprocessing="false" integrationTimeStep="0.001" outputTimeStep="0.01" integrator="Runge-Kutta midstep" useRoadFile="true" roadFile="mdids://carrealtime_shared/roads.tbl/flat.rdf" fLroadFile="mdids://carrealtime_shared/roads.tbl/flat.rdf" fRroadFile="mdids://carrealtime_shared/roads.tbl/flat.rdf" rLroadFile="mdids://carrealtime_shared/roads.tbl/flat.rdf" rRroadFile="mdids://carrealtime_shared/roads.tbl/flat.rdf" individualRoad="false" useRoadGraphicsFile="false" useEventLapSensorDRD="false" lapSensor="No Lap Sensor" simulationMode="interactive" broadcastMode="multiple_run" showRoadWidgets="true" showLapSensorWidgets="false" enableIndividualRoad="true" tireLimits="false" tLFZMin="1000.0" tLFZMax="5000.0" tLFZStep="500.0" tLCamberMin="-3.0" tLCamberMax="3.0" tLCamberStep="0.5" tLLongitudinalSlipMin="-0.3" tLLongitudinalSlipMax="0.3" tLLongitudinalSlipStep="0.05" tLLateralSlipMin="-20.0" tLLateralSlipMax="20.0" tLLateralSlipStep="0.5" showTrailerWidgets="true" showSolverSettingsWidgets="true" showTireLimitsWidgets="true" trailerActiveFlag="false" plotConfigFile="mdids://carrealtime_shared/plot_configs.tbl/vi_animator_std.xpl" customPostprocessingScript="mdids://carrealtime_shared/postprocessing_scripts.tbl/sineSteer_report.py" customXgrFile_flag="false" customXgrFileMode="replace" multipleLapsFlag="false" multipleLapsMin="1" multipleLapsMax="1" multipleLapsVelocityTolerance="1000.0" multipleLapsSplitResults="false" driverParametersUpdate="false" vehicleUserLocationActive="false" vehicleAutomaticLocationActive="false" vehicleAutomaticLocationS="0" vehicleUserAutomaticZActive="false" vehicleUserLocationX="0" vehicleUserLocationY="0" vehicleUserLocationZ="0" vehicleUserOrientationYaw="0" vehicleUserOrientationPitch="0" vehicleUserOrientationRoll="0" vehicleUserStdTireRefLocationActive="false" vehicleUserStdTireRefLocationX="0" vehicleUserStdTireRefLocationY="0" vehicleUserStdTireRefLocationZ="0" vehicleUserStdTireRefOrientationPsi="0" vehicleUserStdTireRefOrientationTheta="0" vehicleUserStdTireRefOrientationPhi="0" useVehicleOverrideFile="false" debugStaticFlag="false" initialVelocity="18.0" steeringDemand="0" initialGear="1" viDriverFile="CFR26_sin.vdf" endTime="10.0" cruiseControl="true" startTime="1.0" initialSteer="0" amplitude="30.0" frequency="0.5" phase="0" steerReleaseFlag="false" steerReleaseTime="5.0"/>
+          <afc:StepSteer name="CFR26_step" active="true" userDefined="false" eventClass="StepSteer" systemFile="mdids://VI_Racer/systems.tbl/CFR26.xml" overlayCapable="true" doAnimation="true" doPlot="true" doReport="true" doCustomPostprocessing="false" doCustomSolverPostprocessing="false" integrationTimeStep="0.001" outputTimeStep="0.01" integrator="Runge-Kutta midstep" useRoadFile="true" roadFile="mdids://carrealtime_shared/roads.tbl/flat.rdf" fLroadFile="mdids://carrealtime_shared/roads.tbl/flat.rdf" fRroadFile="mdids://carrealtime_shared/roads.tbl/flat.rdf" rLroadFile="mdids://carrealtime_shared/roads.tbl/flat.rdf" rRroadFile="mdids://carrealtime_shared/roads.tbl/flat.rdf" individualRoad="false" useRoadGraphicsFile="false" useEventLapSensorDRD="false" lapSensor="No Lap Sensor" simulationMode="interactive" broadcastMode="multiple_run" showRoadWidgets="true" showLapSensorWidgets="false" enableIndividualRoad="true" tireLimits="false" tLFZMin="1000.0" tLFZMax="5000.0" tLFZStep="500.0" tLCamberMin="-3.0" tLCamberMax="3.0" tLCamberStep="0.5" tLLongitudinalSlipMin="-0.3" tLLongitudinalSlipMax="0.3" tLLongitudinalSlipStep="0.05" tLLateralSlipMin="-20.0" tLLateralSlipMax="20.0" tLLateralSlipStep="0.5" showTrailerWidgets="true" showSolverSettingsWidgets="true" showTireLimitsWidgets="true" trailerActiveFlag="false" plotConfigFile="mdids://carrealtime_shared/plot_configs.tbl/vi_animator_std.xpl" customPostprocessingScript="mdids://carrealtime_shared/postprocessing_scripts.tbl/openLoopSteer_report.py" customXgrFile_flag="false" customXgrFileMode="replace" multipleLapsFlag="false" multipleLapsMin="1" multipleLapsMax="1" multipleLapsVelocityTolerance="1000.0" multipleLapsSplitResults="false" driverParametersUpdate="false" vehicleUserLocationActive="false" vehicleAutomaticLocationActive="false" vehicleAutomaticLocationS="0" vehicleUserAutomaticZActive="false" vehicleUserLocationX="0" vehicleUserLocationY="0" vehicleUserLocationZ="0" vehicleUserOrientationYaw="0" vehicleUserOrientationPitch="0" vehicleUserOrientationRoll="0" vehicleUserStdTireRefLocationActive="false" vehicleUserStdTireRefLocationX="0" vehicleUserStdTireRefLocationY="0" vehicleUserStdTireRefLocationZ="0" vehicleUserStdTireRefOrientationPsi="0" vehicleUserStdTireRefOrientationTheta="0" vehicleUserStdTireRefOrientationPhi="0" useVehicleOverrideFile="false" debugStaticFlag="false" initialVelocity="18.0" steeringDemand="0" initialGear="1" viDriverFile="CFR26_step.vdf" endTime="10.0" cruiseControl="true" startTime="1.0" durationTime="1.0" initialSteer="0" finalSteer="30.0" steerReleaseFlag="false" steerReleaseTime="5.0"/>
+          <afc:ConstantRadiusCornering name="CFR26_crc" active="true" userDefined="false" eventClass="ConstantRadiusCornering" systemFile="mdids://VI_Racer/systems.tbl/CFR26.xml" overlayCapable="true" doAnimation="true" doPlot="true" doReport="true" doCustomPostprocessing="false" doCustomSolverPostprocessing="false" integrationTimeStep="0.001" outputTimeStep="0.01" integrator="Runge-Kutta midstep" useRoadFile="true" roadFile="mdids://carrealtime_shared/roads.tbl/flat.rdf" fLroadFile="mdids://carrealtime_shared/roads.tbl/flat.rdf" fRroadFile="mdids://carrealtime_shared/roads.tbl/flat.rdf" rLroadFile="mdids://carrealtime_shared/roads.tbl/flat.rdf" rRroadFile="mdids://carrealtime_shared/roads.tbl/flat.rdf" individualRoad="false" useRoadGraphicsFile="false" useEventLapSensorDRD="false" lapSensor="No Lap Sensor" simulationMode="interactive" broadcastMode="multiple_run" showRoadWidgets="true" showLapSensorWidgets="false" enableIndividualRoad="true" tireLimits="false" tLFZMin="1000.0" tLFZMax="5000.0" tLFZStep="500.0" tLCamberMin="-3.0" tLCamberMax="3.0" tLCamberStep="0.5" tLLongitudinalSlipMin="-0.3" tLLongitudinalSlipMax="0.3" tLLongitudinalSlipStep="0.05" tLLateralSlipMin="-20.0" tLLateralSlipMax="20.0" tLLateralSlipStep="0.5" showTrailerWidgets="true" showSolverSettingsWidgets="true" showTireLimitsWidgets="true" trailerActiveFlag="false" plotConfigFile="mdids://carrealtime_shared/plot_configs.tbl/vi_animator_std.xpl" customPostprocessingScript="mdids://carrealtime_shared/postprocessing_scripts.tbl/constantRadiusCornering_report.py" customXgrFile_flag="false" customXgrFileMode="replace" multipleLapsFlag="false" multipleLapsMin="1" multipleLapsMax="1" multipleLapsVelocityTolerance="1000.0" multipleLapsSplitResults="false" driverParametersUpdate="false" vehicleUserLocationActive="false" vehicleAutomaticLocationActive="false" vehicleAutomaticLocationS="0" vehicleUserAutomaticZActive="false" vehicleUserLocationX="0" vehicleUserLocationY="0" vehicleUserLocationZ="0" vehicleUserOrientationYaw="0" vehicleUserOrientationPitch="0" vehicleUserOrientationRoll="0" vehicleUserStdTireRefLocationActive="false" vehicleUserStdTireRefLocationX="0" vehicleUserStdTireRefLocationY="0" vehicleUserStdTireRefLocationZ="0" vehicleUserStdTireRefOrientationPsi="0" vehicleUserStdTireRefOrientationTheta="0" vehicleUserStdTireRefOrientationPhi="0" useVehicleOverrideFile="false" debugStaticFlag="false" initialVelocity="18.0" steeringDemand="0" initialGear="1" viDriverFile="CFR26_crc.vdf" endTime="30.0" entryDistance="5000.0" radius="30000.0" turnDirection="left" startTime="3.0" durationTime="25.0" finalVelocity="108.0" shiftGears="true" steerReleaseFlag="false" steerReleaseTime="5.0"/>
+     </chassis:SVMFingerprint>
+</afc>

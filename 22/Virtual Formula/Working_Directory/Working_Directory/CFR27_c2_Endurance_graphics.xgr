@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VI-ANIMATOR>
+  <viframework::viobjects::GraphicModel name="VI_Racer_graphic">
+    <viframework::viosg::RigidBody graphicFile="mdids://VI_Racer/shell_graphics.tbl/VI_Racer_RT_ges_chassis.obj" graphicScale="0.001" initPhi="3.14159" initPsi="0" initTheta="0" initX="0" initY="0" initZ="0" name="ges_chassis" refPhi="0" refPsi="0" refTheta="0" refX="0" refY="0" refZ="0.05" useAnalysisColor="true">
+      <viframework::viobjects::Channel component="ges_chassis_XFORM.X" name="x" scale="1"></viframework::viobjects::Channel>
+      <viframework::viobjects::Channel component="ges_chassis_XFORM.Y" name="y" scale="1"></viframework::viobjects::Channel>
+      <viframework::viobjects::Channel component="ges_chassis_XFORM.Z" name="z" scale="1"></viframework::viobjects::Channel>
+      <viframework::viobjects::Channel component="ges_chassis_XFORM.Psi" name="psi" scale="1"></viframework::viobjects::Channel>
+      <viframework::viobjects::Channel component="ges_chassis_XFORM.Theta" name="theta" scale="1"></viframework::viobjects::Channel>
+      <viframework::viobjects::Channel component="ges_chassis_XFORM.Phi" name="phi" scale="1"></viframework::viobjects::Channel>
+      <viframework::viosg::GraphicObject graphicFile="mdids://VI_Racer/shell_graphics.tbl/VI_Racer_RT_ges_chassis_aero_01.obj" graphicScale="0.001" initPhi="0" initPsi="0" initTheta="0" initX="0" initY="0" initZ="0" name="graphics2222"></viframework::viosg::GraphicObject>
+    </viframework::viosg::RigidBody>
+    <viframework::viosg::RigidBody graphicFile="mdids://VI_Racer/shell_graphics.tbl/VI_Racer_RT_whl_front_wheel.obj" graphicScale="0.001" initPhi="3.14159" initPsi="0" initTheta="0" initX="0" initY="0" initZ="0" name="whl_front_wheel" refPhi="0" refPsi="0" refTheta="0" refX="0" refY="0" refZ="0" useAnalysisColor="false">
+      <viframework::viobjects::Channel component="whl_front_wheel_XFORM.X" name="x" scale="1"></viframework::viobjects::Channel>
+      <viframework::viobjects::Channel component="whl_front_wheel_XFORM.Y" name="y" scale="1"></viframework::viobjects::Channel>
+      <viframework::viobjects::Channel component="whl_front_wheel_XFORM.Z" name="z" scale="1"></viframework::viobjects::Channel>
+      <viframework::viobjects::Channel component="whl_front_wheel_XFORM.Psi" name="psi" scale="1"></viframework::viobjects::Channel>
+      <viframework::viobjects::Channel component="whl_front_wheel_XFORM.Theta" name="theta" scale="1"></viframework::viobjects::Channel>
+      <viframework::viobjects::Channel component="whl_front_wheel_XFORM.Phi" name="phi" scale="1"></viframework::viobjects::Channel>
+    </viframework::viosg::RigidBody>
+    <viframework::viosg::RigidBody graphicFile="mdids://VI_Racer/shell_graphics.tbl/VI_Racer_RT_whr_front_wheel.obj" graphicScale="0.001" initPhi="3.14159" initPsi="0" initTheta="0" initX="0" initY="0" initZ="0" name="whr_front_wheel" refPhi="0" refPsi="0" refTheta="0" refX="0" refY="0" refZ="0" useAnalysisColor="false">
+      <viframework::viobjects::Channel component="whr_front_wheel_XFORM.X" name="x" scale="1"></viframework::viobjects::Channel>
+      <viframework::viobjects::Channel component="whr_front_wheel_XFORM.Y" name="y" scale="1"></viframework::viobjects::Channel>
+      <viframework::viobjects::Channel component="whr_front_wheel_XFORM.Z" name="z" scale="1"></viframework::viobjects::Channel>
+      <viframework::viobjects::Channel component="whr_front_wheel_XFORM.Psi" name="psi" scale="1"></viframework::viobjects::Channel>
+      <viframework::viobjects::Channel component="whr_front_wheel_XFORM.Theta" name="theta" scale="1"></viframework::viobjects::Channel>
+      <viframework::viobjects::Channel component="whr_front_wheel_XFORM.Phi" name="phi" scale="1"></viframework::viobjects::Channel>
+    </viframework::viosg::RigidBody>
+    <viframework::viosg::RigidBody graphicFile="mdids://VI_Racer/shell_graphics.tbl/VI_Racer_RT_whl_rear_wheel.obj" graphicScale="0.001" initPhi="3.14159" initPsi="0" initTheta="0" initX="0" initY="0" initZ="0" name="whl_rear_wheel" refPhi="0" refPsi="0" refTheta="0" refX="0" refY="0" refZ="0" useAnalysisColor="false">
+      <viframework::viobjects::Channel component="whl_rear_wheel_XFORM.X" name="x" scale="1"></viframework::viobjects::Channel>
+      <viframework::viobjects::Channel component="whl_rear_wheel_XFORM.Y" name="y" scale="1"></viframework::viobjects::Channel>
+      <viframework::viobjects::Channel component="whl_rear_wheel_XFORM.Z" name="z" scale="1"></viframework::viobjects::Channel>
+      <viframework::viobjects::Channel component="whl_rear_wheel_XFORM.Psi" name="psi" scale="1"></viframework::viobjects::Channel>
+      <viframework::viobjects::Channel component="whl_rear_wheel_XFORM.Theta" name="theta" scale="1"></viframework::viobjects::Channel>
+      <viframework::viobjects::Channel component="whl_rear_wheel_XFORM.Phi" name="phi" scale="1"></viframework::viobjects::Channel>
+    </viframework::viosg::RigidBody>
+    <viframework::viosg::RigidBody graphicFile="mdids://VI_Racer/shell_graphics.tbl/VI_Racer_RT_whr_rear_wheel.obj" graphicScale="0.001" initPhi="3.14159" initPsi="0" initTheta="0" initX="0" initY="0" initZ="0" name="whr_rear_wheel" refPhi="0" refPsi="0" refTheta="0" refX="0" refY="0" refZ="0" useAnalysisColor="false">
+      <viframework::viobjects::Channel component="whr_rear_wheel_XFORM.X" name="x" scale="1"></viframework::viobjects::Channel>
+      <viframework::viobjects::Channel component="whr_rear_wheel_XFORM.Y" name="y" scale="1"></viframework::viobjects::Channel>
+      <viframework::viobjects::Channel component="whr_rear_wheel_XFORM.Z" name="z" scale="1"></viframework::viobjects::Channel>
+      <viframework::viobjects::Channel component="whr_rear_wheel_XFORM.Psi" name="psi" scale="1"></viframework::viobjects::Channel>
+      <viframework::viobjects::Channel component="whr_rear_wheel_XFORM.Theta" name="theta" scale="1"></viframework::viobjects::Channel>
+      <viframework::viobjects::Channel component="whr_rear_wheel_XFORM.Phi" name="phi" scale="1"></viframework::viobjects::Channel>
+    </viframework::viosg::RigidBody>
+  </viframework::viobjects::GraphicModel>
+</VI-ANIMATOR>

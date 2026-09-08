@@ -1,0 +1,120 @@
+
+========================================
+=            VI-CarRealTime            =
+========================================
+  VERSION : 2025.2
+  REVISION: 9b78eed1c5/release/2025.2
+  BUILT ON: lupus/28-May-25
+========================================
+
+
+Event data is being read from input XML file...
+
+Performing the simulation: CFR27_c2_Acceleration.
+
+
+Initializing powertrain / driveline...
+Done.
+
+Initializing aero force...
+Done.
+
+Initializing tires...
+Loading road data file... (file=C:/Users/amp20/FULL-C~1/22/VIRTUA~1/VI_Racer.cdb/roads.tbl/Acceleration.rdf)
+
+road file total reading time = 0.001s
+
+ANALYTIC road model has been initialized...
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+Done.
+
+Initializing driver...
+
+Done.
+
+
+Solving for static equilibrium...
+
+
+Performing Vehicle Setup...
+
+
+Solving for static equilibrium...
+
+Static equilibrium has been achieved.
+Elapsed Simulation Time:  24.283 (sec).
+Elapsed Clock Time:  0.000 (sec).
+
+
+Setup Completed.
+
+
+Performing dynamic simulation...
+
+Simulation Progress (percent complete):
+0                      50                      100
+----------------
+ -- INFO --  
+ -- INFO -- <<<< VI-Driver MANEUVER INFO >>>>
+ -- INFO -- Maneuver 1 (MANEUVER_1) end condition(s) reached...
+ -- INFO -- (maneuver time = 4.931s / simulation time = 4.931s)
+ -- INFO --  
+ -- INFO -- Satisfied end condition information:
+ -- INFO -- == condition 1 ==
+ -- INFO -- name            : TARGET_PATH_S
+ -- INFO -- ID              : 1
+ -- INFO -- GROUP           : NOT_DEFINED
+ -- INFO -- test type       : >>
+ -- INFO -- reference value : 75
+ -- INFO -- tolerance value : 0
+ -- INFO -- measure value   : 75.1091755628
+ -- INFO --  
+ -- INFO -- 
+ -- INFO --  
+ -- INFO -- <<<< VI-Driver MANEUVER INFO >>>>
+ -- INFO -- ==   LAST MANEUVER COMPLETED   ==
+ -- INFO -- == DRIVER HAS BEEN DEACTIVATED ==
+ -- INFO --  
+ -- INFO -- 
+
+
+A Driving-Machine end condition was triggered: simulation
+terminated prior to simulation abort time.
+
+======================================
+=           VI-CarRealTime           =
+=    VEHICLE SIMULATION STATISTICS   =
+======================================
+
+ --- Simulation Statistics ---
+>> LAP TIME           = 4.931000 sec
+>> LAT ACCEL MAX      = 0.026132 G
+>> LAT ACCEL MIN      = -0.017475 G
+>> LON ACCEL MAX      = 1.450827 G
+>> LON ACCEL MIN      = -0.064319 G
+>> LON SPEED MAX      = 106.352183 km/h
+>> LON SPEED MIN      = 0.000000 km/h
+>> LON SPEED AVG      = 54.917716 km/h
+>> STEERING MAX       = 0.034122 deg
+>> STEERING MIN       = -0.007580 deg
+
+
+Writing output to file. Please Wait ...
+
+
+Elapsed Simulation Time:  4.931 (sec).
+Elapsed Clock Time:  0.373 (sec).
+Computational Efficiency:  13.220 (sim. sec)/(sec).
+
+
+Simulation is complete.
+ -- WARNING -- During analysis some spline extrapolations occur.
+ -- WARNING -- Check log file for further details after enabling verbose flag on system_tree->solver_executive_control.

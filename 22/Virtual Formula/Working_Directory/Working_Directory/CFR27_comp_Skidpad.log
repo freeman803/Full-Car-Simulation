@@ -1,0 +1,2416 @@
+
+
+=========================================
+=        VI-Driver/MaxPerformance       =
+=========================================
+  VERSION : 2025.2
+  REVISION: 9b78eed1c5/release/2025.2
+  BUILT ON: lupus/28-May-25
+=========================================
+
+
+
+Initializing VI-CRT Pre Event Simulation...
+
+Event data is being read from input XML file...
+Running CRT Simulation...
+
+Initializing powertrain / driveline...
+Done.
+
+Initializing aero force...
+Done.
+
+Initializing tires...
+FLAT road model has been initialized...
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+Done.
+
+Solving for static equilibrium...
+
+
+Performing Vehicle Setup...
+
+
+Setup Completed.
+
+Initializing tires...
+FLAT road model has been initialized...
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+Done.
+
+
+Solving for static equilibrium for data point 1 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.220 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 2 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 3 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 4 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 5 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 6 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 7 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 8 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 9 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 10 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 11 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 12 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 13 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 14 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 15 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 16 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 17 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 18 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 19 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.004 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 20 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 21 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.004 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 22 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 23 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.004 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 24 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 25 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 26 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.004 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 27 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 28 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 29 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.004 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 30 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 31 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 32 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.004 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 33 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 34 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 35 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 36 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 37 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 38 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 39 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 40 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 41 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 42 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 43 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 44 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 45 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 46 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 47 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 48 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 49 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 50 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 51 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 52 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 53 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 54 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 55 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 56 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 57 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 58 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.197 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 59 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 60 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 61 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 62 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 63 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 64 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 65 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.004 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 66 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 67 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 68 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.004 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 69 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 70 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.004 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 71 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 72 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 73 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.004 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 74 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 75 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.004 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 76 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.004 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 77 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.196 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 78 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.217 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 79 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.217 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 80 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.217 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 81 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.202 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 82 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.210 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 83 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.210 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 84 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.209 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 85 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.211 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 86 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.211 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 87 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.211 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 88 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.211 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 89 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.210 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 90 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.211 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 91 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.213 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 92 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.211 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 93 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.210 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 94 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.215 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 95 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.207 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 96 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.211 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 97 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.211 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 98 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.227 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 99 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.202 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 100 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.207 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 101 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.217 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 102 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.207 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 103 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.213 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 104 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.217 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 105 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.211 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 106 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.223 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 107 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.215 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 108 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.211 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 109 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.212 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 110 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.216 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 111 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.217 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 112 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.210 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 113 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.210 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 114 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.209 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 115 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.210 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 116 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.211 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 117 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.210 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 118 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.209 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 119 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.209 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 120 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.210 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 121 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.209 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 122 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.210 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 123 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.209 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 124 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.209 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 125 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.209 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 126 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.209 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 127 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.209 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 128 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.209 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 129 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.209 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 130 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.209 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 131 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.209 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 132 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.209 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 133 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.209 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 134 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.209 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 135 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.209 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 136 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.209 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 137 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.209 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 138 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.210 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 139 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.210 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 140 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.209 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 141 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.209 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 142 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.212 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 143 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.209 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 144 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.212 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 145 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.210 (sec).
+Elapsed Clock Time:  0.006 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 146 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.209 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 147 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.209 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 148 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.215 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 149 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.206 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 150 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.211 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 151 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.212 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 152 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.214 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 153 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.206 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Solving for static equilibrium for data point 154 of 154...
+Static equilibrium has been achieved.
+
+Elapsed Simulation Time:  0.211 (sec).
+Elapsed Clock Time:  0.005 (sec).
+Translational_Speed_Norm = 0.000 < 0.000 (m/s).
+Translational_Acceleration_Norm = 0.000 < 0.000 (m/s**2).
+
+Writing output to file. Please Wait ...
+
+
+Simulation is complete.
+
+
+VI-SpeedGen Model correctly created.
+
+Initialize Simulation
+ Initializing tire C:/Users/amp20/FULL-C~1/22/VIRTUA~1/VI_Racer.cdb/tires.tbl/R20 7.5x10.TIR ...
+ Calculating TireLimits envelope using tire 'C:/Users/amp20/FULL-C~1/22/VIRTUA~1/VI_Racer.cdb/tires.tbl/R20 7.5x10.TIR'
+FLAT road model has been initialized...
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+ Initializing tire C:/Users/amp20/FULL-C~1/22/VIRTUA~1/VI_Racer.cdb/tires.tbl/R20 7.5x10.TIR ...
+ Calculating TireLimits envelope using tire 'C:/Users/amp20/FULL-C~1/22/VIRTUA~1/VI_Racer.cdb/tires.tbl/R20 7.5x10.TIR'
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+ The tire C:/Users/amp20/FULL-C~1/22/VIRTUA~1/VI_Racer.cdb/tires.tbl/R20 7.5x10.TIR is already initialized: skip calculation
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+ The tire C:/Users/amp20/FULL-C~1/22/VIRTUA~1/VI_Racer.cdb/tires.tbl/R20 7.5x10.TIR is already initialized: skip calculation
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+Initializing Speedgen road surface from file 'C:/Users/amp20/FULL-C~1/22/VIRTUA~1/VI_Racer.cdb/roads.tbl/Skidpad.rdf'.
+Loading road data file... (file=C:/Users/amp20/FULL-C~1/22/VIRTUA~1/VI_Racer.cdb/roads.tbl/Skidpad.rdf)
+
+road file total reading time = 0.163s
+
+ZERO hashing cell size detected => automatically setting to 0.5
+
+ -- WARNING -- road hashing: 136788 elements in 1947 buckets
+ -- WARNING -- road hashmap 0-47 x 36-48 
+ -- WARNING -- road hashmap collision count = 0
+ -- WARNING -- road hashmap max collision count on cell = 0
+ -- WARNING -- road hashing: 514180 element pointers (max: 752 avg: 264.088341)
+ -- WARNING -- 5 buckets have 1 elements
+ -- WARNING -- 4 buckets have 3 elements
+ -- WARNING -- 1 bucket has 5 elements
+ -- WARNING -- 2 buckets have 7 elements
+ -- WARNING -- 1 bucket has 9 elements
+ -- WARNING -- 1 bucket has 11 elements
+ -- WARNING -- 1 bucket has 13 elements
+ -- WARNING -- 3 buckets have 17 elements
+ -- WARNING -- 2 buckets have 19 elements
+ -- WARNING -- 5 buckets have 21 elements
+ -- WARNING -- 1 bucket has 23 elements
+ -- WARNING -- 3 buckets have 25 elements
+ -- WARNING -- 1 bucket has 27 elements
+ -- WARNING -- 1 bucket has 29 elements
+ -- WARNING -- 4 buckets have 31 elements
+ -- WARNING -- 2 buckets have 33 elements
+ -- WARNING -- 1 bucket has 35 elements
+ -- WARNING -- 3 buckets have 37 elements
+ -- WARNING -- 2 buckets have 39 elements
+ -- WARNING -- 5 buckets have 41 elements
+ -- WARNING -- 4 buckets have 43 elements
+ -- WARNING -- 1 bucket has 45 elements
+ -- WARNING -- 2 buckets have 47 elements
+ -- WARNING -- 4 buckets have 49 elements
+ -- WARNING -- 4 buckets have 51 elements
+ -- WARNING -- 2 buckets have 53 elements
+ -- WARNING -- 4 buckets have 55 elements
+ -- WARNING -- 4 buckets have 57 elements
+ -- WARNING -- 3 buckets have 59 elements
+ -- WARNING -- 1 bucket has 61 elements
+ -- WARNING -- 2 buckets have 63 elements
+ -- WARNING -- 2 buckets have 65 elements
+ -- WARNING -- 3 buckets have 67 elements
+ -- WARNING -- 5 buckets have 69 elements
+ -- WARNING -- 7 buckets have 71 elements
+ -- WARNING -- 3 buckets have 73 elements
+ -- WARNING -- 1 bucket has 77 elements
+ -- WARNING -- 5 buckets have 79 elements
+ -- WARNING -- 2 buckets have 81 elements
+ -- WARNING -- 2 buckets have 83 elements
+ -- WARNING -- 5 buckets have 85 elements
+ -- WARNING -- 2 buckets have 86 elements
+ -- WARNING -- 4 buckets have 87 elements
+ -- WARNING -- 2 buckets have 88 elements
+ -- WARNING -- 2 buckets have 89 elements
+ -- WARNING -- 4 buckets have 90 elements
+ -- WARNING -- 2 buckets have 91 elements
+ -- WARNING -- 2 buckets have 92 elements
+ -- WARNING -- 5 buckets have 94 elements
+ -- WARNING -- 3 buckets have 96 elements
+ -- WARNING -- 4 buckets have 97 elements
+ -- WARNING -- 8 buckets have 98 elements
+ -- WARNING -- 2 buckets have 99 elements
+ -- WARNING -- 4 buckets have 100 elements
+ -- WARNING -- 14 buckets have 101 elements
+ -- WARNING -- 7 buckets have 102 elements
+ -- WARNING -- 7 buckets have 104 elements
+ -- WARNING -- 2 buckets have 105 elements
+ -- WARNING -- 6 buckets have 106 elements
+ -- WARNING -- 1 bucket has 107 elements
+ -- WARNING -- 1 bucket has 108 elements
+ -- WARNING -- 3 buckets have 109 elements
+ -- WARNING -- 7 buckets have 110 elements
+ -- WARNING -- 5 buckets have 111 elements
+ -- WARNING -- 7 buckets have 112 elements
+ -- WARNING -- 3 buckets have 113 elements
+ -- WARNING -- 4 buckets have 114 elements
+ -- WARNING -- 2 buckets have 115 elements
+ -- WARNING -- 2 buckets have 116 elements
+ -- WARNING -- 2 buckets have 117 elements
+ -- WARNING -- 9 buckets have 118 elements
+ -- WARNING -- 3 buckets have 119 elements
+ -- WARNING -- 1 bucket has 120 elements
+ -- WARNING -- 12 buckets have 121 elements
+ -- WARNING -- 6 buckets have 122 elements
+ -- WARNING -- 1 bucket has 123 elements
+ -- WARNING -- 7 buckets have 124 elements
+ -- WARNING -- 1 bucket has 125 elements
+ -- WARNING -- 7 buckets have 126 elements
+ -- WARNING -- 1 bucket has 127 elements
+ -- WARNING -- 15 buckets have 128 elements
+ -- WARNING -- 6 buckets have 129 elements
+ -- WARNING -- 5 buckets have 130 elements
+ -- WARNING -- 6 buckets have 131 elements
+ -- WARNING -- 9 buckets have 132 elements
+ -- WARNING -- 1 bucket has 133 elements
+ -- WARNING -- 11 buckets have 134 elements
+ -- WARNING -- 1 bucket has 135 elements
+ -- WARNING -- 14 buckets have 136 elements
+ -- WARNING -- 3 buckets have 137 elements
+ -- WARNING -- 4 buckets have 138 elements
+ -- WARNING -- 1 bucket has 139 elements
+ -- WARNING -- 13 buckets have 140 elements
+ -- WARNING -- 2 buckets have 141 elements
+ -- WARNING -- 9 buckets have 142 elements
+ -- WARNING -- 2 buckets have 143 elements
+ -- WARNING -- 6 buckets have 144 elements
+ -- WARNING -- 4 buckets have 145 elements
+ -- WARNING -- 5 buckets have 146 elements
+ -- WARNING -- 2 buckets have 147 elements
+ -- WARNING -- 11 buckets have 148 elements
+ -- WARNING -- 4 buckets have 149 elements
+ -- WARNING -- 14 buckets have 150 elements
+ -- WARNING -- 3 buckets have 151 elements
+ -- WARNING -- 4 buckets have 152 elements
+ -- WARNING -- 2 buckets have 153 elements
+ -- WARNING -- 6 buckets have 154 elements
+ -- WARNING -- 12 buckets have 156 elements
+ -- WARNING -- 1 bucket has 157 elements
+ -- WARNING -- 10 buckets have 158 elements
+ -- WARNING -- 5 buckets have 159 elements
+ -- WARNING -- 2 buckets have 160 elements
+ -- WARNING -- 1 bucket has 161 elements
+ -- WARNING -- 2 buckets have 162 elements
+ -- WARNING -- 4 buckets have 164 elements
+ -- WARNING -- 2 buckets have 165 elements
+ -- WARNING -- 10 buckets have 166 elements
+ -- WARNING -- 2 buckets have 167 elements
+ -- WARNING -- 9 buckets have 168 elements
+ -- WARNING -- 7 buckets have 170 elements
+ -- WARNING -- 4 buckets have 171 elements
+ -- WARNING -- 7 buckets have 172 elements
+ -- WARNING -- 5 buckets have 173 elements
+ -- WARNING -- 5 buckets have 174 elements
+ -- WARNING -- 5 buckets have 175 elements
+ -- WARNING -- 13 buckets have 176 elements
+ -- WARNING -- 2 buckets have 177 elements
+ -- WARNING -- 7 buckets have 178 elements
+ -- WARNING -- 3 buckets have 179 elements
+ -- WARNING -- 3 buckets have 180 elements
+ -- WARNING -- 2 buckets have 181 elements
+ -- WARNING -- 10 buckets have 182 elements
+ -- WARNING -- 8 buckets have 184 elements
+ -- WARNING -- 7 buckets have 186 elements
+ -- WARNING -- 5 buckets have 188 elements
+ -- WARNING -- 7 buckets have 189 elements
+ -- WARNING -- 6 buckets have 190 elements
+ -- WARNING -- 10 buckets have 192 elements
+ -- WARNING -- 3 buckets have 193 elements
+ -- WARNING -- 4 buckets have 194 elements
+ -- WARNING -- 2 buckets have 195 elements
+ -- WARNING -- 2 buckets have 196 elements
+ -- WARNING -- 1 bucket has 197 elements
+ -- WARNING -- 4 buckets have 198 elements
+ -- WARNING -- 2 buckets have 199 elements
+ -- WARNING -- 8 buckets have 200 elements
+ -- WARNING -- 4 buckets have 201 elements
+ -- WARNING -- 9 buckets have 202 elements
+ -- WARNING -- 3 buckets have 203 elements
+ -- WARNING -- 9 buckets have 204 elements
+ -- WARNING -- 2 buckets have 205 elements
+ -- WARNING -- 2 buckets have 206 elements
+ -- WARNING -- 1 bucket has 208 elements
+ -- WARNING -- 2 buckets have 209 elements
+ -- WARNING -- 9 buckets have 210 elements
+ -- WARNING -- 1 bucket has 211 elements
+ -- WARNING -- 7 buckets have 212 elements
+ -- WARNING -- 3 buckets have 213 elements
+ -- WARNING -- 4 buckets have 214 elements
+ -- WARNING -- 5 buckets have 215 elements
+ -- WARNING -- 4 buckets have 216 elements
+ -- WARNING -- 1 bucket has 217 elements
+ -- WARNING -- 9 buckets have 218 elements
+ -- WARNING -- 3 buckets have 219 elements
+ -- WARNING -- 4 buckets have 220 elements
+ -- WARNING -- 6 buckets have 221 elements
+ -- WARNING -- 8 buckets have 222 elements
+ -- WARNING -- 5 buckets have 223 elements
+ -- WARNING -- 12 buckets have 224 elements
+ -- WARNING -- 1 bucket has 225 elements
+ -- WARNING -- 6 buckets have 226 elements
+ -- WARNING -- 1 bucket has 227 elements
+ -- WARNING -- 6 buckets have 228 elements
+ -- WARNING -- 1 bucket has 229 elements
+ -- WARNING -- 7 buckets have 230 elements
+ -- WARNING -- 4 buckets have 232 elements
+ -- WARNING -- 3 buckets have 233 elements
+ -- WARNING -- 5 buckets have 234 elements
+ -- WARNING -- 6 buckets have 238 elements
+ -- WARNING -- 4 buckets have 239 elements
+ -- WARNING -- 12 buckets have 240 elements
+ -- WARNING -- 1 bucket has 241 elements
+ -- WARNING -- 10 buckets have 242 elements
+ -- WARNING -- 4 buckets have 243 elements
+ -- WARNING -- 9 buckets have 244 elements
+ -- WARNING -- 1 bucket has 245 elements
+ -- WARNING -- 4 buckets have 246 elements
+ -- WARNING -- 2 buckets have 247 elements
+ -- WARNING -- 8 buckets have 248 elements
+ -- WARNING -- 8 buckets have 249 elements
+ -- WARNING -- 9 buckets have 250 elements
+ -- WARNING -- 4 buckets have 251 elements
+ -- WARNING -- 6 buckets have 252 elements
+ -- WARNING -- 8 buckets have 254 elements
+ -- WARNING -- 3 buckets have 255 elements
+ -- WARNING -- 2 buckets have 256 elements
+ -- WARNING -- 5 buckets have 257 elements
+ -- WARNING -- 9 buckets have 258 elements
+ -- WARNING -- 4 buckets have 259 elements
+ -- WARNING -- 1 bucket has 260 elements
+ -- WARNING -- 3 buckets have 261 elements
+ -- WARNING -- 1 bucket has 262 elements
+ -- WARNING -- 4 buckets have 263 elements
+ -- WARNING -- 6 buckets have 264 elements
+ -- WARNING -- 3 buckets have 265 elements
+ -- WARNING -- 6 buckets have 266 elements
+ -- WARNING -- 7 buckets have 267 elements
+ -- WARNING -- 10 buckets have 268 elements
+ -- WARNING -- 7 buckets have 269 elements
+ -- WARNING -- 11 buckets have 270 elements
+ -- WARNING -- 9 buckets have 271 elements
+ -- WARNING -- 9 buckets have 272 elements
+ -- WARNING -- 4 buckets have 273 elements
+ -- WARNING -- 2 buckets have 274 elements
+ -- WARNING -- 3 buckets have 275 elements
+ -- WARNING -- 5 buckets have 276 elements
+ -- WARNING -- 1 bucket has 277 elements
+ -- WARNING -- 13 buckets have 278 elements
+ -- WARNING -- 2 buckets have 279 elements
+ -- WARNING -- 16 buckets have 280 elements
+ -- WARNING -- 4 buckets have 281 elements
+ -- WARNING -- 10 buckets have 282 elements
+ -- WARNING -- 10 buckets have 284 elements
+ -- WARNING -- 3 buckets have 285 elements
+ -- WARNING -- 7 buckets have 286 elements
+ -- WARNING -- 5 buckets have 287 elements
+ -- WARNING -- 10 buckets have 288 elements
+ -- WARNING -- 1 bucket has 289 elements
+ -- WARNING -- 10 buckets have 290 elements
+ -- WARNING -- 6 buckets have 291 elements
+ -- WARNING -- 7 buckets have 292 elements
+ -- WARNING -- 7 buckets have 293 elements
+ -- WARNING -- 15 buckets have 294 elements
+ -- WARNING -- 5 buckets have 295 elements
+ -- WARNING -- 15 buckets have 296 elements
+ -- WARNING -- 7 buckets have 297 elements
+ -- WARNING -- 18 buckets have 298 elements
+ -- WARNING -- 3 buckets have 299 elements
+ -- WARNING -- 17 buckets have 300 elements
+ -- WARNING -- 5 buckets have 301 elements
+ -- WARNING -- 10 buckets have 302 elements
+ -- WARNING -- 6 buckets have 303 elements
+ -- WARNING -- 9 buckets have 304 elements
+ -- WARNING -- 7 buckets have 305 elements
+ -- WARNING -- 9 buckets have 306 elements
+ -- WARNING -- 11 buckets have 307 elements
+ -- WARNING -- 7 buckets have 308 elements
+ -- WARNING -- 5 buckets have 309 elements
+ -- WARNING -- 5 buckets have 310 elements
+ -- WARNING -- 9 buckets have 311 elements
+ -- WARNING -- 7 buckets have 312 elements
+ -- WARNING -- 8 buckets have 313 elements
+ -- WARNING -- 6 buckets have 314 elements
+ -- WARNING -- 7 buckets have 315 elements
+ -- WARNING -- 13 buckets have 316 elements
+ -- WARNING -- 4 buckets have 317 elements
+ -- WARNING -- 11 buckets have 318 elements
+ -- WARNING -- 6 buckets have 319 elements
+ -- WARNING -- 4 buckets have 320 elements
+ -- WARNING -- 3 buckets have 321 elements
+ -- WARNING -- 6 buckets have 322 elements
+ -- WARNING -- 3 buckets have 323 elements
+ -- WARNING -- 6 buckets have 324 elements
+ -- WARNING -- 2 buckets have 325 elements
+ -- WARNING -- 8 buckets have 326 elements
+ -- WARNING -- 4 buckets have 327 elements
+ -- WARNING -- 2 buckets have 328 elements
+ -- WARNING -- 6 buckets have 329 elements
+ -- WARNING -- 7 buckets have 330 elements
+ -- WARNING -- 3 buckets have 331 elements
+ -- WARNING -- 4 buckets have 332 elements
+ -- WARNING -- 6 buckets have 333 elements
+ -- WARNING -- 9 buckets have 334 elements
+ -- WARNING -- 7 buckets have 335 elements
+ -- WARNING -- 15 buckets have 336 elements
+ -- WARNING -- 8 buckets have 337 elements
+ -- WARNING -- 19 buckets have 338 elements
+ -- WARNING -- 8 buckets have 339 elements
+ -- WARNING -- 9 buckets have 340 elements
+ -- WARNING -- 8 buckets have 341 elements
+ -- WARNING -- 9 buckets have 342 elements
+ -- WARNING -- 6 buckets have 343 elements
+ -- WARNING -- 8 buckets have 344 elements
+ -- WARNING -- 6 buckets have 345 elements
+ -- WARNING -- 6 buckets have 346 elements
+ -- WARNING -- 4 buckets have 347 elements
+ -- WARNING -- 6 buckets have 348 elements
+ -- WARNING -- 1 bucket has 349 elements
+ -- WARNING -- 3 buckets have 350 elements
+ -- WARNING -- 5 buckets have 351 elements
+ -- WARNING -- 5 buckets have 352 elements
+ -- WARNING -- 5 buckets have 353 elements
+ -- WARNING -- 5 buckets have 354 elements
+ -- WARNING -- 7 buckets have 355 elements
+ -- WARNING -- 5 buckets have 356 elements
+ -- WARNING -- 2 buckets have 357 elements
+ -- WARNING -- 3 buckets have 358 elements
+ -- WARNING -- 2 buckets have 359 elements
+ -- WARNING -- 4 buckets have 360 elements
+ -- WARNING -- 2 buckets have 361 elements
+ -- WARNING -- 3 buckets have 362 elements
+ -- WARNING -- 5 buckets have 363 elements
+ -- WARNING -- 4 buckets have 364 elements
+ -- WARNING -- 4 buckets have 366 elements
+ -- WARNING -- 3 buckets have 367 elements
+ -- WARNING -- 2 buckets have 368 elements
+ -- WARNING -- 5 buckets have 369 elements
+ -- WARNING -- 4 buckets have 370 elements
+ -- WARNING -- 3 buckets have 371 elements
+ -- WARNING -- 2 buckets have 372 elements
+ -- WARNING -- 8 buckets have 373 elements
+ -- WARNING -- 3 buckets have 374 elements
+ -- WARNING -- 3 buckets have 375 elements
+ -- WARNING -- 6 buckets have 376 elements
+ -- WARNING -- 4 buckets have 377 elements
+ -- WARNING -- 6 buckets have 378 elements
+ -- WARNING -- 6 buckets have 379 elements
+ -- WARNING -- 5 buckets have 380 elements
+ -- WARNING -- 3 buckets have 381 elements
+ -- WARNING -- 5 buckets have 382 elements
+ -- WARNING -- 3 buckets have 383 elements
+ -- WARNING -- 6 buckets have 384 elements
+ -- WARNING -- 2 buckets have 385 elements
+ -- WARNING -- 1 bucket has 386 elements
+ -- WARNING -- 2 buckets have 387 elements
+ -- WARNING -- 4 buckets have 388 elements
+ -- WARNING -- 1 bucket has 389 elements
+ -- WARNING -- 2 buckets have 392 elements
+ -- WARNING -- 1 bucket has 393 elements
+ -- WARNING -- 2 buckets have 394 elements
+ -- WARNING -- 4 buckets have 395 elements
+ -- WARNING -- 2 buckets have 396 elements
+ -- WARNING -- 5 buckets have 397 elements
+ -- WARNING -- 3 buckets have 398 elements
+ -- WARNING -- 4 buckets have 399 elements
+ -- WARNING -- 4 buckets have 400 elements
+ -- WARNING -- 2 buckets have 401 elements
+ -- WARNING -- 1 bucket has 402 elements
+ -- WARNING -- 4 buckets have 403 elements
+ -- WARNING -- 2 buckets have 404 elements
+ -- WARNING -- 3 buckets have 405 elements
+ -- WARNING -- 2 buckets have 406 elements
+ -- WARNING -- 1 bucket has 409 elements
+ -- WARNING -- 1 bucket has 410 elements
+ -- WARNING -- 2 buckets have 411 elements
+ -- WARNING -- 1 bucket has 413 elements
+ -- WARNING -- 3 buckets have 414 elements
+ -- WARNING -- 2 buckets have 415 elements
+ -- WARNING -- 1 bucket has 416 elements
+ -- WARNING -- 4 buckets have 417 elements
+ -- WARNING -- 1 bucket has 418 elements
+ -- WARNING -- 2 buckets have 419 elements
+ -- WARNING -- 3 buckets have 420 elements
+ -- WARNING -- 1 bucket has 421 elements
+ -- WARNING -- 1 bucket has 422 elements
+ -- WARNING -- 3 buckets have 424 elements
+ -- WARNING -- 5 buckets have 425 elements
+ -- WARNING -- 1 bucket has 426 elements
+ -- WARNING -- 3 buckets have 427 elements
+ -- WARNING -- 3 buckets have 428 elements
+ -- WARNING -- 4 buckets have 429 elements
+ -- WARNING -- 1 bucket has 430 elements
+ -- WARNING -- 1 bucket has 431 elements
+ -- WARNING -- 1 bucket has 432 elements
+ -- WARNING -- 3 buckets have 433 elements
+ -- WARNING -- 3 buckets have 434 elements
+ -- WARNING -- 1 bucket has 435 elements
+ -- WARNING -- 3 buckets have 437 elements
+ -- WARNING -- 3 buckets have 438 elements
+ -- WARNING -- 1 bucket has 439 elements
+ -- WARNING -- 3 buckets have 441 elements
+ -- WARNING -- 5 buckets have 442 elements
+ -- WARNING -- 4 buckets have 443 elements
+ -- WARNING -- 1 bucket has 445 elements
+ -- WARNING -- 7 buckets have 446 elements
+ -- WARNING -- 2 buckets have 447 elements
+ -- WARNING -- 2 buckets have 449 elements
+ -- WARNING -- 1 bucket has 450 elements
+ -- WARNING -- 1 bucket has 451 elements
+ -- WARNING -- 3 buckets have 453 elements
+ -- WARNING -- 2 buckets have 454 elements
+ -- WARNING -- 3 buckets have 455 elements
+ -- WARNING -- 1 bucket has 456 elements
+ -- WARNING -- 1 bucket has 457 elements
+ -- WARNING -- 1 bucket has 458 elements
+ -- WARNING -- 1 bucket has 459 elements
+ -- WARNING -- 2 buckets have 461 elements
+ -- WARNING -- 2 buckets have 462 elements
+ -- WARNING -- 3 buckets have 463 elements
+ -- WARNING -- 4 buckets have 465 elements
+ -- WARNING -- 1 bucket has 466 elements
+ -- WARNING -- 1 bucket has 468 elements
+ -- WARNING -- 1 bucket has 469 elements
+ -- WARNING -- 1 bucket has 470 elements
+ -- WARNING -- 5 buckets have 471 elements
+ -- WARNING -- 3 buckets have 472 elements
+ -- WARNING -- 3 buckets have 473 elements
+ -- WARNING -- 4 buckets have 474 elements
+ -- WARNING -- 2 buckets have 475 elements
+ -- WARNING -- 4 buckets have 476 elements
+ -- WARNING -- 2 buckets have 478 elements
+ -- WARNING -- 2 buckets have 479 elements
+ -- WARNING -- 2 buckets have 480 elements
+ -- WARNING -- 1 bucket has 481 elements
+ -- WARNING -- 2 buckets have 482 elements
+ -- WARNING -- 3 buckets have 484 elements
+ -- WARNING -- 1 bucket has 485 elements
+ -- WARNING -- 2 buckets have 486 elements
+ -- WARNING -- 2 buckets have 490 elements
+ -- WARNING -- 2 buckets have 491 elements
+ -- WARNING -- 1 bucket has 493 elements
+ -- WARNING -- 1 bucket has 494 elements
+ -- WARNING -- 1 bucket has 495 elements
+ -- WARNING -- 2 buckets have 497 elements
+ -- WARNING -- 1 bucket has 499 elements
+ -- WARNING -- 1 bucket has 501 elements
+ -- WARNING -- 1 bucket has 502 elements
+ -- WARNING -- 1 bucket has 504 elements
+ -- WARNING -- 2 buckets have 505 elements
+ -- WARNING -- 1 bucket has 506 elements
+ -- WARNING -- 3 buckets have 507 elements
+ -- WARNING -- 1 bucket has 508 elements
+ -- WARNING -- 1 bucket has 509 elements
+ -- WARNING -- 1 bucket has 510 elements
+ -- WARNING -- 1 bucket has 511 elements
+ -- WARNING -- 1 bucket has 512 elements
+ -- WARNING -- 1 bucket has 513 elements
+ -- WARNING -- 1 bucket has 514 elements
+ -- WARNING -- 1 bucket has 520 elements
+ -- WARNING -- 1 bucket has 522 elements
+ -- WARNING -- 1 bucket has 523 elements
+ -- WARNING -- 1 bucket has 527 elements
+ -- WARNING -- 1 bucket has 528 elements
+ -- WARNING -- 1 bucket has 529 elements
+ -- WARNING -- 1 bucket has 531 elements
+ -- WARNING -- 1 bucket has 532 elements
+ -- WARNING -- 1 bucket has 533 elements
+ -- WARNING -- 1 bucket has 534 elements
+ -- WARNING -- 1 bucket has 535 elements
+ -- WARNING -- 1 bucket has 537 elements
+ -- WARNING -- 1 bucket has 538 elements
+ -- WARNING -- 1 bucket has 547 elements
+ -- WARNING -- 1 bucket has 555 elements
+ -- WARNING -- 2 buckets have 559 elements
+ -- WARNING -- 1 bucket has 562 elements
+ -- WARNING -- 1 bucket has 563 elements
+ -- WARNING -- 1 bucket has 564 elements
+ -- WARNING -- 1 bucket has 570 elements
+ -- WARNING -- 1 bucket has 574 elements
+ -- WARNING -- 1 bucket has 575 elements
+ -- WARNING -- 2 buckets have 577 elements
+ -- WARNING -- 1 bucket has 579 elements
+ -- WARNING -- 1 bucket has 581 elements
+ -- WARNING -- 1 bucket has 585 elements
+ -- WARNING -- 1 bucket has 587 elements
+ -- WARNING -- 1 bucket has 589 elements
+ -- WARNING -- 1 bucket has 603 elements
+ -- WARNING -- 1 bucket has 605 elements
+ -- WARNING -- 1 bucket has 625 elements
+ -- WARNING -- 1 bucket has 626 elements
+ -- WARNING -- 1 bucket has 628 elements
+ -- WARNING -- 1 bucket has 631 elements
+ -- WARNING -- 1 bucket has 641 elements
+ -- WARNING -- 1 bucket has 642 elements
+ -- WARNING -- 1 bucket has 643 elements
+ -- WARNING -- 1 bucket has 651 elements
+ -- WARNING -- 1 bucket has 653 elements
+ -- WARNING -- 1 bucket has 654 elements
+ -- WARNING -- 1 bucket has 681 elements
+ -- WARNING -- 1 bucket has 682 elements
+ -- WARNING -- 1 bucket has 684 elements
+ -- WARNING -- 1 bucket has 687 elements
+ -- WARNING -- 2 buckets have 689 elements
+ -- WARNING -- 1 bucket has 747 elements
+ -- WARNING -- 1 bucket has 752 elements
+MESH road total building time = 0.0589157s
+
+hash table memory size = 4.01201MB
+
+EXTRUSION road model has been initialized...
+
+  Predicted Laptime=11.624
+Initializing CRT Simulation...
+
+Event data is being read from input XML file...
+
+Initializing powertrain / driveline...
+Done.
+
+Initializing aero force...
+Done.
+
+Initializing tires...
+Loading road data file... (file=C:/Users/amp20/FULL-C~1/22/VIRTUA~1/VI_Racer.cdb/roads.tbl/Skidpad.rdf)
+
+road file total reading time = 0.164s
+
+ZERO hashing cell size detected => automatically setting to 0.5
+
+ -- WARNING -- road hashing: 136788 elements in 1947 buckets
+ -- WARNING -- road hashmap 0-47 x 36-48 
+ -- WARNING -- road hashmap collision count = 0
+ -- WARNING -- road hashmap max collision count on cell = 0
+ -- WARNING -- road hashing: 514180 element pointers (max: 752 avg: 264.088341)
+ -- WARNING -- 5 buckets have 1 elements
+ -- WARNING -- 4 buckets have 3 elements
+ -- WARNING -- 1 bucket has 5 elements
+ -- WARNING -- 2 buckets have 7 elements
+ -- WARNING -- 1 bucket has 9 elements
+ -- WARNING -- 1 bucket has 11 elements
+ -- WARNING -- 1 bucket has 13 elements
+ -- WARNING -- 3 buckets have 17 elements
+ -- WARNING -- 2 buckets have 19 elements
+ -- WARNING -- 5 buckets have 21 elements
+ -- WARNING -- 1 bucket has 23 elements
+ -- WARNING -- 3 buckets have 25 elements
+ -- WARNING -- 1 bucket has 27 elements
+ -- WARNING -- 1 bucket has 29 elements
+ -- WARNING -- 4 buckets have 31 elements
+ -- WARNING -- 2 buckets have 33 elements
+ -- WARNING -- 1 bucket has 35 elements
+ -- WARNING -- 3 buckets have 37 elements
+ -- WARNING -- 2 buckets have 39 elements
+ -- WARNING -- 5 buckets have 41 elements
+ -- WARNING -- 4 buckets have 43 elements
+ -- WARNING -- 1 bucket has 45 elements
+ -- WARNING -- 2 buckets have 47 elements
+ -- WARNING -- 4 buckets have 49 elements
+ -- WARNING -- 4 buckets have 51 elements
+ -- WARNING -- 2 buckets have 53 elements
+ -- WARNING -- 4 buckets have 55 elements
+ -- WARNING -- 4 buckets have 57 elements
+ -- WARNING -- 3 buckets have 59 elements
+ -- WARNING -- 1 bucket has 61 elements
+ -- WARNING -- 2 buckets have 63 elements
+ -- WARNING -- 2 buckets have 65 elements
+ -- WARNING -- 3 buckets have 67 elements
+ -- WARNING -- 5 buckets have 69 elements
+ -- WARNING -- 7 buckets have 71 elements
+ -- WARNING -- 3 buckets have 73 elements
+ -- WARNING -- 1 bucket has 77 elements
+ -- WARNING -- 5 buckets have 79 elements
+ -- WARNING -- 2 buckets have 81 elements
+ -- WARNING -- 2 buckets have 83 elements
+ -- WARNING -- 5 buckets have 85 elements
+ -- WARNING -- 2 buckets have 86 elements
+ -- WARNING -- 4 buckets have 87 elements
+ -- WARNING -- 2 buckets have 88 elements
+ -- WARNING -- 2 buckets have 89 elements
+ -- WARNING -- 4 buckets have 90 elements
+ -- WARNING -- 2 buckets have 91 elements
+ -- WARNING -- 2 buckets have 92 elements
+ -- WARNING -- 5 buckets have 94 elements
+ -- WARNING -- 3 buckets have 96 elements
+ -- WARNING -- 4 buckets have 97 elements
+ -- WARNING -- 8 buckets have 98 elements
+ -- WARNING -- 2 buckets have 99 elements
+ -- WARNING -- 4 buckets have 100 elements
+ -- WARNING -- 14 buckets have 101 elements
+ -- WARNING -- 7 buckets have 102 elements
+ -- WARNING -- 7 buckets have 104 elements
+ -- WARNING -- 2 buckets have 105 elements
+ -- WARNING -- 6 buckets have 106 elements
+ -- WARNING -- 1 bucket has 107 elements
+ -- WARNING -- 1 bucket has 108 elements
+ -- WARNING -- 3 buckets have 109 elements
+ -- WARNING -- 7 buckets have 110 elements
+ -- WARNING -- 5 buckets have 111 elements
+ -- WARNING -- 7 buckets have 112 elements
+ -- WARNING -- 3 buckets have 113 elements
+ -- WARNING -- 4 buckets have 114 elements
+ -- WARNING -- 2 buckets have 115 elements
+ -- WARNING -- 2 buckets have 116 elements
+ -- WARNING -- 2 buckets have 117 elements
+ -- WARNING -- 9 buckets have 118 elements
+ -- WARNING -- 3 buckets have 119 elements
+ -- WARNING -- 1 bucket has 120 elements
+ -- WARNING -- 12 buckets have 121 elements
+ -- WARNING -- 6 buckets have 122 elements
+ -- WARNING -- 1 bucket has 123 elements
+ -- WARNING -- 7 buckets have 124 elements
+ -- WARNING -- 1 bucket has 125 elements
+ -- WARNING -- 7 buckets have 126 elements
+ -- WARNING -- 1 bucket has 127 elements
+ -- WARNING -- 15 buckets have 128 elements
+ -- WARNING -- 6 buckets have 129 elements
+ -- WARNING -- 5 buckets have 130 elements
+ -- WARNING -- 6 buckets have 131 elements
+ -- WARNING -- 9 buckets have 132 elements
+ -- WARNING -- 1 bucket has 133 elements
+ -- WARNING -- 11 buckets have 134 elements
+ -- WARNING -- 1 bucket has 135 elements
+ -- WARNING -- 14 buckets have 136 elements
+ -- WARNING -- 3 buckets have 137 elements
+ -- WARNING -- 4 buckets have 138 elements
+ -- WARNING -- 1 bucket has 139 elements
+ -- WARNING -- 13 buckets have 140 elements
+ -- WARNING -- 2 buckets have 141 elements
+ -- WARNING -- 9 buckets have 142 elements
+ -- WARNING -- 2 buckets have 143 elements
+ -- WARNING -- 6 buckets have 144 elements
+ -- WARNING -- 4 buckets have 145 elements
+ -- WARNING -- 5 buckets have 146 elements
+ -- WARNING -- 2 buckets have 147 elements
+ -- WARNING -- 11 buckets have 148 elements
+ -- WARNING -- 4 buckets have 149 elements
+ -- WARNING -- 14 buckets have 150 elements
+ -- WARNING -- 3 buckets have 151 elements
+ -- WARNING -- 4 buckets have 152 elements
+ -- WARNING -- 2 buckets have 153 elements
+ -- WARNING -- 6 buckets have 154 elements
+ -- WARNING -- 12 buckets have 156 elements
+ -- WARNING -- 1 bucket has 157 elements
+ -- WARNING -- 10 buckets have 158 elements
+ -- WARNING -- 5 buckets have 159 elements
+ -- WARNING -- 2 buckets have 160 elements
+ -- WARNING -- 1 bucket has 161 elements
+ -- WARNING -- 2 buckets have 162 elements
+ -- WARNING -- 4 buckets have 164 elements
+ -- WARNING -- 2 buckets have 165 elements
+ -- WARNING -- 10 buckets have 166 elements
+ -- WARNING -- 2 buckets have 167 elements
+ -- WARNING -- 9 buckets have 168 elements
+ -- WARNING -- 7 buckets have 170 elements
+ -- WARNING -- 4 buckets have 171 elements
+ -- WARNING -- 7 buckets have 172 elements
+ -- WARNING -- 5 buckets have 173 elements
+ -- WARNING -- 5 buckets have 174 elements
+ -- WARNING -- 5 buckets have 175 elements
+ -- WARNING -- 13 buckets have 176 elements
+ -- WARNING -- 2 buckets have 177 elements
+ -- WARNING -- 7 buckets have 178 elements
+ -- WARNING -- 3 buckets have 179 elements
+ -- WARNING -- 3 buckets have 180 elements
+ -- WARNING -- 2 buckets have 181 elements
+ -- WARNING -- 10 buckets have 182 elements
+ -- WARNING -- 8 buckets have 184 elements
+ -- WARNING -- 7 buckets have 186 elements
+ -- WARNING -- 5 buckets have 188 elements
+ -- WARNING -- 7 buckets have 189 elements
+ -- WARNING -- 6 buckets have 190 elements
+ -- WARNING -- 10 buckets have 192 elements
+ -- WARNING -- 3 buckets have 193 elements
+ -- WARNING -- 4 buckets have 194 elements
+ -- WARNING -- 2 buckets have 195 elements
+ -- WARNING -- 2 buckets have 196 elements
+ -- WARNING -- 1 bucket has 197 elements
+ -- WARNING -- 4 buckets have 198 elements
+ -- WARNING -- 2 buckets have 199 elements
+ -- WARNING -- 8 buckets have 200 elements
+ -- WARNING -- 4 buckets have 201 elements
+ -- WARNING -- 9 buckets have 202 elements
+ -- WARNING -- 3 buckets have 203 elements
+ -- WARNING -- 9 buckets have 204 elements
+ -- WARNING -- 2 buckets have 205 elements
+ -- WARNING -- 2 buckets have 206 elements
+ -- WARNING -- 1 bucket has 208 elements
+ -- WARNING -- 2 buckets have 209 elements
+ -- WARNING -- 9 buckets have 210 elements
+ -- WARNING -- 1 bucket has 211 elements
+ -- WARNING -- 7 buckets have 212 elements
+ -- WARNING -- 3 buckets have 213 elements
+ -- WARNING -- 4 buckets have 214 elements
+ -- WARNING -- 5 buckets have 215 elements
+ -- WARNING -- 4 buckets have 216 elements
+ -- WARNING -- 1 bucket has 217 elements
+ -- WARNING -- 9 buckets have 218 elements
+ -- WARNING -- 3 buckets have 219 elements
+ -- WARNING -- 4 buckets have 220 elements
+ -- WARNING -- 6 buckets have 221 elements
+ -- WARNING -- 8 buckets have 222 elements
+ -- WARNING -- 5 buckets have 223 elements
+ -- WARNING -- 12 buckets have 224 elements
+ -- WARNING -- 1 bucket has 225 elements
+ -- WARNING -- 6 buckets have 226 elements
+ -- WARNING -- 1 bucket has 227 elements
+ -- WARNING -- 6 buckets have 228 elements
+ -- WARNING -- 1 bucket has 229 elements
+ -- WARNING -- 7 buckets have 230 elements
+ -- WARNING -- 4 buckets have 232 elements
+ -- WARNING -- 3 buckets have 233 elements
+ -- WARNING -- 5 buckets have 234 elements
+ -- WARNING -- 6 buckets have 238 elements
+ -- WARNING -- 4 buckets have 239 elements
+ -- WARNING -- 12 buckets have 240 elements
+ -- WARNING -- 1 bucket has 241 elements
+ -- WARNING -- 10 buckets have 242 elements
+ -- WARNING -- 4 buckets have 243 elements
+ -- WARNING -- 9 buckets have 244 elements
+ -- WARNING -- 1 bucket has 245 elements
+ -- WARNING -- 4 buckets have 246 elements
+ -- WARNING -- 2 buckets have 247 elements
+ -- WARNING -- 8 buckets have 248 elements
+ -- WARNING -- 8 buckets have 249 elements
+ -- WARNING -- 9 buckets have 250 elements
+ -- WARNING -- 4 buckets have 251 elements
+ -- WARNING -- 6 buckets have 252 elements
+ -- WARNING -- 8 buckets have 254 elements
+ -- WARNING -- 3 buckets have 255 elements
+ -- WARNING -- 2 buckets have 256 elements
+ -- WARNING -- 5 buckets have 257 elements
+ -- WARNING -- 9 buckets have 258 elements
+ -- WARNING -- 4 buckets have 259 elements
+ -- WARNING -- 1 bucket has 260 elements
+ -- WARNING -- 3 buckets have 261 elements
+ -- WARNING -- 1 bucket has 262 elements
+ -- WARNING -- 4 buckets have 263 elements
+ -- WARNING -- 6 buckets have 264 elements
+ -- WARNING -- 3 buckets have 265 elements
+ -- WARNING -- 6 buckets have 266 elements
+ -- WARNING -- 7 buckets have 267 elements
+ -- WARNING -- 10 buckets have 268 elements
+ -- WARNING -- 7 buckets have 269 elements
+ -- WARNING -- 11 buckets have 270 elements
+ -- WARNING -- 9 buckets have 271 elements
+ -- WARNING -- 9 buckets have 272 elements
+ -- WARNING -- 4 buckets have 273 elements
+ -- WARNING -- 2 buckets have 274 elements
+ -- WARNING -- 3 buckets have 275 elements
+ -- WARNING -- 5 buckets have 276 elements
+ -- WARNING -- 1 bucket has 277 elements
+ -- WARNING -- 13 buckets have 278 elements
+ -- WARNING -- 2 buckets have 279 elements
+ -- WARNING -- 16 buckets have 280 elements
+ -- WARNING -- 4 buckets have 281 elements
+ -- WARNING -- 10 buckets have 282 elements
+ -- WARNING -- 10 buckets have 284 elements
+ -- WARNING -- 3 buckets have 285 elements
+ -- WARNING -- 7 buckets have 286 elements
+ -- WARNING -- 5 buckets have 287 elements
+ -- WARNING -- 10 buckets have 288 elements
+ -- WARNING -- 1 bucket has 289 elements
+ -- WARNING -- 10 buckets have 290 elements
+ -- WARNING -- 6 buckets have 291 elements
+ -- WARNING -- 7 buckets have 292 elements
+ -- WARNING -- 7 buckets have 293 elements
+ -- WARNING -- 15 buckets have 294 elements
+ -- WARNING -- 5 buckets have 295 elements
+ -- WARNING -- 15 buckets have 296 elements
+ -- WARNING -- 7 buckets have 297 elements
+ -- WARNING -- 18 buckets have 298 elements
+ -- WARNING -- 3 buckets have 299 elements
+ -- WARNING -- 17 buckets have 300 elements
+ -- WARNING -- 5 buckets have 301 elements
+ -- WARNING -- 10 buckets have 302 elements
+ -- WARNING -- 6 buckets have 303 elements
+ -- WARNING -- 9 buckets have 304 elements
+ -- WARNING -- 7 buckets have 305 elements
+ -- WARNING -- 9 buckets have 306 elements
+ -- WARNING -- 11 buckets have 307 elements
+ -- WARNING -- 7 buckets have 308 elements
+ -- WARNING -- 5 buckets have 309 elements
+ -- WARNING -- 5 buckets have 310 elements
+ -- WARNING -- 9 buckets have 311 elements
+ -- WARNING -- 7 buckets have 312 elements
+ -- WARNING -- 8 buckets have 313 elements
+ -- WARNING -- 6 buckets have 314 elements
+ -- WARNING -- 7 buckets have 315 elements
+ -- WARNING -- 13 buckets have 316 elements
+ -- WARNING -- 4 buckets have 317 elements
+ -- WARNING -- 11 buckets have 318 elements
+ -- WARNING -- 6 buckets have 319 elements
+ -- WARNING -- 4 buckets have 320 elements
+ -- WARNING -- 3 buckets have 321 elements
+ -- WARNING -- 6 buckets have 322 elements
+ -- WARNING -- 3 buckets have 323 elements
+ -- WARNING -- 6 buckets have 324 elements
+ -- WARNING -- 2 buckets have 325 elements
+ -- WARNING -- 8 buckets have 326 elements
+ -- WARNING -- 4 buckets have 327 elements
+ -- WARNING -- 2 buckets have 328 elements
+ -- WARNING -- 6 buckets have 329 elements
+ -- WARNING -- 7 buckets have 330 elements
+ -- WARNING -- 3 buckets have 331 elements
+ -- WARNING -- 4 buckets have 332 elements
+ -- WARNING -- 6 buckets have 333 elements
+ -- WARNING -- 9 buckets have 334 elements
+ -- WARNING -- 7 buckets have 335 elements
+ -- WARNING -- 15 buckets have 336 elements
+ -- WARNING -- 8 buckets have 337 elements
+ -- WARNING -- 19 buckets have 338 elements
+ -- WARNING -- 8 buckets have 339 elements
+ -- WARNING -- 9 buckets have 340 elements
+ -- WARNING -- 8 buckets have 341 elements
+ -- WARNING -- 9 buckets have 342 elements
+ -- WARNING -- 6 buckets have 343 elements
+ -- WARNING -- 8 buckets have 344 elements
+ -- WARNING -- 6 buckets have 345 elements
+ -- WARNING -- 6 buckets have 346 elements
+ -- WARNING -- 4 buckets have 347 elements
+ -- WARNING -- 6 buckets have 348 elements
+ -- WARNING -- 1 bucket has 349 elements
+ -- WARNING -- 3 buckets have 350 elements
+ -- WARNING -- 5 buckets have 351 elements
+ -- WARNING -- 5 buckets have 352 elements
+ -- WARNING -- 5 buckets have 353 elements
+ -- WARNING -- 5 buckets have 354 elements
+ -- WARNING -- 7 buckets have 355 elements
+ -- WARNING -- 5 buckets have 356 elements
+ -- WARNING -- 2 buckets have 357 elements
+ -- WARNING -- 3 buckets have 358 elements
+ -- WARNING -- 2 buckets have 359 elements
+ -- WARNING -- 4 buckets have 360 elements
+ -- WARNING -- 2 buckets have 361 elements
+ -- WARNING -- 3 buckets have 362 elements
+ -- WARNING -- 5 buckets have 363 elements
+ -- WARNING -- 4 buckets have 364 elements
+ -- WARNING -- 4 buckets have 366 elements
+ -- WARNING -- 3 buckets have 367 elements
+ -- WARNING -- 2 buckets have 368 elements
+ -- WARNING -- 5 buckets have 369 elements
+ -- WARNING -- 4 buckets have 370 elements
+ -- WARNING -- 3 buckets have 371 elements
+ -- WARNING -- 2 buckets have 372 elements
+ -- WARNING -- 8 buckets have 373 elements
+ -- WARNING -- 3 buckets have 374 elements
+ -- WARNING -- 3 buckets have 375 elements
+ -- WARNING -- 6 buckets have 376 elements
+ -- WARNING -- 4 buckets have 377 elements
+ -- WARNING -- 6 buckets have 378 elements
+ -- WARNING -- 6 buckets have 379 elements
+ -- WARNING -- 5 buckets have 380 elements
+ -- WARNING -- 3 buckets have 381 elements
+ -- WARNING -- 5 buckets have 382 elements
+ -- WARNING -- 3 buckets have 383 elements
+ -- WARNING -- 6 buckets have 384 elements
+ -- WARNING -- 2 buckets have 385 elements
+ -- WARNING -- 1 bucket has 386 elements
+ -- WARNING -- 2 buckets have 387 elements
+ -- WARNING -- 4 buckets have 388 elements
+ -- WARNING -- 1 bucket has 389 elements
+ -- WARNING -- 2 buckets have 392 elements
+ -- WARNING -- 1 bucket has 393 elements
+ -- WARNING -- 2 buckets have 394 elements
+ -- WARNING -- 4 buckets have 395 elements
+ -- WARNING -- 2 buckets have 396 elements
+ -- WARNING -- 5 buckets have 397 elements
+ -- WARNING -- 3 buckets have 398 elements
+ -- WARNING -- 4 buckets have 399 elements
+ -- WARNING -- 4 buckets have 400 elements
+ -- WARNING -- 2 buckets have 401 elements
+ -- WARNING -- 1 bucket has 402 elements
+ -- WARNING -- 4 buckets have 403 elements
+ -- WARNING -- 2 buckets have 404 elements
+ -- WARNING -- 3 buckets have 405 elements
+ -- WARNING -- 2 buckets have 406 elements
+ -- WARNING -- 1 bucket has 409 elements
+ -- WARNING -- 1 bucket has 410 elements
+ -- WARNING -- 2 buckets have 411 elements
+ -- WARNING -- 1 bucket has 413 elements
+ -- WARNING -- 3 buckets have 414 elements
+ -- WARNING -- 2 buckets have 415 elements
+ -- WARNING -- 1 bucket has 416 elements
+ -- WARNING -- 4 buckets have 417 elements
+ -- WARNING -- 1 bucket has 418 elements
+ -- WARNING -- 2 buckets have 419 elements
+ -- WARNING -- 3 buckets have 420 elements
+ -- WARNING -- 1 bucket has 421 elements
+ -- WARNING -- 1 bucket has 422 elements
+ -- WARNING -- 3 buckets have 424 elements
+ -- WARNING -- 5 buckets have 425 elements
+ -- WARNING -- 1 bucket has 426 elements
+ -- WARNING -- 3 buckets have 427 elements
+ -- WARNING -- 3 buckets have 428 elements
+ -- WARNING -- 4 buckets have 429 elements
+ -- WARNING -- 1 bucket has 430 elements
+ -- WARNING -- 1 bucket has 431 elements
+ -- WARNING -- 1 bucket has 432 elements
+ -- WARNING -- 3 buckets have 433 elements
+ -- WARNING -- 3 buckets have 434 elements
+ -- WARNING -- 1 bucket has 435 elements
+ -- WARNING -- 3 buckets have 437 elements
+ -- WARNING -- 3 buckets have 438 elements
+ -- WARNING -- 1 bucket has 439 elements
+ -- WARNING -- 3 buckets have 441 elements
+ -- WARNING -- 5 buckets have 442 elements
+ -- WARNING -- 4 buckets have 443 elements
+ -- WARNING -- 1 bucket has 445 elements
+ -- WARNING -- 7 buckets have 446 elements
+ -- WARNING -- 2 buckets have 447 elements
+ -- WARNING -- 2 buckets have 449 elements
+ -- WARNING -- 1 bucket has 450 elements
+ -- WARNING -- 1 bucket has 451 elements
+ -- WARNING -- 3 buckets have 453 elements
+ -- WARNING -- 2 buckets have 454 elements
+ -- WARNING -- 3 buckets have 455 elements
+ -- WARNING -- 1 bucket has 456 elements
+ -- WARNING -- 1 bucket has 457 elements
+ -- WARNING -- 1 bucket has 458 elements
+ -- WARNING -- 1 bucket has 459 elements
+ -- WARNING -- 2 buckets have 461 elements
+ -- WARNING -- 2 buckets have 462 elements
+ -- WARNING -- 3 buckets have 463 elements
+ -- WARNING -- 4 buckets have 465 elements
+ -- WARNING -- 1 bucket has 466 elements
+ -- WARNING -- 1 bucket has 468 elements
+ -- WARNING -- 1 bucket has 469 elements
+ -- WARNING -- 1 bucket has 470 elements
+ -- WARNING -- 5 buckets have 471 elements
+ -- WARNING -- 3 buckets have 472 elements
+ -- WARNING -- 3 buckets have 473 elements
+ -- WARNING -- 4 buckets have 474 elements
+ -- WARNING -- 2 buckets have 475 elements
+ -- WARNING -- 4 buckets have 476 elements
+ -- WARNING -- 2 buckets have 478 elements
+ -- WARNING -- 2 buckets have 479 elements
+ -- WARNING -- 2 buckets have 480 elements
+ -- WARNING -- 1 bucket has 481 elements
+ -- WARNING -- 2 buckets have 482 elements
+ -- WARNING -- 3 buckets have 484 elements
+ -- WARNING -- 1 bucket has 485 elements
+ -- WARNING -- 2 buckets have 486 elements
+ -- WARNING -- 2 buckets have 490 elements
+ -- WARNING -- 2 buckets have 491 elements
+ -- WARNING -- 1 bucket has 493 elements
+ -- WARNING -- 1 bucket has 494 elements
+ -- WARNING -- 1 bucket has 495 elements
+ -- WARNING -- 2 buckets have 497 elements
+ -- WARNING -- 1 bucket has 499 elements
+ -- WARNING -- 1 bucket has 501 elements
+ -- WARNING -- 1 bucket has 502 elements
+ -- WARNING -- 1 bucket has 504 elements
+ -- WARNING -- 2 buckets have 505 elements
+ -- WARNING -- 1 bucket has 506 elements
+ -- WARNING -- 3 buckets have 507 elements
+ -- WARNING -- 1 bucket has 508 elements
+ -- WARNING -- 1 bucket has 509 elements
+ -- WARNING -- 1 bucket has 510 elements
+ -- WARNING -- 1 bucket has 511 elements
+ -- WARNING -- 1 bucket has 512 elements
+ -- WARNING -- 1 bucket has 513 elements
+ -- WARNING -- 1 bucket has 514 elements
+ -- WARNING -- 1 bucket has 520 elements
+ -- WARNING -- 1 bucket has 522 elements
+ -- WARNING -- 1 bucket has 523 elements
+ -- WARNING -- 1 bucket has 527 elements
+ -- WARNING -- 1 bucket has 528 elements
+ -- WARNING -- 1 bucket has 529 elements
+ -- WARNING -- 1 bucket has 531 elements
+ -- WARNING -- 1 bucket has 532 elements
+ -- WARNING -- 1 bucket has 533 elements
+ -- WARNING -- 1 bucket has 534 elements
+ -- WARNING -- 1 bucket has 535 elements
+ -- WARNING -- 1 bucket has 537 elements
+ -- WARNING -- 1 bucket has 538 elements
+ -- WARNING -- 1 bucket has 547 elements
+ -- WARNING -- 1 bucket has 555 elements
+ -- WARNING -- 2 buckets have 559 elements
+ -- WARNING -- 1 bucket has 562 elements
+ -- WARNING -- 1 bucket has 563 elements
+ -- WARNING -- 1 bucket has 564 elements
+ -- WARNING -- 1 bucket has 570 elements
+ -- WARNING -- 1 bucket has 574 elements
+ -- WARNING -- 1 bucket has 575 elements
+ -- WARNING -- 2 buckets have 577 elements
+ -- WARNING -- 1 bucket has 579 elements
+ -- WARNING -- 1 bucket has 581 elements
+ -- WARNING -- 1 bucket has 585 elements
+ -- WARNING -- 1 bucket has 587 elements
+ -- WARNING -- 1 bucket has 589 elements
+ -- WARNING -- 1 bucket has 603 elements
+ -- WARNING -- 1 bucket has 605 elements
+ -- WARNING -- 1 bucket has 625 elements
+ -- WARNING -- 1 bucket has 626 elements
+ -- WARNING -- 1 bucket has 628 elements
+ -- WARNING -- 1 bucket has 631 elements
+ -- WARNING -- 1 bucket has 641 elements
+ -- WARNING -- 1 bucket has 642 elements
+ -- WARNING -- 1 bucket has 643 elements
+ -- WARNING -- 1 bucket has 651 elements
+ -- WARNING -- 1 bucket has 653 elements
+ -- WARNING -- 1 bucket has 654 elements
+ -- WARNING -- 1 bucket has 681 elements
+ -- WARNING -- 1 bucket has 682 elements
+ -- WARNING -- 1 bucket has 684 elements
+ -- WARNING -- 1 bucket has 687 elements
+ -- WARNING -- 2 buckets have 689 elements
+ -- WARNING -- 1 bucket has 747 elements
+ -- WARNING -- 1 bucket has 752 elements
+MESH road total building time = 0.0499259s
+
+hash table memory size = 4.01201MB
+
+EXTRUSION road model has been initialized...
+
+Done.
+
+Initializing driver...
+
+Done.
+
+Initialize CRT Simulation...
+
+Solving for static equilibrium...
+
+
+Performing Vehicle Setup...
+
+
+Solving for static equilibrium...
+
+Static equilibrium has been achieved.
+Elapsed Simulation Time:  24.839 (sec).
+Elapsed Clock Time:  0.101 (sec).
+
+
+Setup Completed.
+
+
+
+    *** ************ ***
+    *** Iteration  1 ***
+    *** ************ ***
+
+Calc Speed Profile
+  Predicted Laptime=11.624
+
+
+Solving for static equilibrium...
+
+Static equilibrium has been achieved.
+Elapsed Simulation Time:  24.839 (sec).
+Elapsed Clock Time:  0.100 (sec).
+Running CRT Simulation...
+
+
+Performing dynamic simulation...
+
+Simulation Progress (percent complete):
+0                      50                      100
+---------------------------------------
+Multilap Simulation end-condition triggered
+     --> max number of laps reached.
+
+LAP 1 Summary:
+   initial speed = 4.998197
+     final speed = 37.954764
+        lap time = 11.110000
+
+
+======================================
+=           VI-CarRealTime           =
+=    VEHICLE SIMULATION STATISTICS   =
+======================================
+
+ --- Simulation Statistics ---
+>> LAP TIME           = 11.120000 sec
+>> LAT ACCEL MAX      = 1.334719 G
+>> LAT ACCEL MIN      = -1.342100 G
+>> LON ACCEL MAX      = 1.302535 G
+>> LON ACCEL MIN      = -0.667678 G
+>> LON SPEED MAX      = 38.828103 km/h
+>> LON SPEED MIN      = 4.998197 km/h
+>> LON SPEED AVG      = 34.549415 km/h
+>> STEERING MAX       = 108.076857 deg
+>> STEERING MIN       = -67.170338 deg
+
+
+Writing output to file. Please Wait ...
+
+
+Elapsed Simulation Time:  11.120 (sec).
+Elapsed Clock Time:  2.713 (sec).
+Computational Efficiency:  4.099 (sim. sec)/(sec).
+
+
+Simulation is complete.
+ -- WARNING -- During analysis some spline extrapolations occur.
+ -- WARNING -- Check log file for further details after enabling verbose flag on system_tree->solver_executive_control.
+
+    *** ******************* ***
+    *** Finalize Simulation ***
+    *** ******************* ***
+
+  Predicted Laptime=11.624
+
+
+Final scaling values:
+
+           Segment        Acc    Dec    Lat   Iterations
+   0 [   0.00- 113.93]:  1.000  1.000  1.000       0
+Done
+

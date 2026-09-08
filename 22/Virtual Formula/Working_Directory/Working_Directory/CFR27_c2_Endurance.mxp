@@ -1,0 +1,40 @@
+$-----------------------------------------------------------------VIGRADE_HEADER
+[VIGRADE_HEADER]
+FILE_TYPE = 'mxp'
+FILE_VERSION = 2
+FILE_FORMAT = 'ASCII'
+$--------------------------------------------------------------------------UNITS
+[UNITS]
+LENGTH = 'meter'
+ANGLE = 'radians'
+FORCE = 'newton'
+MASS = 'kg'
+TIME = 'second'
+$---------------------------------------------------------------------PARAMETERS
+[PARAMETERS]
+MANEUVER_PREFIX = 'CFR27_c2_Endurance'
+MANEUVER_SUFFIX = '_work'
+FINAL_MANEUVER_SUFFIX = ''
+SPEEDGEN_MANEUVER = 'CFR27_c2_Endurance.xsg'
+PATH_FILE = 'C:/Users/amp20/Full-Car-Simulation/22/Virtual Formula/VI_Racer.cdb/roads.tbl/Endurance_Track_V3.drd'
+INITIAL_SPEED = 1
+INITIAL_GEAR = 1
+FLYING_LAP = 'FALSE'
+PERFORMANCE_SCALING_LONGITUDINAL = 1
+PERFORMANCE_SCALING_LONGITUDINAL_BRAKING = 1
+PERFORMANCE_SCALING_LATERAL = 1
+CORRECTION_STEP = 0.05
+NUM_REFINEMENTS = 0
+USE_TIRELIMITS = 'TRUE'
+VDF_TEMPLATE = 'CFR27_c2_Endurance_tpl.vdf'
+KEEP_FILES = 'FALSE'
+VHLSOLVER_INPUT_FILE = 'CFR27_c2_Endurance_send_svm.xml'
+MAX_PATH_DISTANCE = 1.5
+LAPS = 1
+MIN_LAPS = 1
+VELOCITY_TOLERANCE = 1
+SPLIT_RESULTS_BY_LAP = 'NO'
+THROTTLE_SLOPE = 10
+BRAKE_SLOPE = 10
+MAX_ITERATIONS = 50
+SAVE_RESTORE_MODE = 1

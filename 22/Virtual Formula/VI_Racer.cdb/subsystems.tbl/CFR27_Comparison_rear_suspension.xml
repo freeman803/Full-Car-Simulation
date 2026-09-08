@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <afc xmlns="http://www.mscsoftware.com/:vfc" xmlns:afc="http://www.mscsoftware.com/:afc">
      <afc:Bibliography>
-          <File schema="afc" version="2.0.0.0" URI="mdids://VI_Racer/subsystems.tbl/CFR27_Comparison_rear_suspension.xml" publicationDate="2026-09-05 17:17:57-04:00"/>
+          <File schema="afc" version="2.0.0.0" URI="mdids://VI_Racer/subsystems.tbl/CFR27_Comparison_rear_suspension.xml" publicationDate="2026-09-06 14:53:35-04:00"/>
           <Revision version="2025.2"/>
           <Corporation author="VI-grade" URI="http://www.vi-grade.com"/>
-          <Author user="amp20" name="-unknown name-"/>
-          <Environment hostName="lecomputer" operatingSystem="MS Windows NT 10.0"/>
+          <Author user="hrush" name="-unknown name-"/>
+          <Environment hostName="Wang_Jangler" operatingSystem="MS Windows NT 10.0"/>
           <Application name="VI-CarRealTime" version="2025.2"/>
      </afc:Bibliography>
      <afc:Units>
@@ -50,7 +50,7 @@
                     </CRTSuspensionDataSingle>
                </AntiRollBarContext>
           </AntiRollBar>
-          <CRTSuspensionGeneralProperties name="rear" active="true" userDefined="false" trackWidth="1167.82">
+          <CRTSuspensionGeneralProperties name="rear" active="true" userDefined="false" trackWidth="1219.2">
                <Spline3d name="left_x_vs_z" active="true" userDefined="false" interpolation_method="akima" xLabel="Jounce" yLabel="X-coordinate" xUnit="length" yUnit="length" datablock="Left X-coordinate vs. Jounce" zLabel="Paired Wheel Jounce" zUnit="length">
                     <afc:VectorAttribute name="x_data">
                       -25 -20 -15 -10 -5 0 5 10 15 20 25

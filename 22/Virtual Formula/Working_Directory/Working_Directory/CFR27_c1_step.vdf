@@ -1,0 +1,166 @@
+$-----------------------------------------------------------------VIGRADE_HEADER
+[VIGRADE_HEADER]
+FILE_TYPE = 'VDF'
+FILE_VERSION = 17
+FILE_FORMAT = 'ASCII'
+$--------------------------------------------------------------------------UNITS
+[UNITS]
+LENGTH = 'METER'
+ANGLE = 'RADIAN'
+FORCE = 'NEWTON'
+MASS = 'KILOGRAM'
+TIME = 'SECOND'
+$---------------------------------------------------------------DEBUG_PARAMETERS
+[DEBUG_PARAMETERS]
+ACTIVATION = 'FALSE'
+INITIALIZATION_DUMP = 'FALSE'
+$----------------------------------------------------------------GLOBAL_SETTINGS
+[GLOBAL_SETTINGS]
+MODEL_TYPE = 'CAR_STANDARD'
+$------------------------------------------------------------CONTROLLER_STANDARD
+[CONTROLLER_STANDARD]
+PREVIEW_TIME = 0.5
+MIN_PREVIEW_DISTANCE = 5
+LAT_ANT_COMP_TIME = 0
+LON_ANT_COMP_TIME = 0
+LONGITUDINAL_SPEED_CONTROL = 'LONVEL'
+PREVIEW_DISTANCE_CALC = 'STANDARD'
+STEERING_PDC_ACTIVE = 'TRUE'
+STEERING_YAW_PID_ACTIVE = 'TRUE'
+THROTTLE_FEED_FWD_TRQ_ACTIVE = 'TRUE'
+THROTTLE_SAT_TGTACCX_ACTIVE = 'TRUE'
+THROTTLE_SAT_TGTACCX_LEGACY_MODE = 'FALSE'
+$--------------------------------------------------------------STEERING_STANDARD
+[STEERING_STANDARD]
+MAX_VALUE = 12.56637061435917
+MIN_VALUE = -12.56637061435917
+$--------------------------------------------------------------THROTTLE_STANDARD
+[THROTTLE_STANDARD]
+MAX_VALUE = 100
+MIN_VALUE = 0
+SCALING_FACTOR = 100
+$---------------------------------------------------------------BRAKING_STANDARD
+[BRAKING_STANDARD]
+MAX_VALUE = 100
+MIN_VALUE = 0
+SCALING_FACTOR = 100
+$----------------------------------------------------------------CLUTCH_STANDARD
+[CLUTCH_STANDARD]
+MAX_VALUE = 1
+MIN_VALUE = 0
+SCALING_FACTOR = 1
+MIN_RPM = 500
+ACTIVATION = 'TRUE'
+MODEL = 'STANDARD'
+$------------------------------------------------------------------------STARTUP
+[STARTUP]
+STARTING_TIME = 0
+INITIAL_SPEED = 5
+INITIAL_STEERING = 0
+INITIAL_THROTTLE = 0
+INITIAL_BRAKING = 0
+INITIAL_BRAKING2 = 0
+INITIAL_GEAR = 1
+INITIAL_CLUTCH = 0
+INITIAL_SETUP = 'OFF'
+$------------------------------------------------------------MANEUVER_1_STEERING
+[MANEUVER_1_STEERING]
+METHOD = 'OPENLOOP'
+SMOOTHING_ACTIVE = 'TRUE'
+SMOOTHING_TIME = 0
+SIGNAL = 'MANEUVER_1_STEERING_SIGNAL'
+$------------------------------------------------------------MANEUVER_1_THROTTLE
+[MANEUVER_1_THROTTLE]
+METHOD = 'MACHINE'
+SMOOTHING_ACTIVE = 'TRUE'
+SMOOTHING_TIME = 0
+$-------------------------------------------------------------MANEUVER_1_BRAKING
+[MANEUVER_1_BRAKING]
+METHOD = 'OPENLOOP'
+SMOOTHING_ACTIVE = 'TRUE'
+SMOOTHING_TIME = 0
+SIGNAL = 'MAINTAIN_SIGNAL'
+$----------------------------------------------------------------MANEUVER_1_GEAR
+[MANEUVER_1_GEAR]
+METHOD = 'OPENLOOP'
+SMOOTHING_ACTIVE = 'FALSE'
+SMOOTHING_TIME = 0
+SIGNAL = 'MAINTAIN_SIGNAL'
+$--------------------------------------------------------------MANEUVER_1_CLUTCH
+[MANEUVER_1_CLUTCH]
+METHOD = 'OPENLOOP'
+SMOOTHING_ACTIVE = 'TRUE'
+SMOOTHING_TIME = 0
+SIGNAL = 'MAINTAIN_SIGNAL'
+$------------------------------------------------------------MANEUVER_1_BRAKING2
+[MANEUVER_1_BRAKING2]
+METHOD = 'USER'
+SMOOTHING_ACTIVE = 'TRUE'
+SMOOTHING_TIME = 0.1
+$---------------------------------------------------------------------MANEUVER_1
+[MANEUVER_1]
+TASK = 'STANDARD'
+CONTROLLER_SETTINGS = 'CONTROLLER_STANDARD'
+(STEERING)
+CONTROLLER_NAME = 'MANEUVER_1_STEERING'
+(THROTTLE)
+CONTROLLER_NAME = 'MANEUVER_1_THROTTLE'
+(BRAKING)
+CONTROLLER_NAME = 'MANEUVER_1_BRAKING'
+(GEAR)
+CONTROLLER_NAME = 'MANEUVER_1_GEAR'
+(CLUTCH)
+CONTROLLER_NAME = 'MANEUVER_1_CLUTCH'
+(BRAKING2)
+CONTROLLER_NAME = 'MANEUVER_1_BRAKING2'
+(MACHINE)
+SPEED = 'MANEUVER_1_VELMAP_T'
+(OPTIONS)
+FOLLOW_TARGET_SPEED = 'FALSE'
+SPEED_MAP_ABS_TIME = 'FALSE'
+SPEED_MAP_GLOBAL_S = 'FALSE'
+CONNECT_PATH = 'FALSE'
+(END_CONDITIONS)
+{ name   }
+ 'MANEUVER_1_END_COND_BLOCK'
+$----------------------------------------------------------------MAINTAIN_SIGNAL
+[MAINTAIN_SIGNAL]
+TYPE = 'MAINTAIN'
+SCALING_FACTOR = 1
+CALC_MODE = 'ABSOLUTE'
+AUTO_SCALING = 'TRUE'
+AUTO_SATURATION = 'TRUE'
+$-----------------------------------------------------MANEUVER_1_STEERING_SIGNAL
+[MANEUVER_1_STEERING_SIGNAL]
+TYPE = 'STEP'
+IC = 0
+X0 = 1
+Y0 = 0
+X1 = 2
+Y1 = 0.5235987755982988
+SCALING_FACTOR = 1
+CALC_MODE = 'ABSOLUTE'
+AUTO_SCALING = 'TRUE'
+AUTO_SATURATION = 'TRUE'
+$------------------------------------------------------------MANEUVER_1_VELMAP_T
+[MANEUVER_1_VELMAP_T]
+TYPE = 'MAP'
+X_DATA = 'TIME'
+Y_DATA = 'LONVEL'
+(VALUES)
+{ t  Vx   }
+ 0 5
+ 5 5
+ 10 5
+$-----------------------------------------------------------------MANEUVERS_LIST
+[MANEUVERS_LIST]
+{ name  abort_time  sampling_step   }
+ 'MANEUVER_1' 10 0.01
+$------------------------------------------------------MANEUVER_1_END_COND_BLOCK
+[MANEUVER_1_END_COND_BLOCK]
+MEASURE_NAME = 'TIME'
+TEST_TYPE = '>>'
+REF_VALUE = 10
+TOLERANCE = 0
+FILTERING_TIME = 0
+DELAY = 0

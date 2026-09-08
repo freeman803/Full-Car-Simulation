@@ -1,0 +1,94 @@
+
+========================================
+=            VI-CarRealTime            =
+========================================
+  VERSION : 2025.2
+  REVISION: 9b78eed1c5/release/2025.2
+  BUILT ON: lupus/28-May-25
+========================================
+
+
+Event data is being read from input XML file...
+
+Performing the simulation: CFR27_comp_crc.
+
+
+Initializing powertrain / driveline...
+Done.
+
+Initializing aero force...
+Done.
+
+Initializing tires...
+Loading road data file... (file=C:/PROGRA~1/VI-grade/VI-CAR~1/acarrt/CARREA~1.CDB/roads.tbl/flat.rdf)
+
+road file total reading time = 0s
+
+FLAT road model has been initialized...
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+Done.
+
+Initializing driver...
+
+Done.
+
+
+Solving for static equilibrium...
+
+
+Performing Vehicle Setup...
+
+
+Solving for static equilibrium...
+
+Static equilibrium has been achieved.
+Elapsed Simulation Time:  3.863 (sec).
+Elapsed Clock Time:  0.065 (sec).
+
+
+Setup Completed.
+
+
+Performing dynamic simulation...
+
+Simulation Progress (percent complete):
+0                      50                      100
+--------------------------------------------------
+
+======================================
+=           VI-CarRealTime           =
+=    VEHICLE SIMULATION STATISTICS   =
+======================================
+
+ --- Simulation Statistics ---
+>> LAP TIME           = 30.000000 sec
+>> LAT ACCEL MAX      = 0.000027 G
+>> LAT ACCEL MIN      = -1.677725 G
+>> LON ACCEL MAX      = 1.071033 G
+>> LON ACCEL MIN      = -0.017287 G
+>> LON SPEED MAX      = 78.759963 km/h
+>> LON SPEED MIN      = 17.983763 km/h
+>> LON SPEED AVG      = 54.048719 km/h
+>> STEERING MAX       = 30.507188 deg
+>> STEERING MIN       = -18.430999 deg
+
+
+Writing output to file. Please Wait ...
+
+
+Elapsed Simulation Time:  30.000 (sec).
+Elapsed Clock Time:  1.995 (sec).
+Computational Efficiency:  15.038 (sim. sec)/(sec).
+
+
+Simulation is complete.
+ -- WARNING -- During analysis some spline extrapolations occur.
+ -- WARNING -- Check log file for further details after enabling verbose flag on system_tree->solver_executive_control.

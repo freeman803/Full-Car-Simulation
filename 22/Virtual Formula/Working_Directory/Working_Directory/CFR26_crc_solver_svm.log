@@ -1,0 +1,108 @@
+
+========================================
+=            VI-CarRealTime            =
+========================================
+  VERSION : 2025.2
+  REVISION: 9b78eed1c5/release/2025.2
+  BUILT ON: lupus/28-May-25
+========================================
+
+
+Event data is being read from input XML file...
+
+Performing the simulation: CFR26_crc.
+
+
+Initializing powertrain / driveline...
+Done.
+
+Initializing aero force...
+Done.
+
+Initializing tires...
+Loading road data file... (file=C:/PROGRA~1/VI-grade/VI-CAR~1/acarrt/CARREA~1.CDB/roads.tbl/flat.rdf)
+
+road file total reading time = 0.001s
+
+FLAT road model has been initialized...
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+Done.
+
+Initializing driver...
+
+Done.
+
+
+Solving for static equilibrium...
+
+
+Performing Vehicle Setup...
+ -- WARNING -- One or more setup targets are close to 0: 
+ -- WARNING -- the computed relative setup error could be inaccurate.
+ -- WARNING -- Please check the report file.
+ -- WARNING -- 
+ -- WARNING -- 
+ -- WARNING -- Setup targets have not been achieved 
+ -- WARNING -- within the maximum allowed tolerance:
+ -- WARNING -- ride height   -  (1.00%).
+ -- WARNING -- Maximum error:  (0.00%).
+ -- WARNING -- cross weigth  -  (1.00%).
+ -- WARNING -- Maximum error:  (0.00%).
+ -- WARNING --          pin height    -  (1.00%).
+ -- WARNING --          Maximum error:  (100.00%).
+
+
+
+Solving for static equilibrium...
+
+Static equilibrium has been achieved.
+Elapsed Simulation Time:  5.182 (sec).
+Elapsed Clock Time:  0.078 (sec).
+
+
+Setup Completed.
+
+
+Performing dynamic simulation...
+
+Simulation Progress (percent complete):
+0                      50                      100
+--------------------------------------------------
+
+======================================
+=           VI-CarRealTime           =
+=    VEHICLE SIMULATION STATISTICS   =
+======================================
+
+ --- Simulation Statistics ---
+>> LAP TIME           = 30.000000 sec
+>> LAT ACCEL MAX      = 0.000037 G
+>> LAT ACCEL MIN      = -1.467847 G
+>> LON ACCEL MAX      = 1.070772 G
+>> LON ACCEL MIN      = -0.074255 G
+>> LON SPEED MAX      = 74.504660 km/h
+>> LON SPEED MIN      = 17.983911 km/h
+>> LON SPEED AVG      = 51.769179 km/h
+>> STEERING MAX       = 17.946443 deg
+>> STEERING MIN       = -0.000020 deg
+
+
+Writing output to file. Please Wait ...
+
+
+Elapsed Simulation Time:  30.000 (sec).
+Elapsed Clock Time:  2.137 (sec).
+Computational Efficiency:  14.038 (sim. sec)/(sec).
+
+
+Simulation is complete.
+ -- WARNING -- During analysis some spline extrapolations occur.
+ -- WARNING -- Check log file for further details after enabling verbose flag on system_tree->solver_executive_control.

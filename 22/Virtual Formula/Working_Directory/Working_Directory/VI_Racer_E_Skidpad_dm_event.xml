@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<afc xmlns="http://www.mscsoftware.com/:vfc" xmlns:afc="http://www.mscsoftware.com/:afc" xmlns:dcf="http://www.mscsoftware.com/:dcf">
+     <afc:Units>
+          <afc:UnitSetting name="angle" current="degree"/>
+          <afc:UnitSetting name="current" current="ampere"/>
+          <afc:UnitSetting name="force" current="newton"/>
+          <afc:UnitSetting name="length" current="meter"/>
+          <afc:UnitSetting name="luminosity" current="candela"/>
+          <afc:UnitSetting name="mass" current="kilogram"/>
+          <afc:UnitSetting name="quantity" current="mole"/>
+          <afc:UnitSetting name="solidAngle" current="steradian"/>
+          <afc:UnitSetting name="temperature" current="kelvin"/>
+          <afc:UnitSetting name="time" current="second"/>
+     </afc:Units>
+     <afc:Bibliography>
+          <File schema="afc" version="2.0.0.0" publicationDate="2026-09-01 23:42:18-04:00"/>
+          <Revision version="2"/>
+          <Corporation author="MSC Software" URI="http://www.mscsoftware.com/"/>
+          <Author user="amp20" name="-unknown name-"/>
+          <Environment hostName="lecomputer" operatingSystem="MS Windows NT 10.0"/>
+          <Application name="MSC/AFC" version="02.00.00"/>
+     </afc:Bibliography>
+     <dcf:Dcf active="true" userDefined="false">
+          <dcf:DcfController name="controller" active="true" userDefined="false" raxSaturation="true" tireFzControl="true" feedForward="true" ffRolRes="false" ffSteering="true" createPathData="true" kickdownControl="false" rpmControl="false" pathDistanceCompensation="true" yawRateCorrection="true" pathDistanceCompensationTolerance="-1" minPreviewDistance="5" connContourType="cubic" activationTime="0" axP="30" axI="200" axD="0" vxP="100" vxI="50" vxD="0" LatPthP="0.5" LatPthI="0.1" LatPthD="0" LatAyP="1" LatAyI="10" LatAyD="0" LatAyCP="0.003" LatAyCI="0.001" LatAyCD="0" SteFrcP="10" SteFrcI="20" SteFrcD="3" SteTrqP="10" SteTrqI="20" SteTrqD="3" throttleControl="off" knowledge="off" aeroTableFile="__NULL__" maxLenItx="-1" driveAuthority="100" brakeAuthority="100" pcpMode="off" pcpDT1="0.06" pcpDT2="0.12" pcpL1="0.5" tireRadBrkCtrl="static" tireRadBrkCtrlCustom="0.32" SteCutFreq="-1" ThrCutFreq="-1" BrkCutFreq="-1" SigmaCutFreq="-1" YawVelCutFreq="-1" EngSpeedCutFreq="-1" PathPitchCutFreq="-1"/>
+          <dcf:DcfVehicle name="vehicle" active="true" userDefined="false" shiftTime="0.5" gearShiftDelay="0" shiftDt1="0" shiftDt2="0.01" throttleFallTime="0.03" throttleRaiseTime="0.01" clutchFallTime="0.03" clutchRaiseTime="0.05" frontAxleCoupling="0.75" rearAxleCoupling="0.75"/>
+          <dcf:DcfManeuver name="maneuver" active="true" userDefined="false" initialSpeed="8.83845" initialGear="1" currentTime="0" currentMini="0">
+               <dcf:DcfStatic name="staticPrePhase" active="true" userDefined="false" task="settle" initialLateralAcceleration="0" initialLongitudinalAcceleration="0" initialRadius="0" initialTurnDirection="left" initialClutch="0" initialBrake="0" initialThrottle="0" initialSteer="0" useBrake="no" haltOnFailure="yes" performLinear="no" includeDamping="yes"/>
+               <dcf:DcfMini name="MINI_MANEUVER" active="true" userDefined="false" smoothingTime="0.1" activeFlag="true" abortTime="17.093849936346082" stepSize="0.01" hMax="0.01">
+                    <dcf:DcfDemand name="steering" active="true" userDefined="false" demandType="steering" actuatorType="rotation" controlMethod="machine" controlMode="absolute" controlType="constant" constantValue="0" initialValue="0" finalValue="0" startTime="0" duration="0" rampValue="0" maximumValue="0" cycleLength="0" smoothingFactor="0" amplitude="0" initialFrequency="0" frequencyRate="0" maximumFrequency="0" functionString="0">
+                         <afc:VectorAttribute name="time_data">
+                           0 1 2
+                         </afc:VectorAttribute>
+                         <afc:VectorAttribute name="demand_data">
+                           0 0 0
+                         </afc:VectorAttribute>
+                    </dcf:DcfDemand>
+                    <dcf:DcfDemand name="throttle" active="true" userDefined="false" demandType="throttle" actuatorType="rotation" controlMethod="machine" controlMode="absolute" controlType="constant" constantValue="0" initialValue="0" finalValue="0" startTime="0" duration="0" rampValue="0" maximumValue="0" cycleLength="0" smoothingFactor="0" amplitude="0" initialFrequency="0" frequencyRate="0" maximumFrequency="0" functionString="0">
+                         <afc:VectorAttribute name="time_data">
+                           0 1 2
+                         </afc:VectorAttribute>
+                         <afc:VectorAttribute name="demand_data">
+                           0 0 0
+                         </afc:VectorAttribute>
+                    </dcf:DcfDemand>
+                    <dcf:DcfDemand name="braking" active="true" userDefined="false" demandType="braking" actuatorType="rotation" controlMethod="machine" controlMode="absolute" controlType="constant" constantValue="0" initialValue="0" finalValue="0" startTime="0" duration="0" rampValue="0" maximumValue="0" cycleLength="0" smoothingFactor="0" amplitude="0" initialFrequency="0" frequencyRate="0" maximumFrequency="0" functionString="0">
+                         <afc:VectorAttribute name="time_data">
+                           0 1 2
+                         </afc:VectorAttribute>
+                         <afc:VectorAttribute name="demand_data">
+                           0 0 0
+                         </afc:VectorAttribute>
+                    </dcf:DcfDemand>
+                    <dcf:DcfDemand name="gear" active="true" userDefined="false" demandType="gear" actuatorType="rotation" controlMethod="machine" controlMode="absolute" controlType="constant" constantValue="0" initialValue="0" finalValue="0" startTime="0" duration="0" rampValue="0" maximumValue="0" cycleLength="0" smoothingFactor="0" amplitude="0" initialFrequency="0" frequencyRate="0" maximumFrequency="0" functionString="0">
+                         <afc:VectorAttribute name="time_data">
+                           0 1 2
+                         </afc:VectorAttribute>
+                         <afc:VectorAttribute name="demand_data">
+                           0 0 0
+                         </afc:VectorAttribute>
+                    </dcf:DcfDemand>
+                    <dcf:DcfDemand name="clutch" active="true" userDefined="false" demandType="clutch" actuatorType="rotation" controlMethod="machine" controlMode="absolute" controlType="constant" constantValue="0" initialValue="0" finalValue="0" startTime="0" duration="0" rampValue="0" maximumValue="0" cycleLength="0" smoothingFactor="0" amplitude="0" initialFrequency="0" frequencyRate="0" maximumFrequency="0" functionString="0">
+                         <afc:VectorAttribute name="time_data">
+                           0 1 2
+                         </afc:VectorAttribute>
+                         <afc:VectorAttribute name="demand_data">
+                           0 0 0
+                         </afc:VectorAttribute>
+                    </dcf:DcfDemand>
+                    <dcf:DcfMachine name="machine" active="true" userDefined="false" steerControl="path_map" speedControl="speed_s_map" steerRadius="0" steerEntry="0" steerLatOffset="0" turnDirection="left" pathPositioning="absolute" compensatorType="auto" velocityType="initial_actual" velocity="0" acceleration="0" jerk="0" startTime="0" samplePeriod="0.01" speed_map_filter_flag="false" speed_map_filter_freq="4" speed_map_spline_flag="false" speed_map_spline_order="4">
+                         <afc:VectorAttribute name="t_ay_data">
+                           0 1
+                         </afc:VectorAttribute>
+                         <afc:VectorAttribute name="s_ay_data">
+                           0 1
+                         </afc:VectorAttribute>
+                         <afc:VectorAttribute name="t_ax_data">
+                           0 1
+                         </afc:VectorAttribute>
+                         <afc:VectorAttribute name="s_ax_data">
+                           0 1
+                         </afc:VectorAttribute>
+                         <afc:VectorAttribute name="t_speed_data">
+                           0 1
+                         </afc:VectorAttribute>
+                         <afc:VectorAttribute name="s_speed_data">
+                           0.003581495439980259 1.0035436992666338 2.0028761985165673 3.0023832152119017 4.001883354439416 5.001381856271664 6.000880710364881 7.0003795259126385 7.999878343306046 8.999377161555842 9.998875979085097 10.99837479718592 11.997873615479973 12.997372432750087 13.996871251867214 14.996370068855645 15.995868886963287 16.995367704739575 17.994866522524028 18.994365340258735 19.993864157334162 20.99336297589815 21.9928617939495 22.99236061192955 23.991859430087526 24.991358247827844 25.990857065826507 26.990355883496836 27.989854701804603 28.989353519877806 29.988852338005017 30.988351156004235 31.987849974198202 32.98734879218088 33.98684760978369 34.98634642801779 35.98584524577797 36.98534406426941 37.984842881023916 38.984341698824174 39.98384051636355 40.983339335458226 41.98283815360499 42.982336970827376 43.98183578832318 44.98133460493656 45.98083342420134 46.98033224237709 47.97983106054772 48.979329878302515 49.97882869546947 50.97832751136687 51.97782635905028 52.97732491701154 53.97682483775187 54.97633046620342 55.97568642099601 56.97561211683578 57.97553780781019 58.97489376296098 59.97439939167368 60.973899312513446 61.97339787045605 62.97289671780573 63.97239553341135 64.97189435170206 65.97139316967386 66.97089198739289 67.97039080673065 68.96988962141329 69.96938844087674 70.96888725955034 71.96838607749886 72.96788489571721 73.96738371241827 74.96688253185229 75.96638134918943 76.96588016800334 77.96537898613582 78.96487780229666 79.96437662052173 80.96387543917142 81.96337425692897 82.96287307503502 83.96237189298677 84.96187071052908 85.96136952841415 86.96086834634879 87.96036716459656 88.95986598251925 89.95936480035668 90.95886361845136 91.95836243572025 92.95786125409835 93.95736007251884 94.95685889072853 95.95635770847092 96.95585652494222 97.95535534407902 98.95485416108777 99.95435298049145 100.95385179855923 101.95335061355595 102.95284943320794 103.95234825167341 104.95184707093733 105.95134588755644 106.95084470467467 107.95034351975002 108.94984237524991 109.94934087379356 110.94884102497561 111.94834811227062 112.94767940362756 113.93763750953593
+                         </afc:VectorAttribute>
+                         <afc:VectorAttribute name="speed_s_data">
+                           8.83845 8.607996223479 8.409719848633 8.409719848633 8.437095653428 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.169178466684 7.574463570823 6.86520505576 6.088121088953 5.206090345565 3.902781094673 3.843215942383 3.843215942383 5.480306134838 6.467392917208 7.17006038765 7.588213761733 7.867197140383 8.029753687663 8.176559324012 8.223428720255 8.266490976978 8.305805309591 8.341424712143 8.374270554948 8.404375356819 8.432636643264 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.43899230957 8.409719848633 8.409719848633 8.717489593895
+                         </afc:VectorAttribute>
+                         <afc:VectorAttribute name="speed_t_data">
+                           0 0
+                         </afc:VectorAttribute>
+                         <afc:VectorAttribute name="ay_s_data">
+                           0 0
+                         </afc:VectorAttribute>
+                         <afc:VectorAttribute name="ay_t_data">
+                           0 0
+                         </afc:VectorAttribute>
+                         <afc:VectorAttribute name="ax_s_data">
+                           0 0
+                         </afc:VectorAttribute>
+                         <afc:VectorAttribute name="ax_t_data">
+                           0 0
+                         </afc:VectorAttribute>
+                         <afc:VectorAttribute name="path_x_data">
+                           -4.11032387998e-05 -0.9997399198925 -1.993198448779 -2.96878985072 -3.914756387823 -4.819753204126 -5.672922120352 -6.464027037724 -7.183576482128 -7.822937484706 -8.37443915393 -8.831464715041 -9.188530891734 -9.441353694112 -9.586899821664 -9.623423045105 -9.55048517153 -9.368961289363 -9.08102927613 -8.690143666419 -8.200994205377 -7.61944958537 -6.952487027859 -6.208108579787 -5.395245103591 -4.523649127091 -3.603777836646 -2.646667612433 -1.663801619251 -0.6669720307043 0.3318614458649 1.320715061698 2.287724803598 3.221288736169 4.110206198281 4.943812184395 5.712105304076 6.405867771574 7.016776004426 7.537500479532 7.961793678663 8.284565038765 8.501942033822 8.611316630312 8.611376578653 8.502121160763 8.284861191786 7.962203304761 7.5380186656 7.017396533587 6.406583200202 5.712907046099 4.944690628182 4.111150702858 3.222288901527 2.288765483937 1.321704462226 0.3354145167577 -0.650875373989 -1.617936242175 -2.551459441132 -3.440320963072 -4.273860551017 -5.042076577534 -5.73575229126 -6.346565141815 -6.867186752164 -7.2913708373 -7.614028146716 -7.831287514829 -7.940542327741 -7.94048176908 -7.831106565378 -7.613728973501 -7.29095703259 -6.866663281419 -6.345938284039 -5.735029568703 -5.041266660287 -4.272973148435 -3.439366824782 -2.550449083768 -1.616884932501 -0.6498750357177 0.3389786690642 1.337812167602 2.334641711535 3.317507594571 4.274617641883 5.194488693041 6.066084370141 6.878947490347 7.623325531325 8.290287633017 8.871831755724 9.360980682066 9.751865728637 10.03979715768 10.22132043668 10.29425770134 10.25773386373 10.11218713178 9.859363739971 9.502296990305 9.04527088452 8.493768702999 7.854407231657 7.134857362745 6.343752071725 5.490582835543 4.585585759691 3.639619024695 2.664027494227 1.670568756174 0.6808789666189
+                         </afc:VectorAttribute>
+                         <afc:VectorAttribute name="path_y_data">
+                           0.003581259570369 -0.01936836053649 -0.1275607606383 -0.3448984998416 -0.6676179430073 -1.091856104476 -1.612529475909 -2.223390255458 -2.917109566872 -3.68536433976 -4.51893724904 -5.407827300664 -6.341369818835 -7.308364398097 -8.29720928693 -9.29604057364 -10.29287453875 -11.27575142165 -12.23287891708 -13.15277365387 -14.02439896907 -14.8372973288 -15.58171578247 -16.24872298872 -16.83031636606 -17.31951810401 -17.7104588875 -17.99844830611 -18.18003114463 -18.25302880711 -18.21656548962 -18.0710786736 -17.81831386861 -17.46130368535 -17.00433144118 -16.45287976826 -15.81356484668 -15.09405701013 -14.30298873512 -13.44985105115 -12.54487968838 -11.59893225936 -10.62335800309 -9.629861609905 -8.630362794207 -7.636853288428 -6.661252962684 -5.715266823528 -4.810244569976 -3.957044427951 -3.165902874702 -2.446311826808 -1.806904693783 -1.255353644235 -0.7982707308653 -0.4411355602122 -0.1891329716011 -0.02456219452094 0.1400088809496 0.3920120601333 0.7491478030063 1.206231259908 1.757782819291 2.397190422042 3.116781894048 3.907923821493 4.761124282091 5.666146794816 6.612133132211 7.587733587069 8.581243162244 9.580741979083 10.57423830615 11.54981242951 12.49575965782 13.40073076386 14.25386812851 15.04493603352 15.76444344443 16.40375789222 16.95520905488 17.41218075881 17.76919036956 18.02195458166 18.16744079278 18.20390349245 18.13090522332 17.94932179066 17.66133178213 17.2703904358 16.78118816422 16.19959428944 15.53258662994 14.78816776744 13.97526905212 13.10364343555 12.18374845946 11.22662078966 10.24374379398 9.246909785418 8.248078518749 7.259233719937 6.292239297133 5.358696996662 4.469807224674 3.636234652256 2.867980271607 2.174261400904 1.563401106027 1.04272825617 0.6184906561269 0.295771756008 0.07843426906184 -0.02974505276656 -0.05279221970929
+                         </afc:VectorAttribute>
+                         <afc:VectorAttribute name="path_z_data">
+                           0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                         </afc:VectorAttribute>
+                    </dcf:DcfMachine>
+                    <dcf:DcfSmartDriver name="smartdriver" active="true" userDefined="false" task="vehicle_limits" courseFile="assigned_at_analysis" max_driving_accel="18" max_braking_accel="30" max_lh_turn_accel="24" max_rh_turn_accel="24" samplePeriod="0.01" autoVX="false" autoAccX="false" autoGear="false"/>
+                    <dcf:DcfEndCondition name="END_CONDITION" active="true" userDefined="false" type="distance" test="&gt;&gt;" conditionType="end" triggerValue="113.93763750953593" allowedError="0" filterTime="0" delayTime="0" groupName="__NOGROUP__"/>
+               </dcf:DcfMini>
+          </dcf:DcfManeuver>
+     </dcf:Dcf>
+</afc>

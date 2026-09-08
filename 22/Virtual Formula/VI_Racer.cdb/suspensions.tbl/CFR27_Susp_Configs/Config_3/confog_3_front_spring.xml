@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<afc xmlns="http://www.mscsoftware.com/:vfc" xmlns:afc="http://www.mscsoftware.com/:afc">
+  <afc:Bibliography>
+    <File schema="afc" version="2.0.0.0" publicationDate="2007-11-04 22:09:49+01:00" />
+    <Revision version="19.0" />
+    <Corporation author="MSC.Software" URI="http://www.mscsoftware.com/" />
+    <Author user="FAmbr" name="-unknown name-" />
+    <Environment hostName="LFAmbr" operatingSystem="MS Windows NT 5.1" />
+    <Application name="MSC/AFC" version="02.00.00" />
+    <SuspensionGenFile name="C:/Users/hrush/Full-Car-Simulation/22/Virtual Formula/VI_Racer.cdb/suspensions.tbl/CFR27_Susp_Configs/Config_3/confog_3_front_output.sgs"/>
+  </afc:Bibliography>
+  <afc:Units>
+    <afc:UnitSetting name="angle" current="deg" />
+    <afc:UnitSetting name="current" current="ampere" />
+    <afc:UnitSetting name="force" current="newton" />
+    <afc:UnitSetting name="length" current="mm" />
+    <afc:UnitSetting name="luminosity" current="candela" />
+    <afc:UnitSetting name="mass" current="kg" />
+    <afc:UnitSetting name="quantity" current="mole" />
+    <afc:UnitSetting name="solidAngle" current="steradian" />
+    <afc:UnitSetting name="temperature" current="kelvin" />
+    <afc:UnitSetting name="time" current="sec" />
+    <afc:UnitSetting name="frequency" current="Hz" />
+  </afc:Units>
+  <SpringProperties name="spring" active="true" userDefined="false" diameter="1" coils="5" rate="43.781" freeLength="183.42" method="non_linear" independentAxis="deflection">
+    <Spline name="spline_data" id="0" active="true" userDefined="false" interpolation_method="akima" yLabel="Spring Force" xUnit="length" yUnit="force" datablock="Spring Force">
+      <![CDATA[
+         -21.2273 -929.351
+         -17.1151 -749.317
+         -12.9382 -566.448
+         -8.69418 -380.64
+         -4.38158 -191.83
+         -1.16745e-05 -0.000511123
+         4.44944 194.801
+         8.96351 392.432
+         13.5357 592.606
+         18.1544 794.816
+         22.7998 998.196
+]]>
+    </Spline>
+  </SpringProperties>
+</afc>

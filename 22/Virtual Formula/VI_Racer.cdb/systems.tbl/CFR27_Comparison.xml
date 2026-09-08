@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <afc xmlns="http://www.mscsoftware.com/:vfc" xmlns:afc="http://www.mscsoftware.com/:afc">
      <afc:Bibliography>
-          <File schema="afc" version="2.0.0.0" URI="mdids://VI_Racer/systems.tbl/CFR27_Comparison.xml" publicationDate="2026-09-05 17:17:57-04:00"/>
+          <File schema="afc" version="2.0.0.0" URI="mdids://VI_Racer/systems.tbl/CFR27_Comparison.xml" publicationDate="2026-09-08 14:16:10-04:00"/>
           <Revision version="2025.2"/>
           <Corporation author="VI-grade" URI="http://www.vi-grade.com"/>
-          <Author user="amp20" name="-unknown name-"/>
-          <Environment hostName="lecomputer" operatingSystem="MS Windows NT 10.0"/>
+          <Author user="hrush" name="-unknown name-"/>
+          <Environment hostName="Wang_Jangler" operatingSystem="MS Windows NT 10.0"/>
           <Application name="VI-CarRealTime" version="2025.2"/>
      </afc:Bibliography>
      <afc:Units>
@@ -26,12 +26,12 @@
                     <HardPoint name="left" active="true" userDefined="false" location="(0 0 0)"/>
                </HardPointPair>
           </SystemReference>
-          <SystemReference name="front_suspension" active="true" propertyURI="mdids://VI_Racer/subsystems.tbl/CFR27_Comparison_front_suspension.xml" userDefined="false">
+          <SystemReference name="front_suspension" active="true" propertyURI="mdids://VI_Racer/suspensions.tbl/CFR27_Susp_Configs/Config_6/Config6_with_antidive.xml" userDefined="false">
                <HardPointPair name="offset" active="true" userDefined="false" symmetry="left_right">
                     <HardPoint name="left" active="true" userDefined="false" location="(0 0 0)"/>
                </HardPointPair>
           </SystemReference>
-          <SystemReference name="rear_suspension" active="true" propertyURI="mdids://VI_Racer/subsystems.tbl/CFR27_Comparison_rear_suspension.xml" userDefined="false">
+          <SystemReference name="rear_suspension" active="true" propertyURI="mdids://VI_Racer/suspensions.tbl/CFR27_Susp_Configs/Config_6/Config6_rear.xml" userDefined="false">
                <HardPointPair name="offset" active="true" userDefined="false" symmetry="left_right">
                     <HardPoint name="left" active="true" userDefined="false" location="(0 0 0)"/>
                </HardPointPair>

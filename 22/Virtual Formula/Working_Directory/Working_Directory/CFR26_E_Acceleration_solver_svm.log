@@ -1,0 +1,134 @@
+
+========================================
+=            VI-CarRealTime            =
+========================================
+  VERSION : 2025.2
+  REVISION: 9b78eed1c5/release/2025.2
+  BUILT ON: lupus/28-May-25
+========================================
+
+
+Event data is being read from input XML file...
+
+Performing the simulation: CFR26_E_Acceleration.
+
+
+Initializing powertrain / driveline...
+Done.
+
+Initializing aero force...
+Done.
+
+Initializing tires...
+Loading road data file... (file=C:/Users/amp20/FULL-C~1/22/VIRTUA~1/VI_Racer.cdb/roads.tbl/Acceleration.rdf)
+
+road file total reading time = 0.002s
+
+ANALYTIC road model has been initialized...
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+initializing VI-TIRE Pacejka 96/02 model... OK
+
+Done.
+
+Initializing driver...
+
+Done.
+
+
+Solving for static equilibrium...
+
+
+Performing Vehicle Setup...
+ -- WARNING -- One or more setup targets are close to 0: 
+ -- WARNING -- the computed relative setup error could be inaccurate.
+ -- WARNING -- Please check the report file.
+ -- WARNING -- 
+ -- WARNING -- 
+ -- WARNING -- Setup targets have not been achieved 
+ -- WARNING -- within the maximum allowed tolerance:
+ -- WARNING -- ride height   -  (1.00%).
+ -- WARNING -- Maximum error:  (0.00%).
+ -- WARNING -- cross weigth  -  (1.00%).
+ -- WARNING -- Maximum error:  (0.00%).
+ -- WARNING --          pin height    -  (1.00%).
+ -- WARNING --          Maximum error:  (100.00%).
+
+
+
+Solving for static equilibrium...
+
+Static equilibrium has been achieved.
+Elapsed Simulation Time:  25.607 (sec).
+Elapsed Clock Time:  0.010 (sec).
+
+
+Setup Completed.
+
+
+Performing dynamic simulation...
+
+Simulation Progress (percent complete):
+0                      50                      100
+----------------
+ -- INFO --  
+ -- INFO -- <<<< VI-Driver MANEUVER INFO >>>>
+ -- INFO -- Maneuver 1 (MANEUVER_1) end condition(s) reached...
+ -- INFO -- (maneuver time = 4.931s / simulation time = 4.931s)
+ -- INFO --  
+ -- INFO -- Satisfied end condition information:
+ -- INFO -- == condition 1 ==
+ -- INFO -- name            : TARGET_PATH_S
+ -- INFO -- ID              : 1
+ -- INFO -- GROUP           : NOT_DEFINED
+ -- INFO -- test type       : >>
+ -- INFO -- reference value : 75
+ -- INFO -- tolerance value : 0
+ -- INFO -- measure value   : 75.1106709848
+ -- INFO --  
+ -- INFO -- 
+ -- INFO --  
+ -- INFO -- <<<< VI-Driver MANEUVER INFO >>>>
+ -- INFO -- ==   LAST MANEUVER COMPLETED   ==
+ -- INFO -- == DRIVER HAS BEEN DEACTIVATED ==
+ -- INFO --  
+ -- INFO -- 
+
+
+A Driving-Machine end condition was triggered: simulation
+terminated prior to simulation abort time.
+
+======================================
+=           VI-CarRealTime           =
+=    VEHICLE SIMULATION STATISTICS   =
+======================================
+
+ --- Simulation Statistics ---
+>> LAP TIME           = 4.931000 sec
+>> LAT ACCEL MAX      = 0.015695 G
+>> LAT ACCEL MIN      = -0.023579 G
+>> LON ACCEL MAX      = 1.435372 G
+>> LON ACCEL MIN      = -0.077701 G
+>> LON SPEED MAX      = 106.355741 km/h
+>> LON SPEED MIN      = 0.000000 km/h
+>> LON SPEED AVG      = 54.919664 km/h
+>> STEERING MAX       = 0.000022 deg
+>> STEERING MIN       = -0.001508 deg
+
+
+Writing output to file. Please Wait ...
+
+
+Elapsed Simulation Time:  4.931 (sec).
+Elapsed Clock Time:  0.423 (sec).
+Computational Efficiency:  11.657 (sim. sec)/(sec).
+
+
+Simulation is complete.
+ -- WARNING -- During analysis some spline extrapolations occur.
+ -- WARNING -- Check log file for further details after enabling verbose flag on system_tree->solver_executive_control.

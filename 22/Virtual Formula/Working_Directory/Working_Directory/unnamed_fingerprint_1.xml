@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<afc xmlns="http://www.mscsoftware.com/:vfc" xmlns:afc="http://www.mscsoftware.com/:afc" xmlns:chassis="http://www.mscsoftware.com/:chassis">
+     <afc:Bibliography>
+          <File schema="afc" version="2.0.0.0" URI="file://C:/Users/amp20/Desktop/Formula/CFR27/22/Virtual Formula/Working_Directory/unnamed_fingerprint_1.xml" publicationDate="2026-09-01 22:49:18-04:00"/>
+          <Revision version="2025.2"/>
+          <Corporation author="VI-grade" URI="http://www.vi-grade.com"/>
+          <Author user="amp20" name="-unknown name-"/>
+          <Environment hostName="lecomputer" operatingSystem="MS Windows NT 10.0"/>
+          <Application name="VI-CarRealTime" version="2025.2"/>
+     </afc:Bibliography>
+     <afc:Units>
+          <afc:UnitSetting name="angle" current="degree"/>
+          <afc:UnitSetting name="current" current="ampere"/>
+          <afc:UnitSetting name="force" current="newton"/>
+          <afc:UnitSetting name="length" current="mm"/>
+          <afc:UnitSetting name="luminosity" current="candela"/>
+          <afc:UnitSetting name="mass" current="kilogram"/>
+          <afc:UnitSetting name="quantity" current="mole"/>
+          <afc:UnitSetting name="solidAngle" current="steradian"/>
+          <afc:UnitSetting name="temperature" current="kelvin"/>
+          <afc:UnitSetting name="time" current="second"/>
+          <afc:UnitSetting name="vehicle_velocity" current="kph"/>
+          <afc:UnitSetting name="frequency" current="Hz"/>
+     </afc:Units>
+     <chassis:SVMFingerprint name="fingerprint_1" active="true" userDefined="false">
+          <afc:SineSteer name="CFR27_sin" active="true" userDefined="false" eventClass="SineSteer" systemFile="mdids://VI_Racer/systems.tbl/CFR27.xml" overlayCapable="true" doAnimation="true" doPlot="true" doReport="true" doCustomPostprocessing="false" doCustomSolverPostprocessing="false" integrationTimeStep="0.001" outputTimeStep="0.01" integrator="Runge-Kutta midstep" useRoadFile="true" roadFile="mdids://carrealtime_shared/roads.tbl/flat.rdf" fLroadFile="mdids://carrealtime_shared/roads.tbl/flat.rdf" fRroadFile="mdids://carrealtime_shared/roads.tbl/flat.rdf" rLroadFile="mdids://carrealtime_shared/roads.tbl/flat.rdf" rRroadFile="mdids://carrealtime_shared/roads.tbl/flat.rdf" individualRoad="false" useRoadGraphicsFile="false" useEventLapSensorDRD="false" lapSensor="No Lap Sensor" simulationMode="interactive" broadcastMode="multiple_run" showRoadWidgets="true" showLapSensorWidgets="false" enableIndividualRoad="true" tireLimits="false" tLFZMin="1000.0" tLFZMax="5000.0" tLFZStep="500.0" tLCamberMin="-3.0" tLCamberMax="3.0" tLCamberStep="0.5" tLLongitudinalSlipMin="-0.3" tLLongitudinalSlipMax="0.3" tLLongitudinalSlipStep="0.05" tLLateralSlipMin="-20.0" tLLateralSlipMax="20.0" tLLateralSlipStep="0.5" showTrailerWidgets="true" showSolverSettingsWidgets="true" showTireLimitsWidgets="true" trailerActiveFlag="false" plotConfigFile="mdids://carrealtime_shared/plot_configs.tbl/vi_animator_std.xpl" customPostprocessingScript="mdids://carrealtime_shared/postprocessing_scripts.tbl/sineSteer_report.py" customXgrFile_flag="false" customXgrFileMode="replace" multipleLapsFlag="false" multipleLapsMin="1" multipleLapsMax="1" multipleLapsVelocityTolerance="1000.0" multipleLapsSplitResults="false" driverParametersUpdate="false" vehicleUserLocationActive="false" vehicleAutomaticLocationActive="false" vehicleAutomaticLocationS="0" vehicleUserAutomaticZActive="false" vehicleUserLocationX="0" vehicleUserLocationY="0" vehicleUserLocationZ="0" vehicleUserOrientationYaw="0" vehicleUserOrientationPitch="0" vehicleUserOrientationRoll="0" vehicleUserStdTireRefLocationActive="false" vehicleUserStdTireRefLocationX="0" vehicleUserStdTireRefLocationY="0" vehicleUserStdTireRefLocationZ="0" vehicleUserStdTireRefOrientationPsi="0" vehicleUserStdTireRefOrientationTheta="0" vehicleUserStdTireRefOrientationPhi="0" useVehicleOverrideFile="false" debugStaticFlag="false" initialVelocity="18.0" steeringDemand="0" initialGear="1" endTime="10.0" cruiseControl="true" startTime="1.0" initialSteer="0" amplitude="30.0" frequency="0.5" phase="0" steerReleaseFlag="false" steerReleaseTime="5.0"/>
+     </chassis:SVMFingerprint>
+</afc>

@@ -1,0 +1,168 @@
+assemblyName
+AssemblyDoubleWishBonePR
+lonPosType
+front
+unitsFile
+length
+mm
+force
+newton
+end
+leftSuspFile
+suspType
+DoubleWishBonePR
+suspName
+CFR27_Config3_Front
+latPosType
+left
+lonPosType
+front
+wheelCenter           -771.5000    -609.6000     203.2000
+ucaFront              -890.0450    -244.1420     255.1380
+ucaRear               -622.6750    -244.1420     267.2010
+ucaOuter              -775.4940    -558.5370     292.6300
+lcaFront              -928.8680    -176.7430      89.2940
+lcaRear               -622.1470    -176.7430     113.8260
+lcaOuter              -780.0090    -577.5430     113.0000
+tierodOuter           -853.5900    -575.1940     167.6830
+tierodInner           -870.5000    -208.3600     147.8750
+pushrodOuter          -785.9000    -536.0840     138.5430
+pushrodInner          -785.9000    -268.2840     686.2010
+rockerPivot           -785.9000    -226.6040     652.3910
+rockerPivotAxis       -784.9000    -226.6040     652.3910
+rockerLink            -785.9000    -213.1040     705.9710
+springUpperMount      -785.9000     -44.0640     674.2010
+springLowerMount      -785.9000    -213.1040     705.9710
+damperUpperMount      -785.9000     -44.0640     674.2010
+damperLowerMount      -785.9000    -213.1040     705.9710
+toeAngle
+0
+camberAngle
+0
+svaAngle
+0
+steerRatio
+-0.06666
+groundHeigth
+203
+wheelRadius
+203.2
+wheelWidth
+190.5
+toeSetupActive
+0
+toeSetup
+0
+camberSetupActive
+0
+camberSetup
+0
+casterSetupActive
+0
+casterSetup
+0
+pinHeigthActive
+0
+pinHeigth
+0
+rideHeigthActive
+0
+rideHeigth
+0
+pushrodVariationActive
+0
+pushrodVariation
+0
+rideHeightRefPosition
+1
+springPreload
+500
+cgHeight
+325
+wheelBase
+1543
+driveRatio
+0
+springType
+0
+springAttachment
+3
+tierodInnerAttachment
+0
+springLinear
+1
+damperLinear
+1
+springScaleFactor
+1
+damperScaleFactor
+1
+bumpstopActive
+0
+bumpstopClearance
+0
+bumpstopScaleFactor
+1
+reboundstopActive
+0
+reboundstopClearance
+0
+reboundstopScaleFactor
+1
+kSpring
+43.781
+cDamper
+2.045
+brakeRatio
+49
+pRodAttachment
+2
+kUcaFront          1.0E+07 1.0E+07 1.0E+07 1.0E+04 1.0E+04 1.0E+04 0 0 0
+kUcaRear           1.0E+07 1.0E+07 1.0E+07 1.0E+04 1.0E+04 1.0E+04 0 0 0
+kLcaFront          1.0E+07 1.0E+07 1.0E+07 1.0E+04 1.0E+04 1.0E+04 0 0 0
+kLcaRear           1.0E+07 1.0E+07 1.0E+07 1.0E+04 1.0E+04 1.0E+04 0 0 0
+kTierodInner       1.0E+07 1.0E+07 1.0E+07 1.0E+04 1.0E+04 1.0E+04 0 0 0
+end
+rightSuspFile
+symm
+end
+analysisFile
+setup
+1
+kin
+3
+jounceStart
+-25
+jounceEnd
+25
+nJounce
+10
+steerStart
+-100
+steerEnd
+100
+nSteer
+10
+forceXStart
+-3000
+forceXEnd
+3000
+forceYStart
+-3000
+forceYEnd
+3000
+momentZStart
+-200000
+momentZEnd
+200000
+nForce
+10
+deltaJounce
+15
+nRoll
+4
+outputFile
+output_front
+defaultDatabase
+private
+end

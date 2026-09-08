@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VIANIMATOR>
+  <viframework::viobjects::GraphicModel name="road">
+    <viframework::viosg::GraphicObject graphicFile="mdids://carrealtime_shared/shell_graphics.tbl/flat_road.obj" graphicScale="1" initPhi="0" initPsi="1.02069463991938e-11" initTheta="0" initX="-0" initY="-0" initZ="0" name="road"></viframework::viosg::GraphicObject>
+  </viframework::viobjects::GraphicModel>
+</VIANIMATOR>
