@@ -401,6 +401,55 @@ def test_cfr27_scaffold_reproduces_cfr26_when_fed_cfr26():
         c27.P.clear(); c27.P.update(saved)
 
 
+def test_cfr27_scaffold_uses_the_same_sizing_method_as_cfr26():
+    """
+    Feed the CFR27 script CFR26's WHOLE parameter set and it must land on
+    CFR26's published 1341 -- not merely on the same axle stiffnesses.
+
+    This pins the two things that were wrong in it until 2026-09-11 and are
+    easy to reintroduce:
+
+      1. it called stiffness_for_setups (all-pairs), which is degenerate on a
+         real box and returns 2772 here against the box method's 1207;
+      2. it applied the build loss as x1.20 rather than 1/(1-loss), the error
+         already fixed once on CFR26 -- x1.20 only covers a 16.7% loss.
+
+    Together those reported roughly 3327 where the method gives 1341. A CFR27
+    number 2.5x too big would have been believed, because nobody had a second
+    route to check it against.
+    """
+    import cfr27_target as c27
+    saved = dict(c27.P)
+    try:
+        c27.P.update({
+            "spring_rates_front_lbf_in": ts.CFR26_SPRING_BOX,
+            "spring_rates_rear_lbf_in": ts.CFR26_SPRING_BOX,
+            "motion_ratio_front": cc.MOTION_RATIO_FRONT,
+            "motion_ratio_rear": cc.MOTION_RATIO_REAR,
+            "track_front_mm": cc.FRONT_TRACK_MM,
+            "track_rear_mm": cc.REAR_TRACK_MM,
+            "tyre_rate_lbf_in": cc.TYRE_RATE_LBF_IN,
+            "arb_settings_front_nm_deg": (0.0,),
+            "arb_settings_rear_nm_deg": (0.0,),
+            "front_mass_fraction": ts.FRONT_MASS_FRACTION,
+            "criterion": 0.90,
+            "build_loss": ts.BUILD_LOSS,
+        })
+        assert c27.missing() == []
+        tgt, floor, _, _, _ = c27.target()
+
+        box = ts.spring_box_setups(ts.CFR26_SPRING_BOX, ts.CFR26_SPRING_BOX)
+        assert floor == pytest.approx(ts.stiffness_for_box(box)[0], rel=1e-9)
+        assert floor == pytest.approx(1207.0, abs=5.0)
+        assert tgt == pytest.approx(1341.0, abs=5.0)
+
+        # and it must NOT be the all-pairs answer, nor a x(1+loss) margin
+        assert tgt != pytest.approx(ts.stiffness_for_setups(box)[0] * 1.20, rel=0.05)
+        assert tgt == pytest.approx(floor / (1.0 - ts.BUILD_LOSS), rel=1e-9)
+    finally:
+        c27.P.clear(); c27.P.update(saved)
+
+
 def test_tyre_rate_is_actually_used():
     """A softer tyre must lower the axle roll stiffness."""
     soft = ts.axle_from_spring(225.0, 1.188, 1219.2, tyre_rate_n_mm=60.0)

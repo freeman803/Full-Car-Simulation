@@ -18,19 +18,23 @@ this is the way it is.
 
 WHAT CHANGED FROM CFR26, AND WHY IT MATTERS:
 
-  1. CFR27 IS EXPECTED TO HAVE ANTI-ROLL BARS. CFR26 did not, which is why its
-     roll stiffness distribution sat on its mass split and the chassis was
-     asked to carry almost no torque. A bar is what CREATES the demand the
-     frame has to carry, so CFR27's target will not be a small correction to
+  1. CFR27 IS EXPECTED TO HAVE ANTI-ROLL BARS. CFR26 did not, so its roll
+     stiffness distribution was welded to whichever four springs were fitted
+     -- 44.8% front, against a 50.7% mass split. A bar is what lets you push
+     that split around deliberately, and so it is what CREATES the demand the
+     frame has to carry. CFR27's target will not be a small correction to
      CFR26's -- expect it to move a lot.
 
   2. THE TARGET SCALES WITH TOTAL ROLL STIFFNESS, near enough proportionally.
-     If CFR27 is stiffer in roll than CFR26's 601 N*m/deg, the frame target
+     If CFR27 is stiffer in roll than CFR26's 658.6 N*m/deg, the frame target
      rises in step. Do not carry CFR26's number across.
 
-  3. SIZE OFF THE SPRING BOX, not the setup you expect to run. See
-     stiffness_for_setups() -- the binding case is usually the stiffest
-     combination you own crossed with the widest bar setting.
+  3. SIZE OFF THE HARDWARE, not the setup you expect to run -- and off the
+     FULL REACHABLE RANGE, not every pair of setups. This file uses
+     stiffness_for_box(), the same routine as CFR26. Do not switch it to
+     stiffness_for_setups(): that is the all-pairs variant, it is degenerate
+     on a real box, and on CFR26's own hardware it returns 2772 against the
+     box method's 1207. Read its docstring before touching this.
 """
 
 import numpy as np
@@ -95,11 +99,15 @@ P = {
     # when roll stiffness distribution differs from roll MOMENT distribution.
     # At a 50/50 mass split the no-torque condition lands at a 50/50 roll
     # stiffness split, which is close to what several spring pairs give. So a
-    # car built exactly to this target is, like CFR26, insensitive to chassis
-    # flex in its NEUTRAL setup -- the frame only starts working once the ARB
-    # is used to move away from it. That does not lower the target (the target
-    # comes from the widest adjustment, not the neutral one), but it does mean
-    # a chassis-stiffness problem would again be invisible until you tune.
+    # car built exactly to this target could be nearly insensitive to chassis
+    # flex in its NEUTRAL setup -- the frame would only start working once the
+    # ARB is used to move away from it. That does not lower the target (the
+    # target comes from the widest adjustment, not the neutral one), but it
+    # does mean a chassis-stiffness problem could be invisible until you tune.
+    #
+    # CFR26 was thought to be in exactly that position, on a 49.1% stiffness
+    # split. The corrected rear spring (2026-09-11) put it at 44.8% and it is
+    # not. Do not assume the neutral setup is the benign one -- check it.
     "front_mass_fraction": 0.500,
 
     # --- team decision, NOT a suspension input -----------------------------
@@ -109,9 +117,15 @@ P = {
     # practice all agree. See torsional_stiffness.headline() for the sweep.
     "criterion": 0.90,
 
-    # Build margin. 1.20 is the MRacing paper's 10-20% designed-vs-built gap.
-    # Replace with a Concordia figure once CFR26 has been on a twist rig.
-    "build_margin": 1.20,
+    # Build LOSS, as a fraction -- how much softer the built car comes out
+    # than its FEA. Applied as 1/(1-loss), NOT as x(1+loss): a 20% loss needs
+    # x1.25, and x1.20 only covers 16.7%. That error was made once on CFR26
+    # and fixed; do not reintroduce it here by typing a multiplier.
+    #
+    # 0.10 matches CFR26 and the Elsevier "up to 10% is acceptable" figure.
+    # It is ASSUMED, not measured -- nobody has twist-tested a Concordia car.
+    # Replace it the day CFR26 comes off a rig.
+    "build_loss": 0.10,
 }
 
 # NOT NEEDED for the target, so do not chase them for this: sprung mass,
@@ -186,35 +200,50 @@ def setups():
 
 
 def target():
-    """(target, floor, worst pair, commanded change) once parameters are in."""
+    """
+    (target, floor, soft label, stiff label, commanded pts) once parameters
+    are in. Same method as CFR26: the criterion applied to the FULL reachable
+    range, then divided by (1 - build loss).
+    """
     s = setups()
-    floor, pair, change = ts.stiffness_for_setups(
+    floor, soft, stiff, change = ts.stiffness_for_box(
         s, threshold=P["criterion"],
         front_mass_fraction=P["front_mass_fraction"])
-    return floor * P["build_margin"], floor, pair, change
+    return floor * ts.build_multiplier(P["build_loss"]), floor, soft, stiff, change
 
 
 def report():
     s = setups()
     tot = [(kf + kr, 100 * kf / (kf + kr), lab) for kf, kr, lab in s]
-    tgt, floor, pair, change = target()
+    tgt, floor, soft, stiff, change = target()
+    loss = P["build_loss"]
+    mult = ts.build_multiplier(loss)
     print("=" * 70)
     print("CFR27 CHASSIS TORSIONAL STIFFNESS TARGET")
     print("=" * 70)
     print(f"\n  >>  DESIGN TO  {tgt:>6.0f} N*m/deg  <<"
-          f"   ({100*P['criterion']:.0f}% criterion"
-          f" + {100*(P['build_margin']-1):.0f}% build margin)\n")
+          f"   ({100*P['criterion']:.0f}% criterion,"
+          f" {100*loss:.0f}% build loss, x{mult:.3f})\n")
     print(f"  reachable setups          {len(s)}")
     print(f"  total roll stiffness      {min(t[0] for t in tot):.0f}"
           f" - {max(t[0] for t in tot):.0f} N*m/deg")
     print(f"  balance range reachable   {min(t[1] for t in tot):.1f}"
           f" - {max(t[1] for t in tot):.1f} % front")
-    print(f"  binding pair              {pair[0]} <-> {pair[1]}"
-          f"   ({change:.2f} pts)")
-    print(f"  floor before margin       {floor:.0f} N*m/deg")
-    print(f"\n  For comparison, CFR26 (no ARB): 601 N*m/deg roll stiffness,")
-    print( "  target 1557 on the same criterion. Expect CFR27 to differ a lot —")
-    print( "  the ARB is what makes the frame work for a living.\n")
+    print(f"  sized off the full range  {soft} <-> {stiff}"
+          f"   ({change:.2f} pts commanded)")
+    print(f"  floor before build loss   {floor:.0f} N*m/deg")
+    print()
+    print("  THE CRITERION IS THE DOMINANT CHOICE -- it moved CFR26's answer by")
+    print("  a factor of five. Do not accept the default without arguing it.")
+    for th in (0.80, 0.85, 0.90, 0.95):
+        k = ts.stiffness_for_box(s, threshold=th,
+                                 front_mass_fraction=P["front_mass_fraction"])[0]
+        mark = "  <--" if abs(th - P["criterion"]) < 1e-9 else "     "
+        print(f"    {100*th:>3.0f}%  {k:>6.0f} floor  ->  {k*mult:>7.0f} target{mark}")
+    print(f"\n  For comparison, CFR26 (no ARB): 658.6 N*m/deg roll stiffness,")
+    print( "  44.8% front, target 1341 on the same criterion and build loss.")
+    print( "  Expect CFR27 to differ a lot -- the ARB is what makes the frame")
+    print( "  work for a living.\n")
 
 
 def main():
