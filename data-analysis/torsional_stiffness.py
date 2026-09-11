@@ -129,12 +129,33 @@ def spring_roll_stiffness(wheel_rate_n_mm, track_mm, arb_nm_deg=0.0):
 
     The ARB adds directly: it is a roll spring in parallel with the road
     springs, so their rates sum.
+
+    SOURCE: Milliken & Milliken, RCVD, ch.16 "Ride and Roll Rates", p.603
+    (sec 16.5) -- "Front spring roll rate (independent suspension):
+    K_phi = K_R * T^2 / 1375". The 1375 is only units: 12*360/pi = 1375.1
+    takes lb/in and inches to lb-ft/deg, so RCVD's form and the SI one above
+    are the same equation. RCVD's own worked example (K_R = 181 lb/in,
+    T = 65.58 in -> 566 lb-ft/deg) is reproduced by this function; see
+    test_reproduces_rcvd_worked_example.
+
+    The ARB form is RCVD p.593 (sec 16.2), where the bar's contribution is
+    ADDED to the roll rate the ride rates already give -- parallel, not
+    series. Riley & George SAE 2002-01-3300 p.4-5 is the general series-chain
+    result, and is the cite for the frame/installation chain, NOT for this.
     """
     return 0.5 * wheel_rate_n_mm * track_mm ** 2 * DEG / 1000.0 + arb_nm_deg
 
 
 def tyre_roll_stiffness(track_mm, tyre_rate_n_mm=None):
-    """The tyres' own roll stiffness, N*m/deg. Same geometry, tyre rate."""
+    """
+    The tyres' own roll stiffness, N*m/deg. Same geometry, tyre rate.
+
+    SOURCE: RCVD p.581 (sec 16.1), definition 3 "Tire Rate -- vertical force
+    per unit vertical displacement of the tire at its operating load. This
+    can be a large part of the total suspension spring on cars with stiff
+    springing." Same K = 1/2 * k * track^2 as the springs, because the tyre
+    pair is a roll spring in exactly the same geometry.
+    """
     k = cc.TYRE_RATE_N_MM if tyre_rate_n_mm is None else tyre_rate_n_mm
     return 0.5 * k * track_mm ** 2 * DEG / 1000.0
 
@@ -153,6 +174,20 @@ def axle_roll_stiffness(wheel_rate_n_mm, track_mm, arb_nm_deg=0.0,
 
     With no ARB and rigid installation this reproduces the design sheet's
     295.0 / 306.1 N*m/deg exactly.
+
+    SOURCE, and this settles the reference question above: RCVD p.581
+    (sec 16.1) defines ride rate as "the wheel center rate MODIFIED BY THE
+    TIRE VERTICAL RATE ... for an infinitely stiff tire, the ride rate and
+    wheel center rates would be equal", and defines roll rate as provided by
+    "the RIDE RATES, axle track width, and anti-roll bar" -- ride rates, not
+    wheel rates. The series arithmetic is RCVD p.602 (sec 16.5),
+    K_W = K_R*K_T/(K_T - K_R), which is 1/K_R = 1/K_W + 1/K_T rearranged;
+    p.604 writes the live-axle case as an explicit series combination of the
+    two roll rates, which is the form used here.
+
+    RCVD's LR (linkage ratio, spring travel per wheel travel) is the
+    RECIPROCAL of the motion ratio used in this repo, so RCVD's
+    K_W = K_S * LR^2 (p.602) is our k_wheel = k_spring / MR^2.
     """
     chain = [spring_roll_stiffness(wheel_rate_n_mm, track_mm, arb_nm_deg)]
     if np.isfinite(k_install_n_mm):

@@ -21,6 +21,48 @@ import case_common as cc
 import torsional_stiffness as ts
 
 
+# Milliken & Milliken, RCVD ch.16 "Ride and Roll Rates". lbf/in -> N/mm.
+N_MM_PER_LBF_IN = 4.448222 / 25.4
+NM_PER_LBFT = 1.0 / 0.737562
+
+
+def test_reproduces_rcvd_worked_example():
+    """
+    RCVD p.603 (sec 16.5), front spring roll rate, independent suspension:
+
+        K_phi = K_R * T^2 / 1375 = 181 * 65.58^2 / 1375 = 566 lb-ft/deg
+
+    Pins the formula itself against the textbook rather than against our own
+    car, so a units slip cannot hide behind CFR26's constants. The 1375 is
+    12*360/pi = 1375.1 -- lb/in and inches to lb-ft/deg -- so RCVD's form and
+    the SI one in spring_roll_stiffness are the same equation.
+    """
+    k_ride_n_mm = 181.0 * N_MM_PER_LBF_IN
+    track_mm = 65.58 * 25.4
+
+    k = ts.spring_roll_stiffness(k_ride_n_mm, track_mm)          # N*m/deg
+    assert k / NM_PER_LBFT == pytest.approx(566.0, abs=1.0)
+
+    # and the textbook's own unit constant agrees with ours
+    assert 181.0 * 65.58 ** 2 / 1375 == pytest.approx(566.0, abs=1.0)
+
+
+def test_ride_rate_is_the_wheel_rate_in_series_with_the_tyre():
+    """
+    RCVD p.602 (sec 16.5) states the same relation solved for wheel rate:
+
+        K_W = K_R * K_T / (K_T - K_R)
+
+    which is 1/K_R = 1/K_W + 1/K_T rearranged. Round-trip it through the
+    series chain this module uses, so the two forms cannot drift apart.
+    """
+    k_ride, k_tyre = 181.0, 2000.0                     # RCVD's example, lb/in
+    k_wheel = k_ride * k_tyre / (k_tyre - k_ride)
+    assert k_wheel == pytest.approx(199.0, abs=1.0)    # RCVD p.602
+
+    assert ts.series_stiffness(k_wheel, k_tyre) == pytest.approx(k_ride, rel=1e-9)
+
+
 def test_suspension_referenced_matches_case5():
     """case5_gradients derives 749 N*m/deg from the springs alone, no tyre."""
     kf, kr = ts.cfr26_axle_stiffness_susp()
