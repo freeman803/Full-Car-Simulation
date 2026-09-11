@@ -33,13 +33,13 @@ each headline as [susp-ref ...]. See case_common's reference note.
 CROSS-CHECKED AGAINST THE SPRINGS, which is the only check here that does
 not route through the shock pots. It checks the SUSPENSION-referenced
 slope, since springs alone set that one and no tyre term enters. With no
-ARB the four springs (225 lbf/in front, 200 rear) make the entire roll
-stiffness: wheel rates 27.92 / 32.51 N/mm give 749 N*m/deg (mind the units
+ARB the four springs (225 lbf/in front, 250 rear) make the entire roll
+stiffness: wheel rates 27.92 / 40.63 N/mm give 846 N*m/deg (mind the units
 — see the derivation in case_common). Against the measured 0.898 deg/g
-that is a roll moment of ~673 N*m per g. Note MR enters stiffness as MR^2,
+that is a roll moment of ~760 N*m per g. Note MR enters stiffness as MR^2,
 so this is twice as sensitive to a motion-ratio error as the angles are.
 
-WHAT IT DOES NOT ESTABLISH: an absolute scale. Turning 673 N*m/g into a CG
+WHAT IT DOES NOT ESTABLISH: an absolute scale. Turning 760 N*m/g into a CG
 height needs a sprung mass and a roll-axis height, neither of which has
 been measured on this car, so that step is not taken here. (An earlier
 version of this note asserted "CG 0.280 m above the roll axis at 245 kg
@@ -504,8 +504,8 @@ def main():
           "is the reference")
     print("design targets use. [susp-ref ...] is the raw fitted slope the "
           "shock pots see.")
-    print("Roll stiffness from the springs (225/200 lbf/in, no ARB): "
-          "749 N*m/deg, i.e. ~673 N*m per g")
+    print("Roll stiffness from the springs (225/250 lbf/in, no ARB): "
+          "846 N*m/deg, i.e. ~760 N*m per g")
     print("at the measured 0.898 deg/g susp-ref. Not an absolute scale "
           "check — see the module docstring.")
 

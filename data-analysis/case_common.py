@@ -704,8 +704,8 @@ SIGNAL_WARNINGS = {
 #   - TYRE DEFLECTION MAKES IT WORSE, NOT BETTER. What a shock pot sees is
 #     chassis roll MINUS the tyre-deflection roll at its own axle, so the
 #     axle taking more load transfer reads LOW. Rear roll stiffness is the
-#     larger share here (k_wr*T_r^2 = 22.2e6 against front 20.7e6, i.e.
-#     51.7% rear), so the rear should read low — and it reads HIGH. Undoing
+#     larger share here (k_wr*T_r^2 = 27.7e6 against front 20.7e6, i.e.
+#     57.2% rear), so the rear should read low — and it reads HIGH. Undoing
 #     the tyre term at 150 N/mm widens the gap from 9.5% to ~10.6%.
 #   - THE FRONT PAIR IS ASYMMETRIC AND THE REAR IS NOT. Per-corner travel on
 #     skidpad is FL 6.76 / FR -11.38 mm/g (68% apart) against RL 9.11 /
@@ -717,15 +717,21 @@ SIGNAL_WARNINGS = {
 # CROSS-CHECKED AGAINST THE SPRINGS, which is the first check on this
 # analysis that does not route through the shock pots, so the first that
 # could have caught a scale error. With no ARB the four springs (225 lbf/in
-# front, 200 rear = 39.40 / 35.03 N/mm) make the entire roll stiffness:
-# wheel rates 27.92 / 32.51 N/mm give
+# front, 250 rear = 39.40 / 43.78 N/mm) make the entire roll stiffness:
+# wheel rates 27.92 / 40.63 N/mm give
 #     K_roll = (k_wf*T_f^2 + k_wr*T_r^2) / 2
-#            = 4.294e7 N*mm/rad = 42940 N*m/rad = 749 N*m/deg
+#            = 4.847e7 N*mm/rad = 48470 N*m/rad = 846 N*m/deg
 # (mind the units — k is N/mm and track is mm, so the bracket is N*mm/rad).
 # Against the measured 0.898 deg/g suspension-referenced that is a roll
-# moment of ~673 N*m per g.
+# moment of ~760 N*m per g.
 #
-# WHAT IT DOES NOT ESTABLISH: an absolute scale. Going from 673 N*m/g to a
+# THE REAR SPRING WAS 250 lbf/in, NOT 200 -- corrected 2026-09-11 on the
+# team's word. It had been wrong here since the constant was first typed,
+# and it moves a lot: rear wheel rate 32.51 -> 40.63 N/mm, the rear ground
+# multiplier 1.265 -> 1.331, pitch 1.245 -> 1.270, and this cross-check
+# 749 -> 846 N*m/deg. Anything quoting the old numbers predates the fix.
+#
+# WHAT IT DOES NOT ESTABLISH: an absolute scale. Going from 760 N*m/g to a
 # CG height needs a sprung mass and a roll-axis height, and NEITHER HAS
 # BEEN MEASURED ON THIS CAR. Nothing in this repo consumes a mass, a CG
 # height or a roll-axis height, so that step is deliberately not taken.
@@ -960,9 +966,11 @@ def mm_to_deg(wheel_mm, span_mm):
 # Inputs from the Simplified Steady State Suspension Spreadsheet.
 LBF_IN_TO_N_MM = 0.1751268
 
-# Spring rates the team chose and ran at competition.
+# Spring rates the team chose and ran at competition. The rear was recorded
+# as 200 lbf/in until 2026-09-11; it was 250. See the cross-check above for
+# what the correction moves.
 SPRING_RATE_FRONT_LBF_IN = 225.0
-SPRING_RATE_REAR_LBF_IN = 200.0
+SPRING_RATE_REAR_LBF_IN = 250.0
 
 # Tyre vertical rate, same front and rear, from the Simplified Steady State
 # Suspension Spreadsheet.
@@ -989,15 +997,15 @@ TYRE_RATE_N_MM = TYRE_RATE_LBF_IN * LBF_IN_TO_N_MM              # 122.59
 WHEEL_RATE_FRONT_N_MM = (SPRING_RATE_FRONT_LBF_IN * LBF_IN_TO_N_MM
                          / MOTION_RATIO_FRONT ** 2)              # 27.92
 WHEEL_RATE_REAR_N_MM = (SPRING_RATE_REAR_LBF_IN * LBF_IN_TO_N_MM
-                        / MOTION_RATIO_REAR ** 2)                # 32.51
+                        / MOTION_RATIO_REAR ** 2)                # 40.63
 
 GROUND_MULT_ROLL_FRONT = 1.0 + WHEEL_RATE_FRONT_N_MM / TYRE_RATE_N_MM   # 1.228
-GROUND_MULT_ROLL_REAR = 1.0 + WHEEL_RATE_REAR_N_MM / TYRE_RATE_N_MM     # 1.265
+GROUND_MULT_ROLL_REAR = 1.0 + WHEEL_RATE_REAR_N_MM / TYRE_RATE_N_MM     # 1.331
 
 # Pitch sums the two axles' compliances, so it gets ONE multiplier rather
 # than a per-axle pair.
 GROUND_MULT_PITCH = 1.0 + (2.0 / TYRE_RATE_N_MM) / (
-    1.0 / WHEEL_RATE_FRONT_N_MM + 1.0 / WHEEL_RATE_REAR_N_MM)           # 1.245
+    1.0 / WHEEL_RATE_FRONT_N_MM + 1.0 / WHEEL_RATE_REAR_N_MM)           # 1.270
 
 # The whole-car "avg" gets ONE stiffness-weighted multiplier rather than
 # being rebuilt from the two axle figures.

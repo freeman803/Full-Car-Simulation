@@ -64,21 +64,34 @@ def test_ride_rate_is_the_wheel_rate_in_series_with_the_tyre():
 
 
 def test_suspension_referenced_matches_case5():
-    """case5_gradients derives 749 N*m/deg from the springs alone, no tyre."""
+    """case5_gradients derives 846 N*m/deg from the springs alone, no tyre."""
     kf, kr = ts.cfr26_axle_stiffness_susp()
-    assert kf + kr == pytest.approx(749.0, abs=1.0)
+    assert kf + kr == pytest.approx(846.0, abs=1.0)
 
 
 def test_ground_referenced_matches_the_design_sheet():
     """
     The load-transfer model runs ground-referenced (ride rates), which is what
     the CFR26 design sheet reports. Getting this wrong inflates every axle
-    stiffness by the GROUND_MULT factors, ~23-27%.
+    stiffness by the GROUND_MULT factors, ~23-33%.
+
+    THE REAR NO LONGER MATCHES THE DESIGN SHEET, and that is deliberate. The
+    sheet reports 306.1, which is a 200 lbf/in rear spring; the car ran 250
+    (corrected 2026-09-11), giving 363.6. The FRONT still agrees exactly, so
+    the reference convention is still pinned -- which is what this test is
+    for. The rear disagreement is an input correction, not a units slip.
     """
     kf, kr = ts.cfr26_axle_stiffness()
     assert kf == pytest.approx(295.0, abs=0.5)
-    assert kr == pytest.approx(306.1, abs=0.5)
-    assert 100 * kf / (kf + kr) == pytest.approx(49.1, abs=0.2)
+    assert kr == pytest.approx(363.6, abs=0.5)
+    # what the sheet would have had, had it used the rear spring actually run
+    assert ts.axle_from_spring(200.0, cc.MOTION_RATIO_REAR,
+                               cc.REAR_TRACK_MM) == pytest.approx(306.1, abs=0.5)
+    # 44.8% front, not the 49.1% the sheet implies -- the corrected rear spring
+    # moves roll stiffness distribution 4.3 pts rearward. This is the number
+    # the two-mass model is most sensitive to: it now sits 5.9 pts away from
+    # the 50.7% mass split, so the chassis carries real torque.
+    assert 100 * kf / (kf + kr) == pytest.approx(44.8, abs=0.2)
 
 
 def test_the_two_references_differ_by_the_ground_multipliers():
@@ -250,8 +263,8 @@ if __name__ == "__main__":
 # --- spring box -------------------------------------------------------------
 
 def test_spring_box_reproduces_the_as_run_setup():
-    """225/200 out of the box must equal the as-built axle stiffnesses."""
-    setups = ts.spring_box_setups((225.0,), (200.0,))
+    """225/250 out of the box must equal the as-built axle stiffnesses."""
+    setups = ts.spring_box_setups((225.0,), (250.0,))
     assert len(setups) == 1
     kf, kr, _ = setups[0]
     assert (kf, kr) == pytest.approx(ts.cfr26_axle_stiffness())
@@ -326,15 +339,15 @@ def test_pooles_rule_is_self_inconsistent():
     kf, kr = ts.cfr26_axle_stiffness()
     # "the suspension" in a SERIES comparison is the series-equivalent, not
     # the parallel roll stiffness -- they differ by ~4x on this car.
-    k_series = ts.series_stiffness(kf, kr)          # 150.2
-    k_parallel = kf + kr                            # 601.1
+    k_series = ts.series_stiffness(kf, kr)          # 162.9
+    k_parallel = kf + kr                            # 658.7
     assert k_parallel / k_series == pytest.approx(4.0, rel=0.02)
     assert ts.stiffness_for_motion_share(5.0) / k_series == pytest.approx(19.0, rel=0.02)
     assert ts.chassis_motion_share(3.0 * k_series) == pytest.approx(25.0, rel=0.02)
-    # so his "3:1" reads as 450 against the series value but 1803 against the
+    # so his "3:1" reads as 489 against the series value but 1976 against the
     # parallel one, and only the latter matches the 1200-1500 he also quoted
-    assert 3.0 * k_series == pytest.approx(450, abs=10)
-    assert 3.0 * k_parallel == pytest.approx(1803, abs=10)
+    assert 3.0 * k_series == pytest.approx(489, abs=10)
+    assert 3.0 * k_parallel == pytest.approx(1976, abs=10)
 
 
 def test_full_delivery_is_unreachable():
@@ -371,7 +384,7 @@ def test_cfr27_scaffold_reproduces_cfr26_when_fed_cfr26():
     try:
         c27.P.update({
             "spring_rates_front_lbf_in": (225.0,),
-            "spring_rates_rear_lbf_in": (200.0,),
+            "spring_rates_rear_lbf_in": (250.0,),
             "motion_ratio_front": cc.MOTION_RATIO_FRONT,
             "motion_ratio_rear": cc.MOTION_RATIO_REAR,
             "track_front_mm": cc.FRONT_TRACK_MM,
@@ -432,7 +445,7 @@ def test_real_spring_box_shape():
     assert min(d) == pytest.approx(36.57, abs=0.05)
     assert max(d) == pytest.approx(57.00, abs=0.05)
     # the as-run pair must be in the box
-    assert any(lab == "225/200" for _, _, lab in box)
+    assert any(lab == "225/250" for _, _, lab in box)
 
 
 def test_range_ends_picks_the_extremes():
@@ -464,14 +477,24 @@ def test_box_range_method_beats_all_pairs_degeneracy():
 def test_the_assumed_window_was_a_good_proxy():
     """
     Before the real rates arrived we assumed a 40-60% window and got 1298.
-    The real box reaches 36.6-57.0% and gives 1207 -- within 8%, so the
-    assumption did not mislead. Worth keeping honest if the box changes.
+    That agreed with the real box to 8% -- until the rear spring was corrected
+    to 250 lbf/in (2026-09-11), which lifts total roll stiffness ~10% and the
+    assumed-window answer with it, to 1421. The real box still gives 1207,
+    because the BOX did not change and the target is sized off the box, not
+    off the as-run setup.
+
+    So the proxy is now ~18% high, and the lesson inverts: the window
+    shortcut tracks whatever total roll stiffness you feed it, while the real
+    criterion tracks the hardware. Use the box. Kept as a regression pin, not
+    as an endorsement.
     """
     kf, kr = ts.cfr26_axle_stiffness()
     assumed = ts.stiffness_for_range(kf + kr, [40.0, 60.0], threshold=0.90)
     box = ts.spring_box_setups(ts.CFR26_SPRING_BOX, ts.CFR26_SPRING_BOX)
     real = ts.stiffness_for_box(box)[0]
-    assert abs(real - assumed) / assumed < 0.10
+    assert assumed == pytest.approx(1421.0, abs=5.0)
+    assert real == pytest.approx(1207.0, abs=5.0)
+    assert 0.15 < abs(real - assumed) / assumed < 0.22
 
 
 def test_target_is_insensitive_to_the_mass_split():

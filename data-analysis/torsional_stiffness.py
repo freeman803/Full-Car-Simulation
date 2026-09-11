@@ -48,14 +48,20 @@ delivered_fraction() — literally (LLTD change actually delivered) /
 THE RESULT IS INVARIANT TO THE ROLL MOMENT SCALE. The system is linear, so
 scaling M_f and M_r together scales phi_f and phi_r together and cancels
 out of the LLTD ratio. Only the front/rear SPLIT of the moment matters.
-This is worth knowing here specifically: the open 1.167x design-vs-measured
-roll gap (see case5_gradients and case_common) lives entirely in the
-absolute roll moment, so IT DOES NOT AFFECT THE STIFFNESS TARGET AT ALL.
-Verified numerically by main().
+This is worth knowing here specifically: the design-vs-measured roll gap
+(see case5_gradients and case_common) lives entirely in the absolute roll
+moment, so IT DOES NOT AFFECT THE STIFFNESS TARGET AT ALL. Verified
+numerically by main().
+
+That gap was 1.167x and is now ~1.03x: correcting the rear spring to
+250 lbf/in (2026-09-11) lifts susp-referenced roll stiffness 749 -> 846
+N*m/deg, so the measured 0.898 deg/g implies ~760 N*m/g against the sheet's
+785 instead of 673. Most of that long-open discrepancy was a wrong input,
+not a modelling error. CHASSIS_TASKS 7d should be re-read with that in mind.
 
 WHAT CFR26 CAN AND CANNOT TELL US. CFR26 ran no ARB, so its roll stiffness
-distribution was welded to whatever the four springs gave: 48.3% front,
-against a 50.7% front mass split. Those nearly match, which means the
+distribution was welded to whatever the four springs gave: 44.8% front,
+against a 50.7% front mass split. Those are 5.9 points apart, which means the
 chassis is asked to carry almost no torque and the model correctly reports
 that chassis stiffness barely matters on the as-built car. That is a real
 result, not a modelling failure -- but it means the as-built configuration
@@ -100,14 +106,16 @@ DEG = np.pi / 180.0
 #
 #   SUSPENSION-referenced  built from WHEEL rates. Chassis measured against
 #                          the suspension, no tyre deflection in it. 362.2 /
-#                          387.3, total 749.4 N*m/deg. This is what
+#                          484.1, total 846.3 N*m/deg. This is what
 #                          case5_gradients cross-checks, because a shock pot
 #                          can only ever see suspension travel.
 #
 #   GROUND-referenced      built from RIDE rates (wheel rate in series with
 #                          the tyre). Chassis measured against the ROAD.
-#                          295.0 / 306.1, total 601.1 N*m/deg. This is what
-#                          the CFR26 design sheet reports.
+#                          295.0 / 363.6, total 658.6 N*m/deg. The design
+#                          sheet reports 295.0 / 306.1 -- it was built on a
+#                          200 lbf/in rear spring, and the car ran 250.
+#                          The FRONT still matches the sheet exactly.
 #
 # THE LOAD-TRANSFER MODEL NEEDS THE GROUND-REFERENCED ONE. The elastic load
 # transfer force passes through the spring AND then the tyre -- they are in
@@ -172,8 +180,9 @@ def axle_roll_stiffness(wheel_rate_n_mm, track_mm, arb_nm_deg=0.0,
 
         (road springs + ARB)  ->  installation  ->  tyre  ->  road
 
-    With no ARB and rigid installation this reproduces the design sheet's
-    295.0 / 306.1 N*m/deg exactly.
+    With no ARB and rigid installation this gives 295.0 / 363.6 N*m/deg. The
+    front reproduces the design sheet exactly; the rear does not, because the
+    sheet used a 200 lbf/in rear spring and the car ran 250.
 
     SOURCE, and this settles the reference question above: RCVD p.581
     (sec 16.1) defines ride rate as "the wheel center rate MODIFIED BY THE
@@ -213,7 +222,7 @@ def cfr26_axle_stiffness(arb_front=0.0, arb_rear=0.0, k_install_n_mm=np.inf):
 def cfr26_axle_stiffness_susp(arb_front=0.0, arb_rear=0.0):
     """
     Suspension-referenced pair -- springs and ARB only. Provided so the
-    case5_gradients cross-check (749 N*m/deg) stays reproducible here, NOT
+    case5_gradients cross-check (846 N*m/deg) stays reproducible here, NOT
     for use in the load-transfer model.
     """
     return (
@@ -241,15 +250,16 @@ def cfr26_axle_stiffness_susp(arb_front=0.0, arb_rear=0.0):
 # Pinned by test_target_is_insensitive_to_the_mass_split.
 #
 # Sprung mass and sprung CG height ARE needed for three other things, none of
-# them this: resolving the open 1.167x roll gap (CHASSIS_TASKS 7d), predicting
+# them this: resolving the residual ~1.03x roll gap (CHASSIS_TASKS 7d), predicting
 # roll angles in deg/g, and absolute load transfer in newtons.
 FRONT_MASS_FRACTION = 0.507
 
 # Absolute roll moment per g, N*m/g, from the design sheet's sprung mass
 # (243.5 kg incl. 68 kg driver) and sprung CG height above the roll axis
 # (340.8 mm sprung CG, roll centres 10/14 mm). NEITHER IS MEASURED, and this
-# number is the one implicated in the open 1.167x gap -- the measured roll
-# gradient implies ~673 N*m/g against this 785. It is carried only so the
+# number was implicated in the 1.167x gap -- with the rear spring corrected
+# the measured roll gradient implies ~760 N*m/g against this 785, a 3% gap
+# rather than 17%. It is carried only so the
 # model can report roll angles in deg/g; every LLTD and delivered-fraction
 # result is invariant to it (see module docstring).
 ROLL_MOMENT_NM_PER_G = 785.2
@@ -587,7 +597,8 @@ MIN_MEANINGFUL_LLTD_CHANGE_PTS = 1.0
 
 
 # The spring rates the team owns (from suspension, 2026-09-01). Same set at
-# both ends. CFR26 ran 225 front / 200 rear out of this box.
+# both ends. CFR26 ran 225 front / 250 rear out of this box (the rear was
+# recorded as 200 until 2026-09-11 -- see case_common).
 CFR26_SPRING_BOX = (150.0, 175.0, 200.0, 225.0, 250.0)
 
 
@@ -774,7 +785,7 @@ def report_installation():
     print("  Installation stiffness is quoted at the WHEEL, N/mm. For scale,")
     print(f"  CFR26's wheel rates are {cc.WHEEL_RATE_FRONT_N_MM:.1f} / "
           f"{cc.WHEEL_RATE_REAR_N_MM:.1f} N/mm, so a 200 N/mm installation")
-    print("  is about 7x the spring it sits behind.\n")
+    print("  is about 5-7x the spring it sits behind.\n")
 
     print("  (a) INSTALLATION ALONE, no ARB commanded — it still costs you.")
     print(f"      {'k_inst N/mm':>12} | {'delivered K_f/K_r':>19} | {'total':>8} | {'lost':>6}")
@@ -849,7 +860,8 @@ def report_installation():
 
     print("\n  (e) CFR26 SPECIFICALLY: installation stiffness CANNOT be backed")
     print("      out of the roll data. Compliance can only ever ADD roll, and")
-    print("      the measured roll gradient is already 1.167x BELOW prediction.")
+    print("      the measured roll gradient is still BELOW prediction (~1.03x,")
+    print("      down from 1.167x once the rear spring was corrected).")
     print("      So the telemetry bounds total compliance from above and says")
     print("      nothing about its size. It needs a twist test.")
 
@@ -1001,15 +1013,16 @@ def report_derivation():
     print(f"  wheel rates            {cc.WHEEL_RATE_FRONT_N_MM:6.2f} / {cc.WHEEL_RATE_REAR_N_MM:5.2f} N/mm")
     print(f"  tyre rate              {cc.TYRE_RATE_N_MM:6.2f} N/mm, in series -> ride rate")
     print(f"  susp-referenced roll   {sf:6.1f} / {sr:5.1f} N*m/deg   total {sf+sr:5.1f}"
-          f"   (case5 cross-check: 749)")
+          f"   (case5 cross-check: 846)")
     print(f"  GROUND-referenced roll {kf:6.1f} / {kr:5.1f} N*m/deg   total {k_total:5.1f}"
-          f"   (design sheet: 295.0 / 306.1)")
+          f"   (design sheet: 295.0 / 306.1 -- 200 lbf/in rear; car ran 250)")
     print(f"  ^ the model uses the ground-referenced pair: the tyre is in series")
     print(f"    in the load path, so it belongs in the roll rate.")
-    print(f"  roll stiffness distr   {dist:6.2f} % front   (design sheet: 49%)")
+    print(f"  roll stiffness distr   {dist:6.2f} % front   (design sheet: 49%, on the old rear spring)")
     print(f"  static mass distr      {100*FRONT_MASS_FRACTION:6.2f} % front")
-    print(f"  -> mismatch of only {abs(dist - 100*FRONT_MASS_FRACTION):.1f} points: the chassis is")
-    print(f"     asked to carry almost no torque.\n")
+    print(f"  -> mismatch of {abs(dist - 100*FRONT_MASS_FRACTION):.1f} points between stiffness and mass split.")
+    print(f"     That mismatch is what the chassis has to carry. It was 1.6 points")
+    print(f"     on the old 200 lbf/in rear spring; the correction nearly quadrupled it.\n")
 
     rigid = lltd(kf, kr, RIGID)
     floppy = lltd(kf, kr, 1e-9)
@@ -1020,10 +1033,10 @@ def report_derivation():
           f"{lltd(kf, kr, CFR26_FEA_NM_DEG) - rigid:.2f} points\n")
 
     print("  Invariance check -- LLTD vs the disputed roll moment scale:")
-    for scale, label in [(785.2, "sheet 785 N*m/g"), (673.0, "measured 673 N*m/g")]:
+    for scale, label in [(785.2, "sheet 785 N*m/g"), (760.0, "measured 760 N*m/g")]:
         print(f"    {label:>22}:  LLTD @ {CFR26_FEA_NM_DEG:.0f} = "
               f"{lltd(kf, kr, CFR26_FEA_NM_DEG, roll_moment=scale):.4f} % front")
-    print("    identical -> the open 1.167x gap does not touch the target.\n")
+    print("    identical -> the residual roll-moment gap does not touch the target.\n")
 
     print("=" * 72)
     print("WHAT THE CFR26 TARGET SHOULD HAVE BEEN     [Deakin, SAE 2000-01-3554]")

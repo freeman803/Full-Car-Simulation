@@ -193,10 +193,20 @@ limitations rather than discovering them in the tent.
       series with springs *and* bar together. If the bar has its own path to
       the frame, real saturation sits between that and none — resolving it
       needs the actual mounting geometry.
-- [ ] **7d — Resolve the 1.167× roll gap.** Measured roll is ~17 % below the
-      design sheet, and it sits between the roll moment (mass × CG height) and
-      the roll stiffness. It does **not** affect the stiffness target — the
-      scale cancels — but it is unexplained and worth closing.
+- [x] **7d — Resolve the 1.167× roll gap. MOSTLY CLOSED 2026-09-11: it was the
+      rear spring rate.** The repo had 200 lbf/in; the car ran 250. That lifts
+      suspension-referenced roll stiffness 749 → 846 N·m/deg, so the measured
+      0.898 °/g implies ~760 N·m/g rather than 673, against the sheet's 785.
+      **The gap goes 1.167× → ~1.03×.** README had already narrowed the
+      suspects to "wheel rates (spring rate or motion ratio), track, or the
+      measured slope" — it was the first of those.
+      **Still open:** (i) the residual ~3 %, which is now within the noise of
+      an unmeasured sprung mass and CG height, so it may not be worth chasing;
+      (ii) cases 3–5 have **not** been regenerated — the telemetry is not in
+      this repo — so every ground-referenced published figure still carries the
+      old ×1.265 rear multiplier and needs a re-run; (iii) the pitch-specific
+      1.147× residual is untouched by this and is now the live question.
+      It still does **not** affect the stiffness target — the scale cancels.
 
 ---
 
