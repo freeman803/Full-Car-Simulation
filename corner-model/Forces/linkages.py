@@ -8,7 +8,7 @@ _ROOT = Path(__file__).resolve().parents[1]
 if str(_ROOT) not in sys.path:
     sys.path.insert(0, str(_ROOT))
 
-from kinematics.hardpoints import HP, WHEEL_RADIUS
+from kinematics.hardpoints import HP
 
 # Each linkage as (inboard, outboard) base hardpoint names. Unit vectors and
 # force signs throughout Forces/ assume this order consistently: positive
@@ -44,18 +44,8 @@ def resolve_hardpoint(point_name: str, axle: Literal["front", "rear"] = "front")
 def resolve_contact_patch(axle: Literal["front", "rear"] = "front") -> np.ndarray:
     """
     Contact-patch position, used as the moment-balance reference point.
-
-    The front axle has an explicit `contact_patch` hardpoint. The rear axle
-    doesn't have one yet, so it's approximated as directly below
-    `rear_wheel_center` by the nominal (unloaded) wheel radius — add a real
-    `rear_contact_patch` hardpoint in kinematics/hardpoints.py for an exact
-    rear-axle solve.
     """
-    if axle == "front":
-        return HP["contact_patch"]
-
-    wheel_center = resolve_hardpoint("wheel_center", axle)
-    return wheel_center - np.array([0.0, 0.0, WHEEL_RADIUS])
+    return resolve_hardpoint("contact_patch", axle)
 
 
 def calculate_linkage_unit_vectors(axle: Literal["front", "rear"] = "front") -> dict[str, np.ndarray]:

@@ -33,36 +33,37 @@ HP: dict[str, np.ndarray] = {
     "LAA_outboard":      np.array([   739.52, 559,  113]),   # upright lower ball joint
 
     # Steering
-    "tie_rod_inboard":   np.array([830, 208.74, 154.64]),   # rack end
-    "tie_rod_outboard":  np.array([812.98, 553.25, 167.32]),   # upright steering knuckle
+    "tie_rod_inboard":   np.array([830, 208.36, 154.64]),   # rack end
+    "tie_rod_outboard":  np.array([813.177, 553.2537, 167.3273]),   # upright steering knuckle
 
     # Wheel / contact patch
-    "wheel_center":      np.array([   731, 609.5, 165.1]),   # rim centre
-    "contact_patch":     np.array([   731, 609.5,   0.0]),   # tyre contact (Z must be 0)
+    "wheel_center":      np.array([   731, 609.6, 203.2]),   # rim centre
+    "contact_patch":     np.array([   731, 609.6,   0.0]),   # tyre contact (Z must be 0)
 
-    # Rear corner hardpoints
-    "rear_LAA_front_inboard": np.array([ 256.8153, 487.7956, -277.8588]),
-    "rear_LAA_rear_inboard":  np.array([ 256.8153, 832.5374, -277.8588]),
-    "rear_LAA_outboard":      np.array([   292.00, 830.9, -510.41]),
+    # Rear corner hardpoints (Lotus sheet [x, y, z] -> [-x, y, z], same as front)
+    "rear_UAA_front_inboard": np.array([-487.7956, 277.8588, 256.8153]),
+    "rear_UAA_rear_inboard":  np.array([-832.5374, 277.8588, 256.8153]),
+    "rear_UAA_outboard":      np.array([-830.9,    510.41,   292.0]),
 
-    "rear_UAA_front_inboard": np.array([ 105.1149, 528.7743, -239.4689]),
-    "rear_UAA_rear_inboard":  np.array([ 105.1149, 795.1525, -239.4689]),
-    "rear_UAA_outboard":      np.array([   118.00, 783.1199, -523.2056]),
+    "rear_LAA_front_inboard": np.array([-528.7743, 239.4689, 105.1149]),
+    "rear_LAA_rear_inboard":  np.array([-795.1525, 239.4689, 105.1149]),
+    "rear_LAA_outboard":      np.array([-783.1199, 523.2056, 118.0]),
 
-    "rear_pushrod_outboard":  np.array([ 302.015, 830.9, -484.315]),
-    "rear_pushrod_inboard":   np.array([ 432.9636, 830.9, -351.75446]),
+    "rear_pushrod_outboard":  np.array([-830.9,    484.315,  302.015]),
+    "rear_pushrod_inboard":   np.array([-830.9,    351.7545, 432.9636]),
 
-    "rear_tie_rod_outboard":  np.array([ 118.00, 832.4617, -522.95]),
-    "rear_tie_rod_inboard":   np.array([ 105.1149, 832.4617, -239.4689]),
+    "rear_tie_rod_outboard":  np.array([-832.4617, 522.95,   118.0]),
+    "rear_tie_rod_inboard":   np.array([-832.4617, 239.4689, 105.1149]),
 
-    "rear_wheel_axis":        np.array([ 203.2, 812.44, -585.2]),
-    "rear_wheel_center":      np.array([ 203.2, 812.44, -584.2]),
+    "rear_wheel_axis":        np.array([-812.44,   585.2,    203.2]),
+    "rear_wheel_center":      np.array([-812.44,   584.2,    203.2]),
+    "rear_contact_patch":     np.array([-812.44,   584.2,      0.0]),   # tyre contact (Z must be 0)
 
-    "rear_bellcrank_pivot":   np.array([ 380.32, 830.9, -299.7506]),
-    "rear_bellcrank_axis":    np.array([ 380.32, 831.9, -299.7506]),
+    "rear_bellcrank_pivot":   np.array([-830.9,    299.7506, 380.32]),
+    "rear_bellcrank_axis":    np.array([-831.9,    299.7506, 380.32]),
 
-    "rear_shock_chassis":     np.array([ 370.2231, 830.9, -98.2623]),
-    "rear_shock_bellcrank":   np.array([ 462.82355, 830.9, -249.10215]),
+    "rear_shock_chassis":     np.array([-830.9,     98.2623, 370.2231]),
+    "rear_shock_bellcrank":   np.array([-830.9,    249.1021, 462.8235]),
 
     # Ball joint references — keep in sync with UAA_outboard / LAA_outboard
     "upper_BJ":          np.array([   735, 540, 292.63]),
