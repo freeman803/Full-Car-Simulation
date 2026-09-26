@@ -29,7 +29,7 @@ Full-Car-Simulation/corner-model/Forces/
 ├── tire_model.py                  ← Pacejka tire model — don't edit
 ├── linkages.py                    ← Linkage hardpoint geometry / unit vectors — don't edit
 ├── linkage_forces.py              ← Combines the above into linkage force balance — don't edit
-└── 16inx18in_R20 1.tir            ← Tire coefficient file (from TTC data) — don't edit
+└── R20 7.5x10_NEW.TIR            ← Tire coefficient file (PAC2002) — don't edit
 ```
 
 **The only file you will normally edit is `car_data.py`** (for overall car parameters) or `../kinematics/hardpoints.py` (for suspension geometry — see `KINEMATICS_README.md` one level up).

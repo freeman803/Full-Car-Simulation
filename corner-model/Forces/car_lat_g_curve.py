@@ -25,7 +25,7 @@ import numpy as np
 
 from tire_model import PacejkaTireModel
 
-TIR_PATH = Path(__file__).resolve().parent / "16inx18in_R20 1.tir"
+TIR_PATH = Path(__file__).resolve().parent / "R20 7.5x10_NEW.TIR"
 
 # Car settings, as in carG.m
 MASS_KG = 295.0
