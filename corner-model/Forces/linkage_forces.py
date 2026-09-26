@@ -17,6 +17,25 @@ from Forces.tire_model import PacejkaTireModel, DEFAULT_TIR_PATH
 LINKAGE_NAMES = list(LINKAGE_POINTS.keys())
 
 
+def build_equilibrium_matrix(axle: Literal["front", "rear"]) -> np.ndarray:
+    """
+    Build the 6x6 equilibrium system for one corner. Column i = [u_i; r_i x u_i],
+    where u_i is linkage i's inboard->outboard unit vector and r_i is the moment
+    arm from the contact patch to its outboard (upright) attachment point.
+    Columns follow LINKAGE_NAMES order.
+    """
+    contact_patch = resolve_contact_patch(axle)
+    columns = []
+    for name in LINKAGE_NAMES:
+        inboard_name, outboard_name = LINKAGE_POINTS[name]
+        inboard = resolve_hardpoint(inboard_name, axle)
+        outboard = resolve_hardpoint(outboard_name, axle)
+        u = (outboard - inboard) / np.linalg.norm(outboard - inboard)
+        r = outboard - contact_patch
+        columns.append(np.concatenate([u, np.cross(r, u)]))
+    return np.column_stack(columns)
+
+
 def calculate_corner_forces(
     lateral_g: float,
     long_g: float,
@@ -87,21 +106,7 @@ def calculate_corner_forces(
     # the corner's weight).
     tire_force = np.array([longitudinal_force_n, lateral_force_n, wheel_force_n], dtype=float)
     tire_moment = np.array([moment_x_nm, moment_y_nm, moment_z_nm], dtype=float)
-    contact_patch = resolve_contact_patch(axle)
-
-    # Build the 6x6 equilibrium system. Column i = [u_i; r_i x u_i], where
-    # u_i is linkage i's inboard->outboard unit vector and r_i is the moment
-    # arm from the contact patch to its outboard (upright) attachment point.
-    columns = []
-    for name in LINKAGE_NAMES:
-        inboard_name, outboard_name = LINKAGE_POINTS[name]
-        inboard = resolve_hardpoint(inboard_name, axle)
-        outboard = resolve_hardpoint(outboard_name, axle)
-        u = (outboard - inboard) / np.linalg.norm(outboard - inboard)
-        r = outboard - contact_patch
-        columns.append(np.concatenate([u, np.cross(r, u)]))
-
-    A = np.column_stack(columns)
+    A = build_equilibrium_matrix(axle)
     b = np.concatenate([tire_force, tire_moment])
     forces = np.linalg.solve(A, b)
 
@@ -148,12 +153,12 @@ def calculate_linkage_forces(
 
 if __name__ == "__main__":
     result = calculate_corner_forces(
-        lateral_g=1.0,
-        long_g=0.2,
-        axle="front",
-        slip_angle_rad=0.08,
-        slip_ratio=0.1,
-        pressure_pa=100000.0,
+        lateral_g=1.8,
+        long_g=0,
+        axle="rear",
+        slip_angle_rad=0.19,
+        slip_ratio=0,
+        pressure_pa=110000.0,
     )
     print("Tire forces at the contact patch:")
     for key, value in result["tire"].items():
