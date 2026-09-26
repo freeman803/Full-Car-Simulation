@@ -28,8 +28,9 @@ def calculate_total_wheel_load(
     Calculate the total load on one wheel for a given axle under lateral and
     longitudinal acceleration.
 
-    The result is the load on the loaded wheel side for positive lateral and
-    longitudinal G values.
+    The result is the load on the outside (loaded) wheel for positive lateral G.
+    Positive longitudinal G is braking: load transfers onto the front axle and
+    off the rear axle.
     """
     mass_kg = mass_kg if mass_kg is not None else CarData.MASS_KG
     cg_height_mm = cg_height_mm if cg_height_mm is not None else CarData.CG_HEIGHT_MM
@@ -49,25 +50,28 @@ def calculate_total_wheel_load(
         axle_mass_fraction = center_of_mass
         axle_track_mm = front_track_mm
         aero_axle_fraction = 1.0 - center_of_pressure
+        longitudinal_sign = 1.0
     else:
         axle_mass_fraction = 1.0 - center_of_mass
         axle_track_mm = rear_track_mm
         aero_axle_fraction = center_of_pressure
+        longitudinal_sign = -1.0
 
     static_load_on_one_wheel_n = mass_kg * g * axle_mass_fraction / 2.0
+    # Total front-to-rear transfer is m*a*h/L, shared between the two wheels on the axle.
     longitudinal_load_transfer_n = (
-        mass_kg * long_g * g * cg_height_mm / wheelbase_mm * axle_mass_fraction
+        longitudinal_sign * mass_kg * long_g * g * cg_height_mm / wheelbase_mm / 2.0
     )
     lateral_load_transfer_n = (
         mass_kg * lateral_g * g * cg_height_mm / axle_track_mm * 0.5
     )
-    aero_downforce_on_axle_n = total_downforce_N * aero_axle_fraction
+    aero_downforce_on_wheel_n = total_downforce_N * aero_axle_fraction / 2.0
 
     total_wheel_load_n = (
         static_load_on_one_wheel_n
         + longitudinal_load_transfer_n
         + lateral_load_transfer_n
-        + aero_downforce_on_axle_n
+        + aero_downforce_on_wheel_n
     )
 
     return float(total_wheel_load_n)
@@ -75,8 +79,8 @@ def calculate_total_wheel_load(
 
 if __name__ == "__main__":
     example_load = calculate_total_wheel_load(
-        lateral_g=1.0,
-        long_g=0.2,
-        axle="front",
+        lateral_g=0,
+        long_g=-1.1,
+        axle="rear",
     )
     print(f"Example front wheel load: {example_load:.2f} N")
