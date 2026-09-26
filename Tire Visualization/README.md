@@ -19,8 +19,7 @@ There are two ways to use it: a **local web app** (recommended) and a
 | `tire_viz_app.py` | Web app server (Python standard library only) |
 | `tire_viz_app.html` | Web app UI |
 | `tire_visualizer.py` | The Magic Formula tire model (MF 6.1/6.2 + PAC2002) + interactive CLI version |
-| `16inx18in_R20 1.tir` | MF-Tyre 6.1 tire coefficient file (CFR27) — the default |
-| `R20 7.5x10.TIR` | PAC2002 tire coefficient file |
+| `R20 7.5x10_NEW.TIR` | PAC2002 tire coefficient file — the default |
 
 ## Quick start — web app
 
@@ -102,21 +101,17 @@ both are already in the project environment.
   `LFZ0`/`LFZO` scaling-factor spelling, and a neutral reference pressure.
   PAC2002 has no inflation-pressure model, so the **pressure input has no
   effect** for those files (the app shows a note when you sweep pressure on
-  one). Note that MZ *is* meaningful for `R20 7.5x10.TIR`, unlike the MF6.1
-  file (see below).
+  one).
 - The UI works in psi and degrees; the `.tir` file itself is in Pa and
   radians and is converted internally.
 - Outputs can never be fixed — they are functions of the inputs. That's why
   the app asks for one input to sweep and one output to plot, rather than
   letting you fix forces/moments.
 
-### Known quirks of `16inx18in_R20 1.tir`
+### Known quirks of `R20 7.5x10_NEW.TIR`
 
-- `UNLOADED_RADIUS = 19.58` is labeled meters but is treated as centimeters
-  (0.1958 m ≈ 16 in OD) — the only plausible reading.
 - All rolling-resistance coefficients (QSY1–QSY8) are zero, so **MY ≡ 0**.
   The app shows a note when MY is selected.
-- The aligning-moment fit has near-zero pneumatic trail (QDZ1 ≈ 5e-5,
-  QCZ1 ≈ 116 where typical values are ~0.1 and ~1.2), so **MZ comes out
-  near zero** (~0.1 N·m). If realistic aligning moments matter, that section
-  of the `.tir` needs a better fit.
+- The longitudinal fit has a horizontal shift (PHX1 ≈ 0.027) and a very high
+  slip stiffness, so **FX is ~900 N at zero slip ratio** (at FZ ≈ 800 N).
+- Peak friction is scaled down by `LMUX = LMUY = 0.66`.

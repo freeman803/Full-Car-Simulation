@@ -33,7 +33,7 @@ import numpy as np
 PSI_TO_PA = 6894.757
 EPS = 1e-10
 
-DEFAULT_TIR = Path(__file__).with_name("16inx18in_R20 1.tir")
+DEFAULT_TIR = Path(__file__).with_name("R20 7.5x10_NEW.TIR")
 
 
 def parse_tir(path: Path) -> dict[str, float]:
