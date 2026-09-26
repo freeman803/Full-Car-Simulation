@@ -17,3 +17,7 @@ Thumbs.db
 
 # VS Code
 .vscode/settings.json
+
+# PyInstaller build output (large binaries)
+data_analysis/telemetry/build/
+data_analysis/telemetry/dist/
