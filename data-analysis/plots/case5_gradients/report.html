@@ -1,0 +1,253 @@
+<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Case 5 — Roll and Pitch Gradient</title><style>
+:root {
+  color-scheme: light dark;
+  --surface: #fcfcfb; --card: #ffffff; --border: #e4e3df;
+  --text: #0b0b0b; --muted: #52514e; --accent: #2a78d6;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --surface: #1a1a19; --card: #232322; --border: #383835;
+    --text: #ffffff; --muted: #c3c2b7; --accent: #3987e5;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 2rem 1.5rem 5rem; background: var(--surface);
+  color: var(--text);
+  font: 15px/1.6 ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+.wrap { max-width: 1200px; margin: 0 auto; }
+h1 { font-size: 1.7rem; margin: 0 0 .25rem; }
+h2 {
+  font-size: 1.15rem; margin: 2.5rem 0 .75rem;
+  padding-top: 1.25rem; border-top: 1px solid var(--border);
+}
+.sub { color: var(--muted); margin: 0 0 2rem; font-size: .9rem; }
+.cards { display: flex; flex-wrap: wrap; gap: .75rem; margin: 1.5rem 0; }
+/* Each event's headline numbers as one labelled band. A bare <h2> over a
+   loose flex row held up at three events and fell apart at five: case5's
+   32 cards and case6's 17 read as one undifferentiated wall of numbers.
+   The rule under the event name is what makes the boundary survive a group
+   whose cards wrap onto several lines. */
+section.cardgroup { margin: 1.75rem 0 0; }
+section.cardgroup > h2 {
+  font-size: .78rem; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--muted); font-weight: 600;
+  margin: 0; padding: 0 0 .45rem;
+  border-top: none; border-bottom: 1px solid var(--border);
+}
+section.cardgroup > .cards { margin: .75rem 0 0; }
+.card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: .85rem 1.1rem; min-width: 150px;
+}
+.card .label {
+  color: var(--muted); font-size: .72rem; text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.card .value { font-size: 1.45rem; font-weight: 600; margin-top: .2rem; }
+.card .unit { font-size: .85rem; color: var(--muted); font-weight: 400; }
+pre.console {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 1.1rem 1.3rem; overflow-x: auto;
+  font: 12.5px/1.55 ui-monospace, "Cascadia Code", Consolas, monospace;
+  white-space: pre; color: var(--text);
+}
+figure { margin: 1.25rem 0 0; }
+figcaption {
+  color: var(--muted); font-size: .78rem; margin-bottom: .4rem;
+  text-transform: uppercase; letter-spacing: .04em;
+  display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap;
+}
+/* Reset the caption's uppercase/tracking — this is a control, not a label,
+   and it has to read as clickable at a glance. */
+a.popout {
+  color: var(--accent); text-transform: none; letter-spacing: 0;
+  font-weight: 600; font-size: .8rem; text-decoration: none;
+  white-space: nowrap; margin-left: auto;
+}
+a.popout:hover { text-decoration: underline; }
+iframe.plot {
+  width: 100%; height: 520px; border: 1px solid var(--border);
+  border-radius: 8px; background: #fff; display: block;
+}
+nav { margin-bottom: 2rem; font-size: .9rem; }
+nav a { color: var(--accent); margin-right: 1rem; }
+.empty { color: var(--muted); font-style: italic; }
+
+/* Sticky bar: on a page this long, scrolling back to a link at the top to
+   reach a sibling report is the main navigation cost. */
+.bar {
+  position: sticky; top: 0; z-index: 20; margin: -2rem -1.5rem 1.5rem;
+  padding: .6rem 1.5rem; background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex; flex-wrap: wrap; gap: .4rem; align-items: center;
+  font-size: .82rem;
+}
+.bar a {
+  color: var(--muted); text-decoration: none; padding: .25rem .6rem;
+  border: 1px solid var(--border); border-radius: 999px; white-space: nowrap;
+}
+.bar a:hover { color: var(--text); border-color: var(--accent); }
+.bar a.home { color: var(--accent); border-color: var(--accent); }
+.bar a.current {
+  color: var(--text); font-weight: 600; background: var(--card);
+  border-color: var(--muted);
+}
+.bar .spacer { flex: 1; }
+
+/* Collapsed by default = the page opens on the numbers, not on 40 iframes.
+   It also means nothing below a section has to be scrolled past to reach. */
+details.section {
+  border: 1px solid var(--border); border-radius: 10px;
+  background: var(--card); margin: 1rem 0; overflow: hidden;
+}
+details.section > summary {
+  cursor: pointer; padding: .8rem 1.1rem; font-weight: 600;
+  list-style: none; display: flex; align-items: center; gap: .6rem;
+}
+details.section > summary::-webkit-details-marker { display: none; }
+details.section > summary::before {
+  content: "▸"; color: var(--muted); font-size: .85em;
+  transition: transform .15s;
+}
+details.section[open] > summary::before { transform: rotate(90deg); }
+details.section > summary:hover { color: var(--accent); }
+details.section > summary .count {
+  color: var(--muted); font-weight: 400; font-size: .8rem;
+}
+details.section > summary .note {
+  color: var(--muted); font-weight: 400; font-size: .8rem; font-style: italic;
+}
+details.section .body { padding: 0 1.1rem 1.1rem; }
+details.section h2 { margin-top: 1.5rem; }
+details.section h2:first-child { border-top: none; padding-top: 0; margin-top: .5rem; }
+
+/* Per-file heading inside an event section. */
+h2.file {
+  font-size: .95rem; font-family: ui-monospace, monospace;
+  display: flex; align-items: center; gap: .5rem; flex-wrap: wrap;
+}
+
+.badge {
+  font-size: .68rem; font-weight: 600; padding: .15rem .5rem;
+  border-radius: 999px; letter-spacing: .03em; text-transform: uppercase;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+.badge.error { background: #fdecec; color: #a3231f; }
+.badge.warn  { background: #fdf3e2; color: #8a5a06; }
+.badge.info  { background: #eaf1fb; color: #23558f; }
+@media (prefers-color-scheme: dark) {
+  .badge.error { background: #3a1f1e; color: #ff9a97; }
+  .badge.warn  { background: #38301c; color: #f0c069; }
+  .badge.info  { background: #1e2b3d; color: #8fbaf0; }
+}
+
+/* Known data problems, shown next to the files they apply to. */
+.warn {
+  border-left: 3px solid; border-radius: 6px; padding: .6rem .85rem;
+  margin: .6rem 0; font-size: .85rem; line-height: 1.5;
+}
+.warn .who {
+  display: block; font-family: ui-monospace, monospace; font-weight: 600;
+  font-size: .78rem; margin-bottom: .2rem;
+}
+.warn.error { border-color: #d0342c; background: rgba(208, 52, 44, .07); }
+.warn.warn  { background: rgba(214, 154, 42, .09); border-color: #d69a2a; }
+.warn.info  { background: rgba(42, 120, 214, .07); border-color: var(--accent); }
+
+table.instants { border-collapse: collapse; width: 100%; font-size: .85rem; }
+table.instants th, table.instants td {
+  border-bottom: 1px solid var(--border); padding: .45rem .6rem;
+  text-align: left; vertical-align: top;
+}
+table.instants th {
+  font-size: .72rem; text-transform: uppercase; letter-spacing: .04em;
+  color: var(--muted); font-weight: 600;
+}
+table.instants .mono { font-family: ui-monospace, monospace; white-space: nowrap; }
+table.instants .muted { color: var(--muted); }
+table.instants .links a {
+  color: var(--accent); margin-right: .7rem; white-space: nowrap;
+}
+.scroll { overflow-x: auto; }
+
+ul.conv { margin: .3rem 0; padding-left: 1.2rem; font-size: .88rem; }
+ul.conv li { margin: .35rem 0; }
+ul.conv code {
+  font-family: ui-monospace, monospace; font-size: .85em;
+  background: var(--surface); padding: .1rem .3rem; border-radius: 4px;
+}
+</style></head><body><div class='wrap'><div class='bar'><a class='home' href='../index.html'>&#8962; all reports</a><a href='../case_summary.html'>summary table</a><a href='../case1_max_gs/report.html'>case1</a><a href='../case2_max_roll/report.html'>case2</a><a href='../case3_max_pitch/report.html'>case3</a><a href='../case4_combined_roll_pitch/report.html'>case4</a><a href='../case5_gradients/report.html' class='current'>case5</a><span class='spacer'></span><a href='#plots-skidpad'>skidpad</a><a href='#plots-autocross'>autocross</a><a href='#plots-brake'>brake</a><a href='#plots-accel'>accel</a></div><h1>Case 5 — Roll and Pitch Gradient</h1><p class='sub'>case5_gradients &middot; generated 2026-08-05 19:08</p><section class='cardgroup'><h2>SKIDPAD</h2><div class='cards'><div class='card'><div class='label'>roll front</div><div class='value'>0.8467 <span class='unit'></span></div></div><div class='card'><div class='label'>roll front ground</div><div class='value'>1.106 <span class='unit'></span></div></div><div class='card'><div class='label'>roll rear</div><div class='value'>0.914 <span class='unit'></span></div></div><div class='card'><div class='label'>roll rear ground</div><div class='value'>1.24 <span class='unit'></span></div></div><div class='card'><div class='label'>roll avg</div><div class='value'>0.8796 <span class='unit'></span></div></div><div class='card'><div class='label'>roll avg ground</div><div class='value'>1.172 <span class='unit'></span></div></div><div class='card'><div class='label'>steady roll front</div><div class='value'>0.8619 <span class='unit'></span></div></div><div class='card'><div class='label'>steady roll front ground</div><div class='value'>1.126 <span class='unit'></span></div></div><div class='card'><div class='label'>steady roll rear</div><div class='value'>0.92 <span class='unit'></span></div></div><div class='card'><div class='label'>steady roll rear ground</div><div class='value'>1.248 <span class='unit'></span></div></div><div class='card'><div class='label'>steady roll avg</div><div class='value'>0.8904 <span class='unit'></span></div></div><div class='card'><div class='label'>steady roll avg ground</div><div class='value'>1.186 <span class='unit'></span></div></div></div></section><section class='cardgroup'><h2>AUTOCROSS</h2><div class='cards'><div class='card'><div class='label'>roll front</div><div class='value'>0.6423 <span class='unit'></span></div></div><div class='card'><div class='label'>roll front ground</div><div class='value'>0.8392 <span class='unit'></span></div></div><div class='card'><div class='label'>roll rear</div><div class='value'>0.8787 <span class='unit'></span></div></div><div class='card'><div class='label'>roll rear ground</div><div class='value'>1.192 <span class='unit'></span></div></div><div class='card'><div class='label'>roll avg</div><div class='value'>0.758 <span class='unit'></span></div></div><div class='card'><div class='label'>roll avg ground</div><div class='value'>1.01 <span class='unit'></span></div></div><div class='card'><div class='label'>pitch</div><div class='value'>0.4975 <span class='unit'></span></div></div><div class='card'><div class='label'>pitch ground</div><div class='value'>0.6616 <span class='unit'></span></div></div></div></section><section class='cardgroup'><h2>BRAKE</h2><div class='cards'><div class='card'><div class='label'>pitch</div><div class='value'>0.4132 <span class='unit'></span></div></div><div class='card'><div class='label'>pitch ground</div><div class='value'>0.5495 <span class='unit'></span></div></div></div></section><section class='cardgroup'><h2>ACCEL</h2><div class='cards'><div class='card'><div class='label'>pitch</div><div class='value'>0.5699 <span class='unit'></span></div></div><div class='card'><div class='label'>pitch ground</div><div class='value'>0.758 <span class='unit'></span></div></div></div></section><div id='instants'></div><details class='section'><summary>Console report <span class='note'>full numeric output</span></summary><div class='body'><pre class='console'>
+==============================================================================
+CASE 5 — ROLL AND PITCH GRADIENTS (deg/g)
+==============================================================================
+Roll stiffness from the springs (225/200 lbf/in, no ARB): 749 N*m/deg -&gt; 0.898 deg/g at CG 0.280 m above the roll axis
+
+=== SKIDPAD — ROLL GRADIENT (10.0 Hz low-pass) ===
+    front                  0.847 deg/g  [ground-ref 1.106]   R²=0.950  n=49,577  G range 2.89  intercept +0.041 deg
+    rear                   0.914 deg/g  [ground-ref 1.240]   R²=0.964  n=49,577  G range 2.89  intercept +0.046 deg
+    avg                    0.880 deg/g  [ground-ref 1.172]   R²=0.967  n=49,577  G range 2.89  intercept +0.043 deg
+
+    per-corner wheel travel per g (mm/g — isolates a sensor fault from a setup change):
+      file                              FL        FR        RL        RR
+      skidpad_austin_both (2).c       6.66    -11.36      8.86     -9.78
+
+    raw pot voltage (V), 0.5-99.5 pctile band — a band that never rises above 1.0 V means out of stroke:
+      file                                    FL              FR              RL              RR
+      skidpad_austin_both (2).c        0.32-1.19       0.53-2.09       0.77-1.84       0.69-1.92
+    rear vs front         rear is +7.9% of front — the known front/rear disagreement, in deg/g
+
+    STEADY-STATE ONLY (the number to quote):
+    front                  0.862 deg/g  [ground-ref 1.126]   R²=0.987  n=8,178  G range 2.88  intercept -0.025 deg
+    rear                   0.920 deg/g  [ground-ref 1.248]   R²=0.984  n=8,178  G range 2.88  intercept +0.027 deg
+    avg                    0.890 deg/g  [ground-ref 1.186]   R²=0.991  n=8,178  G range 2.88  intercept +0.000 deg
+
+=== AUTOCROSS — ROLL GRADIENT (10.0 Hz low-pass) ===
+    front                  0.642 deg/g  [ground-ref 0.839]   R²=0.807  n=175,951  G range 2.86  intercept -0.004 deg
+    rear                   0.879 deg/g  [ground-ref 1.192]   R²=0.948  n=175,951  G range 2.86  intercept +0.022 deg
+    avg                    0.758 deg/g  [ground-ref 1.010]   R²=0.927  n=175,951  G range 2.86  intercept +0.009 deg
+
+    per file:
+      file                          front     R²     rear     R²  rear/front
+      autocross_andrew1 (2).csv     0.603  0.413    0.784  0.619       1.30x
+      autocross_andrew2 (2).csv     0.302  0.914    0.867  0.946       2.87x
+      autocross_josh1 (2).csv       0.801  0.932    0.879  0.965       1.10x
+      autocross_josh2 (2).csv       0.818  0.934    0.892  0.958       1.09x
+
+      [!] FRONT GRADIENT VARIES 2.7x ACROSS THE POOLED FILES (0.302 to 0.818 deg/g).
+          The pooled figure above averages what look like different car
+          configurations and should NOT be quoted. See the README on the
+          front roll-stiffness split.
+
+    per-corner wheel travel per g (mm/g — isolates a sensor fault from a setup change):
+      file                              FL        FR        RL        RR
+      autocross_andrew1 (2).csv       9.53     -3.30      2.10    -13.88
+      autocross_andrew2 (2).csv       2.46     -3.96      8.51     -9.16
+      autocross_josh1 (2).csv         6.21    -10.84      8.89     -9.05
+      autocross_josh2 (2).csv         6.58    -10.83      8.76     -9.43
+
+    raw pot voltage (V), 0.5-99.5 pctile band — a band that never rises above 1.0 V means out of stroke:
+      file                                    FL              FR              RL              RR
+      autocross_andrew1 (2).csv        0.67-1.12       1.08-1.74       1.07-1.48       0.83-1.49
+      autocross_andrew2 (2).csv        0.19-0.88       0.30-1.41       0.77-1.82       0.69-1.87   [!] OUT OF STROKE — never leaves the extension end
+      autocross_josh1 (2).csv          0.46-1.20       0.78-2.01       0.77-1.89       0.69-1.89
+      autocross_josh2 (2).csv          0.32-1.20       0.54-2.05       0.77-1.89       0.69-1.95
+    rear vs front         rear is +36.8% of front — the known front/rear disagreement, in deg/g
+
+=== ACCEL — PITCH GRADIENT (10.0 Hz low-pass) ===
+    pitch                  0.570 deg/g  [ground-ref 0.758]   R²=0.804  n=74,215  G range 1.28  intercept -0.019 deg
+
+=== BRAKE — PITCH GRADIENT (10.0 Hz low-pass) ===
+    pitch                  0.413 deg/g  [ground-ref 0.549]   R²=0.885  n=66,900  G range 1.83  intercept +0.039 deg
+
+=== AUTOCROSS — PITCH GRADIENT (10.0 Hz low-pass) ===
+    pitch                  0.497 deg/g  [ground-ref 0.662]   R²=0.861  n=175,951  G range 1.84  intercept +0.022 deg
+
+------------------------------------------------------------------------------
+Plots: plots\case5_gradients/&lt;event&gt;/
+The SCATTER is as much the result as the slope — a tight line means
+linear and lag-free, an open loop means hysteresis through transients.
+------------------------------------------------------------------------------
+
+</pre></div></details><div id='plots-skidpad'><details class='section' open><summary>SKIDPAD — plots <span class='count'>(2)</span></summary><div class='body'><figure><figcaption>roll gradient<a class='popout' href='skidpad/roll_gradient.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='skidpad/roll_gradient.html'></iframe></figure><figure><figcaption>roll gradient steady<a class='popout' href='skidpad/roll_gradient_steady.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='skidpad/roll_gradient_steady.html'></iframe></figure></div></details></div><div id='plots-autocross'><details class='section' open><summary>AUTOCROSS — plots <span class='count'>(2)</span></summary><div class='body'><figure><figcaption>pitch gradient<a class='popout' href='autocross/pitch_gradient.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='autocross/pitch_gradient.html'></iframe></figure><figure><figcaption>roll gradient<a class='popout' href='autocross/roll_gradient.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='autocross/roll_gradient.html'></iframe></figure></div></details></div><div id='plots-brake'><details class='section' open><summary>BRAKE — plots <span class='count'>(1)</span></summary><div class='body'><figure><figcaption>pitch gradient<a class='popout' href='brake/pitch_gradient.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='brake/pitch_gradient.html'></iframe></figure></div></details></div><div id='plots-accel'><details class='section' open><summary>ACCEL — plots <span class='count'>(1)</span></summary><div class='body'><figure><figcaption>pitch gradient<a class='popout' href='accel/pitch_gradient.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='accel/pitch_gradient.html'></iframe></figure></div></details></div></div></body></html>

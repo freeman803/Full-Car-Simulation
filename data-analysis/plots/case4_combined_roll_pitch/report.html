@@ -1,0 +1,388 @@
+<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Case 4 — Combined Roll + Pitch</title><style>
+:root {
+  color-scheme: light dark;
+  --surface: #fcfcfb; --card: #ffffff; --border: #e4e3df;
+  --text: #0b0b0b; --muted: #52514e; --accent: #2a78d6;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --surface: #1a1a19; --card: #232322; --border: #383835;
+    --text: #ffffff; --muted: #c3c2b7; --accent: #3987e5;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 2rem 1.5rem 5rem; background: var(--surface);
+  color: var(--text);
+  font: 15px/1.6 ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+.wrap { max-width: 1200px; margin: 0 auto; }
+h1 { font-size: 1.7rem; margin: 0 0 .25rem; }
+h2 {
+  font-size: 1.15rem; margin: 2.5rem 0 .75rem;
+  padding-top: 1.25rem; border-top: 1px solid var(--border);
+}
+.sub { color: var(--muted); margin: 0 0 2rem; font-size: .9rem; }
+.cards { display: flex; flex-wrap: wrap; gap: .75rem; margin: 1.5rem 0; }
+/* Each event's headline numbers as one labelled band. A bare <h2> over a
+   loose flex row held up at three events and fell apart at five: case5's
+   32 cards and case6's 17 read as one undifferentiated wall of numbers.
+   The rule under the event name is what makes the boundary survive a group
+   whose cards wrap onto several lines. */
+section.cardgroup { margin: 1.75rem 0 0; }
+section.cardgroup > h2 {
+  font-size: .78rem; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--muted); font-weight: 600;
+  margin: 0; padding: 0 0 .45rem;
+  border-top: none; border-bottom: 1px solid var(--border);
+}
+section.cardgroup > .cards { margin: .75rem 0 0; }
+.card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: .85rem 1.1rem; min-width: 150px;
+}
+.card .label {
+  color: var(--muted); font-size: .72rem; text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.card .value { font-size: 1.45rem; font-weight: 600; margin-top: .2rem; }
+.card .unit { font-size: .85rem; color: var(--muted); font-weight: 400; }
+pre.console {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 1.1rem 1.3rem; overflow-x: auto;
+  font: 12.5px/1.55 ui-monospace, "Cascadia Code", Consolas, monospace;
+  white-space: pre; color: var(--text);
+}
+figure { margin: 1.25rem 0 0; }
+figcaption {
+  color: var(--muted); font-size: .78rem; margin-bottom: .4rem;
+  text-transform: uppercase; letter-spacing: .04em;
+  display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap;
+}
+/* Reset the caption's uppercase/tracking — this is a control, not a label,
+   and it has to read as clickable at a glance. */
+a.popout {
+  color: var(--accent); text-transform: none; letter-spacing: 0;
+  font-weight: 600; font-size: .8rem; text-decoration: none;
+  white-space: nowrap; margin-left: auto;
+}
+a.popout:hover { text-decoration: underline; }
+iframe.plot {
+  width: 100%; height: 520px; border: 1px solid var(--border);
+  border-radius: 8px; background: #fff; display: block;
+}
+nav { margin-bottom: 2rem; font-size: .9rem; }
+nav a { color: var(--accent); margin-right: 1rem; }
+.empty { color: var(--muted); font-style: italic; }
+
+/* Sticky bar: on a page this long, scrolling back to a link at the top to
+   reach a sibling report is the main navigation cost. */
+.bar {
+  position: sticky; top: 0; z-index: 20; margin: -2rem -1.5rem 1.5rem;
+  padding: .6rem 1.5rem; background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex; flex-wrap: wrap; gap: .4rem; align-items: center;
+  font-size: .82rem;
+}
+.bar a {
+  color: var(--muted); text-decoration: none; padding: .25rem .6rem;
+  border: 1px solid var(--border); border-radius: 999px; white-space: nowrap;
+}
+.bar a:hover { color: var(--text); border-color: var(--accent); }
+.bar a.home { color: var(--accent); border-color: var(--accent); }
+.bar a.current {
+  color: var(--text); font-weight: 600; background: var(--card);
+  border-color: var(--muted);
+}
+.bar .spacer { flex: 1; }
+
+/* Collapsed by default = the page opens on the numbers, not on 40 iframes.
+   It also means nothing below a section has to be scrolled past to reach. */
+details.section {
+  border: 1px solid var(--border); border-radius: 10px;
+  background: var(--card); margin: 1rem 0; overflow: hidden;
+}
+details.section > summary {
+  cursor: pointer; padding: .8rem 1.1rem; font-weight: 600;
+  list-style: none; display: flex; align-items: center; gap: .6rem;
+}
+details.section > summary::-webkit-details-marker { display: none; }
+details.section > summary::before {
+  content: "▸"; color: var(--muted); font-size: .85em;
+  transition: transform .15s;
+}
+details.section[open] > summary::before { transform: rotate(90deg); }
+details.section > summary:hover { color: var(--accent); }
+details.section > summary .count {
+  color: var(--muted); font-weight: 400; font-size: .8rem;
+}
+details.section > summary .note {
+  color: var(--muted); font-weight: 400; font-size: .8rem; font-style: italic;
+}
+details.section .body { padding: 0 1.1rem 1.1rem; }
+details.section h2 { margin-top: 1.5rem; }
+details.section h2:first-child { border-top: none; padding-top: 0; margin-top: .5rem; }
+
+/* Per-file heading inside an event section. */
+h2.file {
+  font-size: .95rem; font-family: ui-monospace, monospace;
+  display: flex; align-items: center; gap: .5rem; flex-wrap: wrap;
+}
+
+.badge {
+  font-size: .68rem; font-weight: 600; padding: .15rem .5rem;
+  border-radius: 999px; letter-spacing: .03em; text-transform: uppercase;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+.badge.error { background: #fdecec; color: #a3231f; }
+.badge.warn  { background: #fdf3e2; color: #8a5a06; }
+.badge.info  { background: #eaf1fb; color: #23558f; }
+@media (prefers-color-scheme: dark) {
+  .badge.error { background: #3a1f1e; color: #ff9a97; }
+  .badge.warn  { background: #38301c; color: #f0c069; }
+  .badge.info  { background: #1e2b3d; color: #8fbaf0; }
+}
+
+/* Known data problems, shown next to the files they apply to. */
+.warn {
+  border-left: 3px solid; border-radius: 6px; padding: .6rem .85rem;
+  margin: .6rem 0; font-size: .85rem; line-height: 1.5;
+}
+.warn .who {
+  display: block; font-family: ui-monospace, monospace; font-weight: 600;
+  font-size: .78rem; margin-bottom: .2rem;
+}
+.warn.error { border-color: #d0342c; background: rgba(208, 52, 44, .07); }
+.warn.warn  { background: rgba(214, 154, 42, .09); border-color: #d69a2a; }
+.warn.info  { background: rgba(42, 120, 214, .07); border-color: var(--accent); }
+
+table.instants { border-collapse: collapse; width: 100%; font-size: .85rem; }
+table.instants th, table.instants td {
+  border-bottom: 1px solid var(--border); padding: .45rem .6rem;
+  text-align: left; vertical-align: top;
+}
+table.instants th {
+  font-size: .72rem; text-transform: uppercase; letter-spacing: .04em;
+  color: var(--muted); font-weight: 600;
+}
+table.instants .mono { font-family: ui-monospace, monospace; white-space: nowrap; }
+table.instants .muted { color: var(--muted); }
+table.instants .links a {
+  color: var(--accent); margin-right: .7rem; white-space: nowrap;
+}
+.scroll { overflow-x: auto; }
+
+ul.conv { margin: .3rem 0; padding-left: 1.2rem; font-size: .88rem; }
+ul.conv li { margin: .35rem 0; }
+ul.conv code {
+  font-family: ui-monospace, monospace; font-size: .85em;
+  background: var(--surface); padding: .1rem .3rem; border-radius: 4px;
+}
+</style></head><body><div class='wrap'><div class='bar'><a class='home' href='../index.html'>&#8962; all reports</a><a href='../case_summary.html'>summary table</a><a href='../case1_max_gs/report.html'>case1</a><a href='../case2_max_roll/report.html'>case2</a><a href='../case3_max_pitch/report.html'>case3</a><a href='../case4_combined_roll_pitch/report.html' class='current'>case4</a><a href='../../docs/case4.md'>calculations &amp; sources</a><span class='spacer'></span><a href='#instants'>key instants</a><a href='#plots-summary'>summary</a><a href='#plots-skidpad'>skidpad</a><a href='#plots-autocross'>autocross</a><a href='#plots-brake'>brake</a><a href='#plots-accel'>accel</a></div><h1>Case 4 — Combined Roll + Pitch</h1><p class='sub'>case4_combined_roll_pitch &middot; generated 2026-08-05 19:08</p><details class='section' open><summary>Units and sign conventions <span class='note'>read before interpreting any number here</span></summary><div class='body'><ul class='conv'><li><b>Per-corner wheel travel</b>, relative to that corner's own stopped-car baseline. <code>negative = COMPRESSION (bump)</code>, <code>positive = EXTENSION (droop)</code>. Both have a mechanical limit, so both extremes are reported.</li><li>These are <b>wheel</b> millimetres, not shock-pot millimetres — the motion ratio (1.188 front, 1.038 rear) is applied per corner <i>before</i> any roll/pitch/modal arithmetic.</li><li><b>heave</b> = all four corners moving together (no attitude change). <b>roll</b> = left pair vs right pair. <b>pitch</b> = front pair vs rear pair. <b>warp</b> = the diagonals opposing each other — the chassis being twisted. Each mode's mm is its contribution to <i>one</i> corner, and the four sum exactly to that corner's travel.</li><li><b>Longitudinal G positive = slowing down</b> (verified empirically against vehicle speed, not assumed). Lateral G positive = cornering left.</li><li>A peak flagged <b>NOT A DRIVING EVENT</b> happened below 3 m/s. The motion is real, but it is not a load the car saw on track.</li></ul></div></details><section class='cardgroup'><h2>SKIDPAD</h2><div class='cards'><div class='card'><div class='label'>worst travel</div><div class='value'>-22.18 <span class='unit'>mm</span></div></div><div class='card'><div class='label'>top avg</div><div class='value'>20.3 <span class='unit'>mm</span></div></div><div class='card'><div class='label'>worst roll</div><div class='value'>-1.201 <span class='unit'>°</span></div></div><div class='card'><div class='label'>worst pitch</div><div class='value'>-0.3799 <span class='unit'>°</span></div></div></div></section><section class='cardgroup'><h2>AUTOCROSS</h2><div class='cards'><div class='card'><div class='label'>worst travel</div><div class='value'>-21.52 <span class='unit'>mm</span></div></div><div class='card'><div class='label'>top avg</div><div class='value'>20.6 <span class='unit'>mm</span></div></div><div class='card'><div class='label'>worst roll</div><div class='value'>-1.235 <span class='unit'>°</span></div></div><div class='card'><div class='label'>worst pitch</div><div class='value'>-0.3311 <span class='unit'>°</span></div></div></div></section><section class='cardgroup'><h2>BRAKE</h2><div class='cards'><div class='card'><div class='label'>worst travel</div><div class='value'>-19.72 <span class='unit'>mm</span></div></div><div class='card'><div class='label'>top avg</div><div class='value'>19.03 <span class='unit'>mm</span></div></div><div class='card'><div class='label'>worst roll</div><div class='value'>-0.9289 <span class='unit'>°</span></div></div><div class='card'><div class='label'>worst pitch</div><div class='value'>0.1705 <span class='unit'>°</span></div></div></div></section><section class='cardgroup'><h2>ACCEL</h2><div class='cards'><div class='card'><div class='label'>worst travel</div><div class='value'>15.47 <span class='unit'>mm</span></div></div><div class='card'><div class='label'>top avg</div><div class='value'>12.99 <span class='unit'>mm</span></div></div><div class='card'><div class='label'>worst roll</div><div class='value'>0.2056 <span class='unit'>°</span></div></div><div class='card'><div class='label'>worst pitch</div><div class='value'>0.6016 <span class='unit'>°</span></div></div></div></section><div id='instants'><details class='section' open><summary>Key instants <span class='count'>(4)</span> <span class='note'>click to open a plot zoomed to that moment</span></summary><div class='body'><div class='scroll'><table class='instants'><tr><th>time</th><th>what</th><th>file</th><th>context</th><th>open at this instant</th></tr><tr><td class='mono'>19.23s</td><td>worst corner travel — FR +15.47mm</td><td class='mono'>accel_corinne2 (2)</td><td class='muted'>accelerating in a straight line, at 12.0 m/s</td><td class='links'><a href='accel/accel_corinne2 (2)_corner_travel.html#t=19.23' target='_blank'>corner travel ↗</a></td></tr><tr><td class='mono'>44.67s</td><td>worst corner travel — RR -19.72mm</td><td class='mono'>braketest1 (2)</td><td class='muted'>cornering hard to the left at steady throttle, at 16.4 m/s</td><td class='links'><a href='brake/braketest1 (2)_corner_travel.html#t=44.67' target='_blank'>corner travel ↗</a></td></tr><tr><td class='mono'>121.45s</td><td>worst corner travel — FR -22.18mm</td><td class='mono'>skidpad_austin_both (2)</td><td class='muted'>braking while cornering hard to the left — a COMBINED-load instant, at 13.2 m/s</td><td class='links'><a href='skidpad/skidpad_austin_both (2)_corner_travel.html#t=121.45' target='_blank'>corner travel ↗</a></td></tr><tr><td class='mono'>42.69s</td><td>worst corner travel — FR -21.52mm</td><td class='mono'>autocross_josh2 (2)</td><td class='muted'>braking while cornering hard to the left — a COMBINED-load instant, at 12.4 m/s</td><td class='links'><a href='autocross/autocross_josh2 (2)_corner_travel.html#t=42.69' target='_blank'>corner travel ↗</a></td></tr></table></div></div></details></div><details class='section'><summary>Console report <span class='note'>full numeric output</span></summary><div class='body'><pre class='console'>Skidpad low-pass: 10.0 Hz | Everything else: 10.0 Hz (both 4th-order Butterworth, zero-phase)
+Geometry: front track=1219.2mm rear track=1168.4mm wheelbase=1543mm
+Motion ratio (wheel/spring): front=1.188 rear=1.038 — applied per corner before roll/pitch/modal maths
+All travel figures below are WHEEL millimetres, not shock-pot millimetres.
+Sign convention: travel &lt; 0 = COMPRESSION (bump), &gt; 0 = EXTENSION (droop).
+Peak prominence: 2.0mm on the 4-corner envelope.
+  [!] accel_corinne2 (2).csv: 2 step glitch(es) excluded — FL 12.0mm @118.84s, FR 20.4mm @118.84s
+
+--- ACCEL static baselines (stopped-car reference, subtracted per corner) ---
+  accel_corinne2 (2).csv: FL=42.520mm  FR=20.255mm  RL=43.395mm  RR=43.025mm
+  accel_jamie_both (2).csv: FL=54.140mm  FR=40.610mm  RL=43.170mm  RR=42.610mm
+
+=== ACCEL — WORST PER-CORNER TRAVEL (peak detection on 4-corner envelope) ===
+  Top 5 worst instants (pooled across files):
+    accel_corinne2 (2).csv     @    19.23s  FR  +15.47mm   roll=+0.206° pitch=+0.602°
+    accel_corinne2 (2).csv     @    55.51s  FR  +13.75mm   roll=+0.183° pitch=+0.427°
+    accel_corinne2 (2).csv     @    23.51s  FR  -12.78mm   roll=+0.022° pitch=-0.507°
+    accel_corinne2 (2).csv     @    40.37s  FR  +12.77mm   roll=+0.240° pitch=+0.242°
+    accel_corinne2 (2).csv     @    38.03s  FR  +10.18mm   roll=+0.338° pitch=+0.162°
+  Top 5 averaged: 12.99mm
+
+  SINGLE WORST INSTANT — accel_corinne2 (2).csv @ 19.23s
+    corner FR: +15.47mm  [EXTENSION (droop)]  [0.2s mean: 14.11mm, 91% of peak — borderline]
+    what the car was doing: accelerating in a straight line, at 12.0 m/s
+      (+0.05 g lateral, -0.77 g longitudinal; +lon = slowing down, +lat = left)
+    exact modal breakdown of that +15.47mm:
+      roll  :   +2.14mm  (13.9% of total mm moved)
+      pitch :   +8.10mm  (52.4% of total mm moved)
+      heave :   +2.82mm  (18.2% of total mm moved)
+      warp  :   +2.41mm  (15.6% of total mm moved)
+      sum   :  +15.47mm  (identity check vs +15.47mm)
+    whole-car attitude at that instant: roll=+0.206°  pitch=+0.602°
+    -&gt; this corner was loaded mostly by PITCH AND HEAVE. Changing what drives pitch is what moves this number.
+
+    Per-corner extremes across all ACCEL files (outer 2% of each file excluded):
+      FL: max compression  -10.82mm   max extension   +7.69mm
+      FR: max compression  -12.78mm   max extension  +15.47mm
+      RL: max compression   -6.82mm   max extension   +6.58mm
+      RR: max compression   -6.45mm   max extension   +6.77mm
+
+  --- ACCEL SUSTAINED (median over steady-state segments) ---
+    accel_corinne2 (2).csv (1 run(s)): FL=+4.66mm  FR=+10.55mm  RL=-4.77mm  RR=-4.85mm
+    accel_jamie_both (2).csv (1 run(s)): FL=+4.35mm  FR=+6.44mm  RL=-1.72mm  RR=-4.47mm
+    Across files: FL=+4.50mm  FR=+8.50mm  RL=-3.25mm  RR=-4.66mm
+    Sustained modes: roll=+0.62mm/corner  pitch=+5.22mm/corner  heave=+1.42mm  warp=-1.30mm
+    -&gt; sustained roll angle ~0.059°   sustained pitch angle ~0.388°
+
+    Travel distribution across all ACCEL files (glitch-masked, outer 2% trimmed):
+      corner       p1   median      p99      min      max  p1-p99 range
+      FL        -5.93    +0.15    +4.92   -10.82    +7.69        10.84mm
+      FR        -7.75    -0.08   +10.24   -12.78   +15.47        18.00mm
+      RL        -4.41    +0.44    +4.85    -6.82    +6.58         9.26mm
+      RR        -4.96    +0.07    +3.78    -6.45    +6.77         8.75mm
+      -&gt; This is travel USED. For MARGIN, set BUMP_LIMIT_MM / DROOP_LIMIT_MM in case4_combined_roll_pitch.py.
+
+  Plots saved to: plots\case4_combined_roll_pitch\accel/
+
+--- BRAKE static baselines (stopped-car reference, subtracted per corner) ---
+  braketest1 (2).csv: FL=66.790mm  FR=60.900mm  RL=42.680mm  RR=42.510mm
+  braketest2 (2).csv: FL=53.690mm  FR=39.580mm  RL=42.460mm  RR=42.640mm
+
+=== BRAKE — WORST PER-CORNER TRAVEL (peak detection on 4-corner envelope) ===
+  Top 5 worst instants (pooled across files):
+    braketest1 (2).csv         @    44.67s  RR  -19.72mm   roll=-0.929° pitch=+0.170°
+    braketest1 (2).csv         @    47.05s  RR  -19.66mm   roll=-0.986° pitch=+0.130°
+    braketest1 (2).csv         @    56.27s  RR  -19.54mm   roll=-0.676° pitch=+0.345°
+    braketest1 (2).csv         @    27.16s  RR  -18.17mm   roll=-0.954° pitch=+0.108°
+    braketest1 (2).csv         @    25.88s  RL  -18.04mm   roll=+0.786° pitch=+0.363°
+  Top 5 averaged: 19.03mm
+
+  SINGLE WORST INSTANT — braketest1 (2).csv @ 44.67s
+    corner RR: -19.72mm  [COMPRESSION (bump)]  [0.2s mean: 19.05mm, 97% of peak — plateau]
+    what the car was doing: cornering hard to the left at steady throttle, at 16.4 m/s
+      (+1.31 g lateral, -0.24 g longitudinal; +lon = slowing down, +lat = left)
+    exact modal breakdown of that -19.72mm:
+      roll  :   -9.68mm  (49.1% of total mm moved)
+      pitch :   -2.30mm  (11.6% of total mm moved)
+      heave :   -2.87mm  (14.6% of total mm moved)
+      warp  :   -4.87mm  (24.7% of total mm moved)
+      sum   :  -19.72mm  (identity check vs -19.72mm)
+    whole-car attitude at that instant: roll=-0.929°  pitch=+0.170°
+    -&gt; this corner was loaded mostly by ROLL AND WARP. Changing what drives roll is what moves this number.
+
+    Per-corner extremes across all BRAKE files (outer 2% of each file excluded):
+      FL: max compression   -8.31mm   max extension   +7.50mm
+      FR: max compression  -14.34mm   max extension   +9.47mm
+      RL: max compression  -18.04mm   max extension  +13.74mm
+      RR: max compression  -19.72mm   max extension  +15.77mm
+
+    Travel distribution across all BRAKE files (glitch-masked, outer 2% trimmed):
+      corner       p1   median      p99      min      max  p1-p99 range
+      FL        -5.47    -0.04    +4.12    -8.31    +7.50         9.58mm
+      FR        -9.96    +0.01    +7.51   -14.34    +9.47        17.47mm
+      RL       -15.12    +0.10   +12.58   -18.04   +13.74        27.69mm
+      RR       -15.93    -0.23   +14.59   -19.72   +15.77        30.52mm
+      -&gt; This is travel USED. For MARGIN, set BUMP_LIMIT_MM / DROOP_LIMIT_MM in case4_combined_roll_pitch.py.
+
+  Plots saved to: plots\case4_combined_roll_pitch\brake/
+  [!] skidpad_austin_both (2).csv: 8 step glitch(es) excluded — FL 12.8mm @46.23s, FR 21.7mm @46.23s, FL 12.7mm @46.33s, FR 21.4mm @46.33s, FL 13.9mm @147.95s, FR 23.3mm @147.95s, FL 13.6mm @147.95s, FR 23.0mm @147.95s
+
+--- SKIDPAD static baselines (stopped-car reference, subtracted per corner) ---
+  skidpad_austin_both (2).csv: FL=53.330mm  FR=38.380mm  RL=42.250mm  RR=41.320mm
+
+=== SKIDPAD — WORST PER-CORNER TRAVEL (peak detection on 4-corner envelope) ===
+  Top 5 worst instants (pooled across files):
+    skidpad_austin_both (2).csv @   121.45s  FR  -22.18mm   roll=-1.201° pitch=-0.380°
+    skidpad_austin_both (2).csv @   106.94s  FR  -20.90mm   roll=-1.118° pitch=-0.389°
+    skidpad_austin_both (2).csv @   132.11s  FR  +19.49mm   roll=+1.257° pitch=+0.303°
+    skidpad_austin_both (2).csv @   100.73s  FR  +19.48mm   roll=+1.310° pitch=+0.272°
+    skidpad_austin_both (2).csv @    86.18s  FR  +19.45mm   roll=+1.475° pitch=+0.157°
+  Top 5 averaged: 20.30mm
+
+  SINGLE WORST INSTANT — skidpad_austin_both (2).csv @ 121.45s
+    corner FR: -22.18mm  [COMPRESSION (bump)]  [0.2s mean: 21.18mm, 95% of peak — plateau]
+    what the car was doing: braking while cornering hard to the left — a COMBINED-load instant, at 13.2 m/s
+      (+1.28 g lateral, +0.54 g longitudinal; +lon = slowing down, +lat = left)
+    exact modal breakdown of that -22.18mm:
+      roll  :  -12.51mm  (56.4% of total mm moved)
+      pitch :   -5.11mm  (23.1% of total mm moved)
+      heave :   -3.30mm  (14.9% of total mm moved)
+      warp  :   -1.25mm  ( 5.7% of total mm moved)
+      sum   :  -22.18mm  (identity check vs -22.18mm)
+    whole-car attitude at that instant: roll=-1.201°  pitch=-0.380°
+    -&gt; this corner was loaded mostly by ROLL AND PITCH. Changing what drives roll is what moves this number.
+
+    Per-corner extremes across all SKIDPAD files (outer 2% of each file excluded):
+      FL: max compression  -11.59mm   max extension  +12.02mm
+      FR: max compression  -22.18mm   max extension  +19.49mm
+      RL: max compression  -17.01mm   max extension  +13.38mm
+      RR: max compression  -18.31mm   max extension  +16.56mm
+
+  --- SKIDPAD SUSTAINED (median over steady-state segments) ---
+    skidpad_austin_both (2).csv (6 run(s)): FL=+1.00mm  FR=-7.01mm  RL=+4.28mm  RR=-3.60mm
+    Across files: FL=+1.00mm  FR=-7.01mm  RL=+4.28mm  RR=-3.60mm
+    Sustained modes: roll=-4.70mm/corner  pitch=-1.05mm/corner  heave=-0.72mm  warp=+0.40mm
+    -&gt; sustained roll angle ~0.451°   sustained pitch angle ~0.078°
+
+    Travel distribution across all SKIDPAD files (glitch-masked, outer 2% trimmed):
+      corner       p1   median      p99      min      max  p1-p99 range
+      FL       -10.08    -0.00   +11.03   -11.59   +12.02        21.11mm
+      FR       -18.58    -0.01   +18.03   -22.18   +19.49        36.61mm
+      RL       -14.50    -0.00   +12.98   -17.01   +13.38        27.48mm
+      RR       -15.33    -0.00   +16.13   -18.31   +16.56        31.45mm
+      -&gt; This is travel USED. For MARGIN, set BUMP_LIMIT_MM / DROOP_LIMIT_MM in case4_combined_roll_pitch.py.
+
+  Plots saved to: plots\case4_combined_roll_pitch\skidpad/
+  [!] autocross_josh2 (2).csv: 4 step glitch(es) excluded — FL 13.4mm @84.56s, FR 22.2mm @84.56s, FL 13.4mm @84.56s, FR 22.4mm @84.56s
+
+--- AUTOCROSS static baselines (stopped-car reference, subtracted per corner) ---
+  autocross_andrew1 (2).csv: FL=54.010mm  FR=40.440mm  RL=42.440mm  RR=42.080mm
+  autocross_andrew2 (2).csv: FL=66.920mm  FR=61.580mm  RL=43.280mm  RR=41.920mm
+  autocross_josh1 (2).csv: FL=53.670mm  FR=41.020mm  RL=43.220mm  RR=42.160mm
+  autocross_josh2 (2).csv: FL=53.305mm  FR=38.805mm  RL=42.750mm  RR=42.485mm
+
+=== AUTOCROSS — WORST PER-CORNER TRAVEL (peak detection on 4-corner envelope) ===
+  Top 5 worst instants (pooled across files):
+    autocross_josh2 (2).csv    @    42.69s  FR  -21.52mm   roll=-1.235° pitch=-0.331°
+    autocross_josh1 (2).csv    @    12.21s  FR  -21.18mm   roll=-1.069° pitch=-0.443°
+    autocross_josh1 (2).csv    @    24.50s  FR  -20.15mm   roll=-1.297° pitch=-0.258°
+    autocross_josh2 (2).csv    @    53.58s  FR  +20.07mm   roll=+1.319° pitch=+0.371°
+    autocross_josh2 (2).csv    @    27.84s  FR  +20.06mm   roll=+0.965° pitch=+0.461°
+  Top 5 averaged: 20.60mm
+
+  SINGLE WORST INSTANT — autocross_josh2 (2).csv @ 42.69s
+    corner FR: -21.52mm  [COMPRESSION (bump)]  [0.2s mean: 20.69mm, 96% of peak — plateau]
+    what the car was doing: braking while cornering hard to the left — a COMBINED-load instant, at 12.4 m/s
+      (+1.45 g lateral, +0.43 g longitudinal; +lon = slowing down, +lat = left)
+    exact modal breakdown of that -21.52mm:
+      roll  :  -12.87mm  (59.8% of total mm moved)
+      pitch :   -4.46mm  (20.7% of total mm moved)
+      heave :   -2.57mm  (11.9% of total mm moved)
+      warp  :   -1.63mm  ( 7.6% of total mm moved)
+      sum   :  -21.52mm  (identity check vs -21.52mm)
+    whole-car attitude at that instant: roll=-1.235°  pitch=-0.331°
+    -&gt; this corner was loaded mostly by ROLL AND PITCH. Changing what drives roll is what moves this number.
+
+    Per-corner extremes across all AUTOCROSS files (outer 2% of each file excluded):
+      FL: max compression  -12.62mm   max extension  +11.99mm
+      FR: max compression  -21.52mm   max extension  +20.07mm
+      RL: max compression  -20.03mm   max extension  +14.00mm
+      RR: max compression  -19.77mm   max extension  +16.36mm
+
+    Travel distribution across all AUTOCROSS files (glitch-masked, outer 2% trimmed):
+      corner       p1   median      p99      min      max  p1-p99 range
+      FL        -9.58    -0.02    +9.79   -12.62   +11.99        19.37mm
+      FR       -17.31    -0.00   +16.78   -21.52   +20.07        34.09mm
+      RL       -15.00    +0.09   +12.50   -20.03   +14.00        27.50mm
+      RR       -14.76    +0.40   +15.18   -19.77   +16.36        29.95mm
+      -&gt; This is travel USED. For MARGIN, set BUMP_LIMIT_MM / DROOP_LIMIT_MM in case4_combined_roll_pitch.py.
+
+  Plots saved to: plots\case4_combined_roll_pitch\autocross/
+
+No files found for ENDURANCE.
+
+Headline chart saved to: plots\case4_combined_roll_pitch/corner_travel_summary.html
+
+========================================================================
+WORST CASE ACROSS ALL EVENTS
+========================================================================
+  SKIDPAD    FR  -22.18mm   (roll -1.201°, pitch -0.380°)  roll mode -12.51mm / pitch mode -5.11mm
+  AUTOCROSS  FR  -21.52mm   (roll -1.235°, pitch -0.331°)  roll mode -12.87mm / pitch mode -4.46mm
+  BRAKE      RR  -19.72mm   (roll -0.929°, pitch +0.170°)  roll mode -9.68mm / pitch mode -2.30mm
+  ACCEL      FR  +15.47mm   (roll +0.206°, pitch +0.602°)  roll mode +2.14mm / pitch mode +8.10mm
+
+  -&gt; Design-driving case: SKIDPAD, corner FR, -22.18mm
+
+Done.
+</pre></div></details><div id='plots-summary'><details class='section' open><summary>SUMMARY — plots <span class='count'>(1)</span></summary><div class='body'><figure><figcaption>corner travel summary<a class='popout' href='corner_travel_summary.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='corner_travel_summary.html'></iframe></figure></div></details></div><div id='plots-skidpad'><details class='section' open><summary>SKIDPAD — plots <span class='count'>(3)</span></summary><div class='body'><figure><figcaption>roll pitch envelope<a class='popout' href='skidpad/roll_pitch_envelope.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='skidpad/roll_pitch_envelope.html'></iframe></figure><figure><figcaption>travel distribution<a class='popout' href='skidpad/travel_distribution.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='skidpad/travel_distribution.html'></iframe></figure><h2 class='file'>skidpad_austin_both (2)</h2><figure><figcaption>skidpad austin both (2) corner travel<a class='popout' href='skidpad/skidpad_austin_both (2)_corner_travel.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='skidpad/skidpad_austin_both (2)_corner_travel.html'></iframe></figure></div></details></div><div id='plots-autocross'><details class='section' open><summary>AUTOCROSS — plots <span class='count'>(6)</span></summary><div class='body'><figure><figcaption>roll pitch envelope<a class='popout' href='autocross/roll_pitch_envelope.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='autocross/roll_pitch_envelope.html'></iframe></figure><figure><figcaption>travel distribution<a class='popout' href='autocross/travel_distribution.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='autocross/travel_distribution.html'></iframe></figure><h2 class='file'>autocross_andrew1 (2)</h2><figure><figcaption>autocross andrew1 (2) corner travel<a class='popout' href='autocross/autocross_andrew1 (2)_corner_travel.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='autocross/autocross_andrew1 (2)_corner_travel.html'></iframe></figure><h2 class='file'>autocross_andrew2 (2)</h2><figure><figcaption>autocross andrew2 (2) corner travel<a class='popout' href='autocross/autocross_andrew2 (2)_corner_travel.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='autocross/autocross_andrew2 (2)_corner_travel.html'></iframe></figure><h2 class='file'>autocross_josh1 (2)</h2><figure><figcaption>autocross josh1 (2) corner travel<a class='popout' href='autocross/autocross_josh1 (2)_corner_travel.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='autocross/autocross_josh1 (2)_corner_travel.html'></iframe></figure><h2 class='file'>autocross_josh2 (2)</h2><figure><figcaption>autocross josh2 (2) corner travel<a class='popout' href='autocross/autocross_josh2 (2)_corner_travel.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='autocross/autocross_josh2 (2)_corner_travel.html'></iframe></figure></div></details></div><div id='plots-brake'><details class='section' open><summary>BRAKE — plots <span class='count'>(4)</span></summary><div class='body'><figure><figcaption>roll pitch envelope<a class='popout' href='brake/roll_pitch_envelope.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='brake/roll_pitch_envelope.html'></iframe></figure><figure><figcaption>travel distribution<a class='popout' href='brake/travel_distribution.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='brake/travel_distribution.html'></iframe></figure><h2 class='file'>braketest1 (2)</h2><figure><figcaption>braketest1 (2) corner travel<a class='popout' href='brake/braketest1 (2)_corner_travel.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='brake/braketest1 (2)_corner_travel.html'></iframe></figure><h2 class='file'>braketest2 (2)</h2><figure><figcaption>braketest2 (2) corner travel<a class='popout' href='brake/braketest2 (2)_corner_travel.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='brake/braketest2 (2)_corner_travel.html'></iframe></figure></div></details></div><div id='plots-accel'><details class='section' open><summary>ACCEL — plots <span class='count'>(4)</span></summary><div class='body'><figure><figcaption>roll pitch envelope<a class='popout' href='accel/roll_pitch_envelope.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='accel/roll_pitch_envelope.html'></iframe></figure><figure><figcaption>travel distribution<a class='popout' href='accel/travel_distribution.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='accel/travel_distribution.html'></iframe></figure><h2 class='file'>accel_corinne2 (2)</h2><figure><figcaption>accel corinne2 (2) corner travel<a class='popout' href='accel/accel_corinne2 (2)_corner_travel.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='accel/accel_corinne2 (2)_corner_travel.html'></iframe></figure><h2 class='file'>accel_jamie_both (2)</h2><figure><figcaption>accel jamie both (2) corner travel<a class='popout' href='accel/accel_jamie_both (2)_corner_travel.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='accel/accel_jamie_both (2)_corner_travel.html'></iframe></figure></div></details></div></div></body></html>

@@ -206,12 +206,12 @@ def calculate_tire_response_from_wheel_loads(
 
 if __name__ == "__main__":
     response = calculate_tire_response_from_wheel_loads(
-        lateral_g=1.0,
-        long_g=0.2,
-        axle="front",
-        slip_angle_rad=0.08,
-        slip_ratio=0.1,
-        pressure_pa=100000.0,
+        lateral_g=0,
+        long_g= -1.1,
+        axle="rear",
+        slip_angle_rad=0.0,
+        slip_ratio=0.4,
+        pressure_pa=10*6895,  # 10 psi in Pa
     )
     print("Tire response:")
     for key, value in response.items():

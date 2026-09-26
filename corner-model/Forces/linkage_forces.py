@@ -17,7 +17,7 @@ from Forces.tire_model import PacejkaTireModel, DEFAULT_TIR_PATH
 LINKAGE_NAMES = list(LINKAGE_POINTS.keys())
 
 
-def calculate_linkage_forces(
+def calculate_corner_forces(
     lateral_g: float,
     long_g: float,
     axle: Literal["front", "rear"],
@@ -25,7 +25,7 @@ def calculate_linkage_forces(
     slip_angle_rad: float | None = None,
     slip_ratio: float | None = None,
     pressure_pa: float | None = None,
-) -> dict[str, dict[str, float]]:
+) -> dict[str, dict]:
     """
     Solve the linkage force balance for a single corner.
 
@@ -51,6 +51,10 @@ def calculate_linkage_forces(
     lower A-arm rather than the upright (see hardpoints.py). This model
     treats it as if it reacts directly against the upright/wheel assembly,
     avoiding a full multi-body solve of the A-arm itself.
+
+    Returns {"linkages": {name: {...}}, "tire": {...}}, where the "tire"
+    entry is the contact-patch wrench that was applied to the upright. Use
+    calculate_linkage_forces() if only the member forces are needed.
     """
     if wheel_force_n is None:
         wheel_force_n = calculate_total_wheel_load(
@@ -102,17 +106,48 @@ def calculate_linkage_forces(
     forces = np.linalg.solve(A, b)
 
     return {
-        name: {
-            "force_N": float(force),
-            "sense": "tension" if float(force) >= 0.0 else "compression",
-            "sign": 1.0 if float(force) >= 0.0 else -1.0,
-        }
-        for name, force in zip(LINKAGE_NAMES, forces)
+        "linkages": {
+            name: {
+                "force_N": float(force),
+                "sense": "tension" if float(force) >= 0.0 else "compression",
+                "sign": 1.0 if float(force) >= 0.0 else -1.0,
+            }
+            for name, force in zip(LINKAGE_NAMES, forces)
+        },
+        "tire": {
+            "vertical_force_N": float(wheel_force_n),
+            "lateral_force_N": float(lateral_force_n),
+            "longitudinal_force_N": float(longitudinal_force_n),
+            "moment_x_Nm": float(moment_x_nm),
+            "moment_y_Nm": float(moment_y_nm),
+            "moment_z_Nm": float(moment_z_nm),
+        },
     }
 
 
+def calculate_linkage_forces(
+    lateral_g: float,
+    long_g: float,
+    axle: Literal["front", "rear"],
+    wheel_force_n: float | None = None,
+    slip_angle_rad: float | None = None,
+    slip_ratio: float | None = None,
+    pressure_pa: float | None = None,
+) -> dict[str, dict[str, float]]:
+    """Member forces only; see calculate_corner_forces() for the tire wrench too."""
+    return calculate_corner_forces(
+        lateral_g=lateral_g,
+        long_g=long_g,
+        axle=axle,
+        wheel_force_n=wheel_force_n,
+        slip_angle_rad=slip_angle_rad,
+        slip_ratio=slip_ratio,
+        pressure_pa=pressure_pa,
+    )["linkages"]
+
+
 if __name__ == "__main__":
-    forces = calculate_linkage_forces(
+    result = calculate_corner_forces(
         lateral_g=1.0,
         long_g=0.2,
         axle="front",
@@ -120,6 +155,9 @@ if __name__ == "__main__":
         slip_ratio=0.1,
         pressure_pa=100000.0,
     )
-    print("Linkage forces:")
-    for name, payload in forces.items():
+    print("Tire forces at the contact patch:")
+    for key, value in result["tire"].items():
+        print(f"- {key}: {value:.3f}")
+    print("\nLinkage forces:")
+    for name, payload in result["linkages"].items():
         print(f"- {name}: {payload['force_N']:.3f} N ({payload['sense']})")

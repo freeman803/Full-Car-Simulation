@@ -1,0 +1,295 @@
+<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Case 6 — Max Yaw Rate</title><style>
+:root {
+  color-scheme: light dark;
+  --surface: #fcfcfb; --card: #ffffff; --border: #e4e3df;
+  --text: #0b0b0b; --muted: #52514e; --accent: #2a78d6;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --surface: #1a1a19; --card: #232322; --border: #383835;
+    --text: #ffffff; --muted: #c3c2b7; --accent: #3987e5;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 2rem 1.5rem 5rem; background: var(--surface);
+  color: var(--text);
+  font: 15px/1.6 ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+.wrap { max-width: 1200px; margin: 0 auto; }
+h1 { font-size: 1.7rem; margin: 0 0 .25rem; }
+h2 {
+  font-size: 1.15rem; margin: 2.5rem 0 .75rem;
+  padding-top: 1.25rem; border-top: 1px solid var(--border);
+}
+.sub { color: var(--muted); margin: 0 0 2rem; font-size: .9rem; }
+.cards { display: flex; flex-wrap: wrap; gap: .75rem; margin: 1.5rem 0; }
+/* Each event's headline numbers as one labelled band. A bare <h2> over a
+   loose flex row held up at three events and fell apart at five: case5's
+   32 cards and case6's 17 read as one undifferentiated wall of numbers.
+   The rule under the event name is what makes the boundary survive a group
+   whose cards wrap onto several lines. */
+section.cardgroup { margin: 1.75rem 0 0; }
+section.cardgroup > h2 {
+  font-size: .78rem; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--muted); font-weight: 600;
+  margin: 0; padding: 0 0 .45rem;
+  border-top: none; border-bottom: 1px solid var(--border);
+}
+section.cardgroup > .cards { margin: .75rem 0 0; }
+.card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: .85rem 1.1rem; min-width: 150px;
+}
+.card .label {
+  color: var(--muted); font-size: .72rem; text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.card .value { font-size: 1.45rem; font-weight: 600; margin-top: .2rem; }
+.card .unit { font-size: .85rem; color: var(--muted); font-weight: 400; }
+pre.console {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 1.1rem 1.3rem; overflow-x: auto;
+  font: 12.5px/1.55 ui-monospace, "Cascadia Code", Consolas, monospace;
+  white-space: pre; color: var(--text);
+}
+figure { margin: 1.25rem 0 0; }
+figcaption {
+  color: var(--muted); font-size: .78rem; margin-bottom: .4rem;
+  text-transform: uppercase; letter-spacing: .04em;
+  display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap;
+}
+/* Reset the caption's uppercase/tracking — this is a control, not a label,
+   and it has to read as clickable at a glance. */
+a.popout {
+  color: var(--accent); text-transform: none; letter-spacing: 0;
+  font-weight: 600; font-size: .8rem; text-decoration: none;
+  white-space: nowrap; margin-left: auto;
+}
+a.popout:hover { text-decoration: underline; }
+iframe.plot {
+  width: 100%; height: 520px; border: 1px solid var(--border);
+  border-radius: 8px; background: #fff; display: block;
+}
+nav { margin-bottom: 2rem; font-size: .9rem; }
+nav a { color: var(--accent); margin-right: 1rem; }
+.empty { color: var(--muted); font-style: italic; }
+
+/* Sticky bar: on a page this long, scrolling back to a link at the top to
+   reach a sibling report is the main navigation cost. */
+.bar {
+  position: sticky; top: 0; z-index: 20; margin: -2rem -1.5rem 1.5rem;
+  padding: .6rem 1.5rem; background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex; flex-wrap: wrap; gap: .4rem; align-items: center;
+  font-size: .82rem;
+}
+.bar a {
+  color: var(--muted); text-decoration: none; padding: .25rem .6rem;
+  border: 1px solid var(--border); border-radius: 999px; white-space: nowrap;
+}
+.bar a:hover { color: var(--text); border-color: var(--accent); }
+.bar a.home { color: var(--accent); border-color: var(--accent); }
+.bar a.current {
+  color: var(--text); font-weight: 600; background: var(--card);
+  border-color: var(--muted);
+}
+.bar .spacer { flex: 1; }
+
+/* Collapsed by default = the page opens on the numbers, not on 40 iframes.
+   It also means nothing below a section has to be scrolled past to reach. */
+details.section {
+  border: 1px solid var(--border); border-radius: 10px;
+  background: var(--card); margin: 1rem 0; overflow: hidden;
+}
+details.section > summary {
+  cursor: pointer; padding: .8rem 1.1rem; font-weight: 600;
+  list-style: none; display: flex; align-items: center; gap: .6rem;
+}
+details.section > summary::-webkit-details-marker { display: none; }
+details.section > summary::before {
+  content: "▸"; color: var(--muted); font-size: .85em;
+  transition: transform .15s;
+}
+details.section[open] > summary::before { transform: rotate(90deg); }
+details.section > summary:hover { color: var(--accent); }
+details.section > summary .count {
+  color: var(--muted); font-weight: 400; font-size: .8rem;
+}
+details.section > summary .note {
+  color: var(--muted); font-weight: 400; font-size: .8rem; font-style: italic;
+}
+details.section .body { padding: 0 1.1rem 1.1rem; }
+details.section h2 { margin-top: 1.5rem; }
+details.section h2:first-child { border-top: none; padding-top: 0; margin-top: .5rem; }
+
+/* Per-file heading inside an event section. */
+h2.file {
+  font-size: .95rem; font-family: ui-monospace, monospace;
+  display: flex; align-items: center; gap: .5rem; flex-wrap: wrap;
+}
+
+.badge {
+  font-size: .68rem; font-weight: 600; padding: .15rem .5rem;
+  border-radius: 999px; letter-spacing: .03em; text-transform: uppercase;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+.badge.error { background: #fdecec; color: #a3231f; }
+.badge.warn  { background: #fdf3e2; color: #8a5a06; }
+.badge.info  { background: #eaf1fb; color: #23558f; }
+@media (prefers-color-scheme: dark) {
+  .badge.error { background: #3a1f1e; color: #ff9a97; }
+  .badge.warn  { background: #38301c; color: #f0c069; }
+  .badge.info  { background: #1e2b3d; color: #8fbaf0; }
+}
+
+/* Known data problems, shown next to the files they apply to. */
+.warn {
+  border-left: 3px solid; border-radius: 6px; padding: .6rem .85rem;
+  margin: .6rem 0; font-size: .85rem; line-height: 1.5;
+}
+.warn .who {
+  display: block; font-family: ui-monospace, monospace; font-weight: 600;
+  font-size: .78rem; margin-bottom: .2rem;
+}
+.warn.error { border-color: #d0342c; background: rgba(208, 52, 44, .07); }
+.warn.warn  { background: rgba(214, 154, 42, .09); border-color: #d69a2a; }
+.warn.info  { background: rgba(42, 120, 214, .07); border-color: var(--accent); }
+
+table.instants { border-collapse: collapse; width: 100%; font-size: .85rem; }
+table.instants th, table.instants td {
+  border-bottom: 1px solid var(--border); padding: .45rem .6rem;
+  text-align: left; vertical-align: top;
+}
+table.instants th {
+  font-size: .72rem; text-transform: uppercase; letter-spacing: .04em;
+  color: var(--muted); font-weight: 600;
+}
+table.instants .mono { font-family: ui-monospace, monospace; white-space: nowrap; }
+table.instants .muted { color: var(--muted); }
+table.instants .links a {
+  color: var(--accent); margin-right: .7rem; white-space: nowrap;
+}
+.scroll { overflow-x: auto; }
+
+ul.conv { margin: .3rem 0; padding-left: 1.2rem; font-size: .88rem; }
+ul.conv li { margin: .35rem 0; }
+ul.conv code {
+  font-family: ui-monospace, monospace; font-size: .85em;
+  background: var(--surface); padding: .1rem .3rem; border-radius: 4px;
+}
+</style></head><body><div class='wrap'><div class='bar'><a class='home' href='../index.html'>&#8962; all reports</a><a href='../case_summary.html'>summary table</a><a href='../case1_max_gs/report.html'>case1</a><a href='../case2_max_roll/report.html'>case2</a><a href='../case3_max_pitch/report.html'>case3</a><a href='../case4_combined_roll_pitch/report.html'>case4</a><a href='../case5_gradients/report.html'>case5</a><a href='../case6_max_yaw/report.html' class='current'>case6</a><span class='spacer'></span><a href='#instants'>key instants</a><a href='#plots-summary'>summary</a><a href='#plots-skidpad'>skidpad</a><a href='#plots-autocross'>autocross</a><a href='#plots-brake'>brake</a><a href='#filtering'>filtering</a></div><h1>Case 6 — Max Yaw Rate</h1><p class='sub'>case6_max_yaw &middot; generated 2026-08-05 19:09</p><details class='section' open><summary>Units and sign conventions <span class='note'>read before interpreting any number here</span></summary><div class='body'><ul class='conv'><li><b>Yaw rate positive = rotating LEFT</b> (counter-clockwise seen from above), matching case1's lateral-G convention. Established by cross-reference against lateral G (r = +0.96 to +0.99), not assumed.</li><li><b>Corner radius is R = v/ω</b> — the radius of the line the car is actually following, which is <i>not</i> the painted radius of the corner. The difference is the driver's line.</li><li><b>This channel is validated every run</b>, not trusted from a note. The identity <code>a_lat = v·ω</code> shares no sensor with the gyro, so the per-file r and slope in the validation section say whether the yaw channel is still sound. A slope above 1.0 is expected — the identity assumes zero sideslip and wheel speed under-reads in a corner.</li><li><b>Nothing here is integrated.</b> Yaw rate has a 7–18% scale error that is harmless instantaneously and fatal once accumulated — it is why dead-reckoning a track map fails. Every number on this page is an instantaneous value or a ratio of two, never an integral.</li><li>The roll and pitch channels of this <i>same sensor</i> are NOT usable: chassis roll is 0.82 °/s RMS against a 0.45 °/s noise floor, while yaw is 49.6 against 0.36. Use the shock pots for roll and pitch.</li></ul></div></details><section class='cardgroup'><h2>SKIDPAD</h2><div class='cards'><div class='card'><div class='label'>peak yaw</div><div class='value'>-93.34 <span class='unit'>°/s</span></div></div><div class='card'><div class='label'>top avg yaw</div><div class='value'>86.84 <span class='unit'>°/s</span></div></div><div class='card'><div class='label'>peak radius</div><div class='value'>6.187 <span class='unit'>m</span></div></div><div class='card'><div class='label'>sustained yaw</div><div class='value'>59.33 <span class='unit'>°/s</span></div></div><div class='card'><div class='label'>sustained radius</div><div class='value'>10.03 <span class='unit'>m</span></div></div></div></section><section class='cardgroup'><h2>AUTOCROSS</h2><div class='cards'><div class='card'><div class='label'>peak yaw</div><div class='value'>-105.1 <span class='unit'>°/s</span></div></div><div class='card'><div class='label'>top avg yaw</div><div class='value'>95.52 <span class='unit'>°/s</span></div></div><div class='card'><div class='label'>peak radius</div><div class='value'>6.028 <span class='unit'>m</span></div></div></div></section><section class='cardgroup'><h2>BRAKE</h2><div class='cards'><div class='card'><div class='label'>peak yaw</div><div class='value'>-84.94 <span class='unit'>°/s</span></div></div><div class='card'><div class='label'>top avg yaw</div><div class='value'>79.78 <span class='unit'>°/s</span></div></div><div class='card'><div class='label'>peak radius</div><div class='value'>5.153 <span class='unit'>m</span></div></div></div></section><section class='cardgroup'><h2>ACCEL</h2><div class='cards'><div class='card'><div class='label'>peak yaw</div><div class='value'>-42.24 <span class='unit'>°/s</span></div></div><div class='card'><div class='label'>top avg yaw</div><div class='value'>26.18 <span class='unit'>°/s</span></div></div><div class='card'><div class='label'>peak radius</div><div class='value'>4.829 <span class='unit'>m</span></div></div></div></section><div id='instants'><details class='section' open><summary>Key instants <span class='count'>(4)</span> <span class='note'>click to open a plot zoomed to that moment</span></summary><div class='body'><div class='scroll'><table class='instants'><tr><th>time</th><th>what</th><th>file</th><th>context</th><th>open at this instant</th></tr><tr><td class='mono'>73.46s</td><td>peak yaw rate — -93.3°/s</td><td class='mono'>skidpad_austin_both (2)</td><td class='muted'>10.1 m/s, R=6.2 m</td><td class='links'><a href='skidpad/skidpad_austin_both (2)_yaw_before_after.html#t=73.46' target='_blank'>yaw before after ↗</a></td></tr><tr><td class='mono'>39.33s</td><td>peak yaw rate — -42.2°/s</td><td class='mono'>accel_corinne2 (2)</td><td class='muted'>3.6 m/s, R=4.8 m</td><td class='links'><a href='accel/accel_corinne2 (2)_yaw_before_after.html#t=39.33' target='_blank'>yaw before after ↗</a></td></tr><tr><td class='mono'>37.75s</td><td>peak yaw rate — -84.9°/s</td><td class='mono'>braketest1 (2)</td><td class='muted'>7.6 m/s, R=5.2 m</td><td class='links'><a href='brake/braketest1 (2)_yaw_before_after.html#t=37.75' target='_blank'>yaw before after ↗</a></td></tr><tr><td class='mono'>31.62s</td><td>peak yaw rate — -105.1°/s</td><td class='mono'>autocross_andrew2 (2)</td><td class='muted'>11.1 m/s, R=6.0 m</td><td class='links'><a href='autocross/autocross_andrew2 (2)_yaw_before_after.html#t=31.62' target='_blank'>yaw before after ↗</a></td></tr></table></div></div></details></div><details class='section'><summary>Console report <span class='note'>full numeric output</span></summary><div class='body'><pre class='console'>Low-pass: 10.0 Hz skidpad, 10.0 Hz everything else (4th-order Butterworth, zero-phase)
+Yaw sign: positive = rotating LEFT (established against lateral G, see module docstring)
+
+  --- SKIDPAD yaw-channel validation (a_lat vs v*omega) ---
+    skidpad_austin_both (2).csv r=+0.9822  slope=1.141  (32230 samples)   [GOOD]
+    slope &gt;1 is expected: the identity assumes zero sideslip, and wheel speed under-reads through a corner.
+
+=== SKIDPAD — MAX YAW RATE (peak detection, 10.0 Hz low-pass) ===
+  Top 5 peaks (pooled across files):
+    skidpad_austin_both (2).csv @    73.46s   -93.34°/s (right)  v= 10.1m/s  R=   6.2m
+    skidpad_austin_both (2).csv @    80.01s   +87.50°/s (left )  v=  7.2m/s  R=   4.7m
+    skidpad_austin_both (2).csv @   133.24s   +84.61°/s (left )  v=  9.1m/s  R=   6.1m
+    skidpad_austin_both (2).csv @   102.44s   +84.59°/s (left )  v=  9.0m/s  R=   6.1m
+    skidpad_austin_both (2).csv @   127.26s   -84.14°/s (right)  v=  9.4m/s  R=   6.4m
+  Top 5 averaged: 86.84°/s
+
+  SINGLE HIGHEST — skidpad_austin_both (2).csv @ 73.46s
+    yaw rate: -93.34°/s  (rotating RIGHT)  [0.2s mean: 86.07°/s, 92% of peak — borderline]
+    at that instant: speed=10.1 m/s, lateral=-0.96 g
+    corner radius being followed: 6.2 m (R = v/omega — the line the driver took, not the corner&#x27;s painted radius)
+
+  --- SKIDPAD SUSTAINED (median over steady-state segments, same windows as case1/case2) ---
+    skidpad_austin_both (2).csv run 1 ( 4.4s):  +50.28°/s  v= 10.4m/s  R= 11.9m
+    skidpad_austin_both (2).csv run 2 ( 2.5s):  -65.86°/s  v=  7.6m/s  R=  6.6m
+    skidpad_austin_both (2).csv run 3 ( 2.4s):  -73.80°/s  v=  7.6m/s  R=  5.9m
+    skidpad_austin_both (2).csv run 4 ( 2.5s):  -59.58°/s  v= 10.5m/s  R= 10.1m
+    skidpad_austin_both (2).csv run 5 ( 4.8s):  +26.38°/s  v= 14.0m/s  R= 30.4m
+    skidpad_austin_both (2).csv run 6 ( 2.4s):  -59.08°/s  v= 10.3m/s  R= 10.0m
+    Across runs: 59.33°/s
+    Median radius followed: 10.03 m
+    FSAE 2026 D.10.1.1 — legal band 7.625 m (inner cones) to 10.625 m (outer edge), lane centre 9.125 m
+    -&gt; INSIDE the legal 3.0 m lane, 2.41 m out from the inner cones. The yaw channel and the wheel-speed channel independently agree with the course geometry.
+       Line note: the inner edge is the fastest legal line, so 2.41 m of margin is lap time left on the table — a driver observation, not a data problem.
+
+  Plots saved to: plots\case6_max_yaw\skidpad/
+
+  --- ACCEL yaw-channel validation (a_lat vs v*omega) ---
+    accel_corinne2 (2).csv     not a cornering event — too few samples above 5 m/s and 3 m/s² lateral to test
+    accel_jamie_both (2).csv   not a cornering event — too few samples above 5 m/s and 3 m/s² lateral to test
+
+=== ACCEL — MAX YAW RATE (peak detection, 10.0 Hz low-pass) ===
+  Top 5 peaks (pooled across files):
+    accel_corinne2 (2).csv     @    39.33s   -42.24°/s (right)  v=  3.6m/s  R=   4.8m
+    accel_jamie_both (2).csv   @    49.22s   -41.28°/s (right)  v=  4.0m/s  R=   5.5m
+    accel_corinne2 (2).csv     @    80.44s   +17.10°/s (left )  v=  2.0m/s  R=  —   
+    accel_jamie_both (2).csv   @    44.27s   -16.53°/s (right)  v=  6.4m/s  R=  22.1m
+    accel_jamie_both (2).csv   @    31.21s   -13.74°/s (right)  v= 15.7m/s  R=  65.6m
+  Top 5 averaged: 26.18°/s
+
+  SINGLE HIGHEST — accel_corinne2 (2).csv @ 39.33s
+    yaw rate: -42.24°/s  (rotating RIGHT)  [0.2s mean: 41.52°/s, 98% of peak — plateau]
+    at that instant: speed=3.6 m/s, lateral=-0.33 g
+    corner radius being followed: 4.8 m (R = v/omega — the line the driver took, not the corner&#x27;s painted radius)
+    that radius is a hairpin (rules: 9 m min outside diameter)
+
+  Plots saved to: plots\case6_max_yaw\accel/
+
+  --- BRAKE yaw-channel validation (a_lat vs v*omega) ---
+    braketest1 (2).csv         r=+0.9728  slope=1.063  (25961 samples)   [GOOD]
+    braketest2 (2).csv         r=+0.8631  slope=0.865  (2724 samples)   [inconclusive — barely corners, not a test of the channel]
+    slope &gt;1 is expected: the identity assumes zero sideslip, and wheel speed under-reads through a corner.
+
+=== BRAKE — MAX YAW RATE (peak detection, 10.0 Hz low-pass) ===
+  Top 5 peaks (pooled across files):
+    braketest1 (2).csv         @    37.75s   -84.94°/s (right)  v=  7.6m/s  R=   5.2m
+    braketest1 (2).csv         @    34.85s   -82.14°/s (right)  v=  7.6m/s  R=   5.3m
+    braketest1 (2).csv         @    51.62s   +81.88°/s (left )  v= 10.7m/s  R=   7.5m
+    braketest1 (2).csv         @    15.20s   -75.72°/s (right)  v= 10.4m/s  R=   7.9m
+    braketest1 (2).csv         @    41.78s   +74.24°/s (left )  v= 10.1m/s  R=   7.8m
+  Top 5 averaged: 79.78°/s
+
+  SINGLE HIGHEST — braketest1 (2).csv @ 37.75s
+    yaw rate: -84.94°/s  (rotating RIGHT)  [0.2s mean: 83.48°/s, 98% of peak — plateau]
+    at that instant: speed=7.6 m/s, lateral=-1.22 g
+    corner radius being followed: 5.2 m (R = v/omega — the line the driver took, not the corner&#x27;s painted radius)
+    that radius is a hairpin (rules: 9 m min outside diameter)
+
+  Plots saved to: plots\case6_max_yaw\brake/
+
+  --- AUTOCROSS yaw-channel validation (a_lat vs v*omega) ---
+    autocross_andrew1 (2).csv  r=+0.6872  slope=0.919  (2565 samples)   [inconclusive — barely corners, not a test of the channel]
+    autocross_andrew2 (2).csv  r=+0.9719  slope=1.098  (30384 samples)   [GOOD]
+    autocross_josh1 (2).csv    r=+0.9767  slope=1.089  (27957 samples)   [GOOD]
+    autocross_josh2 (2).csv    r=+0.9649  slope=1.067  (26572 samples)   [GOOD]
+    slope &gt;1 is expected: the identity assumes zero sideslip, and wheel speed under-reads through a corner.
+
+=== AUTOCROSS — MAX YAW RATE (peak detection, 10.0 Hz low-pass) ===
+  Top 5 peaks (pooled across files):
+    autocross_andrew2 (2).csv  @    31.62s  -105.12°/s (right)  v= 11.1m/s  R=   6.0m
+    autocross_josh1 (2).csv    @    43.06s  +104.73°/s (left )  v= 10.5m/s  R=   5.7m
+    autocross_josh1 (2).csv    @    38.98s   -92.86°/s (right)  v=  7.5m/s  R=   4.6m
+    autocross_josh2 (2).csv    @    51.32s   -88.48°/s (right)  v=  7.7m/s  R=   5.0m
+    autocross_josh1 (2).csv    @    36.06s   -86.42°/s (right)  v=  7.9m/s  R=   5.3m
+  Top 5 averaged: 95.52°/s
+
+  SINGLE HIGHEST — autocross_andrew2 (2).csv @ 31.62s
+    yaw rate: -105.12°/s  (rotating RIGHT)  [0.2s mean: 95.48°/s, 91% of peak — borderline]
+    at that instant: speed=11.1 m/s, lateral=-0.96 g
+    corner radius being followed: 6.0 m (R = v/omega — the line the driver took, not the corner&#x27;s painted radius)
+    that radius is a hairpin (rules: 9 m min outside diameter)
+
+  Plots saved to: plots\case6_max_yaw\autocross/
+
+========================================================================
+PEAK YAW RATE ACROSS ALL EVENTS
+========================================================================
+  AUTOCROSS  -105.12°/s   R=6.0m
+  SKIDPAD     -93.34°/s   R=6.2m
+  BRAKE       -84.94°/s   R=5.2m
+  ACCEL       -42.24°/s   R=4.8m
+
+  -&gt; Fastest rotation: AUTOCROSS, 105.1°/s
+
+Done.
+</pre></div></details><div id='plots-summary'><details class='section' open><summary>SUMMARY — plots <span class='count'>(1)</span></summary><div class='body'><figure><figcaption>yaw rate summary<a class='popout' href='yaw_rate_summary.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='yaw_rate_summary.html'></iframe></figure></div></details></div><div id='plots-skidpad'><details class='section' open><summary>SKIDPAD — plots <span class='count'>(1)</span></summary><div class='body'><figure><figcaption>yaw validation<a class='popout' href='skidpad/yaw_validation.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='skidpad/yaw_validation.html'></iframe></figure></div></details></div><div id='plots-autocross'><details class='section' open><summary>AUTOCROSS — plots <span class='count'>(1)</span></summary><div class='body'><figure><figcaption>yaw validation<a class='popout' href='autocross/yaw_validation.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='autocross/yaw_validation.html'></iframe></figure></div></details></div><div id='plots-brake'><details class='section' open><summary>BRAKE — plots <span class='count'>(1)</span></summary><div class='body'><figure><figcaption>yaw validation<a class='popout' href='brake/yaw_validation.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='brake/yaw_validation.html'></iframe></figure></div></details></div><div id='filtering'><details class='section'><summary>Raw vs. filtered — filtering check <span class='count'>(9)</span> <span class='note'>methodology, not results</span></summary><div class='body'><p class='sub'>Grey is the raw sensor trace, colour is what the filter kept, and the right-hand panel is the difference — exactly what the cutoff discarded. A formless residual means the cutoff is safe; visibly coherent oscillation in it means real motion is being deleted.</p><h2>SKIDPAD</h2><h2 class='file'>skidpad_austin_both (2)_yaw</h2><figure><figcaption>skidpad austin both (2) yaw before after<a class='popout' href='skidpad/skidpad_austin_both (2)_yaw_before_after.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='skidpad/skidpad_austin_both (2)_yaw_before_after.html'></iframe></figure><h2>AUTOCROSS</h2><h2 class='file'>autocross_andrew1 (2)_yaw</h2><figure><figcaption>autocross andrew1 (2) yaw before after<a class='popout' href='autocross/autocross_andrew1 (2)_yaw_before_after.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='autocross/autocross_andrew1 (2)_yaw_before_after.html'></iframe></figure><h2 class='file'>autocross_andrew2 (2)_yaw</h2><figure><figcaption>autocross andrew2 (2) yaw before after<a class='popout' href='autocross/autocross_andrew2 (2)_yaw_before_after.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='autocross/autocross_andrew2 (2)_yaw_before_after.html'></iframe></figure><h2 class='file'>autocross_josh1 (2)_yaw</h2><figure><figcaption>autocross josh1 (2) yaw before after<a class='popout' href='autocross/autocross_josh1 (2)_yaw_before_after.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='autocross/autocross_josh1 (2)_yaw_before_after.html'></iframe></figure><h2 class='file'>autocross_josh2 (2)_yaw</h2><figure><figcaption>autocross josh2 (2) yaw before after<a class='popout' href='autocross/autocross_josh2 (2)_yaw_before_after.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='autocross/autocross_josh2 (2)_yaw_before_after.html'></iframe></figure><h2>BRAKE</h2><h2 class='file'>braketest1 (2)_yaw</h2><figure><figcaption>braketest1 (2) yaw before after<a class='popout' href='brake/braketest1 (2)_yaw_before_after.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='brake/braketest1 (2)_yaw_before_after.html'></iframe></figure><h2 class='file'>braketest2 (2)_yaw</h2><figure><figcaption>braketest2 (2) yaw before after<a class='popout' href='brake/braketest2 (2)_yaw_before_after.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='brake/braketest2 (2)_yaw_before_after.html'></iframe></figure><h2>ACCEL</h2><h2 class='file'>accel_corinne2 (2)_yaw</h2><figure><figcaption>accel corinne2 (2) yaw before after<a class='popout' href='accel/accel_corinne2 (2)_yaw_before_after.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='accel/accel_corinne2 (2)_yaw_before_after.html'></iframe></figure><h2 class='file'>accel_jamie_both (2)_yaw</h2><figure><figcaption>accel jamie both (2) yaw before after<a class='popout' href='accel/accel_jamie_both (2)_yaw_before_after.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='accel/accel_jamie_both (2)_yaw_before_after.html'></iframe></figure></div></details></div></div></body></html>

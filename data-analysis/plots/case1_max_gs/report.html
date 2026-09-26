@@ -1,0 +1,242 @@
+<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Case 1 — Max G&#x27;s</title><style>
+:root {
+  color-scheme: light dark;
+  --surface: #fcfcfb; --card: #ffffff; --border: #e4e3df;
+  --text: #0b0b0b; --muted: #52514e; --accent: #2a78d6;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --surface: #1a1a19; --card: #232322; --border: #383835;
+    --text: #ffffff; --muted: #c3c2b7; --accent: #3987e5;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 2rem 1.5rem 5rem; background: var(--surface);
+  color: var(--text);
+  font: 15px/1.6 ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+.wrap { max-width: 1200px; margin: 0 auto; }
+h1 { font-size: 1.7rem; margin: 0 0 .25rem; }
+h2 {
+  font-size: 1.15rem; margin: 2.5rem 0 .75rem;
+  padding-top: 1.25rem; border-top: 1px solid var(--border);
+}
+.sub { color: var(--muted); margin: 0 0 2rem; font-size: .9rem; }
+.cards { display: flex; flex-wrap: wrap; gap: .75rem; margin: 1.5rem 0; }
+/* Each event's headline numbers as one labelled band. A bare <h2> over a
+   loose flex row held up at three events and fell apart at five: case5's
+   32 cards and case6's 17 read as one undifferentiated wall of numbers.
+   The rule under the event name is what makes the boundary survive a group
+   whose cards wrap onto several lines. */
+section.cardgroup { margin: 1.75rem 0 0; }
+section.cardgroup > h2 {
+  font-size: .78rem; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--muted); font-weight: 600;
+  margin: 0; padding: 0 0 .45rem;
+  border-top: none; border-bottom: 1px solid var(--border);
+}
+section.cardgroup > .cards { margin: .75rem 0 0; }
+.card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: .85rem 1.1rem; min-width: 150px;
+}
+.card .label {
+  color: var(--muted); font-size: .72rem; text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.card .value { font-size: 1.45rem; font-weight: 600; margin-top: .2rem; }
+.card .unit { font-size: .85rem; color: var(--muted); font-weight: 400; }
+pre.console {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 1.1rem 1.3rem; overflow-x: auto;
+  font: 12.5px/1.55 ui-monospace, "Cascadia Code", Consolas, monospace;
+  white-space: pre; color: var(--text);
+}
+figure { margin: 1.25rem 0 0; }
+figcaption {
+  color: var(--muted); font-size: .78rem; margin-bottom: .4rem;
+  text-transform: uppercase; letter-spacing: .04em;
+  display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap;
+}
+/* Reset the caption's uppercase/tracking — this is a control, not a label,
+   and it has to read as clickable at a glance. */
+a.popout {
+  color: var(--accent); text-transform: none; letter-spacing: 0;
+  font-weight: 600; font-size: .8rem; text-decoration: none;
+  white-space: nowrap; margin-left: auto;
+}
+a.popout:hover { text-decoration: underline; }
+iframe.plot {
+  width: 100%; height: 520px; border: 1px solid var(--border);
+  border-radius: 8px; background: #fff; display: block;
+}
+nav { margin-bottom: 2rem; font-size: .9rem; }
+nav a { color: var(--accent); margin-right: 1rem; }
+.empty { color: var(--muted); font-style: italic; }
+
+/* Sticky bar: on a page this long, scrolling back to a link at the top to
+   reach a sibling report is the main navigation cost. */
+.bar {
+  position: sticky; top: 0; z-index: 20; margin: -2rem -1.5rem 1.5rem;
+  padding: .6rem 1.5rem; background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex; flex-wrap: wrap; gap: .4rem; align-items: center;
+  font-size: .82rem;
+}
+.bar a {
+  color: var(--muted); text-decoration: none; padding: .25rem .6rem;
+  border: 1px solid var(--border); border-radius: 999px; white-space: nowrap;
+}
+.bar a:hover { color: var(--text); border-color: var(--accent); }
+.bar a.home { color: var(--accent); border-color: var(--accent); }
+.bar a.current {
+  color: var(--text); font-weight: 600; background: var(--card);
+  border-color: var(--muted);
+}
+.bar .spacer { flex: 1; }
+
+/* Collapsed by default = the page opens on the numbers, not on 40 iframes.
+   It also means nothing below a section has to be scrolled past to reach. */
+details.section {
+  border: 1px solid var(--border); border-radius: 10px;
+  background: var(--card); margin: 1rem 0; overflow: hidden;
+}
+details.section > summary {
+  cursor: pointer; padding: .8rem 1.1rem; font-weight: 600;
+  list-style: none; display: flex; align-items: center; gap: .6rem;
+}
+details.section > summary::-webkit-details-marker { display: none; }
+details.section > summary::before {
+  content: "▸"; color: var(--muted); font-size: .85em;
+  transition: transform .15s;
+}
+details.section[open] > summary::before { transform: rotate(90deg); }
+details.section > summary:hover { color: var(--accent); }
+details.section > summary .count {
+  color: var(--muted); font-weight: 400; font-size: .8rem;
+}
+details.section > summary .note {
+  color: var(--muted); font-weight: 400; font-size: .8rem; font-style: italic;
+}
+details.section .body { padding: 0 1.1rem 1.1rem; }
+details.section h2 { margin-top: 1.5rem; }
+details.section h2:first-child { border-top: none; padding-top: 0; margin-top: .5rem; }
+
+/* Per-file heading inside an event section. */
+h2.file {
+  font-size: .95rem; font-family: ui-monospace, monospace;
+  display: flex; align-items: center; gap: .5rem; flex-wrap: wrap;
+}
+
+.badge {
+  font-size: .68rem; font-weight: 600; padding: .15rem .5rem;
+  border-radius: 999px; letter-spacing: .03em; text-transform: uppercase;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+.badge.error { background: #fdecec; color: #a3231f; }
+.badge.warn  { background: #fdf3e2; color: #8a5a06; }
+.badge.info  { background: #eaf1fb; color: #23558f; }
+@media (prefers-color-scheme: dark) {
+  .badge.error { background: #3a1f1e; color: #ff9a97; }
+  .badge.warn  { background: #38301c; color: #f0c069; }
+  .badge.info  { background: #1e2b3d; color: #8fbaf0; }
+}
+
+/* Known data problems, shown next to the files they apply to. */
+.warn {
+  border-left: 3px solid; border-radius: 6px; padding: .6rem .85rem;
+  margin: .6rem 0; font-size: .85rem; line-height: 1.5;
+}
+.warn .who {
+  display: block; font-family: ui-monospace, monospace; font-weight: 600;
+  font-size: .78rem; margin-bottom: .2rem;
+}
+.warn.error { border-color: #d0342c; background: rgba(208, 52, 44, .07); }
+.warn.warn  { background: rgba(214, 154, 42, .09); border-color: #d69a2a; }
+.warn.info  { background: rgba(42, 120, 214, .07); border-color: var(--accent); }
+
+table.instants { border-collapse: collapse; width: 100%; font-size: .85rem; }
+table.instants th, table.instants td {
+  border-bottom: 1px solid var(--border); padding: .45rem .6rem;
+  text-align: left; vertical-align: top;
+}
+table.instants th {
+  font-size: .72rem; text-transform: uppercase; letter-spacing: .04em;
+  color: var(--muted); font-weight: 600;
+}
+table.instants .mono { font-family: ui-monospace, monospace; white-space: nowrap; }
+table.instants .muted { color: var(--muted); }
+table.instants .links a {
+  color: var(--accent); margin-right: .7rem; white-space: nowrap;
+}
+.scroll { overflow-x: auto; }
+
+ul.conv { margin: .3rem 0; padding-left: 1.2rem; font-size: .88rem; }
+ul.conv li { margin: .35rem 0; }
+ul.conv code {
+  font-family: ui-monospace, monospace; font-size: .85em;
+  background: var(--surface); padding: .1rem .3rem; border-radius: 4px;
+}
+</style></head><body><div class='wrap'><div class='bar'><a class='home' href='../index.html'>&#8962; all reports</a><a href='../case_summary.html'>summary table</a><a href='../case1_max_gs/report.html' class='current'>case1</a><span class='spacer'></span><a href='#instants'>key instants</a><a href='#plots-skidpad'>skidpad</a><a href='#plots-autocross'>autocross</a><a href='#filtering'>filtering</a></div><h1>Case 1 — Max G&#x27;s</h1><p class='sub'>case1_max_gs &middot; generated 2026-08-05 19:06</p><details class='section' open><summary>Units and sign conventions <span class='note'>read before interpreting any number here</span></summary><div class='body'><ul class='conv'><li><b>Lateral G positive = cornering left.</b> <b>Longitudinal G positive = slowing down</b> — verified empirically against vehicle speed in case3, not assumed from the signal name.</li><li>G's come from <code>VCPDU_lat</code> / <code>VCPDU_lon</code>, which are in <b>m/s²</b> in the raw data and divided by 9.80665 here. Any number on this page is already in g.</li><li><b>Skidpad is a sustained measurement</b> — a median over the steady circling segments — so it has no separate 'peak' by design. The other events report peaks.</li><li>A peak is <b>one instantaneous sample</b> of the filtered trace. The bracketed <code>0.2s mean</code> next to it says whether that instant was a sustained plateau or an isolated spike.</li><li><b><code>alpha</code> is the direction of the g-g vector</b> at that instant — <code>atan2(|lat|, |lon|)</code> in degrees, i.e. where the point sits on the friction circle. <b>90° = pure cornering</b> (no braking or acceleration), <b>0° = pure straight-line</b> braking or acceleration, <b>45° = equal parts of both</b>, the combined-load corner of the circle. So <i>lat −1.60 g, lon +0.14 g, alpha 85°</i> was essentially pure lateral grip — cornering, not trail-braking. It tells you at a glance whether a peak is a single-axis event or a genuine combined-load one.</li></ul></div></details><section class='cardgroup'><h2>SKIDPAD</h2><div class='cards'><div class='card'><div class='label'>sustained lat min</div><div class='value'>1.051 <span class='unit'>g</span></div></div><div class='card'><div class='label'>sustained lat max</div><div class='value'>1.292 <span class='unit'>g</span></div></div><div class='card'><div class='label'>gg envelope area</div><div class='value'>4.898 <span class='unit'>g²</span></div></div></div></section><section class='cardgroup'><h2>AUTOCROSS</h2><div class='cards'><div class='card'><div class='label'>peak lat</div><div class='value'>1.763 <span class='unit'>g</span></div></div><div class='card'><div class='label'>peak lon</div><div class='value'>1.386 <span class='unit'>g</span></div></div><div class='card'><div class='label'>peak combined</div><div class='value'>1.763 <span class='unit'>g</span></div></div><div class='card'><div class='label'>gg envelope area</div><div class='value'>5.941 <span class='unit'>g²</span></div></div></div></section><div id='instants'><details class='section' open><summary>Key instants <span class='count'>(2)</span> <span class='note'>click to open a plot zoomed to that moment</span></summary><div class='body'><div class='scroll'><table class='instants'><tr><th>time</th><th>what</th><th>file</th><th>context</th><th>open at this instant</th></tr><tr><td class='mono'>46.55s</td><td>peak lateral g — 1.763 g · peak combined g — 1.763 g</td><td class='mono'>autocross_josh1 (2)</td><td class='muted'>lat -1.76 g, lon +0.03 g, alpha 89°</td><td class='links'><a href='autocross/autocross_josh1 (2)_before_after.html#t=46.55' target='_blank'>before after ↗</a></td></tr><tr><td class='mono'>61.30s</td><td>peak longitudinal g — 1.386 g</td><td class='mono'>autocross_josh2 (2)</td><td class='muted'>lat -0.68 g, lon +1.39 g, alpha 26°</td><td class='links'><a href='autocross/autocross_josh2 (2)_before_after.html#t=61.30' target='_blank'>before after ↗</a></td></tr></table></div></div></details></div><details class='section'><summary>Console report <span class='note'>full numeric output</span></summary><div class='body'><pre class='console'>Skidpad low-pass: 10.0 Hz | Autocross/Endurance low-pass: 10.0 Hz (both 4th-order Butterworth, zero-phase)
+Reading comp2026_data\skidpad_austin_both (2).csv ...
+Union grid: 113313 points (180.00 s)
+Done. signals.time = 113313 points
+comp2026_data\skidpad_austin_both (2).csv: cached to skidpad_austin_both (2).csv.parsed.pkl.
+
+=== SKIDPAD (steady-state segments, 10.0 Hz low-pass) ===
+  skidpad_austin_both (2).csv — negative-lateral-G direction (4 run(s) found):
+    Run 1: median lateral G=-1.2478g, mean longitudinal G=+0.4353g (81.6s-83.2s, dur=2.5s after trimming)
+    Run 2: median lateral G=-1.2723g, mean longitudinal G=+0.1878g (91.5s-92.9s, dur=2.4s after trimming)
+    Run 3: median lateral G=-1.3223g, mean longitudinal G=+0.0666g (99.7s-101.3s, dur=2.5s after trimming)
+    Run 4: median lateral G=-1.3524g, mean longitudinal G=+0.0652g (130.7s-132.0s, dur=2.4s after trimming)
+    Combined (all runs pooled): median lateral G=-1.2920g, mean longitudinal G=+0.1924g
+    Run-to-run spread in lateral G: 0.1045g
+  skidpad_austin_both (2).csv — positive-lateral-G direction (2 run(s) found):
+    Run 1: median lateral G=+1.0977g, mean longitudinal G=+0.2027g (67.7s-71.1s, dur=4.4s after trimming)
+    Run 2: median lateral G=+0.8461g, mean longitudinal G=+0.3004g (103.6s-107.4s, dur=4.8s after trimming)
+    Combined (all runs pooled): median lateral G=+1.0509g, mean longitudinal G=+0.2545g
+    Run-to-run spread in lateral G: 0.2516g
+
+  Friction envelope (convex hull of the g-g cloud): 4.90 g²
+
+  Plots saved to: plots\case1_max_gs\skidpad/
+Reading comp2026_data\autocross_andrew1 (2).csv ...
+Union grid: 113370 points (180.00 s)
+Done. signals.time = 113370 points
+comp2026_data\autocross_andrew1 (2).csv: cached to autocross_andrew1 (2).csv.parsed.pkl.
+Reading comp2026_data\autocross_andrew2 (2).csv ...
+Union grid: 75410 points (119.99 s)
+Done. signals.time = 75410 points
+comp2026_data\autocross_andrew2 (2).csv: cached to autocross_andrew2 (2).csv.parsed.pkl.
+Reading comp2026_data\autocross_josh1 (2).csv ...
+Union grid: 45293 points (72.00 s)
+Done. signals.time = 45293 points
+comp2026_data\autocross_josh1 (2).csv: cached to autocross_josh1 (2).csv.parsed.pkl.
+Reading comp2026_data\autocross_josh2 (2).csv ...
+Union grid: 75308 points (120.00 s)
+Done. signals.time = 75308 points
+comp2026_data\autocross_josh2 (2).csv: cached to autocross_josh2 (2).csv.parsed.pkl.
+
+=== AUTOCROSS (peak detection, 10.0 Hz low-pass) ===
+  Lateral G:
+    Top 5 peaks averaged: 1.6445 g (values: 1.763, 1.667, 1.648, 1.582, 1.563)
+    Single highest peak: 1.7631 g — autocross_josh1 (2).csv @ 46.55s  [0.2s mean: 1.737 g, 98% of peak — plateau]
+    At that instant: lateral=-1.763g, longitudinal=+0.029g, alpha=89.1°
+  Longitudinal G:
+    Top 5 peaks averaged: 1.2136 g (values: 1.386, 1.325, 1.194, 1.088, 1.076)
+    Single highest peak: 1.3855 g — autocross_josh2 (2).csv @ 61.30s  [0.2s mean: 1.285 g, 93% of peak — borderline]
+    At that instant: lateral=-0.679g, longitudinal=+1.386g, alpha=26.1°
+  Combined G:
+    Top 5 peaks averaged: 1.6543 g (values: 1.763, 1.690, 1.655, 1.583, 1.580)
+    Single highest peak: 1.7633 g — autocross_josh1 (2).csv @ 46.55s  [0.2s mean: 1.734 g, 98% of peak — plateau]
+    At that instant: lateral=-1.763g, longitudinal=+0.030g, alpha=89.0°
+
+  Friction envelope (convex hull of the g-g cloud): 5.94 g²
+
+  Plots saved to: plots\case1_max_gs\autocross/
+
+No files found for ENDURANCE.
+
+Done.
+</pre></div></details><div id='plots-skidpad'><details class='section' open><summary>SKIDPAD — plots <span class='count'>(1)</span></summary><div class='body'><figure><figcaption>gg diagram<a class='popout' href='skidpad/gg_diagram.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='skidpad/gg_diagram.html'></iframe></figure></div></details></div><div id='plots-autocross'><details class='section' open><summary>AUTOCROSS — plots <span class='count'>(1)</span></summary><div class='body'><figure><figcaption>gg diagram<a class='popout' href='autocross/gg_diagram.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='autocross/gg_diagram.html'></iframe></figure></div></details></div><div id='filtering'><details class='section'><summary>Raw vs. filtered — filtering check <span class='count'>(5)</span> <span class='note'>methodology, not results</span></summary><div class='body'><p class='sub'>Grey is the raw sensor trace, colour is what the filter kept, and the right-hand panel is the difference — exactly what the cutoff discarded. A formless residual means the cutoff is safe; visibly coherent oscillation in it means real motion is being deleted.</p><h2>SKIDPAD</h2><h2 class='file'>skidpad_austin_both (2)</h2><figure><figcaption>skidpad austin both (2) before after<a class='popout' href='skidpad/skidpad_austin_both (2)_before_after.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='skidpad/skidpad_austin_both (2)_before_after.html'></iframe></figure><h2>AUTOCROSS</h2><h2 class='file'>autocross_andrew1 (2)</h2><figure><figcaption>autocross andrew1 (2) before after<a class='popout' href='autocross/autocross_andrew1 (2)_before_after.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='autocross/autocross_andrew1 (2)_before_after.html'></iframe></figure><h2 class='file'>autocross_andrew2 (2)</h2><figure><figcaption>autocross andrew2 (2) before after<a class='popout' href='autocross/autocross_andrew2 (2)_before_after.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='autocross/autocross_andrew2 (2)_before_after.html'></iframe></figure><h2 class='file'>autocross_josh1 (2)</h2><figure><figcaption>autocross josh1 (2) before after<a class='popout' href='autocross/autocross_josh1 (2)_before_after.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='autocross/autocross_josh1 (2)_before_after.html'></iframe></figure><h2 class='file'>autocross_josh2 (2)</h2><figure><figcaption>autocross josh2 (2) before after<a class='popout' href='autocross/autocross_josh2 (2)_before_after.html' target='_blank' rel='noopener' title='Open this plot in its own tab, at full browser width'>open full width ↗</a></figcaption><iframe class='plot' loading='lazy' src='autocross/autocross_josh2 (2)_before_after.html'></iframe></figure></div></details></div></div></body></html>
