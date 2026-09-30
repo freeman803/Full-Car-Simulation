@@ -129,10 +129,10 @@ def main() -> None:
     apply_style()
 
     axle: Literal["front", "rear"] = "front"
-    lateral_g = 1.0
-    long_g = 0.2
-    slip_angle_rad = 0.08
-    slip_ratio = 0.1
+    lateral_g = -1.26
+    long_g = -0.7
+    slip_angle_rad = -0.0448
+    slip_ratio = -0.0656
     pressure_pa = 100000.0
 
     forces = calculate_linkage_forces(

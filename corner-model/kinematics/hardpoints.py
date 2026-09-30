@@ -23,47 +23,47 @@ import numpy as np
 
 HP: dict[str, np.ndarray] = {
     # Upper A-arm (UAA)
-    "UAA_front_inboard": np.array([ 850.18,  246.48, 270.0]),   # chassis pickup (front)
-    "UAA_rear_inboard":  np.array([ 590.54,  246.48, 270.0]),   # chassis pickup (rear)
-    "UAA_outboard":      np.array([ 735, 540, 292.63]),   # upright upper ball joint
+    "UAA_front_inboard": np.array([ 884.869,  247.493, 245.941]),   # chassis pickup (front)
+    "UAA_rear_inboard":  np.array([ 617.550,  247.350, 259.202]),   # chassis pickup (rear)
+    "UAA_outboard":      np.array([ 769.489, 542.608, 292.630]),   # upright upper ball joint
 
     # Lower A-arm (LAA)
-    "LAA_front_inboard": np.array([ 890.24,  192.24,  105.88]),   # chassis pickup (front)
-    "LAA_rear_inboard":  np.array([ 590.54,  192.24,  105.88]),   # chassis pickup (rear)
-    "LAA_outboard":      np.array([   739.52, 559,  113]),   # upright lower ball joint
+    "LAA_front_inboard": np.array([ 926.852, 189.946,  87.317]),   # chassis pickup (front)
+    "LAA_rear_inboard":  np.array([ 620.155, 189.937,  112.133]),   # chassis pickup (rear)
+    "LAA_outboard":      np.array([ 777.991, 564.695,  113]),   # upright lower ball joint
 
     # Steering
-    "tie_rod_inboard":   np.array([830, 208.36, 154.64]),   # rack end
-    "tie_rod_outboard":  np.array([813.177, 553.2537, 167.3273]),   # upright steering knuckle
+    "tie_rod_inboard":   np.array([900.500, 208.360, 140.250]),   # rack end
+    "tie_rod_outboard":  np.array([853.590, 550.000, 167.683]),   # upright steering knuckle
 
     # Wheel / contact patch
-    "wheel_center":      np.array([   731, 609.6, 203.2]),   # rim centre
-    "contact_patch":     np.array([   731, 609.6,   0.0]),   # tyre contact (Z must be 0)
+    "wheel_center":      np.array([   771.5, 609.6, 203.2]),   # rim centre
+    "contact_patch":     np.array([   771.5, 609.6,   0.0]),   # tyre contact (Z must be 0)
 
     # Rear corner hardpoints (Lotus sheet [x, y, z] -> [-x, y, z], same as front)
-    "rear_UAA_front_inboard": np.array([-487.7956, 277.8588, 256.8153]),
-    "rear_UAA_rear_inboard":  np.array([-832.5374, 277.8588, 256.8153]),
-    "rear_UAA_outboard":      np.array([-830.9,    510.41,   292.0]),
+    "rear_UAA_front_inboard": np.array([-491.824, 283.290, 244.483]),
+    "rear_UAA_rear_inboard":  np.array([-803.213, 283.475, 259.586]),
+    "rear_UAA_outboard":      np.array([-794.356, 521.320, 292.0]),
 
-    "rear_LAA_front_inboard": np.array([-528.7743, 239.4689, 105.1149]),
-    "rear_LAA_rear_inboard":  np.array([-795.1525, 239.4689, 105.1149]),
-    "rear_LAA_outboard":      np.array([-783.1199, 523.2056, 118.0]),
+    "rear_LAA_front_inboard": np.array([-514.431, 254.494, 104.239]),
+    "rear_LAA_rear_inboard":  np.array([-769.457, 254.504, 103.012]),
+    "rear_LAA_outboard":      np.array([-745.219, 536.571, 113.0]),
 
-    "rear_pushrod_outboard":  np.array([-830.9,    484.315,  302.015]),
-    "rear_pushrod_inboard":   np.array([-830.9,    351.7545, 432.9636]),
+    "rear_pushrod_outboard":  np.array([-802.751,  483.811,  312.595]),
+    "rear_pushrod_inboard":   np.array([-802.751,  330.633, 437.141]),
 
-    "rear_tie_rod_outboard":  np.array([-832.4617, 522.95,   118.0]),
-    "rear_tie_rod_inboard":   np.array([-832.4617, 239.4689, 105.1149]),
+    "rear_tie_rod_outboard":  np.array([-795.219 , 536.573, 112.759]),
+    "rear_tie_rod_inboard":   np.array([-795.182, 254.505, 102.888 ]),
 
-    "rear_wheel_axis":        np.array([-812.44,   585.2,    203.2]),
-    "rear_wheel_center":      np.array([-812.44,   584.2,    203.2]),
-    "rear_contact_patch":     np.array([-812.44,   584.2,      0.0]),   # tyre contact (Z must be 0)
+    "rear_wheel_axis":        np.array([-771.5,   602.408,    203.2]),
+    "rear_wheel_center":      np.array([-771.5,   602.408,    203.2]),
+    "rear_contact_patch":     np.array([-771.5,   602.408,      0.0]),   # tyre contact (Z must be 0)
 
-    "rear_bellcrank_pivot":   np.array([-830.9,    299.7506, 380.32]),
-    "rear_bellcrank_axis":    np.array([-831.9,    299.7506, 380.32]),
+    "rear_bellcrank_pivot":   np.array([-802.751,  266.816, 366.308]),
+    "rear_bellcrank_axis":    np.array([-802.751,  266.816, 366.308]),
 
-    "rear_shock_chassis":     np.array([-830.9,     98.2623, 370.2231]),
-    "rear_shock_bellcrank":   np.array([-830.9,    249.1021, 462.8235]),
+    "rear_shock_chassis":     np.array([-802.751, 33.239,  362.805]),
+    "rear_shock_bellcrank":   np.array([-802.751, 189.684, 445.585]),
 
     # Ball joint references — keep in sync with UAA_outboard / LAA_outboard
     "upper_BJ":          np.array([   735, 540, 292.63]),
@@ -74,33 +74,33 @@ HP: dict[str, np.ndarray] = {
 # GLOBAL CAR PARAMETERS
 # ─────────────────────────────────────────────────────────────────────────────
 
-WHEEL_RADIUS  = 203    # mm  (18" OD tyre / 10" rim)
+WHEEL_RADIUS  = 203    # mm  (16" OD tyre / 10" rim)
 TRACK_WIDTH   = 1219.0   # mm  front track, centre-to-centre
-WHEELBASE     = 1543.0   # mm
+WHEELBASE     = 1575.0   # mm
 RACK_OFFSET_X = 86.64   # mm  rack centre relative to front axle (negative = behind axle)
-CG_HEIGHT     = 280.0    # mm  centre of gravity height (used for anti-dive calculation)
+CG_HEIGHT     = 313.0    # mm  centre of gravity height (used for anti-dive calculation)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # PUSHROD  (lower A-arm outboard → bellcrank)
 # ─────────────────────────────────────────────────────────────────────────────
 
-HP["pushrod_outboard"] = np.array([  743.36, 517.8, 139.34])  # lower arm pickup
-HP["pushrod_inboard"]  = np.array([  743.36, 250, 687])  # bellcrank input pivot
+HP["pushrod_outboard"] = np.array([  771.5, 507.788, 313.985])  # lower arm pickup
+HP["pushrod_inboard"]  = np.array([  771.5, 254.071, 669.211])  # bellcrank input pivot
 
 # ─────────────────────────────────────────────────────────────────────────────
 # BELLCRANK / ROCKER
 # ─────────────────────────────────────────────────────────────────────────────
 
-HP["bellcrank_pivot"]       = np.array([  743.36, 208.32, 653.19])  # chassis bearing
-HP["bellcrank_pushrod_arm"] = np.array([  743.36, 250, 687])  # = pushrod_inboard
-HP["bellcrank_damper_arm"]  = np.array([  743.36,  194.82, 706.77])  # spring-damper pickup
+HP["bellcrank_pivot"]       = np.array([  771.5, 218.464,	643.779])  # chassis bearing
+HP["bellcrank_pushrod_arm"] = np.array([  771.5, 254.071, 669.211])  # = pushrod_inboard
+HP["bellcrank_damper_arm"]  = np.array([  771.5, 205.496, 690.132])  # spring-damper pickup
 
 # ─────────────────────────────────────────────────────────────────────────────
 # SPRING / DAMPER
 # ─────────────────────────────────────────────────────────────────────────────
 
-HP["damper_outboard"] = np.array([  743.36,  194.82, 706.77])  # bellcrank end
-HP["damper_inboard"]  = np.array([  743.36,  25.78, 675])  # chassis top mount
+HP["damper_outboard"] = np.array([  771.5, 205.496, 690.132])  # bellcrank end
+HP["damper_inboard"]  = np.array([  771.5, 39.856, 643.793])  # chassis top mount
 
 # ─────────────────────────────────────────────────────────────────────────────
 # SPRING / DAMPER RATES
@@ -108,6 +108,6 @@ HP["damper_inboard"]  = np.array([  743.36,  25.78, 675])  # chassis top mount
 
 SPRING_RATE     = 39.403  # N/mm  spring rate at the damper
 DAMPER_RATE     = 2.5    # N·s/mm  linear damping coefficient at the damper
-UNSPRUNG_MASS   = 8.0    # kg    corner unsprung mass (wheel + upright + half-arms)
+UNSPRUNG_MASS   = 9.0    # kg    corner unsprung mass (wheel + upright + half-arms)
 SPRUNG_MASS     = 53.75   # kg    corner sprung mass (quarter car)
 TYRE_STIFFNESS  = 130.0  # N/mm  vertical tyre stiffness

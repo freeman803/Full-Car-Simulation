@@ -2,11 +2,11 @@ class CarData:
     """
     A class to hold general information about the car.
     """
-    MASS_KG = 200
-    CG_HEIGHT_MM = 315
+    MASS_KG = 290
+    CG_HEIGHT_MM = 313
     FRONT_TRACK_MM = 1219
-    REAR_TRACK_MM = 1168
-    WHEELBASE_MM = 1545
+    REAR_TRACK_MM = 1219
+    WHEELBASE_MM = 1575
     TOTAL_DOWNFORCE_N = 477
     CENTER_OF_PRESSURE = 0.3801
     CENTER_OF_MASS = 0.5

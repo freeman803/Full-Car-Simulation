@@ -153,12 +153,12 @@ def calculate_linkage_forces(
 
 if __name__ == "__main__":
     result = calculate_corner_forces(
-        lateral_g=1.8,
-        long_g=0,
+        lateral_g=1.0,
+        long_g=-1.0,
         axle="rear",
-        slip_angle_rad=0.19,
-        slip_ratio=0,
-        pressure_pa=110000.0,
+        slip_angle_rad= -0.034,
+        slip_ratio=-0.05,
+        pressure_pa=100000.0,
     )
     print("Tire forces at the contact patch:")
     for key, value in result["tire"].items():
