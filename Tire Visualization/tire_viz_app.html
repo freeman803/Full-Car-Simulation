@@ -15,6 +15,7 @@
     --baseline:       #c3c2b7;
     --border:         rgba(11,11,11,0.10);
     --series-1:       #2a78d6;
+    --series-2:       #eb6834;
   }
   @media (prefers-color-scheme: dark) {
     :root {
@@ -27,6 +28,7 @@
       --baseline:       #383835;
       --border:         rgba(255,255,255,0.10);
       --series-1:       #3987e5;
+      --series-2:       #d95926;
     }
   }
   * { box-sizing: border-box; }
@@ -87,8 +89,19 @@
   .axisline { stroke: var(--baseline); stroke-width: 1; }
   .series   { stroke: var(--series-1); stroke-width: 2; fill: none;
               stroke-linejoin: round; stroke-linecap: round; }
+  .series2  { stroke: var(--series-2); stroke-width: 1.25; fill: none;
+              stroke-linejoin: round; stroke-linecap: round; }
+  svg .curve-label { fill: var(--text-secondary); stroke: var(--surface); stroke-width: 3;
+                     paint-order: stroke; }
   .crosshair { stroke: var(--baseline); stroke-width: 1; stroke-dasharray: 3 3; }
   .hoverdot  { fill: var(--series-1); stroke: var(--surface); stroke-width: 2; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 4px 18px; margin: 0 0 8px;
+            font-size: 12px; color: var(--text-secondary); }
+  .legend[hidden] { display: none; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend i { width: 16px; height: 0; border-top: 2px solid var(--series-1); }
+  .legend i.s2 { border-top-color: var(--series-2); }
 
   .tooltip {
     position: absolute; pointer-events: none; display: none;
@@ -99,8 +112,9 @@
   }
   .tooltip .val { font-weight: 700; font-size: 14px; color: var(--text-primary);
                   display: flex; align-items: center; gap: 6px; }
-  .tooltip .val .key { width: 14px; height: 0; border-top: 2px solid var(--series-1); display: inline-block; }
+  .tooltip .val .key { width: 14px; height: 0; border-top: 2px solid var(--key, var(--series-1)); display: inline-block; }
   .tooltip .at  { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+  .tooltip .at:empty { display: none; }
 
   .note { font-size: 12px; color: var(--text-secondary); margin: 10px 0 0; }
   .note:empty { display: none; }
@@ -129,24 +143,33 @@
         <select id="tire"></select>
       </label>
       <label class="field">
-        <span class="lab">Sweep this input</span>
-        <select id="swept"></select>
+        <span class="lab">View</span>
+        <select id="mode">
+          <option value="curve">Curve — one output vs one input</option>
+          <option value="circle">Friction circle — FX vs FY</option>
+        </select>
       </label>
-      <label class="field">
-        <span class="lab">Plot this output</span>
-        <select id="output"></select>
-      </label>
-      <label class="check">
-        <input type="checkbox" id="swap">
-        <span>Put the output on the X axis</span>
-      </label>
+      <div id="curve-only">
+        <label class="field">
+          <span class="lab">Sweep this input</span>
+          <select id="swept"></select>
+        </label>
+        <label class="field">
+          <span class="lab">Plot this output</span>
+          <select id="output"></select>
+        </label>
+        <label class="check">
+          <input type="checkbox" id="swap">
+          <span>Put the output on the X axis</span>
+        </label>
+      </div>
 
       <fieldset>
         <legend>Fixed inputs</legend>
         <div id="fixedbox"></div>
       </fieldset>
 
-      <fieldset>
+      <fieldset id="range-curve">
         <legend>Sweep range</legend>
         <div class="rangerow">
           <label><span class="lab">Min</span><input type="number" id="rmin" step="any"></label>
@@ -154,24 +177,39 @@
           <label><span class="lab">Points</span><input type="number" id="rpts" min="2" max="2000" step="1" value="300"></label>
         </div>
       </fieldset>
+
+      <fieldset id="range-circle" hidden>
+        <legend>Slip range (±)</legend>
+        <div class="rangerow">
+          <label><span class="lab">Angle [deg]</span><input type="number" id="csa" min="0" step="any"></label>
+          <label><span class="lab">Ratio</span><input type="number" id="csr" min="0" step="any"></label>
+          <label><span class="lab">Curves</span><input type="number" id="ccurves" min="1" max="41" step="1"></label>
+        </div>
+      </fieldset>
     </div>
 
     <div class="card">
       <h2 class="chart-title" id="ctitle">&nbsp;</h2>
       <p class="chart-sub" id="csub">&nbsp;</p>
+      <div class="legend" id="legend" hidden>
+        <span><i></i>Grip limit</span>
+        <span><i class="s2"></i>Constant slip angle, slip ratio swept</span>
+      </div>
       <div class="chart-box" id="chartbox">
         <svg id="chart" viewBox="0 0 800 460" role="img" aria-label="Tire curve"></svg>
         <div class="tooltip" id="tooltip">
           <div class="val"><span class="key"></span><span id="tt-y"></span></div>
           <div class="at" id="tt-x"></div>
+          <div class="at" id="tt-x2"></div>
         </div>
       </div>
+      <p class="note" id="stats"></p>
       <p class="note" id="note"></p>
       <details>
         <summary>Data table</summary>
         <div class="tablebox">
           <table>
-            <thead><tr><th id="th-x"></th><th id="th-y"></th></tr></thead>
+            <thead><tr id="thead"></tr></thead>
             <tbody id="tbody"></tbody>
           </table>
         </div>
@@ -201,11 +239,16 @@ const OUTPUTS = {
 const $ = id => document.getElementById(id);
 const state = {
   tire: null, tires: {}, seeded: {},
+  mode: new URLSearchParams(location.search).get("view") === "circle" ? "circle" : "curve",
   swept: "sa", output: "fy", swap: false,
   fixed: Object.fromEntries(Object.entries(INPUTS).map(([k, v]) => [k, v.fixed])),
   min: INPUTS.sa.sweep[0], max: INPUTS.sa.sweep[1], points: 300,
-  data: null, info: null,
+  // friction circle: slip angle/ratio span +/- these, with `curves` slip-angle lines
+  saMax: INPUTS.sa.sweep[1], srMax: INPUTS.sr.sweep[1], curves: 9,
+  data: null, circle: null, info: null,
 };
+// Slip angle and slip ratio are both swept in the friction circle.
+const CIRCLE_SWEPT = ["sa", "sr"];
 
 function fmt(v, digits = 4) {
   if (v === null || !isFinite(v)) return "–";
@@ -227,11 +270,21 @@ function fillSelect(sel, dict, current) {
   sel.value = current;
 }
 
+function isSwept(key) {
+  return state.mode === "circle" ? CIRCLE_SWEPT.includes(key) : key === state.swept;
+}
+function fixedDescription() {
+  return Object.entries(INPUTS)
+    .filter(([k]) => !isSwept(k))
+    .map(([k, m]) => `${m.label.split(" (")[0]} = ${withUnit(state.fixed[k], m.unit)}`)
+    .join(", ");
+}
+
 function renderFixedInputs() {
   const box = $("fixedbox");
   box.replaceChildren();
   for (const [key, meta] of Object.entries(INPUTS)) {
-    if (key === state.swept) continue;
+    if (isSwept(key)) continue;
     const row = document.createElement("div");
     row.className = "fixedrow";
     const name = document.createElement("span");
@@ -264,29 +317,32 @@ function onSweptChanged() {
 let debounceTimer = null;
 function refresh() {
   clearTimeout(debounceTimer);
-  debounceTimer = setTimeout(fetchSweep, 120);
+  debounceTimer = setTimeout(fetchData, 120);
 }
 
-async function fetchSweep() {
-  const body = {
-    tire: state.tire,
-    swept: state.swept, output: state.output,
-    min: state.min, max: state.max, points: state.points,
-    fixed: state.fixed,
-  };
+async function fetchData() {
+  const mode = state.mode;
+  const body = mode === "circle"
+    ? { tire: state.tire, fixed: state.fixed,
+        sa_max: state.saMax, sr_max: state.srMax, curves: state.curves }
+    : { tire: state.tire,
+        swept: state.swept, output: state.output,
+        min: state.min, max: state.max, points: state.points,
+        fixed: state.fixed };
   try {
-    const res = await fetch("/api/sweep", { method: "POST", body: JSON.stringify(body) });
+    const res = await fetch(mode === "circle" ? "/api/circle" : "/api/sweep",
+      { method: "POST", body: JSON.stringify(body) });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || res.statusText);
-    // Ignore a response that arrived after the user switched tires.
-    if (data.tire && data.tire !== state.tire) return;
-    state.data = data;
+    // Ignore a response that arrived after the user switched tires or views.
+    if ((data.tire && data.tire !== state.tire) || mode !== state.mode) return;
+    if (mode === "circle") state.circle = data; else state.data = data;
     setNote();
     render();
   } catch (err) {
     const note = $("note");
     note.className = "note error";
-    note.textContent = "Could not compute sweep: " + err.message;
+    note.textContent = `Could not compute ${mode === "circle" ? "friction circle" : "sweep"}: ` + err.message;
   }
 }
 
@@ -295,16 +351,29 @@ function setNote() {
   note.className = "note";
   const info = state.info;
   const msgs = [];
-  if (state.output === "my" && info && info.my_all_zero)
-    msgs.push("All rolling-resistance coefficients (QSY1–QSY8) in this .tir are zero, so MY is identically 0.");
-  if (state.swept === "pressure" && info && info.pressure_dependent === false)
-    msgs.push(`This tire file (${info.format}) has no inflation-pressure model, so pressure has no effect on the output.`);
+  if (state.mode === "circle") {
+    const c = state.circle;
+    if (c && !c.closed)
+      msgs.push("The slip range does not reach every force direction, so the grip limit is not a closed loop.");
+    if (c && c.edge_fraction > 0.1)
+      msgs.push("Part of the grip limit sits on the edge of the slip range, so it is set by the range rather than the tire there. Widen the slip range to find the tire's own limit.");
+  } else {
+    if (state.output === "my" && info && info.my_all_zero)
+      msgs.push("All rolling-resistance coefficients (QSY1–QSY8) in this .tir are zero, so MY is identically 0.");
+    if (state.swept === "pressure" && info && info.pressure_dependent === false)
+      msgs.push(`This tire file (${info.format}) has no inflation-pressure model, so pressure has no effect on the output.`);
+  }
   note.textContent = msgs.join(" ");
 }
 
 /* ---------- chart ---------- */
 const SVG_NS = "http://www.w3.org/2000/svg";
-const W = 800, H = 460, M = { top: 14, right: 20, bottom: 48, left: 70 };
+const W = 800, M = { top: 14, right: 20, bottom: 48, left: 70 };
+let H = 460; // the friction circle uses a taller plot so equal axis scales fit
+function setChartHeight(h) {
+  H = h;
+  $("chart").setAttribute("viewBox", `0 0 ${W} ${H}`);
+}
 function el(name, attrs, cls) {
   const e = document.createElementNS(SVG_NS, name);
   for (const [k, v] of Object.entries(attrs || {})) e.setAttribute(k, v);
@@ -315,16 +384,24 @@ function niceTicks(lo, hi, n = 6) {
   if (lo === hi) { lo -= 1; hi += 1; }
   const span = hi - lo, step0 = span / n, mag = Math.pow(10, Math.floor(Math.log10(step0)));
   const step = [1, 2, 5, 10].map(m => m * mag).find(s => span / s <= n) || 10 * mag;
+  return stepTicks(lo, hi, step);
+}
+function stepTicks(lo, hi, step) {
   const ticks = [];
   for (let t = Math.ceil(lo / step) * step; t <= hi + step * 1e-9; t += step)
     ticks.push(Math.abs(t) < step * 1e-9 ? 0 : t);
   return ticks;
 }
 
-let plotCache = null; // {xs, ys, xScale, yScale, xMeta, yMeta}
+let plotCache = null; // curve: {xs, ys, xScale, yScale, xMeta, yMeta}; circle: {circle: true, pts}
 
 function render() {
+  if (state.mode === "circle") { renderCircle(); return; }
   if (!state.data) return;
+  setChartHeight(460);
+  $("legend").hidden = true;
+  $("stats").textContent = "";
+  $("chart").setAttribute("aria-label", "Tire curve");
   const inMeta = INPUTS[state.swept], outMeta = OUTPUTS[state.output];
   const xMeta = state.swap ? outMeta : inMeta;
   const yMeta = state.swap ? inMeta : outMeta;
@@ -333,11 +410,7 @@ function render() {
 
   // titles
   $("ctitle").textContent = `${outMeta.label} vs ${inMeta.label}`;
-  const fixedDesc = Object.entries(INPUTS)
-    .filter(([k]) => k !== state.swept)
-    .map(([k, m]) => `${m.label.split(" (")[0]} = ${withUnit(state.fixed[k], m.unit)}`)
-    .join(", ");
-  $("csub").textContent = `${fixedDesc} — ${state.info ? `${state.info.file} · ${state.info.format}` : ""}`;
+  $("csub").textContent = `${fixedDescription()} — ${state.info ? `${state.info.file} · ${state.info.format}` : ""}`;
 
   // extents (pad y 5%)
   const fx = xs.filter(v => v !== null), fy = ys.filter(v => v !== null);
@@ -398,33 +471,185 @@ function render() {
   svg.append(cross, dot);
 
   plotCache = { xs, ys, xScale, yScale, xMeta, yMeta, cross, dot };
-  renderTable(xs, ys, xMeta, yMeta);
+  const head = m => m.unit ? `${m.label} [${m.unit}]` : m.label;
+  renderTable([head(xMeta), head(yMeta)], [xs, ys]);
 }
 
-function renderTable(xs, ys, xMeta, yMeta) {
-  $("th-x").textContent = xMeta.unit ? `${xMeta.label} [${xMeta.unit}]` : xMeta.label;
-  $("th-y").textContent = yMeta.unit ? `${yMeta.label} [${yMeta.unit}]` : yMeta.label;
+/* Friction circle: FY on x, FX on y, one scale for both axes so a circle
+   stays a circle. */
+function renderCircle() {
+  const c = state.circle;
+  if (!c) return;
+  setChartHeight(640);
+  $("legend").hidden = false;
+  $("chart").setAttribute("aria-label", "Friction circle");
+  $("ctitle").textContent = "Friction circle — FX vs FY";
+  $("csub").textContent = `${fixedDescription()} — ${state.info ? `${state.info.file} · ${state.info.format}` : ""}`;
+
+  // extents over every plotted point, then one N-per-pixel scale for both axes
+  const env = c.envelope;
+  const allX = env.fy.concat(...c.curves.map(k => k.fy)).filter(v => v !== null);
+  const allY = env.fx.concat(...c.curves.map(k => k.fx)).filter(v => v !== null);
+  const pw = W - M.left - M.right, ph = H - M.top - M.bottom;
+  const xMid = (Math.min(...allX) + Math.max(...allX)) / 2;
+  const yMid = (Math.min(...allY) + Math.max(...allY)) / 2;
+  const perPx = Math.max((Math.max(...allX) - Math.min(...allX)) / pw,
+                         (Math.max(...allY) - Math.min(...allY)) / ph) * 1.08 || 1;
+  const x0 = xMid - perPx * pw / 2, x1 = xMid + perPx * pw / 2;
+  const y0 = yMid - perPx * ph / 2, y1 = yMid + perPx * ph / 2;
+  const xScale = v => M.left + (v - x0) / perPx;
+  const yScale = v => H - M.bottom - (v - y0) / perPx;
+
+  const svg = $("chart");
+  svg.replaceChildren();
+
+  // grid + ticks, same step on both axes
+  const yTicks = niceTicks(y0, y1, 8);
+  const step = yTicks.length > 1 ? yTicks[1] - yTicks[0] : (y1 - y0);
+  for (const t of yTicks) {
+    const y = yScale(t);
+    svg.appendChild(el("line", { x1: M.left, x2: W - M.right, y1: y, y2: y },
+      t === 0 ? "zeroline" : "gridline"));
+    const lab = el("text", { x: M.left - 8, y: y + 3.5, "text-anchor": "end" });
+    lab.textContent = fmt(t, 3);
+    svg.appendChild(lab);
+  }
+  for (const t of stepTicks(x0, x1, step)) {
+    const x = xScale(t);
+    svg.appendChild(el("line", { x1: x, x2: x, y1: M.top, y2: H - M.bottom },
+      t === 0 ? "zeroline" : "gridline"));
+    const lab = el("text", { x: x, y: H - M.bottom + 16, "text-anchor": "middle" });
+    lab.textContent = fmt(t, 3);
+    svg.appendChild(lab);
+  }
+  svg.appendChild(el("line", { x1: M.left, x2: W - M.right, y1: H - M.bottom, y2: H - M.bottom }, "axisline"));
+
+  // axis names
+  const xn = el("text", { x: (M.left + W - M.right) / 2, y: H - 10, "text-anchor": "middle" }, "axis-name");
+  xn.textContent = `${OUTPUTS.fy.label} [${OUTPUTS.fy.unit}]`;
+  svg.appendChild(xn);
+  const yn = el("text", {
+    x: 16, y: (M.top + H - M.bottom) / 2, "text-anchor": "middle",
+    transform: `rotate(-90 16 ${(M.top + H - M.bottom) / 2})`,
+  }, "axis-name");
+  yn.textContent = `${OUTPUTS.fx.label} [${OUTPUTS.fx.unit}]`;
+  svg.appendChild(yn);
+
+  // hover targets: every plotted point, in pixel space
+  const pts = [];
+  const pathOf = (fys, fxs, sas, srs, name, color) => {
+    let d = "", pen = false;
+    for (let i = 0; i < fys.length; i++) {
+      if (fys[i] === null || fxs[i] === null) { pen = false; continue; }
+      const px = xScale(fys[i]), py = yScale(fxs[i]);
+      d += (pen ? "L" : "M") + px.toFixed(2) + " " + py.toFixed(2);
+      pen = true;
+      pts.push({ px, py, fx: fxs[i], fy: fys[i], sa: sas[i], sr: srs[i], name, color });
+    }
+    return d;
+  };
+
+  // constant-slip-angle curves under the grip limit
+  const labels = [];
+  for (const k of c.curves) {
+    const sas = k.sr.map(() => k.sa);
+    svg.appendChild(el("path",
+      { d: pathOf(k.fy, k.fx, sas, k.sr, `Slip angle ${fmt(k.sa)} deg`, "var(--series-2)") }, "series2"));
+    const mid = (k.sr.length - 1) / 2; // slip ratio 0
+    if (k.fy[mid] !== null && k.fx[mid] !== null)
+      labels.push({ x: xScale(k.fy[mid]), y: yScale(k.fx[mid]), text: `${fmt(k.sa, 3)}°` });
+  }
+  const envD = pathOf(env.fy, env.fx, env.sa, env.sr, "Grip limit", "var(--series-1)");
+  svg.appendChild(el("path", { d: envD + (c.closed ? "Z" : "") }, "series"));
+
+  // label each curve where slip ratio is 0, skipping ones that would collide
+  const placed = [];
+  for (const l of labels) {
+    if (placed.some(p => Math.abs(p.x - l.x) < 26 && Math.abs(p.y - l.y) < 13)) continue;
+    placed.push(l);
+    const t = el("text", { x: l.x, y: l.y + 3.5, "text-anchor": "middle" }, "curve-label");
+    t.textContent = l.text;
+    svg.appendChild(t);
+  }
+
+  const dot = el("circle", { r: 4.5, visibility: "hidden" }, "hoverdot");
+  svg.appendChild(dot);
+  plotCache = { circle: true, pts, dot, fz: c.fz };
+
+  const p = c.peaks, mu = v => fmt(Math.abs(v) / c.fz, 3);
+  $("stats").textContent =
+    `Peak FX ${fmt(p.fx_max)} N driving (μ ${mu(p.fx_max)}), ${fmt(p.fx_min)} N braking (μ ${mu(p.fx_min)}). ` +
+    `Peak FY ${fmt(p.fy_max)} N (μ ${mu(p.fy_max)}) and ${fmt(p.fy_min)} N (μ ${mu(p.fy_min)}).`;
+
+  renderTable(
+    ["Grip limit FY [N]", "Grip limit FX [N]", "Slip angle [deg]", "Slip ratio"],
+    [env.fy, env.fx, env.sa, env.sr]);
+}
+
+function renderTable(headers, cols) {
+  const thead = $("thead");
+  thead.replaceChildren();
+  for (const h of headers) {
+    const th = document.createElement("th");
+    th.textContent = h;
+    thead.appendChild(th);
+  }
   const tbody = $("tbody");
   tbody.replaceChildren();
   const frag = document.createDocumentFragment();
-  for (let i = 0; i < xs.length; i++) {
+  for (let i = 0; i < cols[0].length; i++) {
     const tr = document.createElement("tr");
-    const a = document.createElement("td"), b = document.createElement("td");
-    a.textContent = fmt(xs[i]); b.textContent = fmt(ys[i]);
-    tr.append(a, b);
+    for (const col of cols) {
+      const td = document.createElement("td");
+      td.textContent = fmt(col[i]);
+      tr.appendChild(td);
+    }
     frag.appendChild(tr);
   }
   tbody.appendChild(frag);
 }
 
-/* crosshair + tooltip: nearest point by pointer x */
+/* crosshair + tooltip: nearest point by pointer x (curve) or by distance (circle) */
 const svgEl = $("chart"), tip = $("tooltip"), box = $("chartbox");
 function svgPoint(evt) {
   const r = svgEl.getBoundingClientRect();
-  return { px: (evt.clientX - r.left) * W / r.width, rect: r };
+  return { px: (evt.clientX - r.left) * W / r.width, py: (evt.clientY - r.top) * H / r.height, rect: r };
+}
+function placeTip(cx, cy, rect) {
+  tip.style.display = "block";
+  const bx = box.getBoundingClientRect();
+  const pxCss = cx * rect.width / W + (rect.left - bx.left);
+  const pyCss = cy * rect.height / H + (rect.top - bx.top);
+  const flip = pxCss > bx.width - tip.offsetWidth - 24;
+  tip.style.left = flip ? (pxCss - tip.offsetWidth - 12) + "px" : (pxCss + 12) + "px";
+  tip.style.top = Math.max(0, pyCss - tip.offsetHeight - 8) + "px";
+}
+function hoverCircle(evt) {
+  const { pts, dot, fz } = plotCache;
+  const { px, py, rect } = svgPoint(evt);
+  let best = null, bestDist = 40 * 40; // ignore the pointer when it is far from every mark
+  for (const p of pts) {
+    const d = (p.px - px) ** 2 + (p.py - py) ** 2;
+    if (d < bestDist) { bestDist = d; best = p; }
+  }
+  if (!best) {
+    tip.style.display = "none";
+    dot.setAttribute("visibility", "hidden");
+    return;
+  }
+  dot.setAttribute("cx", best.px); dot.setAttribute("cy", best.py);
+  dot.style.fill = best.color;
+  dot.setAttribute("visibility", "visible");
+  tip.style.setProperty("--key", best.color);
+  const mag = Math.hypot(best.fx, best.fy);
+  $("tt-y").textContent = `FX ${withUnit(best.fx, "N")}, FY ${withUnit(best.fy, "N")}`;
+  $("tt-x").textContent = `Slip angle ${fmt(best.sa)} deg, slip ratio ${fmt(best.sr)}`;
+  $("tt-x2").textContent = `${best.name.startsWith("Grip") ? "Grip limit · " : ""}total ${withUnit(mag, "N")} (μ ${fmt(mag / fz, 3)})`;
+  placeTip(best.px, best.py, rect);
 }
 svgEl.addEventListener("pointermove", evt => {
   if (!plotCache) return;
+  if (plotCache.circle) { hoverCircle(evt); return; }
   const { xs, ys, xScale, yScale, xMeta, yMeta, cross, dot } = plotCache;
   const { px, rect } = svgPoint(evt);
   let best = -1, bestDist = Infinity;
@@ -440,8 +665,10 @@ svgEl.addEventListener("pointermove", evt => {
   dot.setAttribute("cx", cx); dot.setAttribute("cy", cy);
   dot.setAttribute("visibility", "visible");
 
+  tip.style.removeProperty("--key");
   $("tt-y").textContent = withUnit(ys[best], yMeta.unit);
   $("tt-x").textContent = `${xMeta.label.split(" (")[0]} ${withUnit(xs[best], xMeta.unit)}`;
+  $("tt-x2").textContent = "";
   tip.style.display = "block";
   const bx = box.getBoundingClientRect();
   const pxCss = cx * rect.width / W + (rect.left - bx.left);
@@ -453,16 +680,35 @@ svgEl.addEventListener("pointermove", evt => {
 svgEl.addEventListener("pointerleave", () => {
   tip.style.display = "none";
   if (plotCache) {
-    plotCache.cross.setAttribute("visibility", "hidden");
+    if (plotCache.cross) plotCache.cross.setAttribute("visibility", "hidden");
     plotCache.dot.setAttribute("visibility", "hidden");
   }
 });
 
+/* ---------- view (curve / friction circle) ---------- */
+function applyMode() {
+  const circle = state.mode === "circle";
+  $("mode").value = state.mode;
+  $("curve-only").hidden = circle;
+  $("range-curve").hidden = circle;
+  $("range-circle").hidden = !circle;
+  renderFixedInputs();
+}
+function onModeChanged() {
+  state.mode = $("mode").value;
+  tip.style.display = "none";
+  applyMode();
+  setNote();
+  render(); // show the last result for this view, if any, while the new one loads
+  refresh();
+}
+
 /* ---------- initial control fill ---------- */
 fillSelect($("swept"), INPUTS, state.swept);
 fillSelect($("output"), OUTPUTS, state.output);
-renderFixedInputs();
 $("rmin").value = state.min; $("rmax").value = state.max;
+$("csa").value = state.saMax; $("csr").value = state.srMax; $("ccurves").value = state.curves;
+applyMode();
 
 /* ---------- tire selection ---------- */
 function updateTireHeader(info) {
@@ -514,6 +760,13 @@ for (const [id, key] of [["rmin", "min"], ["rmax", "max"], ["rpts", "points"]]) 
     if (isFinite(v)) { state[key] = key === "points" ? Math.round(v) : v; refresh(); }
   });
 }
+$("mode").addEventListener("change", onModeChanged);
+for (const [id, key] of [["csa", "saMax"], ["csr", "srMax"], ["ccurves", "curves"]]) {
+  $(id).addEventListener("input", () => {
+    const v = parseFloat($(id).value);
+    if (isFinite(v) && v > 0) { state[key] = key === "curves" ? Math.round(v) : v; refresh(); }
+  });
+}
 
 // Load the tire list, fill the dropdown, then fetch the default tire's info
 // and its first sweep.
@@ -530,7 +783,7 @@ fetch("/api/tires").then(r => r.json()).then(async data => {
   state.tire = data.default;
   sel.value = state.tire;
   await loadInfo();
-  fetchSweep();
+  fetchData();
 });
 </script>
 </body>

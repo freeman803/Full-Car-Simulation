@@ -72,6 +72,24 @@ Typical plots: FY vs slip angle (cornering stiffness / peak grip),
 FX vs slip ratio (traction), FY vs FZ (load sensitivity),
 FY vs pressure or camber (setup sensitivity).
 
+### Friction circle view
+
+Set **View** to **Friction circle** (or open `http://127.0.0.1:<port>/?view=circle`)
+to plot FX against FY under combined slip, with both axes on the same scale.
+Pressure, FZ and camber stay fixed; slip angle and slip ratio are both swept
+over ± the values under **Slip range**.
+
+- **Grip limit** — the largest force the tire reaches in each direction over
+  every slip-angle × slip-ratio combination in the range. This is the "circle".
+- **Constant slip angle** curves — one per slip angle (set how many with
+  **Curves**), each swept over slip ratio and labelled where slip ratio is 0.
+
+Hover a point for its FX, FY, slip angle, slip ratio and total force with the
+equivalent friction coefficient (force / FZ). The line under the chart gives
+the peak FX and FY, and **Data table** lists the grip-limit points. If the slip
+range is too narrow to reach the tire's own limit, a note under the chart says
+so.
+
 ## Command-line version
 
 ```powershell

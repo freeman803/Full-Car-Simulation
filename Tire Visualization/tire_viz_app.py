@@ -40,11 +40,75 @@ HTML_PATH = HERE / "tire_viz_app.html"
 INPUT_KEYS = ("pressure", "fz", "sa", "sr", "camber")
 OUTPUT_KEYS = ("fx", "fy", "mx", "my", "mz")
 MAX_POINTS = 2000
+CIRCLE_FIXED_KEYS = ("pressure", "fz", "camber")
+CIRCLE_GRID_SA = 401       # slip-angle samples behind the grip limit
+CIRCLE_GRID_SR = 801       # slip-ratio samples behind the grip limit
+CIRCLE_DIRECTIONS = 180    # force directions the grip limit is resolved at
+CIRCLE_CURVE_POINTS = 201  # slip-ratio samples along each constant-slip-angle curve
+MAX_CURVES = 41
 
 
 def _clean(arr) -> list:
     """JSON-safe list: non-finite values become null."""
     return [float(v) if isfinite(v) else None for v in np.asarray(arr, dtype=float)]
+
+
+def friction_circle(tire: MF62Tire, fixed: dict, sa_max: float, sr_max: float,
+                    n_curves: int) -> dict:
+    """FX-FY friction circle at a fixed load, pressure and camber.
+
+    Returns a family of constant-slip-angle curves (each swept over slip ratio)
+    plus the grip limit: the largest force the tire reaches in every direction
+    over all slip-angle x slip-ratio combinations within +/-sa_max, +/-sr_max.
+    Slip angles are in degrees."""
+    common = dict(fz=fixed["fz"], press=fixed["pressure"] * PSI_TO_PA,
+                  gamma=np.deg2rad(fixed["camber"]))
+
+    sr = np.linspace(-sr_max, sr_max, CIRCLE_CURVE_POINTS)
+    curves = []
+    for sa in (np.linspace(-sa_max, sa_max, n_curves) if n_curves > 1 else [0.0]):
+        out = tire.forces(alpha=np.deg2rad(sa), kappa=sr, **common)
+        curves.append({"sa": round(float(sa), 6), "sr": _clean(sr),
+                       "fx": _clean(out["fx"]), "fy": _clean(out["fy"])})
+
+    # Sample densely near zero slip, where the forces change fastest: uniform
+    # spacing leaves whole directions unsampled once the range is wide.
+    u_sa = np.linspace(-1.0, 1.0, CIRCLE_GRID_SA)
+    u_sr = np.linspace(-1.0, 1.0, CIRCLE_GRID_SR)
+    sa_g, sr_g = np.meshgrid(sa_max * u_sa * np.abs(u_sa), sr_max * u_sr * np.abs(u_sr),
+                             indexing="ij")
+    out = tire.forces(alpha=np.deg2rad(sa_g), kappa=sr_g, **common)
+    fx, fy = out["fx"].ravel(), out["fy"].ravel()
+    ok = np.isfinite(fx) & np.isfinite(fy)
+    fx, fy = np.where(ok, fx, 0.0), np.where(ok, fy, 0.0)
+    r = np.where(ok, np.hypot(fx, fy), -1.0)
+    theta = np.arctan2(fy, fx)
+    bins = np.minimum(((theta + np.pi) / (2 * np.pi) * CIRCLE_DIRECTIONS).astype(int),
+                      CIRCLE_DIRECTIONS - 1)
+    # Farthest sample per direction bin: assign in ascending-radius order so
+    # the last (largest) write wins.
+    order = np.argsort(r)
+    best = np.full(CIRCLE_DIRECTIONS, -1)
+    best[bins[order]] = order
+    best = best[best >= 0]
+    best = best[r[best] > 0]
+    row, col = np.divmod(best, CIRCLE_GRID_SR)
+    on_edge = ((row == 0) | (row == CIRCLE_GRID_SA - 1)
+               | (col == 0) | (col == CIRCLE_GRID_SR - 1))
+
+    return {
+        "curves": curves,
+        "envelope": {"fx": _clean(fx[best]), "fy": _clean(fy[best]),
+                     "sa": _clean(sa_g.ravel()[best]), "sr": _clean(sr_g.ravel()[best])},
+        # False when some direction has no sample, so the limit is not a loop.
+        "closed": len(best) == CIRCLE_DIRECTIONS,
+        # Share of the limit that sits on the slip-range boundary, i.e. is set
+        # by the chosen ranges rather than by the tire.
+        "edge_fraction": float(on_edge.mean()) if len(best) else 0.0,
+        "peaks": {"fx_max": float(fx[ok].max()), "fx_min": float(fx[ok].min()),
+                  "fy_max": float(fy[ok].max()), "fy_min": float(fy[ok].min())},
+        "fz": float(max(fixed["fz"], 1.0)),
+    }
 
 
 def _tire_info(name: str, t: MF62Tire) -> dict:
@@ -105,8 +169,29 @@ class AppHandler(BaseHTTPRequestHandler):
         else:
             self._json(404, {"error": "not found"})
 
+    def _circle(self):
+        try:
+            length = int(self.headers.get("Content-Length", "0"))
+            req = json.loads(self.rfile.read(length))
+            name, tire = self._pick(req.get("tire"))
+            fixed_in = req.get("fixed", {})
+            fixed = {k: float(fixed_in.get(k, 0.0)) for k in CIRCLE_FIXED_KEYS}
+            sa_max, sr_max = abs(float(req["sa_max"])), abs(float(req["sr_max"]))
+            if not (sa_max > 0 and sr_max > 0):
+                raise ValueError("slip ranges must be greater than zero")
+            n_curves = max(1, min(int(req.get("curves", 9)), MAX_CURVES))
+            result = friction_circle(tire, fixed, sa_max, sr_max, n_curves)
+            result["tire"] = name
+            self._json(200, result)
+        except Exception as exc:  # bad request -> readable message, keep serving
+            self._json(400, {"error": str(exc)})
+
     def do_POST(self):
-        if urlparse(self.path).path != "/api/sweep":
+        path = urlparse(self.path).path
+        if path == "/api/circle":
+            self._circle()
+            return
+        if path != "/api/sweep":
             self._json(404, {"error": "not found"})
             return
         try:
