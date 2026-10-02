@@ -148,13 +148,12 @@ class PacejkaTireModel:
         ex = (_coef(long_coeffs, "PEX1") + _coef(long_coeffs, "PEX2") * dfz + _coef(long_coeffs, "PEX3") * dfz**2) * (
             1.0 - _coef(long_coeffs, "PEX4") * _sign(kappa)
         )
-        shx = _coef(long_coeffs, "PHX1") + _coef(long_coeffs, "PHX2") * dfz
-        svx = vertical_force_n * (_coef(long_coeffs, "PVX1") + _coef(long_coeffs, "PVX2") * dfz)
-        kappa_shifted = kappa + shx
+        # The .tir's horizontal/vertical shifts (PHX*, PVX*) are deliberately
+        # ignored: they are test-rig fit offsets that give ~2 kN of Fx at zero
+        # slip ratio under cornering loads, so kappa = 0 must mean Fx = 0 here.
         longitudinal_force_n = dx * math.sin(
-            cx * math.atan(bx * kappa_shifted - ex * (bx * kappa_shifted - math.atan(bx * kappa_shifted)))
+            cx * math.atan(bx * kappa - ex * (bx * kappa - math.atan(bx * kappa)))
         )
-        longitudinal_force_n += svx
         longitudinal_force_n *= pressure_factor
 
         # Aligning moment

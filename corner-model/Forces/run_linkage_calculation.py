@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import csv
+import json
 import math
 import sys
 from datetime import datetime
@@ -13,6 +14,8 @@ if str(_ROOT) not in sys.path:
 from Forces.linkage_forces import calculate_corner_forces
 
 PSI_TO_PA = 6894.757293168
+# Read by visualize_linkage_forces.py to plot the most recent calculation.
+LAST_RESULT_PATH = _ROOT / "results" / "last_linkage_calculation.json"
 
 TIRE_LABELS = {
     "vertical_force_N": ("Fz (vertical)", "N"),
@@ -66,6 +69,12 @@ def write_csv(path: Path, inputs: dict[str, float | str], result: dict[str, dict
             )
 
 
+def write_last_result(inputs: dict[str, tuple[float | str, str]], result: dict[str, dict]) -> None:
+    LAST_RESULT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    payload = {"inputs": {name: value for name, (value, _units) in inputs.items()}, **result}
+    LAST_RESULT_PATH.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+
 def main() -> None:
     print("Linkage force calculator")
     axle = prompt_choice("Axle", ["front", "rear"])
@@ -101,6 +110,8 @@ def main() -> None:
         "slip_ratio": (slip_ratio, ""),
         "tire_pressure": (tire_pressure_psi, "psi"),
     }
+    write_last_result(inputs, result)
+
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     default_path = Path.cwd() / f"linkage_forces_{axle}_{timestamp}.csv"
     csv_path = prompt_path("\nCSV output path", default_path)
